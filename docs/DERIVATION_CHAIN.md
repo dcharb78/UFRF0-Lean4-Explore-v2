@@ -52,15 +52,23 @@ Trinity.lean: trinity.conservation
 │   │   │   ├── BreathingCycle.lean: terminal_block_reindexes_as_zero_to_three
 │   │   │   │   Contextual chart at REST: 10,11,12,13 ↦ 0,1,2,3. Proven.
 │   │   │   │
-│   │   │   └── BreathingCycle.lean: thirteen_closes_current_cycle_and_opens_next
-│   │   │       13 is seed in the human chart, 3 in the local terminal chart,
-│   │   │       0 in the residue chart, and the step 12→13 matches 0→1. Proven.
+│   │   │   ├── BreathingCycle.lean: terminal_block_reindexes_at_scale
+│   │   │   │   Scale-invariant chart: 10+13s,11+13s,12+13s,13+13s ↦ 0,1,2,3. Proven.
+│   │   │   │
+│   │   │   └── BreathingCycle.lean: terminal_block_closes_and_restarts_at_scale
+│   │   │       13+13s is seed in the human chart, 3 in the local terminal chart,
+│   │   │       0 in the residue chart, and the step into it matches 0→1. Proven.
 │   │   │
 │   │   ├── Addressing.lean: (ℤ, ZMod 13) coordinates
 │   │   │   phase_count, 12 ≡ -1 (mod 13). Proven.
 │   │   │
 │   │   └── Recursion.lean: no_first_step
 │   │       Scale = ℤ. Bridge→Seed nesting. Proven.
+│   │       Also: bridge_to_seed_matches_terminal_chart
+│   │       (REST-anchored chart 10,11,12,13 ↦ 0,1,2,3 equals
+│   │       "REST + next-scale seed strip"). Proven.
+│   │       Also: bridge_to_seed_matches_terminal_chart_at_scale
+│   │       (the same handoff law at every 13-shifted terminal block). Proven.
 │   │
 │   └── Foundation.lean: trinity_range_is_one
 │       The span from -½ to +½ = 1. Proven.

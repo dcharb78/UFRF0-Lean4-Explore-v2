@@ -164,6 +164,50 @@ theorem localCoordinate_translation_invariant (origin p k : CyclePos) :
   unfold localCoordinate
   abel
 
+/--
+The full cycle length vanishes as a residue in the cycle ring.
+
+Any whole-number multiple of 13 is the zero displacement in `ZMod 13`.
+
+✅ PROVEN
+-/
+theorem full_cycle_shift_vanishes (s : ℕ) :
+    ((cycle_len * s : ℕ) : CyclePos) = 0 := by
+  calc
+    ((cycle_len * s : ℕ) : CyclePos) = ((cycle_len : ℕ) : CyclePos) * (s : CyclePos) := by
+      simp
+    _ = 0 := by
+      have hcycle : ((cycle_len : ℕ) : CyclePos) = 0 := by
+        change ((13 : ℕ) : ZMod 13) = 0
+        decide
+      rw [hcycle, zero_mul]
+
+/--
+Human-facing labels are periodic with period 13.
+
+Adding a whole cycle does not change the underlying position; it only
+changes the chart in which that position is named.
+
+✅ PROVEN
+-/
+theorem labeledPosition_periodic (n s : ℕ) :
+    labeledPosition (n + cycle_len * s) = labeledPosition n := by
+  simp [labeledPosition, Nat.cast_add, full_cycle_shift_vanishes s]
+
+/--
+Local charts depend only on offset, not on the absolute labels.
+
+If the chart origin is named `origin`, then the label `origin + offset`
+has local coordinate `offset`.
+
+✅ PROVEN
+-/
+theorem localCoordinate_of_labeled_offset (origin offset : ℕ) :
+    localCoordinate (labeledPosition origin) (labeledPosition (origin + offset)) =
+      (offset : CyclePos) := by
+  unfold localCoordinate labeledPosition
+  simp [Nat.cast_add, sub_eq_add_neg]
+
 /-! ### Ring Topology Theorems -/
 
 /--
@@ -244,6 +288,21 @@ theorem wrapped_bridge_step_matches_entry_step :
   decide
 
 /--
+The bridge-to-seed step is the same at every whole-cycle translate.
+
+The labels may shift by 13, 26, 39, ... but the contextual step remains
+the same unit successor.
+
+✅ PROVEN
+-/
+theorem bridge_to_seed_step_matches_entry_step_at_scale (s : ℕ) :
+    sameStep ((12 + cycle_len * s : ℕ) : CyclePos)
+      ((13 + cycle_len * s : ℕ) : CyclePos) 0 1 := by
+  unfold sameStep
+  simp [Nat.cast_add, sub_eq_add_neg, full_cycle_shift_vanishes s]
+  norm_num
+
+/--
 **Terminal block chart: `10 = 0`, `11 = 1`, `12 = 2`, `13 = 3`.**
 
 Anchoring a local chart at human position `10` reindexes the final
@@ -316,6 +375,86 @@ theorem position_thirteen_has_contextual_coordinates :
     (13 : CyclePos) = 0 := by
   refine ⟨labeledPosition_thirteen_is_seed, ?_, full_cycle_identity⟩
   exact terminal_block_reindexes_as_zero_to_three.2.2.2
+
+/--
+**Every terminal block reindexes the same way.**
+
+For any whole-cycle shift `13·s`, the block
+`10 + 13·s, 11 + 13·s, 12 + 13·s, 13 + 13·s`
+reindexes locally as `0,1,2,3`.
+
+✅ PROVEN
+-/
+theorem terminal_block_reindexes_at_scale (s : ℕ) :
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (10 + cycle_len * s)) = 0 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (11 + cycle_len * s)) = 1 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (12 + cycle_len * s)) = 2 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (13 + cycle_len * s)) = 3 := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using localCoordinate_of_labeled_offset (10 + cycle_len * s) 0
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using localCoordinate_of_labeled_offset (10 + cycle_len * s) 1
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using localCoordinate_of_labeled_offset (10 + cycle_len * s) 2
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using localCoordinate_of_labeled_offset (10 + cycle_len * s) 3
+
+/--
+**The terminal phase pattern is scale-invariant.**
+
+Every whole-cycle translate of the terminal block is still
+`REST, bridge, bridge, seed`.
+
+✅ PROVEN
+-/
+theorem terminal_block_phase_pattern_at_scale (s : ℕ) :
+    (labeledPosition (10 + cycle_len * s)).logPhase = .rest ∧
+    (labeledPosition (11 + cycle_len * s)).logPhase = .bridge ∧
+    (labeledPosition (12 + cycle_len * s)).logPhase = .bridge ∧
+    (labeledPosition (13 + cycle_len * s)).logPhase = .seed := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact (congrArg CyclePos.logPhase (labeledPosition_periodic 10 s)).trans
+      terminal_block_phase_pattern.1
+  · exact (congrArg CyclePos.logPhase (labeledPosition_periodic 11 s)).trans
+      terminal_block_phase_pattern.2.1
+  · exact (congrArg CyclePos.logPhase (labeledPosition_periodic 12 s)).trans
+      terminal_block_phase_pattern.2.2.1
+  · exact (congrArg CyclePos.logPhase (labeledPosition_periodic 13 s)).trans
+      terminal_block_phase_pattern.2.2.2
+
+/--
+**Every `13 + 13·s` both closes one cycle and opens the next.**
+
+This is the scale-invariant form of the terminal-block handoff:
+- in the human-facing chart it is the seed;
+- in the REST-anchored local chart it is coordinate `3`;
+- in the residue chart it is `0`;
+- the step into it is the same unit step as the next chart's `0 → 1`.
+
+✅ PROVEN
+-/
+theorem terminal_block_closes_and_restarts_at_scale (s : ℕ) :
+    (labeledPosition (13 + cycle_len * s)).logPhase = .seed ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (13 + cycle_len * s)) = 3 ∧
+    labeledPosition (13 + cycle_len * s) = seedPosition ∧
+    (((13 + cycle_len * s : ℕ) : CyclePos) = 0) ∧
+    sameStep ((12 + cycle_len * s : ℕ) : CyclePos)
+      ((13 + cycle_len * s : ℕ) : CyclePos) 0 1 := by
+  refine ⟨terminal_block_phase_pattern_at_scale s |>.2.2.2,
+    terminal_block_reindexes_at_scale s |>.2.2.2, ?_, ?_, ?_⟩
+  · exact (labeledPosition_periodic 13 s).trans labeledPosition_thirteen_is_seed
+  · calc
+      (((13 + cycle_len * s : ℕ) : CyclePos)) = ((13 : ℕ) : CyclePos) + ((cycle_len * s : ℕ) : CyclePos) := by
+          simp [Nat.cast_add]
+      _ = (13 : CyclePos) := by rw [full_cycle_shift_vanishes]; simp
+      _ = 0 := full_cycle_identity
+  · exact bridge_to_seed_step_matches_entry_step_at_scale s
 
 /-! ### Continuous Geometry -/
 

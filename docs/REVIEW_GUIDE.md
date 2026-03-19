@@ -40,7 +40,7 @@ Read these files in order:
 
 ### Step 3: The Breathing Cycle (5 min)
 **`UFRF/BreathingCycle.lean`** — 13 positions. `flip_at_half`: 6.5/13=1/2. `prism_identity`: neg(comp(x))=x+1. Time from symmetry.
-Check the contextual chart theorems too: `terminal_block_reindexes_as_zero_to_three` formalizes `10,11,12,13 ↦ 0,1,2,3`, and `thirteen_closes_current_cycle_and_opens_next` states that 13 is both the closure of the current cycle and the seed-opening of the next.
+Check the contextual chart theorems too: `terminal_block_reindexes_as_zero_to_three` formalizes `10,11,12,13 ↦ 0,1,2,3`, while `terminal_block_reindexes_at_scale` and `terminal_block_closes_and_restarts_at_scale` make that same topology explicit at every whole-cycle shift `13·s`.
 
 ### Step 4: Where 137 Comes From (5 min)
 **`UFRF/Simplex.lean`** → **`UFRF/ThreeLOG.lean`** → **`UFRF/FineStructure.lean`**
@@ -52,6 +52,9 @@ Chain: `simplex3_face_count` (C(4,3)=4) → `log3_geometric_factor_is_four` → 
 
 ### Step 6: The Inverse Limit (5 min)
 **`UFRF/InverseLimit.lean`** — `padic_is_inverse_limit`: both directions of projection law via Mathlib's PadicInt API.
+
+### Step 6b: The Scale Handoff (3 min)
+**`UFRF/Recursion.lean`** — `bridge_to_seed` gives the modular next-scale handoff, `bridge_to_seed_matches_terminal_chart` ties it directly to the chart `10,11,12,13 ↦ 0,1,2,3`, and `bridge_to_seed_matches_terminal_chart_at_scale` shows the same handoff law survives every `13·s` relabeling.
 
 ---
 

@@ -46,7 +46,7 @@ The "choreography" of primes on the breathing cycle.
 ### Proven Theorems
 - `one_is_ufrf_prime`, `two_is_not_ufrf_prime`
 - Every standard prime other than `2` is UFRF-prime
-- The terminal block `10,11,12,13` reindexes contextually as `0,1,2,3`
+- The terminal block `10+13s,11+13s,12+13s,13+13s` reindexes contextually as `0,1,2,3` at every whole-cycle shift
 
 ---
 

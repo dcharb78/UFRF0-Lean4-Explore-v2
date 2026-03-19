@@ -4,6 +4,7 @@ import Mathlib.Data.Fin.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic
 import Mathlib.Tactic.Linarith
+import UFRF.BreathingCycle
 import UFRF.Foundation
 
 /-!
@@ -146,3 +147,51 @@ which become indices 0, 1, 2 at the next scale.
 theorem bridge_to_seed (k : Fin 3) :
     ((10 + k.val + 3) % UFRF.Foundation.derived_cycle_length : ℕ) = k.val := by
   fin_cases k <;> decide
+
+/--
+**The terminal chart is REST plus the next-scale seed strip.**
+
+`BreathingCycle` packages the local chart anchored at human position `10` as
+`10,11,12,13 ↦ 0,1,2,3`. This theorem aligns that chart with the recursion
+law above:
+- local coordinates `1,2,3` are the bridge/seed strip seen from the REST anchor;
+- the next-scale seed indices are `0,1,2`.
+
+So the local terminal chart is exactly "REST + next-scale seed strip."
+
+✅ PROVEN
+-/
+theorem bridge_to_seed_matches_terminal_chart (k : Fin 3) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition 10)
+        (BreathingCycle.labeledPosition (11 + k.val)) =
+      (k.val + 1 : BreathingCycle.CyclePos) ∧
+    ((10 + k.val + 3) % UFRF.Foundation.derived_cycle_length : ℕ) = k.val := by
+  constructor
+  · fin_cases k <;>
+      unfold BreathingCycle.localCoordinate BreathingCycle.labeledPosition <;>
+      decide
+  · exact bridge_to_seed k
+
+/--
+**The terminal chart/seed handoff is scale-invariant.**
+
+Shifting the terminal block by any whole-cycle multiple `13·s` does not
+change its local coordinates: the labels
+`10+13·s, 11+13·s, 12+13·s, 13+13·s`
+still reindex as `0,1,2,3`, and the bridge/seed strip still matches the
+next-scale indices `0,1,2`.
+
+✅ PROVEN
+-/
+theorem bridge_to_seed_matches_terminal_chart_at_scale (s : ℕ) (k : Fin 3) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * s))
+        (BreathingCycle.labeledPosition (11 + k.val + BreathingCycle.cycle_len * s)) =
+      (k.val + 1 : BreathingCycle.CyclePos) ∧
+    ((10 + k.val + 3) % UFRF.Foundation.derived_cycle_length : ℕ) = k.val := by
+  constructor
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using BreathingCycle.localCoordinate_of_labeled_offset
+        (10 + BreathingCycle.cycle_len * s) (k.val + 1)
+  · exact bridge_to_seed k

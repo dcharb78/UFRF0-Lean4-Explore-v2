@@ -73,7 +73,10 @@ A theorem is **axiom-free** if it depends only on Lean core axioms.
 #print axioms BreathingCycle.inversion_symmetry
 #print axioms BreathingCycle.wrapped_bridge_step_matches_entry_step
 #print axioms BreathingCycle.terminal_block_reindexes_as_zero_to_three
+#print axioms BreathingCycle.terminal_block_reindexes_at_scale
+#print axioms BreathingCycle.terminal_block_phase_pattern_at_scale
 #print axioms BreathingCycle.thirteen_closes_current_cycle_and_opens_next
+#print axioms BreathingCycle.terminal_block_closes_and_restarts_at_scale
 
 -- ═══ LAYER 6: PRISM ═══
 #print axioms BreathingCycle.prism_identity
@@ -157,6 +160,8 @@ A theorem is **axiom-free** if it depends only on Lean core axioms.
 -- ═══ LAYER 22: Division Algebras ═══
 #print axioms visible_dimension_count
 #print axioms no_first_step
+#print axioms bridge_to_seed_matches_terminal_chart
+#print axioms bridge_to_seed_matches_terminal_chart_at_scale
 #print axioms property_lost_correspondence
 
 -- ═══ LAYER 23: Kissing Number (derived connections) ═══

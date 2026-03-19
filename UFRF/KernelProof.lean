@@ -138,6 +138,45 @@ example :
     localCoordinate (labeledPosition 10) (labeledPosition 13) = 3 ∧
     (13 : CyclePos) = 0 :=
   position_thirteen_has_contextual_coordinates
+example (s : ℕ) :
+    labeledPosition (13 + cycle_len * s) = seedPosition :=
+  (terminal_block_closes_and_restarts_at_scale s).2.2.1
+example (s : ℕ) :
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (10 + cycle_len * s)) = 0 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (11 + cycle_len * s)) = 1 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (12 + cycle_len * s)) = 2 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (13 + cycle_len * s)) = 3 :=
+  terminal_block_reindexes_at_scale s
+example (s : ℕ) :
+    (labeledPosition (10 + cycle_len * s)).logPhase = .rest ∧
+    (labeledPosition (11 + cycle_len * s)).logPhase = .bridge ∧
+    (labeledPosition (12 + cycle_len * s)).logPhase = .bridge ∧
+    (labeledPosition (13 + cycle_len * s)).logPhase = .seed :=
+  terminal_block_phase_pattern_at_scale s
+example (s : ℕ) :
+    (labeledPosition (13 + cycle_len * s)).logPhase = .seed ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (13 + cycle_len * s)) = 3 ∧
+    labeledPosition (13 + cycle_len * s) = seedPosition ∧
+    (((13 + cycle_len * s : ℕ) : CyclePos) = 0) ∧
+    sameStep ((12 + cycle_len * s : ℕ) : CyclePos)
+      ((13 + cycle_len * s : ℕ) : CyclePos) 0 1 :=
+  terminal_block_closes_and_restarts_at_scale s
+example (k : Fin 3) :
+    localCoordinate (labeledPosition 10) (labeledPosition (11 + k.val)) =
+      (k.val + 1 : CyclePos) ∧
+    ((10 + k.val + 3) % derived_cycle_length : ℕ) = k.val :=
+  bridge_to_seed_matches_terminal_chart k
+example (s : ℕ) (k : Fin 3) :
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (11 + k.val + cycle_len * s)) =
+      (k.val + 1 : CyclePos) ∧
+    ((10 + k.val + 3) % derived_cycle_length : ℕ) = k.val :=
+  bridge_to_seed_matches_terminal_chart_at_scale s k
 
 /-! ## Layer 4: Time from Symmetry (PRISM) -/
 
