@@ -1,6 +1,6 @@
 # UFRF Lean V3 — Complete Module Index
 
-> **26 modules. 3139 build jobs. 0 errors. 0 sorry/admit. 4 documented axioms. 324 theorems/defs. 48 KernelProof examples. 2 DESIGN markers remaining.**
+> **Note**: This index is from an earlier snapshot (26 modules). The current repo has **39 modules, 0 errors, 0 sorry, 0 custom axioms, 536+ proven entities**. See `docs/DERIVATION_CHAIN.md` for the current dependency tree.
 
 ---
 
@@ -25,7 +25,7 @@ Trinity {-½, 0, +½}     (Axiom 1)
 
 ## All 26 Modules
 
-### Axiomatics & Foundation (5 modules)
+### Foundation (5 modules)
 | # | Module | Role | Key Theorem |
 |---|--------|------|-------------|
 | 1 | Simplex | 3-simplex face counting | `simplex3_face_count` |
@@ -87,14 +87,12 @@ Trinity {-½, 0, +½}     (Axiom 1)
 
 ---
 
-## Axiom Inventory (4 total)
+## Axiom Inventory
 
-| Axiom | Module | Justification |
-|-------|--------|---------------|
-| `toroidal_emergence` | Manifold | Torus = S¹ × S¹ (proven, former axiom) |
-| `zero_point_isomorphism` | Recursion | Foundational postulate |
-| `dimensional_completeness` | Recursion | Foundational postulate |
-| `resonance_at_flip` | Riemann | Structural correspondence |
+| Axiom | Status |
+|-------|--------|
+| Custom `axiom` declarations | **0** (Axiomatics.lean deleted, commit 48960f9) |
+| Standard Lean foundations | propext, Classical.choice, Quot.sound |
 
 ---
 
