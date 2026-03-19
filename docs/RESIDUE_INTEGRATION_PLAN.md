@@ -140,16 +140,23 @@ Current status:
 - This proof stays on Mathlib-supported ground:
   it applies Cauchy's circle-integral formula to the holomorphic inverse local factor on a
   closed ball, then identifies the boundary integrand with `breathingFunction`.
-- Exact next blocker, if we want a tighter Phase 2 → Phase 3 bridge:
-  a direct derivation from `breathingFunction_simplePole_limit` via
-  `Complex.circleIntegral_sub_center_inv_smul_of_differentiable_on_off_countable_of_tendsto`
-  still needs a clean punctured-disk continuity/differentiability package for the
-  desingularized function
-  `z ↦ (z - breathingRoot k) * breathingFunction z`.
+- The direct Phase 2 → Phase 3 bridge is now also formalized:
+  `desingularizedBreathingFunctionAt`,
+  `continuousOn_desingularizedBreathingFunctionAt_punctured_closedBall`,
+  `differentiableOn_desingularizedBreathingFunctionAt_punctured_ball`,
+  and
+  `circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_via_simplePole_limit`
+  show that the punctured simple-pole limit theorem already plugs directly into Mathlib's
+  punctured-center Cauchy formula.
+- Exact next blocker for a broader contour layer:
+  the current theorems are still local small-circle results around a single breathing root.
+  A larger contour theorem that cleanly handles multiple enclosed breathing roots will need
+  an explicit root-separation package and then either contour decomposition or a carefully
+  bounded multi-pole circle/annulus argument.
 - Next smallest theorem needed:
-  prove that this desingularized function is continuous on a punctured closed ball and
-  differentiable on the corresponding punctured open ball for some explicit positive radius,
-  then feed the already-proved punctured limit into Mathlib's center-of-circle formula.
+  prove a concrete positive lower bound on the distance between distinct breathing roots, then
+  package a radius criterion guaranteeing that a circle centered at `breathingRoot k` encloses
+  no other breathing root.
 
 ### Phase 4: Interpretation Fence
 
