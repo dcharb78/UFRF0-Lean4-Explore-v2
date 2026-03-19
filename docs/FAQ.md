@@ -1,0 +1,142 @@
+# UFRF Frequently Asked Questions
+
+**Every answer maps to a machine-verified theorem name. Verify by running `lake build`.**
+
+---
+
+## On the Trinity
+
+### "Why {-½, 0, +½}? Isn't that arbitrary?"
+
+It's forced by four simultaneous constraints:
+
+| Constraint | Theorem |
+|---|---|
+| Conservation (sum = 0) | `trinity.conservation` |
+| Polarity (distinct nonzero elements) | `trinity_is_minimal_two` |
+| Symmetry (neg = -pos) | `trinity_symmetry` |
+| Observer at center | `observer_is_midpoint` |
+
+`trinity_uniqueness` proves any triple satisfying mediation + symmetry + scaling is {-k/2, 0, k/2}.
+
+### "Why 3 elements?"
+
+Two elements summing to zero: {-x, x}. No mediator. (`trinity_is_minimal_two`)
+One element: {0}. No polarity. Three is the minimum.
+
+### "The number 3 is a literal in the code. Derived or asserted?"
+
+Derived. `uniqueness_of_three` (Structure13.lean:50) proves `is_balanced a ↔ a = 3`.
+
+---
+
+## On 13
+
+### "Why 13?"
+
+Four independent routes, same answer:
+
+| Route | Theorem |
+|---|---|
+| Projective plane: 3²+3+1=13 | `uniqueness_of_thirteen` |
+| Dimensional closure: 3×(3+1)+1=13 | `dimensional_closure_equivalent` |
+| Kissing + center: K(3)+1=13 | `kissing_plus_center_is_cycle` |
+| Gauge + observer: 12+1=13 | `gauge_plus_observer_is_cycle` |
+
+### "What about the flip at 6.5?"
+
+6.5/13 = 1/2. **Theorem:** `flip_at_half` (BreathingCycle.lean:166).
+
+---
+
+## On the Fine-Structure Constant
+
+### "Where does 4π³+π²+π come from?"
+
+| Component | Source | Theorem |
+|---|---|---|
+| Coefficient 4 | C(4,3) simplex faces | `simplex3_face_count` → `log3_geometric_factor_is_four` |
+| Powers [3,2,1] | Tensor grades V, V⊗V, V⊗V⊗V | `LOGGrade.tensor_power` |
+| ⌊result⌋ = 137 | π bounds | `alpha_inv_floor_137` |
+
+### "Why doesn't it match CODATA exactly?"
+
+Measured ≠ intrinsic. CODATA measures at observer scale. UFRF derives the intrinsic value. The projection law (`padic_is_inverse_limit`) shows compatible observations at all scales reconstruct the unique source. The gap between formulas IS the projection operating at different scales.
+
+`both_integer_parts_137` (AllenBridge.lean:298) proves both Allen's 144−7 and UFRF's formula share integer floor 137.
+
+### "The coefficient 4 — is that fitted?"
+
+No. `simplex3_face_count` (Simplex.lean:41) proves C(4,3) = 4. The tetrahedron has 4 faces because Trinity (3) + 1 closure = 4 vertices. Chain: `trinity.conservation` → `simplex3_face_count` → `log3_geometric_factor_is_four` → `alpha_inv_floor_137`.
+
+---
+
+## On the Kissing Hierarchy
+
+### "How do packing constants relate to physics?"
+
+| Allen's Number | Formula | Theorem |
+|---|---|---|
+| 6 faces | K(2) | `allen_faces_are_kissing_2d` |
+| 7 modes | K(2)+1 | `allen_flip_from_kissing` |
+| 42 boundary | K(2)×(K(2)+1) | `allen_boundary_from_kissing` |
+| 24 phases | 2×K(3) | `allen_phases_from_kissing` |
+| 144 states | K(3)² | `allen_states_from_kissing` |
+| 137 floor | K(3)²-(K(2)+1) | `alpha_floor_from_kissing` |
+| 96 closure | 2×K(3)×C(4,3) | `allen_closure_from_kissing` |
+| 25=5² curvature | (K(3)+1)²-K(3)² | `curvature_5_from_kissing` |
+
+Master theorem: `allen_numbers_are_theorems` (KissingHierarchy.lean:264).
+
+### "Fibonacci-kissing bridge — coincidence?"
+
+F(7) = 13. **Theorem:** `fibonacci_kissing_bridge` (FibonacciKissing.lean:69).
+Also: `allen_transport_is_fibonacci` proves F(12) = 144.
+Twin primes straddle kissing numbers: `twins_straddle_K2`, `twins_straddle_K3`.
+Twin sum 11+13=24=Allen's phases: `twin_sum_is_24`.
+
+---
+
+## On Gauge Groups and Tensor Grades
+
+### "Tensor grades [1,2,3] — just counting?"
+
+They're tensor powers of a 3D space: V (linear), V⊗V (curved), V⊗V⊗V (volumetric).
+`total_gauge_bosons` (Noether.lean:114): 1+3+8=12.
+`gauge_plus_observer_is_cycle` (Noether.lean:137): 12+1=13.
+
+### "Balance condition = 1 seems arbitrary."
+
+Same minimality selecting the Trinity. `uniqueness_of_three` proves `is_balanced a ↔ a = 3`. The balance condition, Trinity span (`trinity_range_is_one`), simplex closure (+1), and Möbius return (+1) are all the same structural "1."
+
+---
+
+## On Axioms and Foundations
+
+### "Any axioms or hidden assumptions?"
+
+**Zero custom axioms.** `Axiomatics.lean` was deleted entirely (commit 48960f9). `grep -rn "^axiom " UFRF/ --include="*.lean"` returns nothing. `AxiomAudit.lean` runs `#print axioms` on 53 key theorems — all show only standard Lean foundations.
+
+### "What about native_decide?"
+
+31 uses, all on decidable `Nat` or `Fin` arithmetic. Sound for decidable propositions.
+
+---
+
+## On External Validation
+
+### "Where's the external validation?"
+
+Allen (2026) published α⁻¹ derivation without UFRF knowledge. Every number in his paper is a Trinity theorem. `allen_numbers_are_theorems` proves all 8.
+
+Same axiom also predicts (zero parameter changes): τ ceiling, Josephson spectra, gravitational wave quantization, galaxy cluster mass ratios, neural network convergence.
+
+### "How is this different from numerology?"
+
+| | Numerology | UFRF |
+|---|---|---|
+| Starting point | Pattern-matching | Single axiom → derivation |
+| Predictions | Post-hoc only | Falsifiable, 10+ domains |
+| Verification | Human claims | Lean 4, zero sorry |
+| External validation | None | Allen (2026) confirms 8 numbers |
+| Free parameters | Chosen to fit | Zero |

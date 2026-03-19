@@ -1,12 +1,12 @@
 # UFRF Lean 4 Formalization
 
-**UFRF: Navigation through Phase Space from Geometric Seeds (Unity & 13-Position Spiral)**
+**Deriving the universe from a single definition: `{-½, 0, +½}` with sum = 0.**
 
 This project formalizes the Universal Field Resonance Framework (UFRF) in
-Lean 4 with Mathlib, proving why deep mathematical structures like Fourier 
-transforms, Monster Moonshine, and Calculus work. Physical constants, number 
-systems, gauge symmetries, and topological structure emerge dynamically as 
-we structurally navigate phase space from these two geometric seeds.
+Lean 4 with Mathlib, proving that physical constants, number systems,
+division algebras, gauge symmetries, and topological structure emerge
+from geometric necessity — from a single definition, with zero free parameters,
+zero sorry, and zero custom axioms.
 
 ## Quick Start
 
@@ -53,12 +53,10 @@ UFRF-Allen/
 ## The Derivation Chain
 
 ```
-         Unity (w=1)   &   13-Position Spiral  (The 2 Axioms)
-               │                 │
-         Trinity {-½,0,+½}       │
-               │                 │
-          sum = 0                │
-              │
+         Trinity {-½, 0, +½}  (THE starting point — the sole definition)
+                    │
+               sum = 0  (Conservation)
+                    │
     ┌─────────┼──────────┐
     │         │          │
    T¹        T²         T³        (Three-LOG tensor grades)
@@ -116,8 +114,6 @@ UFRF-Allen/
 - `dimensional_completeness` → constructive definition (dimension embedding)
 - `merkaba_geometric_factor` → `simplex3_face_count` (C(4,3) = 4)
 - `sqrt_phi_REST` → `kepler_pythagorean` (√φ from Kepler's Triangle)
-
-## Auditing
 
 ## Auditing
 

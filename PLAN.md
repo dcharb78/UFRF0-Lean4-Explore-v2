@@ -6,7 +6,7 @@ This project formalizes the Universal Field Resonance Framework (UFRF) as a
 rigorous mathematical system in Lean 4 with Mathlib. The goal is to demonstrate
 why deep mathematical structures like Fourier transforms, Monster Moonshine, and 
 Calculus work. Physical constants and topological structure emerge dynamically as we
-navigate phase space from exactly two geometric seeds: Unity ($w=1$) and the 13-position recursive spiral.
+derive structure from a single definition: the Trinity `{-½, 0, +½}` with sum = 0.
 
 ---
 
@@ -15,7 +15,6 @@ navigate phase space from exactly two geometric seeds: Unity ($w=1$) and the 13-
 Every module depends only on those above it. No circular imports.
 
 ```
-Layer -1 UFRF.Axiomatics         — Unity (w=1) & 13-Position Spiral (Phase space seeds)
 Layer 0  UFRF.Constants          — φ, π, core numeric identities
 Layer 1  UFRF.Trinity            — The conserved triplet, uniqueness
 Layer 2  UFRF.Simplex            — C(4,3) = 4 (derived from topology)
@@ -73,8 +72,8 @@ All original phases are complete. Every theorem that was marked 🔧 TACTIC or
 
 ## Key Design Decisions
 
-### 1. Transparent Axiomatics
-To be clear that we are navigating phase space rather than asserting physical hard facts, the topological parameters have been explicitly defined as geometric seeds (`axiom`) in `Axiomatics.lean`. The only hard facts are the Lean proofs themselves.
+### 1. Zero Custom Axioms
+The framework has zero custom Lean `axiom` declarations. The former `Axiomatics.lean` was deleted (commit 48960f9) as its axioms were trivially true and never referenced. The real foundation is Trinity.lean (a definition) + Structure13.lean (a derivation). The only hard facts are the Lean proofs themselves.
 
 Former theorems and structures derived from this seeded space:
 - `merkaba_geometric_factor` → derived from `C(4,3) = 4` (Simplex.lean)
@@ -108,7 +107,7 @@ lake build
 ./scripts/certify.sh
 ```
 
-A successful build with the pipeline checks ensures the entire proof chain is formally verified by the Lean kernel from the core 2-axiom ground up.
+A successful build with the pipeline checks ensures the entire proof chain is formally verified by the Lean kernel — zero sorry, zero custom axioms.
 
 ---
 

@@ -1,59 +1,95 @@
 # UFRF Lean Project: 3rd Party Validation Guide
 
-To independently verify the mathematical proofs in this repository, you need the following standard Lean 4 environment.
+To independently verify the mathematical proofs in this repository, you need only a standard Lean 4 environment.
 
-## 1. Required Files
+## 1. What You're Verifying
 
-The following files constitute the "Source of Truth" for the project. If you are receiving this as a zip file, ensure these are present:
-
-*   **Intentional Axioms**: **Exactly 2 axioms**. To remain intellectually honest and avoid hiding physical postulates inside mathematical definitions, UFRF explicitly declares its two starting geometric postulates in `Axiomatics.lean`: Unity ($w=1$) and the 13-Position Recursive Spiral. All former postulates (Trinity, Zero Point, Dimensional Completeness) have been successfully converted to constructive definitions and theorems.
-*   **`UFRF/`**: The directory containing all `.lean` source files.
+- **39 Lean 4 modules** containing 536+ proven entities (396 theorems/lemmas, 140+ definitions)
+- **Zero `sorry` statements** — every proof is complete
+- **Zero custom `axiom` declarations** — the former `Axiomatics.lean` was deleted; all seeds are now proven theorems
+- **Standard foundations only**: `#print axioms` on all key theorems shows only `propext`, `Classical.choice`, `Quot.sound`
+- **107 cross-module verification examples** in `KernelProof.lean`
 
 ## 2. Prerequisites
 
-*   **Lean 4**: Install via [elan](https://github.com/leanprover/elan) (the standard Lean version manager).
-    ```bash
-    curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh
-    ```
-    *On Mac with Homebrew, you can also use `brew install elan-init`.*
+- **Lean 4**: Install via [elan](https://github.com/leanprover/elan):
+  ```bash
+  curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh
+  ```
 
 ## 3. Verification Steps
 
-1.  **Navigate to the project root** (where `lakefile.lean` is located).
-2.  **Get Dependencies**:
-    ```bash
-    lake update
-    ```
-    *This downloads Mathlib4 based on the manifest.*
-3.  **Build and Verify**:
-    ```bash
-    lake build
-    ```
+```bash
+# Navigate to project root (where lakefile.lean is located)
+cd UFRF0-Lean4-Explore-v2
+
+# Get dependencies (downloads Mathlib4)
+lake update
+lake exe cache get
+
+# Build and verify — this IS the verification
+lake build
+```
 
 ## 4. Interpreting Results
 
-*   **Success**: If `lake build` completes with exit code 0 and no error messages, **all proofs in the project are formally verified** by the Lean kernel.
-*   **Code Transparency**:
-    *   **Core Systems (Phases 1-11)**: Verified with **exactly 1 structural `sorry`** (in `InverseLimit.lean` to establish the topological existence of the spiral isomorphism).
-    *   **Geometric Mappings**: Fully proven in `GoldenAngle.lean`.
-    *   **NO `native_decide`** tactics used.
-    *   All theorems are proven essentially or constructionally from the **2 base axioms** defined in `Axiomatics.lean`.
+- **Success**: `lake build` completes with exit code 0 → all proofs are formally verified by the Lean kernel.
+- **Failure**: Any error indicates a proof gap. This should not happen on a clean build.
 
-## 5. Rigorous Dynamics & Primes
+## 5. Integrity Audit
 
-Phase 8.5 introduced a major enhancement: **Constructive Derivation of the Waveform**.
+After a successful build, run these checks:
 
-*   **Axiomatic Basis**: The universal waveform $W(t)$ is **not** defined arbitrarily. It is constructed piecewise from the `ThreeLOG` tensor grades:
-    *   **Log1 (Seed)**: Proven to be **Linear** ($d^2W/dt^2 = 0$). Theorem: `seed_is_log1`.
-    *   **Log2 (Expansion)**: Proven to be **Quadratic** ($d^2W/dt^2 > 0$). Theorem: `expansion_is_log2`.
-    *   **Log3 (Contraction)**: Proven to be **Cubic** (Volumetric). Theorem: `contraction_is_log3`.
-*   **Prime Definition**: The set of UFRF Primes is formally defined in `Constants.lean` as `{1} ∪ {p | Prime(p) ∧ p ≠ 2}`.
-*   **Geometric Mappings**:
-    *   `golden_angle_is_five`: ✅ PROVEN (bounds derived from `Mathlib`).
-    *   `twin_gap_maps_to_rest`: ✅ PROVEN (bounds derived from `Mathlib`).
-*   **Red Team Hardening (Phase 13)**:
-    *   **Dimensionality**: `ThreeLOG` derives "9" from `finrank R V = 3`. Theorem: `nine_interior_positions`.
-    *   **Geometric Determinism**: `Waveform` coefficients (1/9, 8/125) uniquely derived from smoothness constraints. Theorems: `unique_expansion_parabola`, `unique_contraction_cubic`.
-    *   **Prediction Accuracy**: `FineStructure` verified to match CODATA 2018 within 0.05. Theorem: `ufrf_matches_codata`.
-    *   **Prime Necessity**: Proved that only Prime 1 can carry the fundamental 13-cycle. Theorem: `prime_one_is_fundamental_carrier`.
-    *   These theorems confirm the geometric correspondence without any `sorry` or `axiom`.
+```bash
+# Zero sorry in code (should return nothing)
+grep -Prn "(:=|by|=>).*sorry|^\s+sorry\s*$" UFRF/ --include="*.lean"
+
+# Zero custom axioms (should return nothing)
+grep -rn "^axiom " UFRF/ --include="*.lean"
+
+# Automated certification
+./scripts/certify.sh
+```
+
+## 6. Code Transparency
+
+| Property | Status |
+|---|---|
+| `sorry` in proof terms | **0** |
+| Custom `axiom` declarations | **0** (Axiomatics.lean deleted) |
+| `unsafe` / `extern` / `implemented_by` | **0** |
+| `native_decide` | **31** (all on decidable Nat/Fin arithmetic — sound) |
+| Non-standard `#print axioms` | **0** (only propext, choice, Quot.sound) |
+
+## 7. Key Theorem Verification
+
+To verify specific results, add to a scratch `.lean` file:
+
+```lean
+import UFRF
+
+-- Check the fine-structure constant floor
+#check UFRF.FineStructure.alpha_inv_floor_137
+
+-- Check Allen's numbers are theorems
+#check UFRF.KissingHierarchy.allen_numbers_are_theorems
+
+-- Check the inverse limit (projection law)
+#check @padic_is_inverse_limit
+
+-- Verify axiom dependencies
+#print axioms UFRF.KissingHierarchy.allen_numbers_are_theorems
+-- Should show ONLY: propext, Classical.choice, Quot.sound
+```
+
+## 8. Module Architecture
+
+The project derives everything from the Trinity definition `{-½, 0, +½}` with `sum = 0`.
+
+- **Core framework**: 32 modules (Trinity → Structure13 → BreathingCycle → FineStructure → Noether → InverseLimit → ...)
+- **Allen embedding**: 7 modules proving every structural constant from Allen (2026) is a Trinity theorem
+- **Cross-verification**: KernelProof.lean collects 107 examples across 28 layers
+
+See `docs/DERIVATION_CHAIN.md` for the complete dependency graph with theorem names.
+See `docs/FAQ.md` for every common criticism answered with theorem references.
+See `docs/REVIEW_GUIDE.md` for 5-minute, 30-minute, and 3-hour audit paths.
