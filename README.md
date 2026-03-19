@@ -25,7 +25,7 @@ lake build            # compile UFRF
 
 ```
 UFRF-Allen/
-├── UFRF.lean                    # Root module (imports all 40 modules)
+├── UFRF.lean                    # Root module (imports all 43 modules)
 ├── UFRF/
 │   ├── # ── Core Framework (33 modules) ──
 │   ├── Trinity.lean             # The conserved triplet {-½, 0, +½} (THE seed)

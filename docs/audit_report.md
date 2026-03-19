@@ -32,7 +32,7 @@ My DERIVATION_CHAIN.md references `Monster.lean: monster_dimension_emergence`. T
 → MUST remove from DERIVATION_CHAIN.
 
 **2. Module count must stay synchronized with the root import file.**
-The root `UFRF.lean` now imports 40 modules after adding `PrimeSemantics.lean`.
+The root `UFRF.lean` now imports 43 modules after adding `PrimeSemantics.lean`, `ComplexBreathing.lean`, `ResidueDefinition.lean`, and `CircleIntegralBreathing.lean`.
 Older docs that still say 39 are stale and should be updated together.
 → MUST keep all count references synchronized.
 

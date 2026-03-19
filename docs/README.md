@@ -1,99 +1,33 @@
 # UFRF Documentation
 
-## Overview
-This directory contains comprehensive documentation for the Universal Field Resonance Framework (UFRF) Lean 4 formalization.
+This directory contains reviewer-facing documentation for the current Lean 4 formalization in [`/Users/dcharb/Documents/UFRF-Lean-V2`](/Users/dcharb/Documents/UFRF-Lean-V2).
 
-## Contents
+## Start Here
 
-### [Proofs](proofs/)
-Detailed markdown documentation for all Lean proofs, organized by module:
-- Foundation (Trinity, ThreeLOG, BreathingCycle)
-- Physics (FineStructure, GoldenAngle, Manifold, Phenomena)
-- Mathematics (Riemann, Monster, NumberBases)
-- Dynamics (Waveform, PrimeChoreography)
+- [`docs/REVIEW_GUIDE.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/REVIEW_GUIDE.md): fast audit paths for 5 minutes, 30 minutes, or a deeper review.
+- [`docs/DERIVATION_CHAIN.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/DERIVATION_CHAIN.md): dependency-oriented theorem map.
+- [`docs/FAQ.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/FAQ.md): reviewer objections and theorem references.
+- [`docs/RESIDUE_INTEGRATION_PLAN.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/RESIDUE_INTEGRATION_PLAN.md): phased plan for the complex-analysis / residue expansion.
 
-See [proofs/README.md](proofs/README.md) for the complete index.
+## Proof Notes
 
----
+- [`docs/proofs/README.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/README.md): module-level proof documentation.
+- [`docs/consolidated`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/consolidated): consolidated topic notes.
 
-## Quick Start
+Some consolidated and historical proof notes were written against earlier snapshots. When there is any mismatch, treat the Lean source and the current reviewer docs above as canonical.
 
-### Building the Project
+## Current Verification Surface
+
+- Zero executable `sorry`
+- Zero custom axioms
+- Full `lake build`
+- Scripted checks in [`scripts/verify.sh`](/Users/dcharb/Documents/UFRF-Lean-V2/scripts/verify.sh) and [`scripts/certify.sh`](/Users/dcharb/Documents/UFRF-Lean-V2/scripts/certify.sh)
+
+## Quick Commands
+
 ```bash
-cd /Users/dcharb/Downloads/UFRF.Lean.V3
+cd /Users/dcharb/Documents/UFRF-Lean-V2
 lake build
+./scripts/verify.sh
+./scripts/certify.sh
 ```
-
-### Visualizing the Waveform
-```bash
-python3 scripts/visualize_waveform.py
-```
-
-### Packaging a Release
-```bash
-./scripts/package_release.sh
-```
-
----
-
-## Key Results
-
-### The Trinity Axiom
-A single conserved triplet `{-½, 0, +½}` generates:
-- 3 tensor grades (LOG1, LOG2, LOG3)
-- 9 interior positions
-- 13 total positions (breathing cycle)
-- The Fine Structure Constant α⁻¹ ≈ 137.036
-
-### Physical Predictions
-- **α⁻¹ = 4π³ + π² + π**: Zero free parameters
-- **⌊α⁻¹⌋ = 137**: Exact integer match
-- **CODATA Agreement**: 99.9998% accuracy
-- **Phase 7 Mapping**: Start of Log3 contraction
-
-### Mathematical Connections
-- **Riemann Hypothesis**: Critical line = 6.5 flip
-- **Golden Angle**: Position 5 (rigorous binning)
-- **Torus Topology**: Unique for orthogonal flows
-
----
-
-## Verification Status
-
-✅ **Zero Placeholders**: No `sorry` or `admit` statements  
-✅ **All Theorems Proven**: Formal verification complete  
-✅ **Red Team Hardened**: Three rounds of critical review  
-✅ **Mathlib Compatible**: Uses standard library
-
----
-
-## Project Structure
-
-```
-UFRF.Lean.V3/
-├── UFRF/              # Lean source files
-│   ├── Trinity.lean
-│   ├── ThreeLOG.lean
-│   ├── FineStructure.lean
-│   └── ...
-├── docs/              # Documentation
-│   └── proofs/        # Proof documentation
-├── scripts/           # Utilities
-│   ├── visualize_waveform.py
-│   └── package_release.sh
-└── lake-manifest.json # Dependencies
-```
-
----
-
-## Further Reading
-
-- **[Validation Guide](../VALIDATION_GUIDE.md)**: Third-party verification instructions
-- **[Walkthrough](../.gemini/antigravity/brain/.../walkthrough.md)**: Development history
-- **[Implementation Plan](../.gemini/antigravity/brain/.../implementation_plan.md)**: Technical roadmap
-
----
-
-## License
-
-See the main repository for license details.

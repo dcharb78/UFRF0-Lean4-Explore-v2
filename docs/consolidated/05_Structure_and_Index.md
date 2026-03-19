@@ -1,6 +1,6 @@
 # UFRF Lean V3 — Complete Module Index
 
-> **Note**: This index is from an earlier snapshot (26 modules). The current repo has **40 modules, 0 errors, 0 sorry, 0 custom axioms, 536+ proven entities**. See `docs/DERIVATION_CHAIN.md` for the current dependency tree.
+> **Note**: This index is from an earlier snapshot (26 modules). The current repo has **43 modules, 0 errors, 0 sorry, 0 custom axioms, 536+ proven entities**. See `docs/DERIVATION_CHAIN.md` for the current dependency tree.
 
 ---
 

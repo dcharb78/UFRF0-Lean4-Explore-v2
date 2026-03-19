@@ -62,7 +62,7 @@ Chain: `simplex3_face_count` (C(4,3)=4) → `log3_geometric_factor_is_four` → 
 
 ### Hour 1: Read Every Module
 
-40 modules. Read theorem STATEMENTS (compiler verified proofs).
+43 modules. Read theorem STATEMENTS (compiler verified proofs).
 
 ```
 Core (33 modules):
