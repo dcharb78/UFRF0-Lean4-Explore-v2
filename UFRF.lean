@@ -82,4 +82,10 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | KissingEigen | K(3)=12 eigenstructure | `kissing_plus_center_is_cycle` |
 | Fourier | Character theory / DFT on ℤ/13ℤ | `fourier_basis_exists` |
 | AxiomAudit | `#print axioms` for 53 key theorems | (axiom dependency certificate) |
+| **AllenEmbedding** | **Mod 13 arithmetic + CRT** | **`CRT_Z78`, `CRT_Z24`** |
+| **QUART** | **Allen's hex transport** | **`concurrent_state_count`** |
+| **AllenBridge** | **Cross-framework bridge** | **`both_integer_parts_137`** |
+| **KissingHierarchy** | **All Allen numbers from Trinity** | **`allen_numbers_are_theorems`** |
+| **FibonacciKissing** | **F(7)=13, twin primes, NN params** | **`fibonacci_kissing_bridge`** |
+| **FibonacciPrimeChain** | **Scale tower: 7→13→233** | **`axiom_at_checkpoint`** |
 -/

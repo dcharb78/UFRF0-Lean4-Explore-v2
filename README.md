@@ -24,46 +24,31 @@ lake build            # compile UFRF
 ## Project Structure
 
 ```
-UFRF.Lean.V3/
-├── UFRF.lean                    # Root module (imports all 31 modules)
+UFRF-Allen/
+├── UFRF.lean                    # Root module (imports all 40 modules)
 ├── UFRF/
+│   ├── # ── Core Framework (33 modules) ──
 │   ├── Axiomatics.lean          # Seeds of phase space (w=1, 13-lattice)
 │   ├── Trinity.lean             # The conserved triplet {-½, 0, +½}
-│   ├── Simplex.lean             # C(4,3) = 4 from topology (was axiom)
-│   ├── KeplerTriangle.lean      # √φ from Kepler's Triangle (was axiom)
+│   ├── Simplex.lean             # C(4,3) = 4 from topology
+│   ├── KissingEigen.lean        # K(2)=6, K(3)=12 eigenstructure
 │   ├── Structure13.lean         # Projective plane: a²+a+1 = 13
 │   ├── Foundation.lean          # Derives cycle length from Trinity
-│   ├── Constants.lean           # φ, π, τ, peak amplitude
-│   ├── ThreeLOG.lean            # Tensor grades → 9 interior positions
-│   ├── BreathingCycle.lean      # 13-position cycle, flip at 6.5
-│   ├── AngularEmbedding.lean    # S¹ mapping, Rod-Staff cross
-│   ├── Addressing.lean          # (ℤ, ZMod 13) coordinate system
-│   ├── Manifold.lean            # Torus T² master manifold
-│   ├── Recursion.lean           # Scale invariance, completeness
-│   ├── DivisionAlgebras.lean    # ℝ, ℂ, ℍ, 𝕆 → 15 dimensions
-│   ├── NumberBases.lean         # Base 10/12/13 projections
 │   ├── FineStructure.lean       # α⁻¹ = 4π³ + π² + π ≈ 137.036
-│   ├── Waveform.lean            # Piecewise breathing shape W(t)
-│   ├── PrimeChoreography.lean   # Prime superposition dynamics
-│   ├── GoldenAngle.lean         # Golden Angle → Position 5
-│   ├── Projections.lean         # Manifold collapse operators
-│   ├── Noether.lean             # Gauge groups U(1)×SU(2)×SU(3)
-│   ├── Calculus.lean            # d/dx as scale resolution
-│   ├── Phenomena.lean           # Physical constants at phases
-│   ├── PRISMAlgebra.lean        # Primitive roots, CRT, comp/neg
-│   ├── Padic.lean               # Universal p-adic conservation
-│   ├── Adele.lean               # Adelic product (5 cycle primes)
-│   ├── StarPolygon.lean         # Prime visit orders on ℤ/13ℤ
-│   ├── PositionalPhase.lean     # Golden angle emergence from position
-│   ├── KissingEigen.lean        # K(3)=12 eigenstructure → 13
-│   ├── InverseLimit.lean        # The One Ring spiral isomorphism
-│   └── KernelProof.lean         # 86-example proof certificate
-├── PLAN.md                      # Master execution plan
-├── VALIDATION_GUIDE.md          # Auditing instructions
-├── docs/                        # Human-readable documentation
-│   ├── proofs/                  # Per-module proof docs
-│   └── consolidated/            # Cross-module summaries
-└── archive/                     # Non-core assets
+│   ├── ...                      # (28 more core modules)
+│   │
+│   ├── # ── Allen Embedding (7 modules, 0 sorry) ──
+│   ├── AllenEmbedding.lean      # Mod 13 arithmetic + CRT decompositions
+│   ├── QUART.lean               # Allen's hex transport formalization
+│   ├── AllenBridge.lean         # Cross-framework bridge + TiledState
+│   ├── KissingHierarchy.lean    # Every Allen number from K(2), K(3), C(4,3)
+│   ├── FibonacciKissing.lean    # F(7)=13 bridge, twin primes, NN params
+│   ├── FibonacciPrimeChain.lean # Scale tower: 7→13→233, axiom at checkpoint
+│   └── PhaseSpaceCartography.lean # Phase space analysis
+│
+├── docs/
+│   └── ALLEN_EMBEDDING.md       # Complete proof inventory
+└── archive/
 ```
 
 ## The Derivation Chain
@@ -116,10 +101,12 @@ UFRF.Lean.V3/
 
 | Category | Count |
 |----------|-------|
-| Proven theorems + definitions | 400+ |
+| Proven theorems + definitions | **540+** |
+| Allen/Fibonacci theorems (new) | **140+** |
 | Cross-module verification examples | **107** (KernelProof, 28 layers) |
-| Modules | **33** |
-| `sorry` statements | **1** (Structural existence limit) |
+| Modules | **40** (33 core + 7 Allen) |
+| `sorry` in Allen modules | **0** |
+| `sorry` in core modules | **1** (InverseLimit.lean — p-adic universal property) |
 | Intentional axioms | **2** (Axiomatics.lean) |
 
 **Navigating Phase Space.** We do not treat concepts as hard physical facts. The only hard facts are the Lean Proofs themselves. We formally seed the topology with 2 geometric postulates: Unity ($w=1$) and the 13-lattice spiral. Everything else (from Fourier symmetries to Calculus to Gauge Groups) is a mathematically proven consequence of navigating this seeded phase space.
