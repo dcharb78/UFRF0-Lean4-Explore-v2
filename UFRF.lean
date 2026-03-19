@@ -12,6 +12,7 @@ import UFRF.Calculus
 import UFRF.Constants
 import UFRF.DivisionAlgebras
 import UFRF.FibonacciKissing
+import UFRF.FibonacciPrimeChain
 import UFRF.FineStructure
 import UFRF.Foundation
 import UFRF.Fourier
