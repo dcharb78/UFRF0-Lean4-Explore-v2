@@ -11,7 +11,7 @@
 
 | Metric | Actual Value | Notes |
 |---|---|---|
-| Modules | 39 | 32 core + 7 Allen |
+| Modules | 40 | 33 core + 7 Allen |
 | `sorry` in code | 0 | All sorry refs are in comments/docstrings only |
 | Custom `axiom` declarations | 0 | `Axiomatics.lean` deleted (commit 48960f9) |
 | Theorems + lemmas | 396 | grep count |
@@ -31,9 +31,10 @@
 My DERIVATION_CHAIN.md references `Monster.lean: monster_dimension_emergence`. This theorem exists in the SEPARATE `UFRF-MonsterMoonshinev1` repo, not here. There's a `docs/proofs/13_Monster.md` documentation file but no Lean module.
 → MUST remove from DERIVATION_CHAIN.
 
-**2. Module count is 39, not 40.**
-`Axiomatics.lean` was deleted. The root `UFRF.lean` imports 39 modules. My docs said 40 in several places.
-→ MUST fix all references.
+**2. Module count must stay synchronized with the root import file.**
+The root `UFRF.lean` now imports 40 modules after adding `PrimeSemantics.lean`.
+Older docs that still say 39 are stale and should be updated together.
+→ MUST keep all count references synchronized.
 
 **3. `trinity_is_minimal` — this exact name doesn't exist.**
 The actual theorem is `trinity_is_minimal_two` (proving 2 elements can't satisfy all constraints). There's no single theorem called `trinity_is_minimal` that covers the full minimality argument.

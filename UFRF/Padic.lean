@@ -234,7 +234,7 @@ of a single element. No information overlap.
 
 section MultiPrime
 
--- All three UFRF primes are valid
+-- All three selected standard primes are valid
 instance : Fact (Nat.Prime 3) := ⟨by decide⟩
 instance : Fact (Nat.Prime 7) := ⟨by decide⟩
 

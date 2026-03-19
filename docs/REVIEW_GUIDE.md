@@ -40,6 +40,7 @@ Read these files in order:
 
 ### Step 3: The Breathing Cycle (5 min)
 **`UFRF/BreathingCycle.lean`** — 13 positions. `flip_at_half`: 6.5/13=1/2. `prism_identity`: neg(comp(x))=x+1. Time from symmetry.
+Check the contextual chart theorems too: `terminal_block_reindexes_as_zero_to_three` formalizes `10,11,12,13 ↦ 0,1,2,3`, and `thirteen_closes_current_cycle_and_opens_next` states that 13 is both the closure of the current cycle and the seed-opening of the next.
 
 ### Step 4: Where 137 Comes From (5 min)
 **`UFRF/Simplex.lean`** → **`UFRF/ThreeLOG.lean`** → **`UFRF/FineStructure.lean`**
@@ -58,13 +59,14 @@ Chain: `simplex3_face_count` (C(4,3)=4) → `log3_geometric_factor_is_four` → 
 
 ### Hour 1: Read Every Module
 
-39 modules. Read theorem STATEMENTS (compiler verified proofs).
+40 modules. Read theorem STATEMENTS (compiler verified proofs).
 
 ```
-Core (32 modules):
+Core (33 modules):
 □ Trinity          □ Structure13      □ Simplex
 □ ThreeLOG         □ KeplerTriangle   □ Foundation
-□ BreathingCycle   □ Constants        □ AngularEmbedding
+□ BreathingCycle   □ Constants        □ PrimeSemantics
+□ AngularEmbedding
 □ Addressing       □ Manifold         □ Recursion
 □ DivisionAlgebras □ NumberBases      □ FineStructure
 □ Waveform         □ PrimeChoreography □ GoldenAngle
@@ -99,7 +101,7 @@ Open `docs/DERIVATION_CHAIN.md`. Follow any path from `trinity.conservation` to 
 
 | Metric | Value |
 |---|---|
-| Modules | 39 (32 core + 7 Allen) |
+| Modules | 40 (33 core + 7 Allen) |
 | Theorems + lemmas | 396 |
 | Definitions | 140 |
 | Total proven entities | 536+ |

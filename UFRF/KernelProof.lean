@@ -13,6 +13,7 @@ import UFRF.AngularEmbedding
 import UFRF.Addressing
 import UFRF.Manifold
 import UFRF.Noether
+import UFRF.PrimeSemantics
 
 import UFRF.Calculus
 import UFRF.Adele
@@ -111,6 +112,32 @@ example : derived_cycle_length = 13 := cycle_is_thirteen
 example : (12 : CyclePos) + 1 = 0 := bridge_seed_wraps
 example : (6 : CyclePos) + 7 = 0 := inversion_symmetry
 example : (13 : CyclePos) = 0 := full_cycle_identity
+example : sameStep (12 : CyclePos) 0 0 1 := wrapped_bridge_step_matches_entry_step
+example (x y : CyclePos) : sameStep x (x + 1) y (y + 1) :=
+  unit_steps_are_translation_equivalent x y
+example :
+    localCoordinate (labeledPosition 10) (labeledPosition 10) = 0 ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 11) = 1 ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 12) = 2 ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 13) = 3 :=
+  terminal_block_reindexes_as_zero_to_three
+example :
+    (labeledPosition 10).logPhase = .rest ∧
+    (labeledPosition 11).logPhase = .bridge ∧
+    (labeledPosition 12).logPhase = .bridge ∧
+    (labeledPosition 13).logPhase = .seed :=
+  terminal_block_phase_pattern
+example :
+    (labeledPosition 13).logPhase = .seed ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 13) = 3 ∧
+    (13 : CyclePos) = 0 ∧
+    sameStep 12 13 0 1 :=
+  thirteen_closes_current_cycle_and_opens_next
+example :
+    labeledPosition 13 = seedPosition ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 13) = 3 ∧
+    (13 : CyclePos) = 0 :=
+  position_thirteen_has_contextual_coordinates
 
 /-! ## Layer 4: Time from Symmetry (PRISM) -/
 
@@ -186,6 +213,24 @@ example : gaugeRank .log1 + gaugeRank .log2 + gaugeRank .log3 = 6 := gauge_rank_
 example : Nat.Prime 3 ∧ Nat.Prime 13 ∧ Nat.Prime 137 :=
   ⟨by norm_num, by norm_num, by norm_num⟩
 
+-- Taxonomy check: 2 is standard-prime but excluded from UFRF nat-primality
+example : Nat.Prime 2 ∧ ¬ is_ufrf_prime 2 :=
+  two_is_standard_prime_but_not_ufrf_prime
+
+-- Taxonomy check: 0 and 1 are structural positions, not nat-primes
+example : ¬ is_ufrf_prime 0 := UFRF.PrimeSemantics.zero_is_not_ufrf_prime
+example : UFRF.PrimeSemantics.is_structurally_irreducible_position (0 : ZMod 13) :=
+  UFRF.PrimeSemantics.zero_is_structurally_irreducible
+example : UFRF.PrimeSemantics.is_structurally_irreducible_position (1 : ZMod 13) :=
+  UFRF.PrimeSemantics.one_is_structurally_irreducible
+example : ¬ UFRF.PrimeSemantics.is_structurally_irreducible_position (2 : ZMod 13) :=
+  UFRF.PrimeSemantics.two_is_not_structurally_irreducible
+
+-- Agreement set below 13: only 3,5,7,11 are both standard-prime and UFRF-prime
+example (n : ℕ) (hn : n < 13) :
+    (Nat.Prime n ∧ is_ufrf_prime n) ↔ n = 3 ∨ n = 5 ∨ n = 7 ∨ n = 11 :=
+  UFRF.PrimeSemantics.standard_and_ufrf_agree_below_13 n hn
+
 -- Torus angular quantum
 example : (1 : ℝ) / UFRF.Foundation.derived_cycle_length = 1 / 13 := torus_bin_spacing
 
@@ -196,6 +241,14 @@ example : (6.5 : ℝ) / 13 = 1 / 2 := coherence_at_midpoint
 
 -- Binary is the generator: 2¹² ≡ 1 (mod 13)
 example : (2 : ZMod 13) ^ 12 = 1 := two_pow_12_is_one
+
+-- The distinguished PRISM generators 2, 6, 7, and 11 all work
+example :
+    is_primitive_root_mod_13 (2 : ZMod 13) ∧
+    is_primitive_root_mod_13 (6 : ZMod 13) ∧
+    is_primitive_root_mod_13 (7 : ZMod 13) ∧
+    is_primitive_root_mod_13 (11 : ZMod 13) :=
+  distinguished_primitive_roots_mod_13
 
 -- α⁻¹ in native geometry: 137 = 7 + 10×13 in base 13
 example : 137 = 7 + 10 * 13 + 0 * 13 ^ 2 := alpha_inv_base13
@@ -217,6 +270,9 @@ example : (13 : ZMod 13) = 0 := observer_is_void
 
 -- 137 ≡ 7 mod 13 (α⁻¹ IS Phase 7 algebraically)
 example : (137 : ZMod 13) = (7 : ZMod 13) := alpha_inherits_contraction
+
+-- α⁻¹ really is a primitive root, not merely an element with 12th power 1
+example : is_primitive_root_mod_13 (137 : ZMod 13) := alpha_inv_is_primitive_root
 
 -- Trinity prime has order 3 (structural divider, not generator)
 example : (3 : ZMod 13) ^ 3 = 1 := (trinity_subgroup).1

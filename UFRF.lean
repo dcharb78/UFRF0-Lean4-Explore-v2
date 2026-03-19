@@ -30,6 +30,7 @@ import UFRF.PhaseSpaceCartography
 import UFRF.Phenomena
 import UFRF.PositionalPhase
 import UFRF.PrimeChoreography
+import UFRF.PrimeSemantics
 import UFRF.Projections
 import UFRF.QUART
 import UFRF.Recursion
@@ -64,6 +65,7 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | Recursion | Scale invariance, completeness | `no_first_step` |
 | DivisionAlgebras | Hurwitz, 15 dimensions | `visible_dimension_count` |
 | NumberBases | Base 10/12/13 (derived) | `base13_is_full_cycle` |
+| PrimeSemantics | Formal prime taxonomy | `standard_and_ufrf_agree_below_13` |
 | FineStructure | α⁻¹ = 4π³ + π² + π | `alpha_inv_floor_137` |
 | Waveform | Piecewise breathing shape | `seed_expansion_match` |
 | PrimeChoreography | Prime superposition | `prime_phase_residues` |

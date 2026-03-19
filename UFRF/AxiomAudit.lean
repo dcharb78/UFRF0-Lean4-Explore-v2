@@ -71,6 +71,9 @@ A theorem is **axiom-free** if it depends only on Lean core axioms.
 #print axioms BreathingCycle.bridge_seed_wraps
 #print axioms BreathingCycle.full_cycle_identity
 #print axioms BreathingCycle.inversion_symmetry
+#print axioms BreathingCycle.wrapped_bridge_step_matches_entry_step
+#print axioms BreathingCycle.terminal_block_reindexes_as_zero_to_three
+#print axioms BreathingCycle.thirteen_closes_current_cycle_and_opens_next
 
 -- ═══ LAYER 6: PRISM ═══
 #print axioms BreathingCycle.prism_identity
@@ -117,6 +120,7 @@ A theorem is **axiom-free** if it depends only on Lean core axioms.
 
 -- ═══ LAYER 15: PRISM Algebra ═══
 #print axioms two_pow_12_is_one
+#print axioms distinguished_primitive_roots_mod_13
 #print axioms comp_neg_is_succ
 #print axioms observer_is_void
 #print axioms alpha_inherits_contraction

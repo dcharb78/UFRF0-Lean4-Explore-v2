@@ -3,7 +3,9 @@ import Mathlib.GroupTheory.OrderOfElement
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic
+import UFRF.Constants
 import UFRF.Foundation
+import UFRF.PrimeSemantics
 
 /-!
 # UFRF.PRISMAlgebra
@@ -16,8 +18,9 @@ encodes the breathing cycle's core operations:
 
 ## Key Results
 
-1. **Primitive Root**: 2 generates (ℤ/13ℤ)* with order 12 = φ(13).
-   Binary computation naturally traverses the full 13-cycle.
+1. **Primitive-Root Generators**: `2`, `6`, `7`, and `11` each generate
+   multiplicative traversals of `(ℤ/13ℤ)*`.
+   Binary computation is one distinguished traversal of the full 13-cycle.
 
 2. **α⁻¹ in Native Geometry**: 137 = 7 + 10×13 in base 13.
    The fine structure constant's lowest digit is 7 (contraction start),
@@ -39,6 +42,26 @@ encodes the breathing cycle's core operations:
 noncomputable section
 
 open ZMod
+open UFRF.Constants
+open UFRF.PrimeSemantics
+
+/-!
+`is_primitive_root_mod_13 a` means that `a` generates the full
+multiplicative group `(ZMod 13)ˣ`. Because `12` has divisors
+`1, 2, 3, 4, 6, 12`, it is enough to require `a^12 = 1` and exclude the
+proper divisor exponents.
+-/
+/--
+Primitive roots modulo `13` are exactly the elements whose first power
+return to `1` occurs at exponent `12`.
+-/
+def is_primitive_root_mod_13 (a : ZMod 13) : Prop :=
+  a ^ 12 = 1 ∧
+  a ^ 1 ≠ 1 ∧
+  a ^ 2 ≠ 1 ∧
+  a ^ 3 ≠ 1 ∧
+  a ^ 4 ≠ 1 ∧
+  a ^ 6 ≠ 1
 
 /-! ### Finding 2: Binary is the Generator -/
 
@@ -69,6 +92,32 @@ theorem two_pow_lt_12_ne_one :
     (2 : ZMod 13) ^ 4 ≠ 1 ∧
     (2 : ZMod 13) ^ 6 ≠ 1 := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> decide
+
+/--
+**2 is a standard prime but not a UFRF nat-prime.**
+
+This makes the distinction explicit: `2` is indispensable to the
+multiplicative geometry of `ZMod 13`, while still being excluded by the
+framework's checkpoint predicate on naturals.
+
+✅ PROVEN
+-/
+theorem two_is_standard_prime_but_not_ufrf_prime :
+    Nat.Prime 2 ∧ ¬ is_ufrf_prime 2 := by
+  exact ⟨by norm_num, two_is_not_ufrf_prime⟩
+
+/--
+**2 is a primitive root of 13.**
+
+This packages the order computation into the explicit predicate
+`is_primitive_root_mod_13`.
+
+✅ PROVEN
+-/
+theorem two_is_primitive_root_mod_13 :
+    is_primitive_root_mod_13 (2 : ZMod 13) := by
+  rcases two_pow_lt_12_ne_one with ⟨h1, h2, h3, h4, h6⟩
+  exact ⟨two_pow_12_is_one, h1, h2, h3, h4, h6⟩
 
 /-! ### Finding 3: α⁻¹ in Native Base-13 Geometry -/
 
@@ -114,6 +163,74 @@ theorem seven_pow_lt_12_ne_one :
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> decide
 
 /--
+**7 is a primitive root of 13.**
+
+✅ PROVEN
+-/
+theorem seven_is_primitive_root_mod_13 :
+    is_primitive_root_mod_13 (7 : ZMod 13) := by
+  rcases seven_pow_lt_12_ne_one with ⟨h1, h2, h3, h4, h6⟩
+  exact ⟨seven_pow_12_is_one, h1, h2, h3, h4, h6⟩
+
+/--
+**6 is a primitive root of 13.**
+
+This is the missing non-prime generator in the first cycle:
+structurally important multiplicatively, but not a cycle-prime checkpoint.
+
+✅ PROVEN
+-/
+theorem six_is_primitive_root_mod_13 :
+    is_primitive_root_mod_13 (6 : ZMod 13) := by
+  unfold is_primitive_root_mod_13
+  decide
+
+/--
+**11 is a primitive root of 13.**
+
+✅ PROVEN
+-/
+theorem eleven_is_primitive_root_mod_13 :
+    is_primitive_root_mod_13 (11 : ZMod 13) := by
+  unfold is_primitive_root_mod_13
+  decide
+
+/--
+**The distinguished primitive-root generators 2, 6, 7, and 11 all work.**
+
+This records the four concrete generators highlighted by the PRISM and
+cycle analyses, without conflating them with the UFRF-prime checkpoint
+predicate on naturals.
+
+✅ PROVEN
+-/
+theorem distinguished_primitive_roots_mod_13 :
+    is_primitive_root_mod_13 (2 : ZMod 13) ∧
+    is_primitive_root_mod_13 (6 : ZMod 13) ∧
+    is_primitive_root_mod_13 (7 : ZMod 13) ∧
+    is_primitive_root_mod_13 (11 : ZMod 13) := by
+  exact ⟨two_is_primitive_root_mod_13, six_is_primitive_root_mod_13,
+    seven_is_primitive_root_mod_13, eleven_is_primitive_root_mod_13⟩
+
+/--
+**7 and 11 are the contraction-side generators that are also cycle-prime positions.**
+
+This is the overlap actually needed by the current UFRF checkpoint story.
+
+✅ PROVEN
+-/
+theorem contraction_pair_are_cycle_prime_primitive_roots :
+    is_cycle_prime_position (7 : CyclePos) ∧
+    is_cycle_prime_position (11 : CyclePos) ∧
+    is_primitive_root_mod_13 (7 : ZMod 13) ∧
+    is_primitive_root_mod_13 (11 : ZMod 13) := by
+  refine ⟨?_, ?_, seven_is_primitive_root_mod_13, eleven_is_primitive_root_mod_13⟩
+  · unfold is_cycle_prime_position
+    decide
+  · unfold is_cycle_prime_position
+    decide
+
+/--
 **137 is a primitive root of 13.**
 
 Since 137 ≡ 7 (mod 13) and 7 is a primitive root, 137 itself
@@ -122,7 +239,9 @@ generates (ℤ/13ℤ)*.
 ✅ PROVEN
 -/
 theorem alpha_inv_is_primitive_root :
-    (137 : ZMod 13) ^ 12 = 1 := by decide
+    is_primitive_root_mod_13 (137 : ZMod 13) := by
+  unfold is_primitive_root_mod_13
+  decide
 
 /-! ### Finding 4: Scale Projection Ring Homomorphism -/
 
@@ -239,7 +358,7 @@ Every number exists in infinitely many modular contexts (ℤ/mℤ for all m).
 But **primes create their own context**: ℤ/pℤ is a field.
 Non-primes cannot do this — ℤ/nℤ for composite n has zero divisors.
 
-The UFRF primes {2, 3, 7, 13, 137} each play both roles:
+The selected UFRF-relevant standard primes {2, 3, 7, 13, 137} each play both roles:
 - **Context creator**: each defines a field ℤ/pℤ
 - **Context participant**: each lives as an element in ℤ/13ℤ
 
@@ -262,7 +381,19 @@ theorem ufrf_primes_all_create_fields :
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> norm_num
 
 /--
-**UFRF primes as participants in ℤ/13ℤ.**
+**13 is both a cycle-prime natural and the seed position.**
+
+As a natural number, `13` belongs to the cycle-prime checkpoint set.
+Inside `ZMod 13`, that same value becomes the seed residue `0`.
+
+✅ PROVEN
+-/
+theorem cycle_length_is_cycle_prime_and_seed :
+    is_cycle_prime_nat 13 ∧ is_seed_position (13 : CyclePos) :=
+  thirteen_is_cycle_prime_and_seed_position
+
+/--
+**Selected standard primes as participants in ℤ/13ℤ.**
 
 2, 3, and 7 are all non-zero in ℤ/13ℤ — they participate
 as active elements. But 13 ≡ 0: the modulus vanishes in
@@ -502,7 +633,7 @@ By applying CRT twice:
 - First: ℤ/273ℤ ≃+* ℤ/3ℤ × ℤ/91ℤ  (since gcd(3, 91) = 1)
 - Then:  ℤ/91ℤ ≃+* ℤ/7ℤ × ℤ/13ℤ  (since gcd(7, 13) = 1)
 
-The three UFRF primes (3, 7, 13) jointly decompose a single ring
+The three selected standard primes (3, 7, 13) jointly decompose a single ring
 into three independent views. This is formal adelic decomposition.
 
 ✅ PROVEN

@@ -25,16 +25,17 @@ lake build            # compile UFRF
 
 ```
 UFRF-Allen/
-├── UFRF.lean                    # Root module (imports all 39 modules)
+├── UFRF.lean                    # Root module (imports all 40 modules)
 ├── UFRF/
-│   ├── # ── Core Framework (32 modules) ──
+│   ├── # ── Core Framework (33 modules) ──
 │   ├── Trinity.lean             # The conserved triplet {-½, 0, +½} (THE seed)
 │   ├── Simplex.lean             # C(4,3) = 4 from topology
 │   ├── KissingEigen.lean        # K(2)=6, K(3)=12 eigenstructure
 │   ├── Structure13.lean         # Projective plane: a²+a+1 = 13
 │   ├── Foundation.lean          # Derives cycle length from Trinity
+│   ├── PrimeSemantics.lean      # Standard vs UFRF vs cycle-position primes
 │   ├── FineStructure.lean       # α⁻¹ = 4π³ + π² + π ≈ 137.036
-│   ├── ...                      # (28 more core modules)
+│   ├── ...                      # (29 more core modules)
 │   │
 │   ├── # ── Allen Embedding (7 modules, 0 sorry) ──
 │   ├── AllenEmbedding.lean      # Mod 13 arithmetic + CRT decompositions
@@ -90,7 +91,7 @@ UFRF-Allen/
     │         │
     ├── ℤ_[p] →+* ℤ/pℤ ──────── p-adic Conservation (∀ prime p)
     │         │
-    ├── ℤ_[3]×ℤ_[5]×...×ℤ_[13] Full Adele (5 cycle primes)
+    ├── ℤ_[3]×ℤ_[5]×...×ℤ_[13] Full Adele (5 cycle-prime naturals)
     │
 ```
 
@@ -101,7 +102,7 @@ UFRF-Allen/
 | Proven theorems + definitions | **540+** |
 | Allen/Fibonacci theorems (new) | **140+** |
 | Cross-module verification examples | **107** (KernelProof, 28 layers) |
-| Modules | **39** (32 core + 7 Allen) |
+| Modules | **40** (33 core + 7 Allen) |
 | `sorry` statements | **0** |
 | Custom `axiom` declarations | **0** |
 

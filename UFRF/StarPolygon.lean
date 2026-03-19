@@ -113,7 +113,7 @@ theorem visit_order_11 :
 /-! ## Return to Origin: Every path closes -/
 
 /--
-**All four cycle primes return to 0 at step 13.**
+**All four non-observer cycle-prime checkpoints return to 0 at step 13.**
 
 13 * p ≡ 0 (mod 13) for any p. The path always closes.
 This is the Möbius return: position 13 = position 0.
@@ -128,7 +128,7 @@ theorem paths_all_close :
 /-! ## Distinct Paths: Different Primes, Different Geometry -/
 
 /--
-**All four UFRF cycle primes produce pairwise distinct visit orders.**
+**All four non-observer cycle-prime checkpoints produce pairwise distinct visit orders.**
 
 The second position visited (step 1) uniquely identifies the star polygon.
 Step 1 for prime p is position p itself (since 1 * p = p).

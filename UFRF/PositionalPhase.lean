@@ -45,7 +45,7 @@ GEOMETRIC position, not its index in a list.
 noncomputable def positional_phase (p : ℕ) : ℝ := (p : ℝ) / 13
 
 /--
-**Positional phases of the five cycle primes.**
+**Positional phases of the five cycle-prime naturals.**
 
 Each prime has a distinct phase. Note how they span the circle
 non-uniformly — the spacing IS the geometry.
@@ -127,7 +127,7 @@ theorem golden_angle_emergence :
 /-! ## Phase Independence -/
 
 /--
-**The five cycle primes have distinct positional phases.**
+**The five cycle-prime naturals have distinct positional phases.**
 
 No two primes share the same position in the cycle.
 This is trivially true since distinct primes have distinct

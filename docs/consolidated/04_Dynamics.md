@@ -45,7 +45,8 @@ The "choreography" of primes on the breathing cycle.
 
 ### Proven Theorems
 - `one_is_ufrf_prime`, `two_is_not_ufrf_prime`
-- All odd primes are UFRF primes
+- Every standard prime other than `2` is UFRF-prime
+- The terminal block `10,11,12,13` reindexes contextually as `0,1,2,3`
 
 ---
 

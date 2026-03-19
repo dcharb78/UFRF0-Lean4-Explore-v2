@@ -121,6 +121,49 @@ The entry position (index 0 = position 1).
 -/
 def entryPosition : CyclePos := (0 : CyclePos)
 
+/-! ### Contextual Charts -/
+
+/--
+Human-facing position labels on the 13-cycle.
+
+Label `1` is the entry index `0`, and label `13` is the seed index `12`.
+This is the 1-based chart used in most prose descriptions.
+-/
+def labeledPosition (n : ℕ) : CyclePos := (n + 12 : CyclePos)
+
+/--
+Local coordinate of a position relative to a chosen chart origin.
+
+This is the contextual reindexing map: the origin becomes `0`, the next
+position becomes `1`, and so on.
+-/
+def localCoordinate (origin p : CyclePos) : CyclePos := p - origin
+
+/-- Label `1` is the entry position in the human-facing chart. -/
+theorem labeledPosition_one_is_entry :
+    labeledPosition 1 = entryPosition := by
+  unfold labeledPosition entryPosition
+  decide
+
+/-- Label `13` is the seed position in the human-facing chart. -/
+theorem labeledPosition_thirteen_is_seed :
+    labeledPosition 13 = seedPosition := by
+  unfold labeledPosition seedPosition
+  decide
+
+/--
+Local coordinates are translation-invariant.
+
+Changing charts by a uniform shift does not change the contextual phase
+difference between positions.
+
+✅ PROVEN
+-/
+theorem localCoordinate_translation_invariant (origin p k : CyclePos) :
+    localCoordinate (origin + k) (p + k) = localCoordinate origin p := by
+  unfold localCoordinate
+  abel
+
 /-! ### Ring Topology Theorems -/
 
 /--
@@ -153,6 +196,126 @@ This is automatic in ZMod 13 since 13 ≡ 0.
 -/
 theorem full_cycle_identity : (13 : CyclePos) = 0 := by
   decide
+
+/--
+Two directed steps are contextually the same when they have the same
+displacement in the cycle ring.
+-/
+def sameStep (a b c d : CyclePos) : Prop :=
+  b - a = d - c
+
+/--
+**All unit steps are translation-equivalent in the 13-cycle.**
+
+The labeled move `0 → 1` is not special as a displacement: every move
+`x → x+1` has the same contextual content.
+
+✅ PROVEN
+-/
+theorem unit_steps_are_translation_equivalent (x y : CyclePos) :
+    sameStep x (x + 1) y (y + 1) := by
+  unfold sameStep
+  abel
+
+/--
+**The bridge step `12 → 13` is the same unit move as `0 → 1`.**
+
+This makes the ring-context explicit: `13 = 0`, so the boundary crossing is
+the same successor step viewed in a different chart.
+
+✅ PROVEN
+-/
+theorem bridge_to_seed_step_matches_entry_step :
+    sameStep 12 13 0 1 := by
+  unfold sameStep
+  decide
+
+/--
+**The wrapped bridge step `12 → 0` is the same unit move as `0 → 1`.**
+
+This is the same contextual fact as `bridge_to_seed_step_matches_entry_step`,
+expressed after reducing `13` to `0` inside `ZMod 13`.
+
+✅ PROVEN
+-/
+theorem wrapped_bridge_step_matches_entry_step :
+    sameStep 12 0 0 1 := by
+  unfold sameStep
+  decide
+
+/--
+**Terminal block chart: `10 = 0`, `11 = 1`, `12 = 2`, `13 = 3`.**
+
+Anchoring a local chart at human position `10` reindexes the final
+four-position bridge/seed block as `0,1,2,3`.
+
+✅ PROVEN
+-/
+theorem terminal_block_reindexes_as_zero_to_three :
+    localCoordinate (labeledPosition 10) (labeledPosition 10) = 0 ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 11) = 1 ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 12) = 2 ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 13) = 3 := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;>
+    unfold localCoordinate labeledPosition <;> decide
+
+/--
+**The terminal block is `REST, bridge, bridge, seed`.**
+
+Human positions `10,11,12,13` are not four unrelated labels. They are the
+closure block of one cycle: REST at `10`, transition/bridge at `11` and `12`,
+and seed at `13`.
+
+✅ PROVEN
+-/
+theorem terminal_block_phase_pattern :
+    (labeledPosition 10).logPhase = .rest ∧
+    (labeledPosition 11).logPhase = .bridge ∧
+    (labeledPosition 12).logPhase = .bridge ∧
+    (labeledPosition 13).logPhase = .seed := by
+  refine ⟨?_, ?_, ?_, ?_⟩ <;>
+    unfold labeledPosition CyclePos.logPhase <;> decide
+
+/--
+**`13` closes the current cycle and opens the next scale.**
+
+Within the terminal block anchored at `10`, the local coordinate of `13` is
+`3`, so it is the last point of the closing quartet. At the same time:
+- it is the seed position in the current scale's human-facing chart;
+- it reduces to `0` in the residue chart;
+- the step `12 → 13` is the same unit step as the next scale's `0 → 1`.
+
+This is the formal statement of "closure of the first, seed of the next."
+
+✅ PROVEN
+-/
+theorem thirteen_closes_current_cycle_and_opens_next :
+    (labeledPosition 13).logPhase = .seed ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 13) = 3 ∧
+    (13 : CyclePos) = 0 ∧
+    sameStep 12 13 0 1 := by
+  refine ⟨terminal_block_phase_pattern.2.2.2, ?_, full_cycle_identity,
+    bridge_to_seed_step_matches_entry_step⟩
+  exact terminal_block_reindexes_as_zero_to_three.2.2.2
+
+/--
+**Position 13 carries different coordinates in different charts.**
+
+- In the human-facing label chart, `13` is the seed position.
+- In the local chart anchored at `10`, it has coordinate `3`.
+- In the pure residue chart of `ZMod 13`, the numeral `13` reduces to `0`.
+
+These are not contradictions; they are different coordinate systems on the
+same cyclic topology.
+
+✅ PROVEN
+-/
+theorem position_thirteen_has_contextual_coordinates :
+    labeledPosition 13 = seedPosition ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 13) = 3 ∧
+    (13 : CyclePos) = 0 := by
+  refine ⟨labeledPosition_thirteen_is_seed, ?_, full_cycle_identity⟩
+  exact terminal_block_reindexes_as_zero_to_three.2.2.2
 
 /-! ### Continuous Geometry -/
 

@@ -1,4 +1,5 @@
 import UFRF.Padic
+import UFRF.PrimeSemantics
 import Mathlib.Tactic
 
 /-!
@@ -6,7 +7,7 @@ import Mathlib.Tactic
 
 **The Adelic Product: Five Towers United**
 
-The breathing cycle positions 1–13 contain exactly five primes:
+The breathing cycle positions 1–13 contain exactly five cycle-prime naturals:
 **3, 5, 7, 11, 13**. Each generates an independent p-adic tower.
 (Note: 2 is not prime in the UFRF framework.)
 
@@ -14,7 +15,7 @@ The adelic product combines these five infinite towers into
 a single algebraic object — five orthogonal views of the
 same number, each at infinite resolution.
 
-**Why These Five Primes?**
+**Why These Five Cycle-Prime Naturals?**
 - 3 = LOG grades (simplicial faces)
 - 5 = golden angle position, F(5), carrier dim SU(2)+SU(3)
 - 7 = interior positions before the flip
@@ -23,8 +24,8 @@ same number, each at infinite resolution.
 - 3 × 5 × 7 × 11 × 13 = 15015
 
 **The Adele at Two Levels**
-- `UFRFAdele`: the trinity primes ℤ_[3] × ℤ_[7] × ℤ_[13]
-- `FullAdele`: all five cycle primes
+- `UFRFAdele`: the trinity subset ℤ_[3] × ℤ_[7] × ℤ_[13]
+- `FullAdele`: all five cycle-prime naturals
 
 ## Status
 - All theorems: ✅ PROVEN
@@ -32,19 +33,38 @@ same number, each at infinite resolution.
 
 namespace UFRF.Adele
 
--- All five cycle primes
+open UFRF.PrimeSemantics
+
+-- All five cycle-prime naturals
 instance : Fact (Nat.Prime 3) := ⟨by decide⟩
 instance : Fact (Nat.Prime 5) := ⟨by decide⟩
 instance : Fact (Nat.Prime 7) := ⟨by decide⟩
 instance : Fact (Nat.Prime 11) := ⟨by decide⟩
 instance : Fact (Nat.Prime 13) := ⟨by decide⟩
 
+/--
+**The Full Adele uses exactly the cycle-prime naturals.**
+
+✅ PROVEN
+-/
+theorem full_adele_uses_cycle_prime_nats :
+    is_cycle_prime_nat 3 ∧ is_cycle_prime_nat 5 ∧
+    is_cycle_prime_nat 7 ∧ is_cycle_prime_nat 11 ∧
+    is_cycle_prime_nat 13 := by
+  unfold is_cycle_prime_nat
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · exact Or.inl rfl
+  · exact Or.inr (Or.inl rfl)
+  · exact Or.inr (Or.inr (Or.inl rfl))
+  · exact Or.inr (Or.inr (Or.inr (Or.inl rfl)))
+  · exact Or.inr (Or.inr (Or.inr (Or.inr rfl)))
+
 /-! ## The Trinity Adele (3, 7, 13) -/
 
 /--
 **The trinity adele ring.**
 
-Product of the three LOG-structural primes:
+Product of the three LOG-structural standard primes:
 - ℤ_[3]:  LOG grade tower
 - ℤ_[7]:  pre-flip tower
 - ℤ_[13]: full cycle tower
@@ -97,7 +117,7 @@ theorem adele_conservation (a b c : UFRFAdele)
 /--
 **The full UFRF adele ring.**
 
-Product of ALL five cycle primes. Every prime position
+Product of ALL five cycle-prime naturals. Every checkpoint position
 in the breathing cycle gets its own infinite tower.
 
 ℤ_[3] × ℤ_[5] × ℤ_[7] × ℤ_[11] × ℤ_[13]
@@ -140,7 +160,7 @@ theorem full_embedding_mul (a b : ℤ) :
 /-! ## 137 Across All Five Primes -/
 
 /--
-**137's five faces — one for each cycle prime.**
+**137's five faces — one for each cycle-prime natural.**
 
 α⁻¹ ≈ 137 projected to all five phase spaces:
 - 137 mod 3  = 2   (LOG grade: middle position)
@@ -163,7 +183,7 @@ theorem alpha_five_faces :
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> decide
 
 /--
-**Product of all five cycle primes.**
+**Product of all five cycle-prime naturals.**
 
 3 × 5 × 7 × 11 × 13 = 15015.
 This is the modulus of the full CRT decomposition.
@@ -173,7 +193,7 @@ This is the modulus of the full CRT decomposition.
 theorem full_prime_product : 3 * 5 * 7 * 11 * 13 = 15015 := by norm_num
 
 /--
-**All five cycle primes are pairwise coprime.**
+**All five cycle-prime naturals are pairwise coprime.**
 
 Distinct primes are always coprime. This is why CRT works:
 ℤ/15015ℤ ≃+* ℤ/3ℤ × ℤ/5ℤ × ℤ/7ℤ × ℤ/11ℤ × ℤ/13ℤ
@@ -188,11 +208,24 @@ theorem cycle_primes_pairwise_coprime :
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> decide
 
 /--
-**The five cycle primes are exactly the primes in {1,...,13}
+**Exact characterization of cycle-prime naturals up to 13.**
+
+This theorem packages the semantic boundary used by the full adele:
+among naturals up to the cycle length, the cycle-prime checkpoints are
+exactly the standard primes other than `2`.
+
+✅ PROVEN
+-/
+theorem cycle_prime_nats_exact (p : ℕ) (hp : p ≤ 13) :
+    is_cycle_prime_nat p ↔ Nat.Prime p ∧ p ≠ 2 :=
+  PrimeSemantics.cycle_prime_nats_up_to_13 p hp
+
+/--
+**The five cycle-prime naturals are exactly the primes in {1,...,13}
 excluding 2.**
 
 2 is not prime in the UFRF: position 2 is the second Seed,
-not a structural boundary. The five structural primes
+not a structural boundary. The five structural cycle-prime naturals
 3, 5, 7, 11, 13 are the primes that create phase boundaries
 within the breathing cycle.
 

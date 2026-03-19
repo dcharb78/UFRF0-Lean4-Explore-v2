@@ -1,7 +1,7 @@
 # UFRF Derivation Chain
 
 **Every node is a proven theorem. Every arrow is a verified import.**
-**Zero sorry. Zero custom axioms. 536+ proven entities. 39 modules.**
+**Zero sorry. Zero custom axioms. 536+ proven entities. 40 modules.**
 
 The entire framework derives from one structure: `Trinity {-½, 0, +½}` with `sum = 0`.
 
@@ -48,6 +48,13 @@ Trinity.lean: trinity.conservation
 │   │   │   │
 │   │   │   └── BreathingCycle.lean: bridge_seed_wraps
 │   │   │       (12 : CyclePos) + 1 = 0. Möbius return. Proven.
+│   │   │
+│   │   │   ├── BreathingCycle.lean: terminal_block_reindexes_as_zero_to_three
+│   │   │   │   Contextual chart at REST: 10,11,12,13 ↦ 0,1,2,3. Proven.
+│   │   │   │
+│   │   │   └── BreathingCycle.lean: thirteen_closes_current_cycle_and_opens_next
+│   │   │       13 is seed in the human chart, 3 in the local terminal chart,
+│   │   │       0 in the residue chart, and the step 12→13 matches 0→1. Proven.
 │   │   │
 │   │   ├── Addressing.lean: (ℤ, ZMod 13) coordinates
 │   │   │   phase_count, 12 ≡ -1 (mod 13). Proven.

@@ -48,7 +48,7 @@ theorem two_is_not_ufrf_prime :
 
 ---
 
-### **Theorem: Odd Primes are UFRF Primes**
+### **Theorem: Odd Standard Primes are UFRF Primes**
 ```lean
 theorem odd_primes_are_ufrf_primes (p : ℕ) 
     (hp : Nat.Prime p) (hodd : p ≠ 2) :
@@ -56,7 +56,7 @@ theorem odd_primes_are_ufrf_primes (p : ℕ)
 ```
 **Proof**: Direct from definition.
 
-**Significance**: All odd primes are UFRF primes.
+**Significance**: Every standard prime other than `2` is UFRF-prime.
 
 ---
 

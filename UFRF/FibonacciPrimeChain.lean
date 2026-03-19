@@ -6,6 +6,7 @@ import Mathlib.Tactic
 import UFRF.Foundation
 import UFRF.KissingEigen
 import UFRF.Constants
+import UFRF.PrimeSemantics
 
 /-!
 # UFRF.FibonacciPrimeChain
@@ -46,7 +47,7 @@ are infinite).
 
 namespace UFRF.FibonacciPrimeChain
 
-open UFRF.KissingEigen UFRF.Constants
+open UFRF.KissingEigen UFRF.Constants UFRF.PrimeSemantics
 
 /-! ## The Fibonacci Prime Escalation Chain
 
@@ -138,11 +139,7 @@ theorem axiom_value : Nat.fib 4 = 3 := by native_decide
 ✅ PROVEN
 -/
 theorem axiom_is_ufrf_prime : is_ufrf_prime 3 := by
-  unfold is_ufrf_prime
-  right
-  constructor
-  · norm_num
-  · norm_num
+  exact odd_standard_prime_is_ufrf_prime 3 (by norm_num) (by norm_num)
 
 /--
 **4 is NOT a UFRF prime.** The checkpoint index is composite.
@@ -150,12 +147,9 @@ theorem axiom_is_ufrf_prime : is_ufrf_prime 3 := by
 ✅ PROVEN
 -/
 theorem checkpoint_not_prime : ¬is_ufrf_prime 4 := by
-  unfold is_ufrf_prime
-  push_neg
-  constructor
-  · omega
-  · intro h
-    exact absurd h (by norm_num)
+  intro h
+  have hclass := (ufrf_primes_below_13 4 (by norm_num)).1 h
+  omega
 
 /--
 **The axiom at the checkpoint**: F(4)=3, UFRF-prime value at
@@ -167,6 +161,30 @@ at every scale — it generates all cycles.
 theorem axiom_at_checkpoint :
     Nat.fib 4 = 3 ∧ is_ufrf_prime 3 ∧ ¬is_ufrf_prime 4 := by
   exact ⟨axiom_value, axiom_is_ufrf_prime, checkpoint_not_prime⟩
+
+/--
+**Exact UFRF-prime indices below 13.**
+
+Within the first cycle, the custom UFRF natural-number notion of primality
+selects exactly the checkpoint indices `{1, 3, 5, 7, 11}`.
+
+✅ PROVEN
+-/
+theorem ufrf_prime_indices_below_13_exact (n : ℕ) (hn : n < 13) :
+    is_ufrf_prime n ↔ n = 1 ∨ n = 3 ∨ n = 5 ∨ n = 7 ∨ n = 11 :=
+  PrimeSemantics.ufrf_primes_below_13 n hn
+
+/--
+**Exact agreement set of standard and UFRF primality below 13.**
+
+Below 13, the standard primes that survive the UFRF checkpoint predicate are
+exactly `{3, 5, 7, 11}`.
+
+✅ PROVEN
+-/
+theorem standard_and_ufrf_prime_indices_agree_below_13 (n : ℕ) (hn : n < 13) :
+    (Nat.Prime n ∧ is_ufrf_prime n) ↔ n = 3 ∨ n = 5 ∨ n = 7 ∨ n = 11 :=
+  PrimeSemantics.standard_and_ufrf_agree_below_13 n hn
 
 /-! ## Structural Positions Within the 13-Cycle
 
@@ -195,20 +213,13 @@ theorem fibonacci_ufrf_primes_in_cycle :
     is_ufrf_prime (Nat.fib 7) ∧   -- F(7) = 13
     is_ufrf_prime (Nat.fib 11) ∧  -- F(11) = 89
     is_ufrf_prime (Nat.fib 13) := by -- F(13) = 233
-  unfold is_ufrf_prime
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
-  -- F(1) = 1: left disjunct
-  · left; native_decide
-  -- F(4) = 3: right disjunct (prime, ≠ 2)
-  · right; constructor <;> native_decide
-  -- F(5) = 5: right disjunct
-  · right; constructor <;> native_decide
-  -- F(7) = 13: right disjunct
-  · right; constructor <;> native_decide
-  -- F(11) = 89: right disjunct
-  · right; constructor <;> native_decide
-  -- F(13) = 233: right disjunct
-  · right; constructor <;> native_decide
+  · simpa using one_is_ufrf_prime
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 4) (by native_decide) (by native_decide)
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 5) (by native_decide) (by native_decide)
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 7) (by native_decide) (by native_decide)
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 11) (by native_decide) (by native_decide)
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 13) (by native_decide) (by native_decide)
 
 /--
 **F(3) = 2 is NOT UFRF-prime.** The shadow: 2 is excluded from
@@ -220,9 +231,7 @@ Both disjuncts are false (2≠1, and 2≠2 is false).
 ✅ PROVEN
 -/
 theorem fib_3_not_ufrf_prime : ¬is_ufrf_prime (Nat.fib 3) := by
-  unfold is_ufrf_prime
-  simp only [show Nat.fib 3 = 2 from by native_decide]
-  omega
+  simpa [show Nat.fib 3 = 2 from by native_decide] using two_is_not_ufrf_prime
 
 /-! ## Spiral Primes vs Axiom
 
