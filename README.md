@@ -25,11 +25,10 @@ lake build            # compile UFRF
 
 ```
 UFRF-Allen/
-├── UFRF.lean                    # Root module (imports all 40 modules)
+├── UFRF.lean                    # Root module (imports all 39 modules)
 ├── UFRF/
-│   ├── # ── Core Framework (33 modules) ──
-│   ├── Axiomatics.lean          # Seeds of phase space (w=1, 13-lattice)
-│   ├── Trinity.lean             # The conserved triplet {-½, 0, +½}
+│   ├── # ── Core Framework (32 modules) ──
+│   ├── Trinity.lean             # The conserved triplet {-½, 0, +½} (THE seed)
 │   ├── Simplex.lean             # C(4,3) = 4 from topology
 │   ├── KissingEigen.lean        # K(2)=6, K(3)=12 eigenstructure
 │   ├── Structure13.lean         # Projective plane: a²+a+1 = 13
@@ -104,12 +103,11 @@ UFRF-Allen/
 | Proven theorems + definitions | **540+** |
 | Allen/Fibonacci theorems (new) | **140+** |
 | Cross-module verification examples | **107** (KernelProof, 28 layers) |
-| Modules | **40** (33 core + 7 Allen) |
-| `sorry` in Allen modules | **0** |
-| `sorry` in core modules | **1** (InverseLimit.lean — p-adic universal property) |
-| Intentional axioms | **2** (Axiomatics.lean) |
+| Modules | **39** (32 core + 7 Allen) |
+| `sorry` statements | **0** |
+| Custom `axiom` declarations | **0** |
 
-**Navigating Phase Space.** We do not treat concepts as hard physical facts. The only hard facts are the Lean Proofs themselves. We formally seed the topology with 2 geometric postulates: Unity ($w=1$) and the 13-lattice spiral. Everything else (from Fourier symmetries to Calculus to Gauge Groups) is a mathematically proven consequence of navigating this seeded phase space.
+**Navigating Phase Space.** We do not treat concepts as hard physical facts. The only hard facts are the Lean Proofs themselves. The framework begins from a single definition — the Trinity `{-½, 0, +½}` — and derives everything else (including the number 13, Fourier symmetries, Calculus, and Gauge Groups) as mathematically proven consequences.
 
 **Former axioms, all now proven:**
 - `resonance_at_flip` → structural theorem (resonance defined at flip, 6.5/13 = 1/2)
@@ -124,7 +122,7 @@ UFRF-Allen/
 ## Auditing
 
 ```bash
-# Verify the pipeline (zero arbitrary sorries, 2 permitted axioms)
+# Verify the pipeline (zero sorry, zero custom axioms)
 ./scripts/certify.sh
 
 # Full build verification

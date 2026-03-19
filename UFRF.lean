@@ -6,7 +6,6 @@ import UFRF.AllenBridge
 import UFRF.AllenEmbedding
 import UFRF.AngularEmbedding
 import UFRF.AxiomAudit
-import UFRF.Axiomatics
 import UFRF.BreathingCycle
 import UFRF.Calculus
 import UFRF.Constants
