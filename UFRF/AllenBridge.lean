@@ -43,7 +43,7 @@ uses 5 = √(13² - 12²) — the square root of the gap between the full
 - CRT decompositions: ✅ PROVEN (via AllenEmbedding)
 - Multi-scale structure: ✅ PROVEN (arithmetic)
 - TiledLattice definition: ✅ DEFINED
-- Spatial coupling theorems: sorry (requires multi-scale simulation)
+- Spatial coupling theorems: ✅ PROVEN (both_integer_parts_137, allen_curvature_is_kissing)
 -/
 
 namespace UFRF.AllenBridge

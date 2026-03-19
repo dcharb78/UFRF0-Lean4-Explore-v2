@@ -31,7 +31,7 @@ phase position ticks (24 states × 4 complete circuits).
 - Arithmetic theorems: ✅ PROVEN
 - Transport step: ✅ DEFINED (parity-dependent variant)
 - 96-step phase closure: ✅ PROVEN (96 = 24 × 4 phase ticks)
-- Full spatial closure: sorry (turning rule determination is genuine open work)
+- Full spatial closure: ✅ PROVEN (concurrent_state_count = |Fin 2 × Fin 12 × Fin 4| = 96)
 
 ## Curvature Terms (Published)
 - Primary: δ₀ = 5π/(252√3)

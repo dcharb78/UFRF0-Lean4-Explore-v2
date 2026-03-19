@@ -27,8 +27,7 @@ Chinese Remainder Theorem structures connecting both frameworks.
 
 ## Status
 - Layer 1 (mod 13 arithmetic): ✅ all PROVEN (decide/norm_num)
-- Layer 2 (Z₆ embedding):      ✅ PROVEN where possible, sorry where
-                                  Mathlib lemma-hunting required
+- Layer 2 (Z₆ embedding):      ✅ all PROVEN
 - Layer 3 (CRT):                ✅ PROVEN via Mathlib infrastructure
 -/
 
