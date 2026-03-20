@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.CauchyIntegral
+import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Topology.MetricSpace.Infsep
 import UFRF.ResidueDefinition
 
@@ -9,8 +10,9 @@ This module provides the first honest circle-integral bridge for the specific
 breathing function `z ↦ 1 / (z^13 - 1)`.
 
 The scope is intentionally narrow. We do not introduce a general residue API or
-claim a general residue theorem. Instead, we prove a concrete contour statement
-around a single breathing root on a sufficiently small circle.
+claim a general residue theorem. Instead, we prove concrete contour statements
+for the specific breathing function, first on small circles around individual
+breathing roots and then on explicit origin-centered enclosing circles.
 -/
 
 noncomputable section
@@ -675,6 +677,251 @@ theorem sum_circleIntegral_breathingFunction_of_lt_half_infsep_allRoots_eq_zero
   rw [sum_circleIntegral_breathingFunction_of_lt_half_infsep_eq_two_pi_I_mul_sum_residueCandidate
     (S := Finset.univ) (R := R) hR hRlt]
   rw [UFRF.ResidueDefinition.total_residue_candidate_zero, mul_zero]
+
+/-- Every breathing root lies on the unit circle in the complex plane. -/
+theorem norm_breathingRoot_eq_one (k : ZMod CycleLen) :
+    ‖breathingRoot k‖ = 1 := by
+  change ‖((breathingRootOfUnity k).1 : ℂ)‖ = 1
+  exact Complex.norm_eq_one_of_mem_rootsOfUnity (breathingRootOfUnity k).2
+
+/--
+Outside the unit circle, the denominator `z^13 - 1` does not vanish.
+
+This is the concrete outer-region nonvanishing theorem for the specific
+breathing denominator.
+-/
+theorem breathingDenominator_ne_zero_of_one_lt_norm {z : ℂ}
+    (hz : 1 < ‖z‖) :
+    UFRF.ResidueDefinition.breathingDenominator z ≠ 0 := by
+  intro hzero
+  obtain ⟨j, rfl⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+  rw [norm_breathingRoot_eq_one] at hz
+  linarith
+
+/--
+The breathing function is continuous on every closed annulus centered at the
+origin whose inner radius is strictly larger than `1`.
+-/
+theorem continuousOn_breathingFunction_closedAnnulus_of_one_lt
+    {r R : ℝ} (hr : 1 < r) :
+    ContinuousOn UFRF.ResidueDefinition.breathingFunction
+      (Metric.closedBall (0 : ℂ) R \ Metric.ball (0 : ℂ) r) := by
+  let s : Set ℂ := Metric.closedBall (0 : ℂ) R \ Metric.ball (0 : ℂ) r
+  have hcontDen : ContinuousOn UFRF.ResidueDefinition.breathingDenominator s := by
+    intro z hz
+    change ContinuousWithinAt (fun w : ℂ => w ^ UFRF.ResidueDefinition.CycleLen - (1 : ℂ)) s z
+    fun_prop
+  have hnonzero : ∀ z ∈ s, UFRF.ResidueDefinition.breathingDenominator z ≠ 0 := by
+    intro z hz
+    have hzball : z ∉ Metric.ball (0 : ℂ) r := by
+      simpa [s] using hz.2
+    have hznorm : r ≤ ‖z‖ := by
+      rw [Metric.mem_ball, not_lt, dist_eq_norm] at hzball
+      simpa using hzball
+    exact breathingDenominator_ne_zero_of_one_lt_norm (lt_of_lt_of_le hr hznorm)
+  simpa [UFRF.ResidueDefinition.breathingFunction] using
+    (continuousOn_const.div hcontDen hnonzero)
+
+/--
+The breathing function is holomorphic on every open annulus centered at the
+origin whose inner radius is strictly larger than `1`.
+-/
+theorem differentiableOn_breathingFunction_openAnnulus_of_one_lt
+    {r R : ℝ} (hr : 1 < r) :
+    DifferentiableOn ℂ UFRF.ResidueDefinition.breathingFunction
+      (Metric.ball (0 : ℂ) R \ Metric.closedBall (0 : ℂ) r) := by
+  let s : Set ℂ := Metric.ball (0 : ℂ) R \ Metric.closedBall (0 : ℂ) r
+  have hdiffDen : DifferentiableOn ℂ UFRF.ResidueDefinition.breathingDenominator s := by
+    intro z hz
+    change DifferentiableWithinAt ℂ
+      (fun w : ℂ => w ^ UFRF.ResidueDefinition.CycleLen - (1 : ℂ)) s z
+    fun_prop
+  have hnonzero : ∀ z ∈ s, UFRF.ResidueDefinition.breathingDenominator z ≠ 0 := by
+    intro z hz
+    have hzclosed : z ∉ Metric.closedBall (0 : ℂ) r := by
+      simpa [s] using hz.2
+    have hznorm : r < ‖z‖ := by
+      rw [Metric.mem_closedBall, dist_eq_norm, not_le] at hzclosed
+      simpa using hzclosed
+    exact breathingDenominator_ne_zero_of_one_lt_norm (lt_trans hr hznorm)
+  have hconst : DifferentiableOn ℂ (fun _ : ℂ => (1 : ℂ)) s := by
+    intro z hz
+    exact (differentiableAt_const (c := (1 : ℂ))).differentiableWithinAt
+  simpa [UFRF.ResidueDefinition.breathingFunction] using hconst.div hdiffDen hnonzero
+
+/--
+For any `1 < r ≤ R`, the origin-centered circle integrals of the breathing
+function over radii `r` and `R` agree.
+
+This is the outer-annulus comparison theorem centered at the origin, outside
+the unit circle that contains all breathing poles.
+-/
+theorem circleIntegral_breathingFunction_eq_of_one_lt_le
+    {r R : ℝ} (hr : 1 < r) (hrR : r ≤ R) :
+    (∮ z in C((0 : ℂ), R), UFRF.ResidueDefinition.breathingFunction z) =
+      ∮ z in C((0 : ℂ), r), UFRF.ResidueDefinition.breathingFunction z := by
+  have h0r : 0 < r := lt_trans zero_lt_one hr
+  have hopen : IsOpen (Metric.ball (0 : ℂ) R \ Metric.closedBall (0 : ℂ) r) := by
+    simpa [Set.diff_eq, inter_comm] using
+      Metric.isOpen_ball.inter Metric.isClosed_closedBall.isOpen_compl
+  apply Complex.circleIntegral_eq_of_differentiable_on_annulus_off_countable
+    (c := (0 : ℂ)) (r := r) (R := R) h0r hrR (s := ∅)
+  · exact countable_empty
+  · simpa using continuousOn_breathingFunction_closedAnnulus_of_one_lt hr
+  · intro z hz
+    have hz' : z ∈ Metric.ball (0 : ℂ) R \ Metric.closedBall (0 : ℂ) r := by
+      simpa [diff_empty] using hz
+    have hdiff := differentiableOn_breathingFunction_openAnnulus_of_one_lt (r := r) (R := R) hr
+    exact (hdiff z hz').differentiableAt (hopen.mem_nhds hz')
+
+/--
+On a circle centered at the origin with radius at least `2`, the breathing
+function is uniformly bounded by `2 / R^13`.
+
+This is the quantitative decay input used to force the outer contour integral
+to vanish.
+-/
+theorem norm_breathingFunction_le_two_div_radius_pow_of_mem_sphere_of_two_le
+    {R : ℝ} (hR2 : 2 ≤ R) {z : ℂ} (hz : z ∈ Metric.sphere (0 : ℂ) R) :
+    ‖UFRF.ResidueDefinition.breathingFunction z‖ ≤ 2 / R ^ CycleLen := by
+  have hRpos : 0 < R := lt_of_lt_of_le (by norm_num : (0 : ℝ) < 2) hR2
+  have hznorm : ‖z‖ = R := by
+    rw [Metric.mem_sphere, dist_eq_norm] at hz
+    simpa using hz
+  have hden_ne : UFRF.ResidueDefinition.breathingDenominator z ≠ 0 :=
+    breathingDenominator_ne_zero_of_one_lt_norm (by linarith [hznorm])
+  have hpow_nonneg : 0 ≤ R ^ CycleLen - 1 := by
+    have hpow_one : (1 : ℝ) ≤ R ^ CycleLen := by
+      have hpow_two : (2 : ℝ) ≤ R ^ CycleLen := by
+        have htwo_le_two_pow : (2 : ℝ) ≤ 2 ^ CycleLen := by
+          simpa using
+            (pow_le_pow_right₀ (show (1 : ℝ) ≤ 2 by norm_num)
+              (Nat.succ_le_of_lt UFRF.ResidueDefinition.cycleLen_pos))
+        have htwo_pow_le : (2 : ℝ) ^ CycleLen ≤ R ^ CycleLen := by
+          exact pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 2) hR2 CycleLen
+        exact htwo_le_two_pow.trans htwo_pow_le
+      linarith
+    linarith
+  have hden_lower : R ^ CycleLen - 1 ≤ ‖UFRF.ResidueDefinition.breathingDenominator z‖ := by
+    calc
+      R ^ CycleLen - 1 = ‖z ^ CycleLen‖ - ‖(1 : ℂ)‖ := by rw [norm_pow, hznorm, norm_one]
+      _ ≤ ‖z ^ CycleLen - 1‖ := norm_sub_norm_le _ _
+      _ = ‖UFRF.ResidueDefinition.breathingDenominator z‖ := by
+        simp [UFRF.ResidueDefinition.breathingDenominator]
+  have hpow_two : (2 : ℝ) ≤ R ^ CycleLen := by
+    have htwo_le_two_pow : (2 : ℝ) ≤ 2 ^ CycleLen := by
+      simpa using
+        (pow_le_pow_right₀ (show (1 : ℝ) ≤ 2 by norm_num)
+          (Nat.succ_le_of_lt UFRF.ResidueDefinition.cycleLen_pos))
+    have htwo_pow_le : (2 : ℝ) ^ CycleLen ≤ R ^ CycleLen := by
+      exact pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 2) hR2 CycleLen
+    exact htwo_le_two_pow.trans htwo_pow_le
+  have hhalf_lower : R ^ CycleLen / 2 ≤ ‖UFRF.ResidueDefinition.breathingDenominator z‖ := by
+    have : R ^ CycleLen / 2 ≤ R ^ CycleLen - 1 := by
+      linarith
+    exact this.trans hden_lower
+  have hhalf_pos : 0 < R ^ CycleLen / 2 := by positivity
+  calc
+    ‖UFRF.ResidueDefinition.breathingFunction z‖
+        = 1 / ‖UFRF.ResidueDefinition.breathingDenominator z‖ := by
+            simp [UFRF.ResidueDefinition.breathingFunction, norm_inv]
+    _ ≤ 1 / (R ^ CycleLen / 2) := one_div_le_one_div_of_le hhalf_pos hhalf_lower
+    _ = 2 / R ^ CycleLen := by
+        field_simp [pow_ne_zero CycleLen hRpos.ne']
+
+/--
+Any origin-centered circle of radius strictly greater than `1` has zero
+breathing-function integral.
+
+This is the first honest enclosing-contour theorem in the pipeline for
+`1 / (z^13 - 1)`.
+-/
+theorem circleIntegral_breathingFunction_eq_zero_of_one_lt
+    {R : ℝ} (hR : 1 < R) :
+    (∮ z in C((0 : ℂ), R), UFRF.ResidueDefinition.breathingFunction z) = 0 := by
+  let I : ℂ := ∮ z in C((0 : ℂ), R), UFRF.ResidueDefinition.breathingFunction z
+  let N : ℕ := Nat.ceil R + 1
+  let g : ℕ → ℂ := fun n =>
+    ∮ z in C((0 : ℂ), (((n + N : ℕ) : ℝ))), UFRF.ResidueDefinition.breathingFunction z
+  let b : ℕ → ℝ := fun n => 4 * Real.pi / ((((n + N : ℕ) : ℝ)) ^ 12)
+  have hRN : ∀ n : ℕ, R ≤ (((n + N : ℕ) : ℝ)) := by
+    intro n
+    have hnat : (Nat.ceil R : ℕ) ≤ n + N := by
+      dsimp [N]
+      omega
+    exact (Nat.le_ceil R).trans (by exact_mod_cast hnat)
+  have hconst : (fun _ : ℕ => I) =ᶠ[atTop] g := by
+    filter_upwards [] with n
+    dsimp [I, g]
+    symm
+    exact circleIntegral_breathingFunction_eq_of_one_lt_le hR (hRN n)
+  have hbound : ∀ n : ℕ, ‖g n‖ ≤ b n := by
+    intro n
+    have hceil_one_nat : 1 ≤ Nat.ceil R := by
+      exact_mod_cast (le_trans (le_of_lt hR) (Nat.le_ceil R))
+    have hN_two_nat : 2 ≤ N := by
+      dsimp [N]
+      omega
+    have hrad_two_nat : 2 ≤ n + N := by
+      omega
+    have hrad_two : (2 : ℝ) ≤ (((n + N : ℕ) : ℝ)) := by
+      exact_mod_cast hrad_two_nat
+    have hrad_nonneg : 0 ≤ (((n + N : ℕ) : ℝ)) := by positivity
+    have hrad_pos : 0 < (((n + N : ℕ) : ℝ)) := by positivity
+    calc
+      ‖g n‖
+          ≤ 2 * Real.pi * (((n + N : ℕ) : ℝ)) *
+              (2 / (((n + N : ℕ) : ℝ)) ^ CycleLen) := by
+                dsimp [g]
+                refine circleIntegral.norm_integral_le_of_norm_le_const hrad_nonneg ?_
+                intro z hz
+                exact norm_breathingFunction_le_two_div_radius_pow_of_mem_sphere_of_two_le
+                  hrad_two hz
+      _ = b n := by
+          change 2 * Real.pi * (((n + N : ℕ) : ℝ)) *
+              (2 / (((n + N : ℕ) : ℝ)) ^ 13) = b n
+          dsimp [b]
+          field_simp [pow_ne_zero 12 hrad_pos.ne', pow_ne_zero 13 hrad_pos.ne']
+          ring
+  have hb_tendsto : Tendsto b atTop (𝓝 0) := by
+    have hpow :
+        Tendsto (fun n : ℕ => ((((n + N : ℕ) : ℝ)) ^ 12)) atTop atTop := by
+      exact (tendsto_pow_atTop (n := 12) (by norm_num)).comp
+        (tendsto_natCast_atTop_atTop.comp (tendsto_add_atTop_nat N))
+    have hinv :
+        Tendsto (fun n : ℕ => ((((n + N : ℕ) : ℝ)) ^ 12)⁻¹) atTop (𝓝 0) :=
+      tendsto_inv_atTop_zero.comp hpow
+    simpa [b, div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using
+      (tendsto_const_nhds.mul hinv :
+        Tendsto (fun n : ℕ => (4 * Real.pi : ℝ) * ((((n + N : ℕ) : ℝ)) ^ 12)⁻¹)
+          atTop (𝓝 ((4 * Real.pi : ℝ) * 0)))
+  have hg_norm_tendsto_zero : Tendsto (fun n : ℕ => ‖g n‖) atTop (𝓝 0) := by
+    exact squeeze_zero (fun n => norm_nonneg _) hbound hb_tendsto
+  have hg_tendsto_zero : Tendsto g atTop (𝓝 0) := by
+    exact tendsto_zero_iff_norm_tendsto_zero.mpr hg_norm_tendsto_zero
+  have hconst_tendsto_zero : Tendsto (fun _ : ℕ => I) atTop (𝓝 0) :=
+    Tendsto.congr' hconst.symm hg_tendsto_zero
+  have hI : I = 0 := tendsto_nhds_unique tendsto_const_nhds hconst_tendsto_zero
+  simpa [I] using hI
+
+/--
+For any separated inner-circle radius and any origin-centered outer radius
+strictly larger than `1`, the full family of breathing-root circle integrals
+equals that explicit outer-circle integral.
+
+This is the first honest inner-to-outer contour comparison in the repo. The
+proof stays precise: both sides are shown to be zero by specific theorems, not
+by a general residue theorem or a multi-boundary decomposition claim.
+-/
+theorem sum_circleIntegral_breathingFunction_of_lt_half_infsep_allRoots_eq_outerCircle_of_one_lt
+    {r R : ℝ} (hr : 0 < r)
+    (hrlt : r < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (hR : 1 < R) :
+    (∑ k : ZMod CycleLen,
+      (∮ z in C(breathingRoot k, r), UFRF.ResidueDefinition.breathingFunction z)) =
+      ∮ z in C((0 : ℂ), R), UFRF.ResidueDefinition.breathingFunction z := by
+  rw [sum_circleIntegral_breathingFunction_of_lt_half_infsep_allRoots_eq_zero hr hrlt,
+    circleIntegral_breathingFunction_eq_zero_of_one_lt hR]
 
 /--
 For distinct breathing roots, the canonical open balls of radius

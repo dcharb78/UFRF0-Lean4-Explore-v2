@@ -253,24 +253,51 @@ Current status:
   `r`.
   This is still an internal separated-regime comparison, not yet an enclosing
   outer-contour theorem.
+- The repo now also has its first explicit enclosing outer-contour theorem for
+  the breathing function:
+  `norm_breathingRoot_eq_one`,
+  `breathingDenominator_ne_zero_of_one_lt_norm`,
+  `continuousOn_breathingFunction_closedAnnulus_of_one_lt`,
+  `differentiableOn_breathingFunction_openAnnulus_of_one_lt`,
+  `circleIntegral_breathingFunction_eq_of_one_lt_le`,
+  `norm_breathingFunction_le_two_div_radius_pow_of_mem_sphere_of_two_le`,
+  and
+  `circleIntegral_breathingFunction_eq_zero_of_one_lt`
+  show that every origin-centered circle of radius `R > 1` has breathing
+  integral `0`.
+  This is a real outer-contour statement for the specific function
+  `z ↦ 1 / (z^13 - 1)`, proved by an origin-centered annulus theorem plus an
+  explicit large-radius decay estimate, not by a general residue API.
+- The first honest inner-to-outer comparison theorem is now present too:
+  `sum_circleIntegral_breathingFunction_of_lt_half_infsep_allRoots_eq_outerCircle_of_one_lt`
+  proves that for any separated inner radius
+  `0 < r < infsep(range breathingRoot) / 2`
+  and any origin-centered outer radius `R > 1`, the sum of the full family of
+  breathing-root circle integrals equals that enclosing outer-circle integral.
+  The proof stays precise: both sides are separately shown to be `0`.
+  This is therefore an explicit enclosing-contour comparison for the full
+  breathing-root family, but it is not yet a finite-subset theorem and not yet
+  a direct multi-boundary decomposition theorem.
 - Exact next blocker for a broader contour layer:
   the repo now has a canonical single-root contour theorem, a strict-radius
   separation package, a fixed quarter-`infsep` separated-circle theorem, and a
   finite multi-circle cancellation formula, all now promoted to an arbitrary
   common radius `0 < R < infsep(range breathingRoot) / 2`, together with
   same-center annulus comparison theorems for one chosen breathing root and
-  for finite common-radius families.
-  The remaining gap is now specifically a multi-center contour-comparison
-  theorem that relates several separated inner circles to a single enclosing
-  contour or region boundary, without pretending that Mathlib already gives a
-  general residue theorem for this setup.
+  for finite common-radius families, plus an explicit origin-centered
+  outer-circle theorem and a full-family inner-to-outer comparison corollary.
+  The remaining gap is now specifically a theorem that handles a finite proper
+  subset of breathing roots or a genuinely nonzero total contour sum, and more
+  structurally, a direct multi-center contour-comparison or boundary-additivity
+  theorem rather than a zero-equals-zero comparison.
 - Next smallest theorem needed:
-  prove a specific multi-center contour-additivity theorem for a finite union
-  of disjoint quarter-`infsep` circles, or relate the sum of those inner circle
-  integrals to an explicit outer contour enclosing the same set of breathing
-  roots.
-  The same-center annulus step is now complete, so the next theorem should
-  address region boundaries with more than one enclosed breathing root.
+  either prove a specific outer-contour theorem for a finite proper subset of
+  breathing roots, or prove a direct multi-center contour-additivity theorem
+  for a disk or region boundary with finitely many excluded closed balls around
+  the poles.
+  The enclosing outer-contour step for the full breathing-root family is now
+  complete, so the next theorem should address a nonzero total contour sum or
+  a genuine multi-boundary geometry theorem.
 
 ### Phase 4: Interpretation Fence
 
