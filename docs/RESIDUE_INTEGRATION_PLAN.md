@@ -232,21 +232,45 @@ Current status:
   `R` satisfying `0 < R < infsep(range breathingRoot) / 2`.
   This strengthens the local separated-circle layer without yet comparing those
   inner circles to any outer contour.
+- The repo now also has its first explicit annular boundary comparison theorem
+  for the breathing function:
+  `breathingDenominator_ne_zero_of_mem_closedBall_lt_half_infsep`,
+  `continuousOn_breathingFunction_closedAnnulus_lt_half_infsep`,
+  `differentiableOn_breathingFunction_openAnnulus_lt_half_infsep`,
+  and
+  `circleIntegral_breathingFunction_eq_of_le_lt_half_infsep`
+  prove that for any fixed breathing root `breathingRoot k` and any
+  `0 < r ≤ R < infsep(range breathingRoot) / 2`, the circle integrals of
+  `breathingFunction` over the concentric circles of radii `r` and `R` agree.
+  This is a genuine same-center annulus theorem built from Mathlib's annulus
+  API; it still does not compare several disjoint inner circles to one outer
+  contour.
+- The same-center radius-invariance layer now also has a finite-family form:
+  `sum_circleIntegral_breathingFunction_eq_of_le_lt_half_infsep`
+  proves that for any finite set of breathing roots and any common radii
+  `0 < r ≤ R < infsep(range breathingRoot) / 2`, the sum of the corresponding
+  breathing-function circle integrals at radius `R` equals the sum at radius
+  `r`.
+  This is still an internal separated-regime comparison, not yet an enclosing
+  outer-contour theorem.
 - Exact next blocker for a broader contour layer:
   the repo now has a canonical single-root contour theorem, a strict-radius
   separation package, a fixed quarter-`infsep` separated-circle theorem, and a
   finite multi-circle cancellation formula, all now promoted to an arbitrary
-  common radius `0 < R < infsep(range breathingRoot) / 2`.
-  The remaining gap is a theorem that compares those separated inner circles to
-  a single enclosing contour or annular boundary, without pretending that
-  Mathlib already gives a general residue theorem for this setup.
+  common radius `0 < R < infsep(range breathingRoot) / 2`, together with
+  same-center annulus comparison theorems for one chosen breathing root and
+  for finite common-radius families.
+  The remaining gap is now specifically a multi-center contour-comparison
+  theorem that relates several separated inner circles to a single enclosing
+  contour or region boundary, without pretending that Mathlib already gives a
+  general residue theorem for this setup.
 - Next smallest theorem needed:
-  prove a specific contour-additivity or annulus-decomposition theorem for a
-  finite union of disjoint quarter-`infsep` circles, or relate the sum of those
-  inner circle integrals to an explicit outer contour enclosing the same set of
-  breathing roots.
-  That keeps the next step concrete and honest before any broader
-  sum-of-residues-style promotion.
+  prove a specific multi-center contour-additivity theorem for a finite union
+  of disjoint quarter-`infsep` circles, or relate the sum of those inner circle
+  integrals to an explicit outer contour enclosing the same set of breathing
+  roots.
+  The same-center annulus step is now complete, so the next theorem should
+  address region boundaries with more than one enclosed breathing root.
 
 ### Phase 4: Interpretation Fence
 

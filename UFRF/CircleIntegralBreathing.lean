@@ -517,6 +517,107 @@ theorem circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_of_lt_
   exact Metric.closedBall_subset_closedBall hRlt.le hz
 
 /--
+On any closed annulus centered at `breathingRoot k` whose outer radius is
+strictly smaller than `infsep(range breathingRoot) / 2`, the denominator
+`z^13 - 1` does not vanish.
+-/
+theorem breathingDenominator_ne_zero_of_mem_closedBall_lt_half_infsep
+    (k : ZMod CycleLen) {R : ℝ}
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep) / 2)
+    {z : ℂ} (hz : z ∈ Metric.closedBall (breathingRoot k) R)
+    (hzroot : z ≠ breathingRoot k) :
+    UFRF.ResidueDefinition.breathingDenominator z ≠ 0 := by
+  intro hzero
+  have hlocal : UFRF.ResidueDefinition.localFactorAt k z ≠ 0 :=
+    localFactorAt_nonzero_closedBall_half_infsep k z
+      (Metric.closedBall_subset_closedBall hRlt.le hz)
+  have hmul : UFRF.ResidueDefinition.localFactorAt k z * (z - breathingRoot k) = 0 := by
+    simpa [hzero] using UFRF.ResidueDefinition.localFactorAt_mul_root_diff k z
+  rcases mul_eq_zero.mp hmul with hfac | hdiff
+  · exact hlocal hfac
+  · exact hzroot (sub_eq_zero.mp hdiff)
+
+/--
+The breathing function is continuous on any closed annulus centered at
+`breathingRoot k` whose outer radius is strictly smaller than
+`infsep(range breathingRoot) / 2`.
+-/
+theorem continuousOn_breathingFunction_closedAnnulus_lt_half_infsep
+    (k : ZMod CycleLen) {r R : ℝ} (hr : 0 < r)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep) / 2) :
+    ContinuousOn UFRF.ResidueDefinition.breathingFunction
+      (Metric.closedBall (breathingRoot k) R \ Metric.ball (breathingRoot k) r) := by
+  let s : Set ℂ := Metric.closedBall (breathingRoot k) R \ Metric.ball (breathingRoot k) r
+  have hcontDen : ContinuousOn UFRF.ResidueDefinition.breathingDenominator s := by
+    intro z hz
+    change ContinuousWithinAt (fun w : ℂ => w ^ UFRF.ResidueDefinition.CycleLen - (1 : ℂ)) s z
+    fun_prop
+  have hnonzero : ∀ z ∈ s, UFRF.ResidueDefinition.breathingDenominator z ≠ 0 := by
+    intro z hz
+    apply breathingDenominator_ne_zero_of_mem_closedBall_lt_half_infsep k hRlt hz.1
+    intro hzroot
+    exact hz.2 (by
+      simpa [hzroot] using
+        (Metric.mem_ball_self hr : breathingRoot k ∈ Metric.ball (breathingRoot k) r))
+  simpa [UFRF.ResidueDefinition.breathingFunction] using
+    (continuousOn_const.div hcontDen hnonzero)
+
+/--
+The breathing function is holomorphic on any open annulus centered at
+`breathingRoot k` whose outer radius is strictly smaller than
+`infsep(range breathingRoot) / 2`.
+-/
+theorem differentiableOn_breathingFunction_openAnnulus_lt_half_infsep
+    (k : ZMod CycleLen) {r R : ℝ} (hr : 0 < r)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep) / 2) :
+    DifferentiableOn ℂ UFRF.ResidueDefinition.breathingFunction
+      (Metric.ball (breathingRoot k) R \ Metric.closedBall (breathingRoot k) r) := by
+  let s : Set ℂ := Metric.ball (breathingRoot k) R \ Metric.closedBall (breathingRoot k) r
+  have hdiffDen : DifferentiableOn ℂ UFRF.ResidueDefinition.breathingDenominator s := by
+    intro z hz
+    change DifferentiableWithinAt ℂ
+      (fun w : ℂ => w ^ UFRF.ResidueDefinition.CycleLen - (1 : ℂ)) s z
+    fun_prop
+  have hnonzero : ∀ z ∈ s, UFRF.ResidueDefinition.breathingDenominator z ≠ 0 := by
+    intro z hz
+    apply breathingDenominator_ne_zero_of_mem_closedBall_lt_half_infsep k hRlt
+      (Metric.ball_subset_closedBall hz.1)
+    intro hzroot
+    exact hz.2 (by
+      simpa [Metric.mem_closedBall, hzroot, dist_self] using le_of_lt hr)
+  have hconst : DifferentiableOn ℂ (fun _ : ℂ => (1 : ℂ)) s := by
+    intro z hz
+    exact (differentiableAt_const (c := (1 : ℂ))).differentiableWithinAt
+  simpa [UFRF.ResidueDefinition.breathingFunction] using hconst.div hdiffDen hnonzero
+
+/--
+For any `0 < r ≤ R < infsep(range breathingRoot) / 2`, the circle integrals of
+the breathing function over the two concentric circles centered at
+`breathingRoot k` are equal.
+
+This is a genuine same-center annulus comparison theorem. It does not yet
+compare a family of disjoint inner circles to a single outer contour.
+-/
+theorem circleIntegral_breathingFunction_eq_of_le_lt_half_infsep
+    (k : ZMod CycleLen) {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep) / 2) :
+    (∮ z in C(breathingRoot k, R), UFRF.ResidueDefinition.breathingFunction z) =
+      ∮ z in C(breathingRoot k, r), UFRF.ResidueDefinition.breathingFunction z := by
+  have hopen : IsOpen (Metric.ball (breathingRoot k) R \ Metric.closedBall (breathingRoot k) r) := by
+    simpa [Set.diff_eq, inter_comm] using
+      Metric.isOpen_ball.inter Metric.isClosed_closedBall.isOpen_compl
+  apply Complex.circleIntegral_eq_of_differentiable_on_annulus_off_countable
+    (c := breathingRoot k) (r := r) (R := R) hr hrR (s := ∅)
+  · exact countable_empty
+  · simpa using continuousOn_breathingFunction_closedAnnulus_lt_half_infsep k hr hRlt
+  · intro z hz
+    have hz' : z ∈ Metric.ball (breathingRoot k) R \ Metric.closedBall (breathingRoot k) r := by
+      simpa [diff_empty] using hz
+    have hdiff :=
+      differentiableOn_breathingFunction_openAnnulus_lt_half_infsep k hr hRlt
+    exact (hdiff z hz').differentiableAt (hopen.mem_nhds hz')
+
+/--
 For any finite family of breathing roots and any common radius
 `0 < R < infsep(range breathingRoot) / 2`, the sum of the corresponding circle
 integrals equals `2πi` times the sum of the explicit residue candidates.
@@ -533,6 +634,27 @@ theorem sum_circleIntegral_breathingFunction_of_lt_half_infsep_eq_two_pi_I_mul_s
   simp_rw [circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_of_lt_half_infsep
     (R := R) (hR := hR) (hRlt := hRlt)]
   rw [← Finset.mul_sum]
+
+/--
+For any finite family of breathing roots, the total separated-radius circle
+integral is independent of the common radius as long as
+`0 < r ≤ R < infsep(range breathingRoot) / 2`.
+
+This is the finite-family same-center annular comparison theorem inside the
+local separated regime.
+-/
+theorem sum_circleIntegral_breathingFunction_eq_of_le_lt_half_infsep
+    (S : Finset (ZMod CycleLen)) {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    Finset.sum S (fun k =>
+      (∮ z in C(breathingRoot k, R), UFRF.ResidueDefinition.breathingFunction z)) =
+      Finset.sum S (fun k =>
+        (∮ z in C(breathingRoot k, r), UFRF.ResidueDefinition.breathingFunction z)) := by
+  have hR : 0 < R := lt_of_lt_of_le hr hrR
+  rw [sum_circleIntegral_breathingFunction_of_lt_half_infsep_eq_two_pi_I_mul_sum_residueCandidate
+    (S := S) (R := R) hR hRlt]
+  rw [sum_circleIntegral_breathingFunction_of_lt_half_infsep_eq_two_pi_I_mul_sum_residueCandidate
+    (S := S) (R := r) hr (lt_of_le_of_lt hrR hRlt)]
 
 /--
 For any common radius `0 < R < infsep(range breathingRoot) / 2`, the sum of the
