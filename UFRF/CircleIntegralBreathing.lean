@@ -1219,6 +1219,22 @@ endpoints `y0`, `y1`. -/
 def closedRect (x0 x1 y0 y1 : ℝ) : Set ℂ :=
   uIcc x0 x1 ×ℂ uIcc y0 y1
 
+/--
+The finite set of breathing-root labels whose poles lie strictly inside the
+given rectangle.
+-/
+noncomputable def breathingRootsInInteriorRect (x0 x1 y0 y1 : ℝ) : Finset (ZMod CycleLen) := by
+  classical
+  exact Finset.univ.filter (fun k : ZMod CycleLen =>
+    breathingRoot k ∈ interior (closedRect x0 x1 y0 y1))
+
+@[simp] theorem mem_breathingRootsInInteriorRect
+    {x0 x1 y0 y1 : ℝ} {k : ZMod CycleLen} :
+    k ∈ breathingRootsInInteriorRect x0 x1 y0 y1 ↔
+      breathingRoot k ∈ interior (closedRect x0 x1 y0 y1) := by
+  classical
+  simp [breathingRootsInInteriorRect]
+
 private lemma sub_mul_I_ne_zero {r x : ℝ} (hr : 0 < r) :
     ((x : ℂ) - r * Complex.I) ≠ 0 := by
   intro hzero
@@ -1481,6 +1497,1759 @@ theorem boundaryRectIntegral_inv_centeredSquare {r : ℝ} (hr : 0 < r) :
     _ = Real.pi * Complex.I + Real.pi * Complex.I := by
           rw [hpiece]
     _ = 2 * Real.pi * Complex.I := by ring
+
+/--
+The translated kernel `z ↦ (z - a)⁻¹` has rectangle boundary integral `2πi`
+around the square centered at `a` with side length `2r`, for every `r > 0`.
+-/
+theorem boundaryRectIntegral_sub_inv_arbitraryCenterSquare {a : ℂ} {r : ℝ}
+    (hr : 0 < r) :
+    boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹)
+      (a.re - r) (a.re + r) (a.im - r) (a.im + r) = 2 * Real.pi * Complex.I := by
+  have hbottom :
+      (∫ x : ℝ in a.re - r..a.re + r,
+          (x + (a.im - r) * Complex.I - a)⁻¹) =
+        ∫ x : ℝ in -r..r, ((x : ℂ) - r * Complex.I)⁻¹ := by
+    calc
+      (∫ x : ℝ in a.re - r..a.re + r, (x + (a.im - r) * Complex.I - a)⁻¹)
+          =
+            ∫ x : ℝ in a.re - r..a.re + r, (((x - a.re : ℝ) : ℂ) - r * Complex.I)⁻¹ := by
+              refine intervalIntegral.integral_congr ?_
+              intro x hx
+              have harg :
+                  x + (a.im - r) * Complex.I - a =
+                    (((x - a.re : ℝ) : ℂ) - r * Complex.I) := by
+                apply Complex.ext <;> simp [sub_eq_add_neg, add_assoc, add_comm]
+              simp [harg]
+      _ = ∫ x : ℝ in -r..r, ((x : ℂ) - r * Complex.I)⁻¹ := by
+          simpa using
+            (intervalIntegral.integral_comp_sub_right
+              (f := fun x : ℝ => ((x : ℂ) - r * Complex.I)⁻¹)
+              (a := a.re - r) (b := a.re + r) (d := a.re))
+  have htop :
+      (∫ x : ℝ in a.re - r..a.re + r,
+          (x + (a.im + r) * Complex.I - a)⁻¹) =
+        ∫ x : ℝ in -r..r, ((x : ℂ) + r * Complex.I)⁻¹ := by
+    calc
+      (∫ x : ℝ in a.re - r..a.re + r, (x + (a.im + r) * Complex.I - a)⁻¹)
+          =
+            ∫ x : ℝ in a.re - r..a.re + r, (((x - a.re : ℝ) : ℂ) + r * Complex.I)⁻¹ := by
+              refine intervalIntegral.integral_congr ?_
+              intro x hx
+              have harg :
+                  x + (a.im + r) * Complex.I - a =
+                    (((x - a.re : ℝ) : ℂ) + r * Complex.I) := by
+                apply Complex.ext <;> simp [sub_eq_add_neg, add_left_comm, add_comm]
+              simp [harg]
+      _ = ∫ x : ℝ in -r..r, ((x : ℂ) + r * Complex.I)⁻¹ := by
+          simpa using
+            (intervalIntegral.integral_comp_sub_right
+              (f := fun x : ℝ => ((x : ℂ) + r * Complex.I)⁻¹)
+              (a := a.re - r) (b := a.re + r) (d := a.re))
+  have hright :
+      (∫ y : ℝ in a.im - r..a.im + r,
+          (a.re + r + y * Complex.I - a)⁻¹) =
+        ∫ y : ℝ in -r..r, ((r : ℂ) + y * Complex.I)⁻¹ := by
+    calc
+      (∫ y : ℝ in a.im - r..a.im + r, (a.re + r + y * Complex.I - a)⁻¹)
+          =
+            ∫ y : ℝ in a.im - r..a.im + r, ((r : ℂ) + (y - a.im) * Complex.I)⁻¹ := by
+              refine intervalIntegral.integral_congr ?_
+              intro y hy
+              have harg :
+                  a.re + r + y * Complex.I - a =
+                    ((r : ℂ) + (y - a.im) * Complex.I) := by
+                apply Complex.ext <;> simp [sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+              simp [harg]
+      _ = ∫ y : ℝ in -r..r, ((r : ℂ) + y * Complex.I)⁻¹ := by
+          simpa using
+            (intervalIntegral.integral_comp_sub_right
+              (f := fun y : ℝ => ((r : ℂ) + y * Complex.I)⁻¹)
+              (a := a.im - r) (b := a.im + r) (d := a.im))
+  have hleft :
+      (∫ y : ℝ in a.im - r..a.im + r,
+          (a.re - r + y * Complex.I - a)⁻¹) =
+        ∫ y : ℝ in -r..r, (((-r : ℂ) + y * Complex.I) : ℂ)⁻¹ := by
+    calc
+      (∫ y : ℝ in a.im - r..a.im + r, (a.re - r + y * Complex.I - a)⁻¹)
+          =
+            ∫ y : ℝ in a.im - r..a.im + r, (((-r : ℂ) + (y - a.im) * Complex.I) : ℂ)⁻¹ := by
+              refine intervalIntegral.integral_congr ?_
+              intro y hy
+              have harg :
+                  a.re - r + y * Complex.I - a =
+                    (((-r : ℂ) + (y - a.im) * Complex.I) : ℂ) := by
+                apply Complex.ext <;> simp [sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+              simp [harg]
+      _ = ∫ y : ℝ in -r..r, (((-r : ℂ) + y * Complex.I) : ℂ)⁻¹ := by
+          simpa using
+            (intervalIntegral.integral_comp_sub_right
+              (f := fun y : ℝ => (((-r : ℂ) + y * Complex.I) : ℂ)⁻¹)
+              (a := a.im - r) (b := a.im + r) (d := a.im))
+  calc
+    boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹)
+        (a.re - r) (a.re + r) (a.im - r) (a.im + r)
+        =
+          ((∫ x : ℝ in -r..r, ((x : ℂ) - r * Complex.I)⁻¹) -
+              (∫ x : ℝ in -r..r, ((x : ℂ) + r * Complex.I)⁻¹) +
+            Complex.I • (∫ y : ℝ in -r..r, ((r : ℂ) + y * Complex.I)⁻¹) -
+            Complex.I • (∫ y : ℝ in -r..r, (((-r : ℂ) + y * Complex.I) : ℂ)⁻¹)) := by
+              simp [boundaryRectIntegral, hbottom, htop, hright, hleft]
+    _ = boundaryRectIntegral (fun z : ℂ => z⁻¹) (-r) r (-r) r := by
+          simp [boundaryRectIntegral, sub_eq_add_neg]
+    _ = 2 * Real.pi * Complex.I := boundaryRectIntegral_inv_centeredSquare hr
+
+private lemma intervalIntegrable_sub_inv_horizontal_off_im
+    {a : ℂ} {y x0 x1 : ℝ} (hy : y ≠ a.im) :
+    IntervalIntegrable (fun x : ℝ => (x + y * Complex.I - a)⁻¹)
+      MeasureTheory.volume x0 x1 := by
+  have hcont :
+      ContinuousOn (fun x : ℝ => (x + y * Complex.I - a)⁻¹) (uIcc x0 x1) := by
+    refine (by
+      fun_prop : ContinuousOn (fun x : ℝ => (x + y * Complex.I - a : ℂ)) (uIcc x0 x1)).inv₀ ?_
+    intro x hx hzero
+    have hz : x + y * Complex.I = a := sub_eq_zero.mp hzero
+    exact hy (by simpa using congrArg Complex.im hz)
+  exact ContinuousOn.intervalIntegrable
+    (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ)) hcont
+
+private lemma intervalIntegrable_sub_inv_vertical_off_re
+    {a : ℂ} {x y0 y1 : ℝ} (hx : x ≠ a.re) :
+    IntervalIntegrable (fun y : ℝ => (x + y * Complex.I - a)⁻¹)
+      MeasureTheory.volume y0 y1 := by
+  have hcont :
+      ContinuousOn (fun y : ℝ => (x + y * Complex.I - a)⁻¹) (uIcc y0 y1) := by
+    refine (by
+      fun_prop : ContinuousOn (fun y : ℝ => (x + y * Complex.I - a : ℂ)) (uIcc y0 y1)).inv₀ ?_
+    intro y hy hzero
+    have hz : x + y * Complex.I = a := sub_eq_zero.mp hzero
+    exact hx (by simpa using congrArg Complex.re hz)
+  exact ContinuousOn.intervalIntegrable
+    (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ)) hcont
+
+private lemma intervalIntegrable_sub_inv_horizontal_of_ne
+    {a : ℂ} {y x0 x1 : ℝ}
+    (h : ∀ x ∈ uIcc x0 x1, x + y * Complex.I ≠ a) :
+    IntervalIntegrable (fun x : ℝ => (x + y * Complex.I - a)⁻¹)
+      MeasureTheory.volume x0 x1 := by
+  have hcont :
+      ContinuousOn (fun x : ℝ => (x + y * Complex.I - a)⁻¹) (uIcc x0 x1) := by
+    refine (by
+      fun_prop : ContinuousOn (fun x : ℝ => (x + y * Complex.I - a : ℂ)) (uIcc x0 x1)).inv₀ ?_
+    intro x hx hzero
+    exact h x hx (sub_eq_zero.mp hzero)
+  exact ContinuousOn.intervalIntegrable
+    (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ)) hcont
+
+private lemma intervalIntegrable_sub_inv_vertical_of_ne
+    {a : ℂ} {x y0 y1 : ℝ}
+    (h : ∀ y ∈ uIcc y0 y1, x + y * Complex.I ≠ a) :
+    IntervalIntegrable (fun y : ℝ => (x + y * Complex.I - a)⁻¹)
+      MeasureTheory.volume y0 y1 := by
+  have hcont :
+      ContinuousOn (fun y : ℝ => (x + y * Complex.I - a)⁻¹) (uIcc y0 y1) := by
+    refine (by
+      fun_prop : ContinuousOn (fun y : ℝ => (x + y * Complex.I - a : ℂ)) (uIcc y0 y1)).inv₀ ?_
+    intro y hy hzero
+    exact h y hy (sub_eq_zero.mp hzero)
+  exact ContinuousOn.intervalIntegrable
+    (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ)) hcont
+
+private theorem boundaryRectIntegral_split_vertical
+    {f : ℂ → ℂ} {x0 x1 x2 y0 y1 : ℝ}
+    (hbot01 : IntervalIntegrable (fun x : ℝ => f (x + y0 * Complex.I))
+      MeasureTheory.volume x0 x1)
+    (hbot12 : IntervalIntegrable (fun x : ℝ => f (x + y0 * Complex.I))
+      MeasureTheory.volume x1 x2)
+    (htop01 : IntervalIntegrable (fun x : ℝ => f (x + y1 * Complex.I))
+      MeasureTheory.volume x0 x1)
+    (htop12 : IntervalIntegrable (fun x : ℝ => f (x + y1 * Complex.I))
+      MeasureTheory.volume x1 x2) :
+    boundaryRectIntegral f x0 x2 y0 y1 =
+      boundaryRectIntegral f x0 x1 y0 y1 + boundaryRectIntegral f x1 x2 y0 y1 := by
+  rw [boundaryRectIntegral, boundaryRectIntegral, boundaryRectIntegral]
+  have hbot := intervalIntegral.integral_add_adjacent_intervals hbot01 hbot12
+  have htop := intervalIntegral.integral_add_adjacent_intervals htop01 htop12
+  rw [← hbot, ← htop]
+  ring
+
+private theorem boundaryRectIntegral_split_horizontal
+    {f : ℂ → ℂ} {x0 x1 y0 y1 y2 : ℝ}
+    (hright01 : IntervalIntegrable (fun y : ℝ => f (x1 + y * Complex.I))
+      MeasureTheory.volume y0 y1)
+    (hright12 : IntervalIntegrable (fun y : ℝ => f (x1 + y * Complex.I))
+      MeasureTheory.volume y1 y2)
+    (hleft01 : IntervalIntegrable (fun y : ℝ => f (x0 + y * Complex.I))
+      MeasureTheory.volume y0 y1)
+    (hleft12 : IntervalIntegrable (fun y : ℝ => f (x0 + y * Complex.I))
+      MeasureTheory.volume y1 y2) :
+    boundaryRectIntegral f x0 x1 y0 y2 =
+      boundaryRectIntegral f x0 x1 y0 y1 + boundaryRectIntegral f x0 x1 y1 y2 := by
+  rw [boundaryRectIntegral, boundaryRectIntegral, boundaryRectIntegral]
+  have hright := intervalIntegral.integral_add_adjacent_intervals hright01 hright12
+  have hleft := intervalIntegral.integral_add_adjacent_intervals hleft01 hleft12
+  rw [← hright, ← hleft]
+  simp [sub_eq_add_neg, smul_eq_mul, add_assoc, add_left_comm, add_comm, mul_add, mul_comm]
+
+/--
+If the pole `a` lies in the interior of a positively oriented rectangle, then
+the kernel `z ↦ (z - a)⁻¹` has boundary rectangle integral `2πi`.
+
+This is the arbitrary-rectangle nonzero kernel theorem obtained by reducing the
+outer rectangle to an inner centered square and four surrounding pole-free
+rectangles.
+-/
+theorem boundaryRectIntegral_sub_inv_eq_two_pi_I_of_mem_interior_closedRect
+    {a : ℂ} {x0 x1 y0 y1 : ℝ}
+    (hx : x0 < x1) (hy : y0 < y1)
+    (ha : a ∈ interior (closedRect x0 x1 y0 y1)) :
+    boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) x0 x1 y0 y1 =
+      2 * Real.pi * Complex.I := by
+  have hainter :
+      a.re ∈ Set.Ioo x0 x1 ∧ a.im ∈ Set.Ioo y0 y1 := by
+    simpa [closedRect, interior_reProdIm, Set.uIcc_of_le hx.le, Set.uIcc_of_le hy.le, interior_Icc]
+      using ha
+  have hx0a : x0 < a.re := hainter.1.1
+  have hax1 : a.re < x1 := hainter.1.2
+  have hy0a : y0 < a.im := hainter.2.1
+  have hay1 : a.im < y1 := hainter.2.2
+  let r : ℝ :=
+    min ((a.re - x0) / 2)
+      (min ((x1 - a.re) / 2) (min ((a.im - y0) / 2) ((y1 - a.im) / 2)))
+  let xl : ℝ := a.re - r
+  let xr : ℝ := a.re + r
+  let yb : ℝ := a.im - r
+  let yt : ℝ := a.im + r
+  have hrpos0 : 0 < (a.re - x0) / 2 := by linarith
+  have hrpos1 : 0 < (x1 - a.re) / 2 := by linarith
+  have hrpos2 : 0 < (a.im - y0) / 2 := by linarith
+  have hrpos3 : 0 < (y1 - a.im) / 2 := by linarith
+  have hr : 0 < r := by
+    dsimp [r]
+    exact lt_min hrpos0 (lt_min hrpos1 (lt_min hrpos2 hrpos3))
+  have hrle0 : r ≤ (a.re - x0) / 2 := by
+    dsimp [r]
+    exact min_le_left _ _
+  have hrle1 : r ≤ (x1 - a.re) / 2 := by
+    dsimp [r]
+    exact (min_le_right _ _).trans (min_le_left _ _)
+  have hrle2 : r ≤ (a.im - y0) / 2 := by
+    dsimp [r]
+    exact (min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _))
+  have hrle3 : r ≤ (y1 - a.im) / 2 := by
+    dsimp [r]
+    exact (min_le_right _ _).trans ((min_le_right _ _).trans (min_le_right _ _))
+  have hxl0 : x0 < xl := by
+    dsimp [xl]
+    linarith
+  have hxlxr : xl < xr := by
+    dsimp [xl, xr]
+    linarith
+  have hxr1 : xr < x1 := by
+    dsimp [xr]
+    linarith
+  have hyb0 : y0 < yb := by
+    dsimp [yb]
+    linarith
+  have hybyt : yb < yt := by
+    dsimp [yb, yt]
+    linarith
+  have hyt1 : yt < y1 := by
+    dsimp [yt]
+    linarith
+  have hy0_ne : y0 ≠ a.im := by linarith
+  have hy1_ne : y1 ≠ a.im := by linarith
+  have hxl_ne : xl ≠ a.re := by
+    dsimp [xl]
+    linarith
+  have hxr_ne : xr ≠ a.re := by
+    dsimp [xr]
+    linarith
+  have hsplit0 :
+      boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) x0 x1 y0 y1 =
+        boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) x0 xl y0 y1 +
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl x1 y0 y1 :=
+    boundaryRectIntegral_split_vertical
+      (intervalIntegrable_sub_inv_horizontal_off_im (a := a) (y := y0) hy0_ne)
+      (intervalIntegrable_sub_inv_horizontal_off_im (a := a) (y := y0) hy0_ne)
+      (intervalIntegrable_sub_inv_horizontal_off_im (a := a) (y := y1) hy1_ne)
+      (intervalIntegrable_sub_inv_horizontal_off_im (a := a) (y := y1) hy1_ne)
+  have hsplit1 :
+      boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl x1 y0 y1 =
+        boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr y0 y1 +
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xr x1 y0 y1 :=
+    boundaryRectIntegral_split_vertical
+      (intervalIntegrable_sub_inv_horizontal_off_im (a := a) (y := y0) hy0_ne)
+      (intervalIntegrable_sub_inv_horizontal_off_im (a := a) (y := y0) hy0_ne)
+      (intervalIntegrable_sub_inv_horizontal_off_im (a := a) (y := y1) hy1_ne)
+      (intervalIntegrable_sub_inv_horizontal_off_im (a := a) (y := y1) hy1_ne)
+  have hsplit2 :
+      boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr y0 y1 =
+        boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr y0 yb +
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr yb y1 :=
+    boundaryRectIntegral_split_horizontal
+      (intervalIntegrable_sub_inv_vertical_off_re (a := a) (x := xr) hxr_ne)
+      (intervalIntegrable_sub_inv_vertical_off_re (a := a) (x := xr) hxr_ne)
+      (intervalIntegrable_sub_inv_vertical_off_re (a := a) (x := xl) hxl_ne)
+      (intervalIntegrable_sub_inv_vertical_off_re (a := a) (x := xl) hxl_ne)
+  have hsplit3 :
+      boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr yb y1 =
+        boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr yb yt +
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr yt y1 :=
+    boundaryRectIntegral_split_horizontal
+      (intervalIntegrable_sub_inv_vertical_off_re (a := a) (x := xr) hxr_ne)
+      (intervalIntegrable_sub_inv_vertical_off_re (a := a) (x := xr) hxr_ne)
+      (intervalIntegrable_sub_inv_vertical_off_re (a := a) (x := xl) hxl_ne)
+      (intervalIntegrable_sub_inv_vertical_off_re (a := a) (x := xl) hxl_ne)
+  have hnot_left : a ∉ closedRect x0 xl y0 y1 := by
+    intro hmem
+    have hre : a.re ∈ Set.Icc x0 xl := by
+      simpa [closedRect, Set.uIcc_of_le hxl0.le, Set.uIcc_of_le hy.le] using hmem.1
+    have hlt : xl < a.re := by
+      dsimp [xl]
+      linarith
+    exact not_le_of_gt hlt hre.2
+  have hnot_right : a ∉ closedRect xr x1 y0 y1 := by
+    intro hmem
+    have hre : a.re ∈ Set.Icc xr x1 := by
+      simpa [closedRect, Set.uIcc_of_le hxr1.le, Set.uIcc_of_le hy.le] using hmem.1
+    have hlt : a.re < xr := by
+      dsimp [xr]
+      linarith
+    exact not_le_of_gt hlt hre.1
+  have hnot_bottom : a ∉ closedRect xl xr y0 yb := by
+    intro hmem
+    have him : a.im ∈ Set.Icc y0 yb := by
+      simpa [closedRect, Set.uIcc_of_le hxlxr.le, Set.uIcc_of_le hyb0.le] using hmem.2
+    have hlt : yb < a.im := by
+      dsimp [yb]
+      linarith
+    exact not_le_of_gt hlt him.2
+  have hnot_top : a ∉ closedRect xl xr yt y1 := by
+    intro hmem
+    have him : a.im ∈ Set.Icc yt y1 := by
+      simpa [closedRect, Set.uIcc_of_le hxlxr.le, Set.uIcc_of_le hyt1.le] using hmem.2
+    have hlt : a.im < yt := by
+      dsimp [yt]
+      linarith
+    exact not_le_of_gt hlt him.1
+  have hzero_left :
+      boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) x0 xl y0 y1 = 0 :=
+    boundaryRectIntegral_sub_inv_eq_zero_of_not_mem_closedRect hnot_left
+  have hzero_right :
+      boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xr x1 y0 y1 = 0 :=
+    boundaryRectIntegral_sub_inv_eq_zero_of_not_mem_closedRect hnot_right
+  have hzero_bottom :
+      boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr y0 yb = 0 :=
+    boundaryRectIntegral_sub_inv_eq_zero_of_not_mem_closedRect hnot_bottom
+  have hzero_top :
+      boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr yt y1 = 0 :=
+    boundaryRectIntegral_sub_inv_eq_zero_of_not_mem_closedRect hnot_top
+  have hsquare :
+      boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr yb yt =
+        2 * Real.pi * Complex.I := by
+    simpa [xl, xr, yb, yt] using
+      boundaryRectIntegral_sub_inv_arbitraryCenterSquare (a := a) (r := r) hr
+  calc
+    boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) x0 x1 y0 y1
+        =
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) x0 xl y0 y1 +
+            boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl x1 y0 y1 := hsplit0
+    _ =
+        boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) x0 xl y0 y1 +
+          (boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr y0 y1 +
+            boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xr x1 y0 y1) := by
+              rw [hsplit1]
+    _ =
+        boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) x0 xl y0 y1 +
+          (boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr y0 yb +
+            boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr yb y1) +
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xr x1 y0 y1 := by
+              rw [hsplit2]
+              abel
+    _ =
+        boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) x0 xl y0 y1 +
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr y0 yb +
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr yb yt +
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xl xr yt y1 +
+          boundaryRectIntegral (fun z : ℂ => (z - a)⁻¹) xr x1 y0 y1 := by
+              rw [hsplit3]
+              abel
+    _ = 0 + 0 + (2 * Real.pi * Complex.I) + 0 + 0 := by
+          rw [hzero_left, hzero_bottom, hsquare, hzero_top, hzero_right]
+    _ = 2 * Real.pi * Complex.I := by simp
+
+private lemma bottom_edge_ne_center {a : ℂ} {r x : ℝ} (hr : 0 < r) :
+    x + (a.im - r) * Complex.I ≠ a := by
+  intro h
+  have him : a.im - r = a.im := by
+    simpa using congrArg Complex.im h
+  linarith
+
+private lemma top_edge_ne_center {a : ℂ} {r x : ℝ} (hr : 0 < r) :
+    x + (a.im + r) * Complex.I ≠ a := by
+  intro h
+  have him : a.im + r = a.im := by
+    simpa using congrArg Complex.im h
+  linarith
+
+private lemma right_edge_ne_center {a : ℂ} {r y : ℝ} (hr : 0 < r) :
+    a.re + r + y * Complex.I ≠ a := by
+  intro h
+  have hre : a.re + r = a.re := by
+    simpa using congrArg Complex.re h
+  linarith
+
+private lemma left_edge_ne_center {a : ℂ} {r y : ℝ} (hr : 0 < r) :
+    a.re - r + y * Complex.I ≠ a := by
+  intro h
+  have hre : a.re - r = a.re := by
+    simpa using congrArg Complex.re h
+  linarith
+
+/--
+If a square centered at `breathingRoot k` contains no other breathing roots,
+then the rectangle boundary integral of `breathingFunction` around that square
+is exactly `2πi` times the explicit residue candidate at `k`.
+
+This is a noncircular local contour theorem for the specific function
+`z ↦ 1 / (z^13 - 1)`. It relies only on the proved rectangle kernel theorems
+and the explicit partial-fraction identity from `ResidueDefinition`.
+-/
+theorem boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_of_no_otherRoots_centeredSquare
+    (k : ZMod CycleLen) {r : ℝ} (hr : 0 < r)
+    (hother :
+      ∀ j : ZMod CycleLen, j ≠ k →
+        breathingRoot j ∉ closedRect
+          ((breathingRoot k).re - r) ((breathingRoot k).re + r)
+          ((breathingRoot k).im - r) ((breathingRoot k).im + r)) :
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction
+      ((breathingRoot k).re - r) ((breathingRoot k).re + r)
+      ((breathingRoot k).im - r) ((breathingRoot k).im + r) =
+      (2 * Real.pi * Complex.I) * UFRF.ResidueDefinition.residueCandidateAt k := by
+  classical
+  let a : ℂ := breathingRoot k
+  let x0 : ℝ := a.re - r
+  let x1 : ℝ := a.re + r
+  let y0 : ℝ := a.im - r
+  let y1 : ℝ := a.im + r
+  have hx0_mem : x0 ∈ uIcc x0 x1 := by
+    simp [x0, x1, hr.le]
+  have hx1_mem : x1 ∈ uIcc x0 x1 := by
+    simp [x0, x1, hr.le]
+  have hy0_mem : y0 ∈ uIcc y0 y1 := by
+    simp [y0, y1, hr.le]
+  have hy1_mem : y1 ∈ uIcc y0 y1 := by
+    simp [y0, y1, hr.le]
+  have hother' :
+      ∀ j : ZMod CycleLen, j ≠ k → breathingRoot j ∉ closedRect x0 x1 y0 y1 := by
+    intro j hj
+    simpa [a, x0, x1, y0, y1] using hother j hj
+  have hbottom_kernel_int :
+      ∀ j : ZMod CycleLen,
+        IntervalIntegrable
+          (fun x : ℝ => (x + y0 * Complex.I - breathingRoot j)⁻¹)
+          MeasureTheory.volume x0 x1 := by
+    intro j
+    have hcont :
+        ContinuousOn
+          (fun x : ℝ => (x + y0 * Complex.I - breathingRoot j)⁻¹)
+          (uIcc x0 x1) := by
+      refine (by
+        fun_prop : ContinuousOn
+          (fun x : ℝ => (x + y0 * Complex.I - breathingRoot j : ℂ))
+          (uIcc x0 x1)).inv₀ ?_
+      intro x hx hzero
+      by_cases hjk : j = k
+      · subst hjk
+        have hneq : x + y0 * Complex.I ≠ a := by
+          simpa [a, y0] using bottom_edge_ne_center (a := a) (r := r) (x := x) hr
+        exact hneq (by simpa [a] using sub_eq_zero.mp hzero)
+      · have hz : x + y0 * Complex.I = breathingRoot j := sub_eq_zero.mp hzero
+        have hmem : breathingRoot j ∈ closedRect x0 x1 y0 y1 := by
+          rw [closedRect, ← hz]
+          change (x + y0 * Complex.I).re ∈ uIcc x0 x1 ∧ (x + y0 * Complex.I).im ∈ uIcc y0 y1
+          constructor
+          · simpa using hx
+          · simpa using hy0_mem
+        exact hother' j hjk hmem
+    exact ContinuousOn.intervalIntegrable
+      (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ)) hcont
+  have htop_kernel_int :
+      ∀ j : ZMod CycleLen,
+        IntervalIntegrable
+          (fun x : ℝ => (x + y1 * Complex.I - breathingRoot j)⁻¹)
+          MeasureTheory.volume x0 x1 := by
+    intro j
+    have hcont :
+        ContinuousOn
+          (fun x : ℝ => (x + y1 * Complex.I - breathingRoot j)⁻¹)
+          (uIcc x0 x1) := by
+      refine (by
+        fun_prop : ContinuousOn
+          (fun x : ℝ => (x + y1 * Complex.I - breathingRoot j : ℂ))
+          (uIcc x0 x1)).inv₀ ?_
+      intro x hx hzero
+      by_cases hjk : j = k
+      · subst hjk
+        have hneq : x + y1 * Complex.I ≠ a := by
+          simpa [a, y1] using top_edge_ne_center (a := a) (r := r) (x := x) hr
+        exact hneq (by simpa [a] using sub_eq_zero.mp hzero)
+      · have hz : x + y1 * Complex.I = breathingRoot j := sub_eq_zero.mp hzero
+        have hmem : breathingRoot j ∈ closedRect x0 x1 y0 y1 := by
+          rw [closedRect, ← hz]
+          change (x + y1 * Complex.I).re ∈ uIcc x0 x1 ∧ (x + y1 * Complex.I).im ∈ uIcc y0 y1
+          constructor
+          · simpa using hx
+          · simpa using hy1_mem
+        exact hother' j hjk hmem
+    exact ContinuousOn.intervalIntegrable
+      (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ)) hcont
+  have hright_kernel_int :
+      ∀ j : ZMod CycleLen,
+        IntervalIntegrable
+          (fun y : ℝ => (x1 + y * Complex.I - breathingRoot j)⁻¹)
+          MeasureTheory.volume y0 y1 := by
+    intro j
+    have hcont :
+        ContinuousOn
+          (fun y : ℝ => (x1 + y * Complex.I - breathingRoot j)⁻¹)
+          (uIcc y0 y1) := by
+      refine (by
+        fun_prop : ContinuousOn
+          (fun y : ℝ => (x1 + y * Complex.I - breathingRoot j : ℂ))
+          (uIcc y0 y1)).inv₀ ?_
+      intro y hy hzero
+      by_cases hjk : j = k
+      · subst hjk
+        have hneq : x1 + y * Complex.I ≠ a := by
+          simpa [a, x1] using right_edge_ne_center (a := a) (r := r) (y := y) hr
+        exact hneq (by simpa [a] using sub_eq_zero.mp hzero)
+      · have hz : x1 + y * Complex.I = breathingRoot j := sub_eq_zero.mp hzero
+        have hmem : breathingRoot j ∈ closedRect x0 x1 y0 y1 := by
+          rw [closedRect, ← hz]
+          change (x1 + y * Complex.I).re ∈ uIcc x0 x1 ∧ (x1 + y * Complex.I).im ∈ uIcc y0 y1
+          constructor
+          · simpa using hx1_mem
+          · simpa using hy
+        exact hother' j hjk hmem
+    exact ContinuousOn.intervalIntegrable
+      (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ)) hcont
+  have hleft_kernel_int :
+      ∀ j : ZMod CycleLen,
+        IntervalIntegrable
+          (fun y : ℝ => (x0 + y * Complex.I - breathingRoot j)⁻¹)
+          MeasureTheory.volume y0 y1 := by
+    intro j
+    have hcont :
+        ContinuousOn
+          (fun y : ℝ => (x0 + y * Complex.I - breathingRoot j)⁻¹)
+          (uIcc y0 y1) := by
+      refine (by
+        fun_prop : ContinuousOn
+          (fun y : ℝ => (x0 + y * Complex.I - breathingRoot j : ℂ))
+          (uIcc y0 y1)).inv₀ ?_
+      intro y hy hzero
+      by_cases hjk : j = k
+      · subst hjk
+        have hneq : x0 + y * Complex.I ≠ a := by
+          simpa [a, x0] using left_edge_ne_center (a := a) (r := r) (y := y) hr
+        exact hneq (by simpa [a] using sub_eq_zero.mp hzero)
+      · have hz : x0 + y * Complex.I = breathingRoot j := sub_eq_zero.mp hzero
+        have hmem : breathingRoot j ∈ closedRect x0 x1 y0 y1 := by
+          rw [closedRect, ← hz]
+          change (x0 + y * Complex.I).re ∈ uIcc x0 x1 ∧ (x0 + y * Complex.I).im ∈ uIcc y0 y1
+          constructor
+          · simpa using hx0_mem
+          · simpa using hy
+        exact hother' j hjk hmem
+    exact ContinuousOn.intervalIntegrable
+      (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ)) hcont
+  have hbottom_den :
+      ∀ x ∈ uIcc x0 x1,
+        UFRF.ResidueDefinition.breathingDenominator (x + y0 * Complex.I) ≠ 0 := by
+    intro x hx hzero
+    obtain ⟨j, hj⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+    by_cases hjk : j = k
+    · subst hjk
+      have hneq : x + y0 * Complex.I ≠ a := by
+        simpa [a, y0] using bottom_edge_ne_center (a := a) (r := r) (x := x) hr
+      exact hneq (by simpa [a] using hj)
+    · have hmem : breathingRoot j ∈ closedRect x0 x1 y0 y1 := by
+        rw [closedRect, ← hj]
+        change (x + y0 * Complex.I).re ∈ uIcc x0 x1 ∧ (x + y0 * Complex.I).im ∈ uIcc y0 y1
+        constructor
+        · simpa using hx
+        · simpa using hy0_mem
+      exact hother' j hjk hmem
+  have htop_den :
+      ∀ x ∈ uIcc x0 x1,
+        UFRF.ResidueDefinition.breathingDenominator (x + y1 * Complex.I) ≠ 0 := by
+    intro x hx hzero
+    obtain ⟨j, hj⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+    by_cases hjk : j = k
+    · subst hjk
+      have hneq : x + y1 * Complex.I ≠ a := by
+        simpa [a, y1] using top_edge_ne_center (a := a) (r := r) (x := x) hr
+      exact hneq (by simpa [a] using hj)
+    · have hmem : breathingRoot j ∈ closedRect x0 x1 y0 y1 := by
+        rw [closedRect, ← hj]
+        change (x + y1 * Complex.I).re ∈ uIcc x0 x1 ∧ (x + y1 * Complex.I).im ∈ uIcc y0 y1
+        constructor
+        · simpa using hx
+        · simpa using hy1_mem
+      exact hother' j hjk hmem
+  have hright_den :
+      ∀ y ∈ uIcc y0 y1,
+        UFRF.ResidueDefinition.breathingDenominator (x1 + y * Complex.I) ≠ 0 := by
+    intro y hy hzero
+    obtain ⟨j, hj⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+    by_cases hjk : j = k
+    · subst hjk
+      have hneq : x1 + y * Complex.I ≠ a := by
+        simpa [a, x1] using right_edge_ne_center (a := a) (r := r) (y := y) hr
+      exact hneq (by simpa [a] using hj)
+    · have hmem : breathingRoot j ∈ closedRect x0 x1 y0 y1 := by
+        rw [closedRect, ← hj]
+        change (x1 + y * Complex.I).re ∈ uIcc x0 x1 ∧ (x1 + y * Complex.I).im ∈ uIcc y0 y1
+        constructor
+        · simpa using hx1_mem
+        · simpa using hy
+      exact hother' j hjk hmem
+  have hleft_den :
+      ∀ y ∈ uIcc y0 y1,
+        UFRF.ResidueDefinition.breathingDenominator (x0 + y * Complex.I) ≠ 0 := by
+    intro y hy hzero
+    obtain ⟨j, hj⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+    by_cases hjk : j = k
+    · subst hjk
+      have hneq : x0 + y * Complex.I ≠ a := by
+        simpa [a, x0] using left_edge_ne_center (a := a) (r := r) (y := y) hr
+      exact hneq (by simpa [a] using hj)
+    · have hmem : breathingRoot j ∈ closedRect x0 x1 y0 y1 := by
+        rw [closedRect, ← hj]
+        change (x0 + y * Complex.I).re ∈ uIcc x0 x1 ∧ (x0 + y * Complex.I).im ∈ uIcc y0 y1
+        constructor
+        · simpa using hx0_mem
+        · simpa using hy
+      exact hother' j hjk hmem
+  have hbottom_pf :
+      (∫ x : ℝ in x0..x1, UFRF.ResidueDefinition.breathingFunction (x + y0 * Complex.I)) =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            (∫ x : ℝ in x0..x1, (x + y0 * Complex.I - breathingRoot j)⁻¹) := by
+    calc
+      (∫ x : ℝ in x0..x1, UFRF.ResidueDefinition.breathingFunction (x + y0 * Complex.I))
+          =
+            ∫ x : ℝ in x0..x1,
+              ∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (x + y0 * Complex.I - breathingRoot j)⁻¹ := by
+                    refine intervalIntegral.integral_congr ?_
+                    intro x hx
+                    simpa [smul_eq_mul] using
+                      UFRF.ResidueDefinition.breathingFunction_eq_sum_residueCandidateAt_sub_inv
+                        (z := x + y0 * Complex.I) (hbottom_den x hx)
+      _ =
+          ∑ j : ZMod CycleLen,
+            ∫ x : ℝ in x0..x1,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (x + y0 * Complex.I - breathingRoot j)⁻¹ := by
+                  simpa using
+                    (intervalIntegral.integral_finset_sum
+                      (s := Finset.univ)
+                      (f := fun j x =>
+                        UFRF.ResidueDefinition.residueCandidateAt j •
+                          (x + y0 * Complex.I - breathingRoot j)⁻¹)
+                      (fun j hj => (hbottom_kernel_int j).smul
+                        (UFRF.ResidueDefinition.residueCandidateAt j)))
+      _ =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              (∫ x : ℝ in x0..x1, (x + y0 * Complex.I - breathingRoot j)⁻¹) := by
+                refine Finset.sum_congr rfl ?_
+                intro j hj
+                rw [smul_eq_mul]
+                exact
+                  (intervalIntegral.integral_const_mul
+                    (a := x0) (b := x1)
+                    (r := UFRF.ResidueDefinition.residueCandidateAt j)
+                    (f := fun x : ℝ => (x + y0 * Complex.I - breathingRoot j)⁻¹))
+  have htop_pf :
+      (∫ x : ℝ in x0..x1, UFRF.ResidueDefinition.breathingFunction (x + y1 * Complex.I)) =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            (∫ x : ℝ in x0..x1, (x + y1 * Complex.I - breathingRoot j)⁻¹) := by
+    calc
+      (∫ x : ℝ in x0..x1, UFRF.ResidueDefinition.breathingFunction (x + y1 * Complex.I))
+          =
+            ∫ x : ℝ in x0..x1,
+              ∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (x + y1 * Complex.I - breathingRoot j)⁻¹ := by
+                    refine intervalIntegral.integral_congr ?_
+                    intro x hx
+                    simpa [smul_eq_mul] using
+                      UFRF.ResidueDefinition.breathingFunction_eq_sum_residueCandidateAt_sub_inv
+                        (z := x + y1 * Complex.I) (htop_den x hx)
+      _ =
+          ∑ j : ZMod CycleLen,
+            ∫ x : ℝ in x0..x1,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (x + y1 * Complex.I - breathingRoot j)⁻¹ := by
+                  simpa using
+                    (intervalIntegral.integral_finset_sum
+                      (s := Finset.univ)
+                      (f := fun j x =>
+                        UFRF.ResidueDefinition.residueCandidateAt j •
+                          (x + y1 * Complex.I - breathingRoot j)⁻¹)
+                      (fun j hj => (htop_kernel_int j).smul
+                        (UFRF.ResidueDefinition.residueCandidateAt j)))
+      _ =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              (∫ x : ℝ in x0..x1, (x + y1 * Complex.I - breathingRoot j)⁻¹) := by
+                refine Finset.sum_congr rfl ?_
+                intro j hj
+                rw [smul_eq_mul]
+                exact
+                  (intervalIntegral.integral_const_mul
+                    (a := x0) (b := x1)
+                    (r := UFRF.ResidueDefinition.residueCandidateAt j)
+                    (f := fun x : ℝ => (x + y1 * Complex.I - breathingRoot j)⁻¹))
+  have hright_pf :
+      (∫ y : ℝ in y0..y1, UFRF.ResidueDefinition.breathingFunction (x1 + y * Complex.I)) =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            (∫ y : ℝ in y0..y1, (x1 + y * Complex.I - breathingRoot j)⁻¹) := by
+    calc
+      (∫ y : ℝ in y0..y1, UFRF.ResidueDefinition.breathingFunction (x1 + y * Complex.I))
+          =
+            ∫ y : ℝ in y0..y1,
+              ∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (x1 + y * Complex.I - breathingRoot j)⁻¹ := by
+                    refine intervalIntegral.integral_congr ?_
+                    intro y hy
+                    simpa [smul_eq_mul] using
+                      UFRF.ResidueDefinition.breathingFunction_eq_sum_residueCandidateAt_sub_inv
+                        (z := x1 + y * Complex.I) (hright_den y hy)
+      _ =
+          ∑ j : ZMod CycleLen,
+            ∫ y : ℝ in y0..y1,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (x1 + y * Complex.I - breathingRoot j)⁻¹ := by
+                  simpa using
+                    (intervalIntegral.integral_finset_sum
+                      (s := Finset.univ)
+                      (f := fun j y =>
+                        UFRF.ResidueDefinition.residueCandidateAt j •
+                          (x1 + y * Complex.I - breathingRoot j)⁻¹)
+                      (fun j hj => (hright_kernel_int j).smul
+                        (UFRF.ResidueDefinition.residueCandidateAt j)))
+      _ =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              (∫ y : ℝ in y0..y1, (x1 + y * Complex.I - breathingRoot j)⁻¹) := by
+                refine Finset.sum_congr rfl ?_
+                intro j hj
+                rw [smul_eq_mul]
+                exact
+                  (intervalIntegral.integral_const_mul
+                    (a := y0) (b := y1)
+                    (r := UFRF.ResidueDefinition.residueCandidateAt j)
+                    (f := fun y : ℝ => (x1 + y * Complex.I - breathingRoot j)⁻¹))
+  have hleft_pf :
+      (∫ y : ℝ in y0..y1, UFRF.ResidueDefinition.breathingFunction (x0 + y * Complex.I)) =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            (∫ y : ℝ in y0..y1, (x0 + y * Complex.I - breathingRoot j)⁻¹) := by
+    calc
+      (∫ y : ℝ in y0..y1, UFRF.ResidueDefinition.breathingFunction (x0 + y * Complex.I))
+          =
+            ∫ y : ℝ in y0..y1,
+              ∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (x0 + y * Complex.I - breathingRoot j)⁻¹ := by
+                    refine intervalIntegral.integral_congr ?_
+                    intro y hy
+                    simpa [smul_eq_mul] using
+                      UFRF.ResidueDefinition.breathingFunction_eq_sum_residueCandidateAt_sub_inv
+                        (z := x0 + y * Complex.I) (hleft_den y hy)
+      _ =
+          ∑ j : ZMod CycleLen,
+            ∫ y : ℝ in y0..y1,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (x0 + y * Complex.I - breathingRoot j)⁻¹ := by
+                  simpa using
+                    (intervalIntegral.integral_finset_sum
+                      (s := Finset.univ)
+                      (f := fun j y =>
+                        UFRF.ResidueDefinition.residueCandidateAt j •
+                          (x0 + y * Complex.I - breathingRoot j)⁻¹)
+                      (fun j hj => (hleft_kernel_int j).smul
+                        (UFRF.ResidueDefinition.residueCandidateAt j)))
+      _ =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              (∫ y : ℝ in y0..y1, (x0 + y * Complex.I - breathingRoot j)⁻¹) := by
+                refine Finset.sum_congr rfl ?_
+                intro j hj
+                rw [smul_eq_mul]
+                exact
+                  (intervalIntegral.integral_const_mul
+                    (a := y0) (b := y1)
+                    (r := UFRF.ResidueDefinition.residueCandidateAt j)
+                    (f := fun y : ℝ => (x0 + y * Complex.I - breathingRoot j)⁻¹))
+  have hsum :
+      boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1 =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 := by
+    calc
+      boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1
+          =
+            ((∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (∫ x : ℝ in x0..x1, (x + y0 * Complex.I - breathingRoot j)⁻¹)) -
+              (∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (∫ x : ℝ in x0..x1, (x + y1 * Complex.I - breathingRoot j)⁻¹)) +
+              Complex.I •
+                (∑ j : ZMod CycleLen,
+                  UFRF.ResidueDefinition.residueCandidateAt j •
+                    (∫ y : ℝ in y0..y1, (x1 + y * Complex.I - breathingRoot j)⁻¹)) -
+              Complex.I •
+                (∑ j : ZMod CycleLen,
+                  UFRF.ResidueDefinition.residueCandidateAt j •
+                    (∫ y : ℝ in y0..y1, (x0 + y * Complex.I - breathingRoot j)⁻¹))) := by
+              rw [boundaryRectIntegral, hbottom_pf, htop_pf, hright_pf, hleft_pf]
+      _ =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 := by
+                symm
+                simp_rw [boundaryRectIntegral, smul_sub, smul_add, smul_smul, sub_eq_add_neg]
+                have h1 :
+                    ∑ x : ZMod CycleLen,
+                      UFRF.ResidueDefinition.residueCandidateAt x •
+                        ((∫ x_1 : ℝ in x0..x1, (x_1 + y0 * Complex.I + -breathingRoot x)⁻¹) +
+                          -(∫ x_1 : ℝ in x0..x1, (x_1 + y1 * Complex.I + -breathingRoot x)⁻¹)) =
+                      (∑ x : ZMod CycleLen,
+                        UFRF.ResidueDefinition.residueCandidateAt x •
+                          (∫ x_1 : ℝ in x0..x1, (x_1 + y0 * Complex.I + -breathingRoot x)⁻¹)) +
+                      -(∑ x : ZMod CycleLen,
+                        UFRF.ResidueDefinition.residueCandidateAt x •
+                          (∫ x_1 : ℝ in x0..x1, (x_1 + y1 * Complex.I + -breathingRoot x)⁻¹)) := by
+                    simp_rw [smul_add, smul_neg]
+                    rw [Finset.sum_add_distrib, Finset.sum_neg_distrib]
+                have h2 :
+                    ∑ x : ZMod CycleLen,
+                      (UFRF.ResidueDefinition.residueCandidateAt x * Complex.I) •
+                        (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹) =
+                      Complex.I •
+                        (∑ x : ZMod CycleLen,
+                          UFRF.ResidueDefinition.residueCandidateAt x •
+                            (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹)) := by
+                    calc
+                      ∑ x : ZMod CycleLen,
+                          (UFRF.ResidueDefinition.residueCandidateAt x * Complex.I) •
+                            (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹)
+                          =
+                            ∑ x : ZMod CycleLen,
+                              Complex.I •
+                                (UFRF.ResidueDefinition.residueCandidateAt x •
+                                  (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹)) := by
+                                    simp_rw [smul_smul, mul_comm Complex.I]
+                      _ =
+                          Complex.I •
+                            (∑ x : ZMod CycleLen,
+                              UFRF.ResidueDefinition.residueCandidateAt x •
+                                (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹)) := by
+                                  rw [← Finset.smul_sum]
+                have h3 :
+                    ∑ x : ZMod CycleLen,
+                      -((UFRF.ResidueDefinition.residueCandidateAt x * Complex.I) •
+                        (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹)) =
+                      -(Complex.I •
+                        (∑ x : ZMod CycleLen,
+                          UFRF.ResidueDefinition.residueCandidateAt x •
+                            (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))) := by
+                    calc
+                      ∑ x : ZMod CycleLen,
+                          -((UFRF.ResidueDefinition.residueCandidateAt x * Complex.I) •
+                            (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))
+                          =
+                            ∑ x : ZMod CycleLen,
+                              -(Complex.I •
+                                (UFRF.ResidueDefinition.residueCandidateAt x •
+                                  (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))) := by
+                                    simp_rw [smul_smul, mul_comm Complex.I]
+                      _ =
+                          -(∑ x : ZMod CycleLen,
+                            Complex.I •
+                              (UFRF.ResidueDefinition.residueCandidateAt x •
+                                (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))) := by
+                                  rw [Finset.sum_neg_distrib]
+                      _ =
+                          -(Complex.I •
+                            (∑ x : ZMod CycleLen,
+                              UFRF.ResidueDefinition.residueCandidateAt x •
+                                (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))) := by
+                                  rw [← Finset.smul_sum]
+                rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+                rw [h1, h2, h3]
+  have hkernel_zero :
+      ∀ j : ZMod CycleLen, j ≠ k →
+        boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 = 0 := by
+    intro j hj
+    exact boundaryRectIntegral_sub_inv_eq_zero_of_not_mem_closedRect (hother' j hj)
+  have hkernel_main :
+      boundaryRectIntegral (fun z : ℂ => (z - breathingRoot k)⁻¹) x0 x1 y0 y1 =
+        2 * Real.pi * Complex.I := by
+    simpa [a, x0, x1, y0, y1] using
+      boundaryRectIntegral_sub_inv_arbitraryCenterSquare (a := breathingRoot k) (r := r) hr
+  calc
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1
+        =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 := hsum
+    _ =
+        UFRF.ResidueDefinition.residueCandidateAt k •
+          boundaryRectIntegral (fun z : ℂ => (z - breathingRoot k)⁻¹) x0 x1 y0 y1 := by
+            refine Finset.sum_eq_single k ?_ ?_
+            · intro j hj hne
+              simp [hkernel_zero j hne]
+            · intro hk
+              simp at hk
+    _ = (2 * Real.pi * Complex.I) * UFRF.ResidueDefinition.residueCandidateAt k := by
+          rw [hkernel_main]
+          simp [smul_eq_mul, mul_assoc, mul_comm, mul_left_comm]
+
+private lemma mem_closedBall_of_mem_closedRect_centered {a z : ℂ} {r : ℝ} (hr : 0 ≤ r)
+    (hz : z ∈ closedRect (a.re - r) (a.re + r) (a.im - r) (a.im + r)) :
+    z ∈ Metric.closedBall a (2 * r) := by
+  rw [Metric.mem_closedBall, dist_eq_norm]
+  have hre : a.re - r ≤ a.re + r := by linarith
+  have him : a.im - r ≤ a.im + r := by linarith
+  have hzre : z.re ∈ Set.Icc (a.re - r) (a.re + r) := by
+    simpa [closedRect, Set.uIcc_of_le hre] using hz.1
+  have hzim : z.im ∈ Set.Icc (a.im - r) (a.im + r) := by
+    simpa [closedRect, Set.uIcc_of_le him] using hz.2
+  have hzre' : |(z - a).re| ≤ r := by
+    rw [sub_re, abs_le]
+    rcases hzre with ⟨h0, h1⟩
+    constructor <;> linarith
+  have hzim' : |(z - a).im| ≤ r := by
+    rw [sub_im, abs_le]
+    rcases hzim with ⟨h0, h1⟩
+    constructor <;> linarith
+  calc
+    ‖z - a‖ ≤ |(z - a).re| + |(z - a).im| := Complex.norm_le_abs_re_add_abs_im (z - a)
+    _ ≤ r + r := add_le_add hzre' hzim'
+    _ = 2 * r := by ring
+
+/--
+The canonical quarter-`infsep` square around `breathingRoot k` excludes every
+other breathing root.
+
+This upgrades the local square theorem's explicit no-other-roots hypothesis to
+a canonical geometric fact derived from the global breathing-root separation
+package.
+-/
+theorem quarter_infsep_closedRect_excludes_other_breathingRoots
+    (k : ZMod CycleLen) :
+    ∀ j : ZMod CycleLen, j ≠ k →
+      breathingRoot j ∉ closedRect
+        ((breathingRoot k).re - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+        ((breathingRoot k).re + ((Set.range breathingRoot : Set ℂ).infsep / 4))
+        ((breathingRoot k).im - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+        ((breathingRoot k).im + ((Set.range breathingRoot : Set ℂ).infsep / 4)) := by
+  intro j hj hmem
+  let r : ℝ := ((Set.range breathingRoot : Set ℂ).infsep) / 4
+  have hpos : 0 < (Set.range breathingRoot : Set ℂ).infsep := breathingRootSet_infsep_pos
+  have hr : 0 ≤ r := by positivity
+  have hrad : 2 * r = ((Set.range breathingRoot : Set ℂ).infsep) / 2 := by
+    unfold r
+    ring
+  have hball' :
+      breathingRoot j ∈ Metric.closedBall (breathingRoot k) (2 * r) :=
+    mem_closedBall_of_mem_closedRect_centered
+      (a := breathingRoot k) (z := breathingRoot j) hr (by simpa [r] using hmem)
+  have hball :
+      breathingRoot j ∈ Metric.closedBall (breathingRoot k)
+        (((Set.range breathingRoot : Set ℂ).infsep) / 2) := by
+    simpa [hrad] using hball'
+  exact (half_infsep_closedBall_excludes_other_breathingRoots k j hj) hball
+
+/--
+The breathing function integrates to `2πi` times the explicit residue
+candidate on the canonical quarter-`infsep` square around any chosen breathing
+root.
+
+This is the canonical noncircular local contour theorem for the specific
+function `z ↦ 1 / (z^13 - 1)`.
+-/
+theorem boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_quarter_infsep_centeredSquare
+    (k : ZMod CycleLen) :
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction
+      ((breathingRoot k).re - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+      ((breathingRoot k).re + ((Set.range breathingRoot : Set ℂ).infsep / 4))
+      ((breathingRoot k).im - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+      ((breathingRoot k).im + ((Set.range breathingRoot : Set ℂ).infsep / 4)) =
+      (2 * Real.pi * Complex.I) * UFRF.ResidueDefinition.residueCandidateAt k := by
+  have hpos : 0 < (Set.range breathingRoot : Set ℂ).infsep := breathingRootSet_infsep_pos
+  have hr : 0 < ((Set.range breathingRoot : Set ℂ).infsep / 4) := by positivity
+  simpa using
+    boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_of_no_otherRoots_centeredSquare
+      k hr (quarter_infsep_closedRect_excludes_other_breathingRoots k)
+
+/--
+For any finite family of breathing roots, the sum of the canonical
+quarter-`infsep` local square boundary integrals equals `2πi` times the sum of
+the explicit residue candidates.
+
+This is the local-square analogue of the earlier finite-family circle-sum
+formula.
+-/
+theorem sum_boundaryRectIntegral_breathingFunction_quarter_infsep_centeredSquare_eq_two_pi_I_mul_sum_residueCandidate
+    (S : Finset (ZMod CycleLen)) :
+    Finset.sum S (fun k =>
+      boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction
+        ((breathingRoot k).re - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+        ((breathingRoot k).re + ((Set.range breathingRoot : Set ℂ).infsep / 4))
+        ((breathingRoot k).im - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+        ((breathingRoot k).im + ((Set.range breathingRoot : Set ℂ).infsep / 4))) =
+      (2 * Real.pi * Complex.I) *
+        Finset.sum S UFRF.ResidueDefinition.residueCandidateAt := by
+  calc
+    Finset.sum S (fun k =>
+        boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction
+          ((breathingRoot k).re - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+          ((breathingRoot k).re + ((Set.range breathingRoot : Set ℂ).infsep / 4))
+          ((breathingRoot k).im - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+          ((breathingRoot k).im + ((Set.range breathingRoot : Set ℂ).infsep / 4)))
+        =
+          Finset.sum S (fun k =>
+            (2 * Real.pi * Complex.I) *
+              UFRF.ResidueDefinition.residueCandidateAt k) := by
+            refine Finset.sum_congr rfl ?_
+            intro k hk
+            exact boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_quarter_infsep_centeredSquare k
+    _ =
+        (2 * Real.pi * Complex.I) *
+          Finset.sum S UFRF.ResidueDefinition.residueCandidateAt := by
+            rw [Finset.mul_sum]
+
+private lemma bottom_edge_not_mem_interior_closedRect
+    {x0 x1 y0 y1 x : ℝ} (hx : x0 < x1) (hy : y0 < y1) :
+    x + y0 * Complex.I ∉ interior (closedRect x0 x1 y0 y1) := by
+  intro hmem
+  rw [closedRect, interior_reProdIm, Set.uIcc_of_le hx.le, Set.uIcc_of_le hy.le,
+    interior_Icc, mem_reProdIm] at hmem
+  have hy0' : y0 ∈ Set.Ioo y0 y1 := by
+    simpa using hmem.2
+  exact (lt_irrefl y0) hy0'.1
+
+private lemma top_edge_not_mem_interior_closedRect
+    {x0 x1 y0 y1 x : ℝ} (hx : x0 < x1) (hy : y0 < y1) :
+    x + y1 * Complex.I ∉ interior (closedRect x0 x1 y0 y1) := by
+  intro hmem
+  rw [closedRect, interior_reProdIm, Set.uIcc_of_le hx.le, Set.uIcc_of_le hy.le,
+    interior_Icc, mem_reProdIm] at hmem
+  have hy1' : y1 ∈ Set.Ioo y0 y1 := by
+    simpa using hmem.2
+  exact (lt_irrefl y1) hy1'.2
+
+private lemma right_edge_not_mem_interior_closedRect
+    {x0 x1 y0 y1 y : ℝ} (hx : x0 < x1) (hy : y0 < y1) :
+    x1 + y * Complex.I ∉ interior (closedRect x0 x1 y0 y1) := by
+  intro hmem
+  rw [closedRect, interior_reProdIm, Set.uIcc_of_le hx.le, Set.uIcc_of_le hy.le,
+    interior_Icc, mem_reProdIm] at hmem
+  have hx1' : x1 ∈ Set.Ioo x0 x1 := by
+    simpa using hmem.1
+  exact (lt_irrefl x1) hx1'.2
+
+private lemma left_edge_not_mem_interior_closedRect
+    {x0 x1 y0 y1 y : ℝ} (hx : x0 < x1) (hy : y0 < y1) :
+    x0 + y * Complex.I ∉ interior (closedRect x0 x1 y0 y1) := by
+  intro hmem
+  rw [closedRect, interior_reProdIm, Set.uIcc_of_le hx.le, Set.uIcc_of_le hy.le,
+    interior_Icc, mem_reProdIm] at hmem
+  have hx0' : x0 ∈ Set.Ioo x0 x1 := by
+    simpa using hmem.1
+  exact (lt_irrefl x0) hx0'.1
+
+private theorem boundaryRectIntegral_breathingFunction_eq_sum_residueCandidateAt_kernel_of_edge_den_nonzero
+    {x0 x1 y0 y1 : ℝ}
+    (hbottom_den :
+      ∀ x ∈ uIcc x0 x1,
+        UFRF.ResidueDefinition.breathingDenominator (x + y0 * Complex.I) ≠ 0)
+    (htop_den :
+      ∀ x ∈ uIcc x0 x1,
+        UFRF.ResidueDefinition.breathingDenominator (x + y1 * Complex.I) ≠ 0)
+    (hright_den :
+      ∀ y ∈ uIcc y0 y1,
+        UFRF.ResidueDefinition.breathingDenominator (x1 + y * Complex.I) ≠ 0)
+    (hleft_den :
+      ∀ y ∈ uIcc y0 y1,
+        UFRF.ResidueDefinition.breathingDenominator (x0 + y * Complex.I) ≠ 0) :
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1 =
+      ∑ j : ZMod CycleLen,
+        UFRF.ResidueDefinition.residueCandidateAt j •
+          boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 := by
+  have hbottom_kernel_int :
+      ∀ j : ZMod CycleLen,
+        IntervalIntegrable
+          (fun x : ℝ => (x + y0 * Complex.I - breathingRoot j)⁻¹)
+          MeasureTheory.volume x0 x1 := by
+    intro j
+    refine intervalIntegrable_sub_inv_horizontal_of_ne ?_
+    intro x hx hzero
+    exact (hbottom_den x hx) (by
+      simpa [hzero] using UFRF.ResidueDefinition.breathingDenominator_vanishes_at_root j)
+  have htop_kernel_int :
+      ∀ j : ZMod CycleLen,
+        IntervalIntegrable
+          (fun x : ℝ => (x + y1 * Complex.I - breathingRoot j)⁻¹)
+          MeasureTheory.volume x0 x1 := by
+    intro j
+    refine intervalIntegrable_sub_inv_horizontal_of_ne ?_
+    intro x hx hzero
+    exact (htop_den x hx) (by
+      simpa [hzero] using UFRF.ResidueDefinition.breathingDenominator_vanishes_at_root j)
+  have hright_kernel_int :
+      ∀ j : ZMod CycleLen,
+        IntervalIntegrable
+          (fun y : ℝ => (x1 + y * Complex.I - breathingRoot j)⁻¹)
+          MeasureTheory.volume y0 y1 := by
+    intro j
+    refine intervalIntegrable_sub_inv_vertical_of_ne ?_
+    intro y hy hzero
+    exact (hright_den y hy) (by
+      simpa [hzero] using UFRF.ResidueDefinition.breathingDenominator_vanishes_at_root j)
+  have hleft_kernel_int :
+      ∀ j : ZMod CycleLen,
+        IntervalIntegrable
+          (fun y : ℝ => (x0 + y * Complex.I - breathingRoot j)⁻¹)
+          MeasureTheory.volume y0 y1 := by
+    intro j
+    refine intervalIntegrable_sub_inv_vertical_of_ne ?_
+    intro y hy hzero
+    exact (hleft_den y hy) (by
+      simpa [hzero] using UFRF.ResidueDefinition.breathingDenominator_vanishes_at_root j)
+  have hbottom_pf :
+      (∫ x : ℝ in x0..x1, UFRF.ResidueDefinition.breathingFunction (x + y0 * Complex.I)) =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            (∫ x : ℝ in x0..x1, (x + y0 * Complex.I - breathingRoot j)⁻¹) := by
+    calc
+      (∫ x : ℝ in x0..x1, UFRF.ResidueDefinition.breathingFunction (x + y0 * Complex.I))
+          =
+            ∫ x : ℝ in x0..x1,
+              ∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (x + y0 * Complex.I - breathingRoot j)⁻¹ := by
+                    refine intervalIntegral.integral_congr ?_
+                    intro x hx
+                    simpa [smul_eq_mul] using
+                      UFRF.ResidueDefinition.breathingFunction_eq_sum_residueCandidateAt_sub_inv
+                        (z := x + y0 * Complex.I) (hbottom_den x hx)
+      _ =
+          ∑ j : ZMod CycleLen,
+            ∫ x : ℝ in x0..x1,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (x + y0 * Complex.I - breathingRoot j)⁻¹ := by
+                  simpa using
+                    (intervalIntegral.integral_finset_sum
+                      (s := Finset.univ)
+                      (f := fun j x =>
+                        UFRF.ResidueDefinition.residueCandidateAt j •
+                          (x + y0 * Complex.I - breathingRoot j)⁻¹)
+                      (fun j hj => (hbottom_kernel_int j).smul
+                        (UFRF.ResidueDefinition.residueCandidateAt j)))
+      _ =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              (∫ x : ℝ in x0..x1, (x + y0 * Complex.I - breathingRoot j)⁻¹) := by
+                refine Finset.sum_congr rfl ?_
+                intro j hj
+                rw [smul_eq_mul]
+                exact
+                  (intervalIntegral.integral_const_mul
+                    (a := x0) (b := x1)
+                    (r := UFRF.ResidueDefinition.residueCandidateAt j)
+                    (f := fun x : ℝ => (x + y0 * Complex.I - breathingRoot j)⁻¹))
+  have htop_pf :
+      (∫ x : ℝ in x0..x1, UFRF.ResidueDefinition.breathingFunction (x + y1 * Complex.I)) =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            (∫ x : ℝ in x0..x1, (x + y1 * Complex.I - breathingRoot j)⁻¹) := by
+    calc
+      (∫ x : ℝ in x0..x1, UFRF.ResidueDefinition.breathingFunction (x + y1 * Complex.I))
+          =
+            ∫ x : ℝ in x0..x1,
+              ∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (x + y1 * Complex.I - breathingRoot j)⁻¹ := by
+                    refine intervalIntegral.integral_congr ?_
+                    intro x hx
+                    simpa [smul_eq_mul] using
+                      UFRF.ResidueDefinition.breathingFunction_eq_sum_residueCandidateAt_sub_inv
+                        (z := x + y1 * Complex.I) (htop_den x hx)
+      _ =
+          ∑ j : ZMod CycleLen,
+            ∫ x : ℝ in x0..x1,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (x + y1 * Complex.I - breathingRoot j)⁻¹ := by
+                  simpa using
+                    (intervalIntegral.integral_finset_sum
+                      (s := Finset.univ)
+                      (f := fun j x =>
+                        UFRF.ResidueDefinition.residueCandidateAt j •
+                          (x + y1 * Complex.I - breathingRoot j)⁻¹)
+                      (fun j hj => (htop_kernel_int j).smul
+                        (UFRF.ResidueDefinition.residueCandidateAt j)))
+      _ =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              (∫ x : ℝ in x0..x1, (x + y1 * Complex.I - breathingRoot j)⁻¹) := by
+                refine Finset.sum_congr rfl ?_
+                intro j hj
+                rw [smul_eq_mul]
+                exact
+                  (intervalIntegral.integral_const_mul
+                    (a := x0) (b := x1)
+                    (r := UFRF.ResidueDefinition.residueCandidateAt j)
+                    (f := fun x : ℝ => (x + y1 * Complex.I - breathingRoot j)⁻¹))
+  have hright_pf :
+      (∫ y : ℝ in y0..y1, UFRF.ResidueDefinition.breathingFunction (x1 + y * Complex.I)) =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            (∫ y : ℝ in y0..y1, (x1 + y * Complex.I - breathingRoot j)⁻¹) := by
+    calc
+      (∫ y : ℝ in y0..y1, UFRF.ResidueDefinition.breathingFunction (x1 + y * Complex.I))
+          =
+            ∫ y : ℝ in y0..y1,
+              ∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (x1 + y * Complex.I - breathingRoot j)⁻¹ := by
+                    refine intervalIntegral.integral_congr ?_
+                    intro y hy
+                    simpa [smul_eq_mul] using
+                      UFRF.ResidueDefinition.breathingFunction_eq_sum_residueCandidateAt_sub_inv
+                        (z := x1 + y * Complex.I) (hright_den y hy)
+      _ =
+          ∑ j : ZMod CycleLen,
+            ∫ y : ℝ in y0..y1,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (x1 + y * Complex.I - breathingRoot j)⁻¹ := by
+                  simpa using
+                    (intervalIntegral.integral_finset_sum
+                      (s := Finset.univ)
+                      (f := fun j y =>
+                        UFRF.ResidueDefinition.residueCandidateAt j •
+                          (x1 + y * Complex.I - breathingRoot j)⁻¹)
+                      (fun j hj => (hright_kernel_int j).smul
+                        (UFRF.ResidueDefinition.residueCandidateAt j)))
+      _ =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              (∫ y : ℝ in y0..y1, (x1 + y * Complex.I - breathingRoot j)⁻¹) := by
+                refine Finset.sum_congr rfl ?_
+                intro j hj
+                rw [smul_eq_mul]
+                exact
+                  (intervalIntegral.integral_const_mul
+                    (a := y0) (b := y1)
+                    (r := UFRF.ResidueDefinition.residueCandidateAt j)
+                    (f := fun y : ℝ => (x1 + y * Complex.I - breathingRoot j)⁻¹))
+  have hleft_pf :
+      (∫ y : ℝ in y0..y1, UFRF.ResidueDefinition.breathingFunction (x0 + y * Complex.I)) =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            (∫ y : ℝ in y0..y1, (x0 + y * Complex.I - breathingRoot j)⁻¹) := by
+    calc
+      (∫ y : ℝ in y0..y1, UFRF.ResidueDefinition.breathingFunction (x0 + y * Complex.I))
+          =
+            ∫ y : ℝ in y0..y1,
+              ∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (x0 + y * Complex.I - breathingRoot j)⁻¹ := by
+                    refine intervalIntegral.integral_congr ?_
+                    intro y hy
+                    simpa [smul_eq_mul] using
+                      UFRF.ResidueDefinition.breathingFunction_eq_sum_residueCandidateAt_sub_inv
+                        (z := x0 + y * Complex.I) (hleft_den y hy)
+      _ =
+          ∑ j : ZMod CycleLen,
+            ∫ y : ℝ in y0..y1,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (x0 + y * Complex.I - breathingRoot j)⁻¹ := by
+                  simpa using
+                    (intervalIntegral.integral_finset_sum
+                      (s := Finset.univ)
+                      (f := fun j y =>
+                        UFRF.ResidueDefinition.residueCandidateAt j •
+                          (x0 + y * Complex.I - breathingRoot j)⁻¹)
+                      (fun j hj => (hleft_kernel_int j).smul
+                        (UFRF.ResidueDefinition.residueCandidateAt j)))
+      _ =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              (∫ y : ℝ in y0..y1, (x0 + y * Complex.I - breathingRoot j)⁻¹) := by
+                refine Finset.sum_congr rfl ?_
+                intro j hj
+                rw [smul_eq_mul]
+                exact
+                  (intervalIntegral.integral_const_mul
+                    (a := y0) (b := y1)
+                    (r := UFRF.ResidueDefinition.residueCandidateAt j)
+                    (f := fun y : ℝ => (x0 + y * Complex.I - breathingRoot j)⁻¹))
+  calc
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1
+        =
+          ((∑ j : ZMod CycleLen,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (∫ x : ℝ in x0..x1, (x + y0 * Complex.I - breathingRoot j)⁻¹)) -
+            (∑ j : ZMod CycleLen,
+              UFRF.ResidueDefinition.residueCandidateAt j •
+                (∫ x : ℝ in x0..x1, (x + y1 * Complex.I - breathingRoot j)⁻¹)) +
+            Complex.I •
+              (∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (∫ y : ℝ in y0..y1, (x1 + y * Complex.I - breathingRoot j)⁻¹)) -
+            Complex.I •
+              (∑ j : ZMod CycleLen,
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  (∫ y : ℝ in y0..y1, (x0 + y * Complex.I - breathingRoot j)⁻¹))) := by
+            rw [boundaryRectIntegral, hbottom_pf, htop_pf, hright_pf, hleft_pf]
+    _ =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 := by
+              symm
+              simp_rw [boundaryRectIntegral, smul_sub, smul_add, smul_smul, sub_eq_add_neg]
+              have h1 :
+                  ∑ x : ZMod CycleLen,
+                    UFRF.ResidueDefinition.residueCandidateAt x •
+                      ((∫ x_1 : ℝ in x0..x1, (x_1 + y0 * Complex.I + -breathingRoot x)⁻¹) +
+                        -(∫ x_1 : ℝ in x0..x1, (x_1 + y1 * Complex.I + -breathingRoot x)⁻¹)) =
+                    (∑ x : ZMod CycleLen,
+                      UFRF.ResidueDefinition.residueCandidateAt x •
+                        (∫ x_1 : ℝ in x0..x1, (x_1 + y0 * Complex.I + -breathingRoot x)⁻¹)) +
+                    -(∑ x : ZMod CycleLen,
+                      UFRF.ResidueDefinition.residueCandidateAt x •
+                        (∫ x_1 : ℝ in x0..x1, (x_1 + y1 * Complex.I + -breathingRoot x)⁻¹)) := by
+                  simp_rw [smul_add, smul_neg]
+                  rw [Finset.sum_add_distrib, Finset.sum_neg_distrib]
+              have h2 :
+                  ∑ x : ZMod CycleLen,
+                    (UFRF.ResidueDefinition.residueCandidateAt x * Complex.I) •
+                      (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹) =
+                    Complex.I •
+                      (∑ x : ZMod CycleLen,
+                        UFRF.ResidueDefinition.residueCandidateAt x •
+                          (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹)) := by
+                  calc
+                    ∑ x : ZMod CycleLen,
+                        (UFRF.ResidueDefinition.residueCandidateAt x * Complex.I) •
+                          (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹)
+                        =
+                          ∑ x : ZMod CycleLen,
+                            Complex.I •
+                              (UFRF.ResidueDefinition.residueCandidateAt x •
+                                (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹)) := by
+                                  simp_rw [smul_smul, mul_comm Complex.I]
+                    _ =
+                        Complex.I •
+                          (∑ x : ZMod CycleLen,
+                            UFRF.ResidueDefinition.residueCandidateAt x •
+                              (∫ y : ℝ in y0..y1, (x1 + y * Complex.I + -breathingRoot x)⁻¹)) := by
+                                rw [← Finset.smul_sum]
+              have h3 :
+                  ∑ x : ZMod CycleLen,
+                    -((UFRF.ResidueDefinition.residueCandidateAt x * Complex.I) •
+                      (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹)) =
+                    -(Complex.I •
+                      (∑ x : ZMod CycleLen,
+                        UFRF.ResidueDefinition.residueCandidateAt x •
+                          (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))) := by
+                  calc
+                    ∑ x : ZMod CycleLen,
+                        -((UFRF.ResidueDefinition.residueCandidateAt x * Complex.I) •
+                          (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))
+                        =
+                          ∑ x : ZMod CycleLen,
+                            -(Complex.I •
+                              (UFRF.ResidueDefinition.residueCandidateAt x •
+                                (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))) := by
+                                  simp_rw [smul_smul, mul_comm Complex.I]
+                    _ =
+                        -(∑ x : ZMod CycleLen,
+                          Complex.I •
+                            (UFRF.ResidueDefinition.residueCandidateAt x •
+                              (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))) := by
+                                rw [Finset.sum_neg_distrib]
+                    _ =
+                        -(Complex.I •
+                          (∑ x : ZMod CycleLen,
+                            UFRF.ResidueDefinition.residueCandidateAt x •
+                              (∫ y : ℝ in y0..y1, (x0 + y * Complex.I + -breathingRoot x)⁻¹))) := by
+                                rw [← Finset.smul_sum]
+              rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+              rw [h1, h2, h3]
+
+/--
+If every breathing root is either strictly inside a positively oriented
+rectangle or completely outside its closed region, then the breathing-function
+boundary integral around that rectangle is `2πi` times the sum of the explicit
+residue candidates for exactly the enclosed roots.
+
+This is the first honest finite-enclosure rectangle theorem for the specific
+function `z ↦ 1 / (z^13 - 1)`.
+-/
+theorem boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_interior_or_outside
+    {x0 x1 y0 y1 : ℝ}
+    (hx : x0 < x1) (hy : y0 < y1)
+    (hclass :
+      ∀ k : ZMod CycleLen,
+        breathingRoot k ∈ interior (closedRect x0 x1 y0 y1) ∨
+          breathingRoot k ∉ closedRect x0 x1 y0 y1) :
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1 =
+      (2 * Real.pi * Complex.I) *
+        Finset.sum (breathingRootsInInteriorRect x0 x1 y0 y1)
+          UFRF.ResidueDefinition.residueCandidateAt := by
+  classical
+  let S : Finset (ZMod CycleLen) := breathingRootsInInteriorRect x0 x1 y0 y1
+  have hx0_mem : x0 ∈ uIcc x0 x1 := by
+    simp [hx.le]
+  have hx1_mem : x1 ∈ uIcc x0 x1 := by
+    simp [hx.le]
+  have hy0_mem : y0 ∈ uIcc y0 y1 := by
+    simp [hy.le]
+  have hy1_mem : y1 ∈ uIcc y0 y1 := by
+    simp [hy.le]
+  have hbottom_den :
+      ∀ x ∈ uIcc x0 x1,
+        UFRF.ResidueDefinition.breathingDenominator (x + y0 * Complex.I) ≠ 0 := by
+    intro x hxmem hzero
+    obtain ⟨j, hj⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+    rcases hclass j with hjin | hjout
+    · exact bottom_edge_not_mem_interior_closedRect (x := x) hx hy (by simpa [hj] using hjin)
+    · apply hjout
+      rw [closedRect, ← hj]
+      constructor
+      · simpa using hxmem
+      · simpa using hy0_mem
+  have htop_den :
+      ∀ x ∈ uIcc x0 x1,
+        UFRF.ResidueDefinition.breathingDenominator (x + y1 * Complex.I) ≠ 0 := by
+    intro x hxmem hzero
+    obtain ⟨j, hj⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+    rcases hclass j with hjin | hjout
+    · exact top_edge_not_mem_interior_closedRect (x := x) hx hy (by simpa [hj] using hjin)
+    · apply hjout
+      rw [closedRect, ← hj]
+      constructor
+      · simpa using hxmem
+      · simpa using hy1_mem
+  have hright_den :
+      ∀ y ∈ uIcc y0 y1,
+        UFRF.ResidueDefinition.breathingDenominator (x1 + y * Complex.I) ≠ 0 := by
+    intro y hymem hzero
+    obtain ⟨j, hj⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+    rcases hclass j with hjin | hjout
+    · exact right_edge_not_mem_interior_closedRect (y := y) hx hy (by simpa [hj] using hjin)
+    · apply hjout
+      rw [closedRect, ← hj]
+      constructor
+      · simpa using hx1_mem
+      · simpa using hymem
+  have hleft_den :
+      ∀ y ∈ uIcc y0 y1,
+        UFRF.ResidueDefinition.breathingDenominator (x0 + y * Complex.I) ≠ 0 := by
+    intro y hymem hzero
+    obtain ⟨j, hj⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+    rcases hclass j with hjin | hjout
+    · exact left_edge_not_mem_interior_closedRect (y := y) hx hy (by simpa [hj] using hjin)
+    · apply hjout
+      rw [closedRect, ← hj]
+      constructor
+      · simpa using hx0_mem
+      · simpa using hymem
+  have hsum :
+      boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1 =
+        ∑ j : ZMod CycleLen,
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 :=
+    boundaryRectIntegral_breathingFunction_eq_sum_residueCandidateAt_kernel_of_edge_den_nonzero
+      hbottom_den htop_den hright_den hleft_den
+  have hkernel_inside :
+      ∀ j ∈ S,
+        boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 =
+          2 * Real.pi * Complex.I := by
+    intro j hj
+    have hjin : breathingRoot j ∈ interior (closedRect x0 x1 y0 y1) := by
+      simpa [S] using hj
+    exact boundaryRectIntegral_sub_inv_eq_two_pi_I_of_mem_interior_closedRect hx hy hjin
+  have hkernel_outside :
+      ∀ j ∈ Sᶜ,
+        boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 = 0 := by
+    intro j hj
+    have hjnotS : j ∉ S := Finset.mem_compl.mp hj
+    have hjout : breathingRoot j ∉ closedRect x0 x1 y0 y1 := by
+      rcases hclass j with hjin | hjout
+      · exact False.elim (hjnotS (by simpa [S] using hjin))
+      · exact hjout
+    exact boundaryRectIntegral_sub_inv_eq_zero_of_not_mem_closedRect hjout
+  have hinside :
+      Finset.sum S (fun j =>
+        UFRF.ResidueDefinition.residueCandidateAt j •
+          boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1) =
+        (2 * Real.pi * Complex.I) *
+          Finset.sum S UFRF.ResidueDefinition.residueCandidateAt := by
+    calc
+      Finset.sum S (fun j =>
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1)
+          =
+            Finset.sum S (fun j =>
+              UFRF.ResidueDefinition.residueCandidateAt j • (2 * Real.pi * Complex.I)) := by
+                refine Finset.sum_congr rfl ?_
+                intro j hj
+                rw [hkernel_inside j hj]
+      _ =
+          Finset.sum S (fun j =>
+            UFRF.ResidueDefinition.residueCandidateAt j * (2 * Real.pi * Complex.I)) := by
+              simp_rw [smul_eq_mul]
+      _ =
+          Finset.sum S (fun j =>
+            (2 * Real.pi * Complex.I) * UFRF.ResidueDefinition.residueCandidateAt j) := by
+              refine Finset.sum_congr rfl ?_
+              intro j hj
+              ring
+      _ =
+          (2 * Real.pi * Complex.I) *
+            Finset.sum S UFRF.ResidueDefinition.residueCandidateAt := by
+              rw [Finset.mul_sum]
+  have houtside_zero :
+      Finset.sum Sᶜ (fun j =>
+        UFRF.ResidueDefinition.residueCandidateAt j •
+          boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1) = 0 := by
+    refine Finset.sum_eq_zero ?_
+    intro j hj
+    simp [hkernel_outside j hj]
+  calc
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1
+        =
+          ∑ j : ZMod CycleLen,
+            UFRF.ResidueDefinition.residueCandidateAt j •
+              boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1 := hsum
+    _ =
+        Finset.sum S (fun j =>
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1) +
+        Finset.sum Sᶜ (fun j =>
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1) := by
+              rw [← S.sum_add_sum_compl (fun j : ZMod CycleLen =>
+                UFRF.ResidueDefinition.residueCandidateAt j •
+                  boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1)]
+    _ =
+        Finset.sum S (fun j =>
+          UFRF.ResidueDefinition.residueCandidateAt j •
+            boundaryRectIntegral (fun z : ℂ => (z - breathingRoot j)⁻¹) x0 x1 y0 y1) := by
+              rw [houtside_zero, add_zero]
+    _ =
+        (2 * Real.pi * Complex.I) *
+          Finset.sum S UFRF.ResidueDefinition.residueCandidateAt := hinside
+    _ =
+        (2 * Real.pi * Complex.I) *
+          Finset.sum (breathingRootsInInteriorRect x0 x1 y0 y1)
+            UFRF.ResidueDefinition.residueCandidateAt := by
+              simp [S]
+
+private theorem breathingRoot_interior_or_outside_of_no_boundary_roots
+    {x0 x1 y0 y1 : ℝ}
+    (hboundary :
+      ∀ k : ZMod CycleLen, breathingRoot k ∉ frontier (closedRect x0 x1 y0 y1)) :
+    ∀ k : ZMod CycleLen,
+      breathingRoot k ∈ interior (closedRect x0 x1 y0 y1) ∨
+        breathingRoot k ∉ closedRect x0 x1 y0 y1 := by
+  intro k
+  by_cases hk : breathingRoot k ∈ closedRect x0 x1 y0 y1
+  · exact Or.inl ((mem_interior_iff_notMem_frontier hk).2 (hboundary k))
+  · exact Or.inr hk
+
+/--
+If a positively oriented rectangle has no breathing roots on its boundary,
+then the breathing-function boundary integral around that rectangle is `2πi`
+times the sum of the explicit residue candidates for exactly the breathing
+roots in its interior.
+
+This packages the finite-enclosure rectangle theorem under the natural
+boundary-clean geometric hypothesis, without promoting the result to a generic
+rectangle residue API.
+-/
+theorem boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots
+    {x0 x1 y0 y1 : ℝ}
+    (hx : x0 < x1) (hy : y0 < y1)
+    (hboundary :
+      ∀ k : ZMod CycleLen, breathingRoot k ∉ frontier (closedRect x0 x1 y0 y1)) :
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1 =
+      (2 * Real.pi * Complex.I) *
+        Finset.sum (breathingRootsInInteriorRect x0 x1 y0 y1)
+          UFRF.ResidueDefinition.residueCandidateAt := by
+  exact
+    boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_interior_or_outside
+      hx hy (breathingRoot_interior_or_outside_of_no_boundary_roots hboundary)
+
+/--
+A boundary-clean outer rectangle has the same breathing-function boundary
+integral as the sum of the canonical quarter-`infsep` local square boundary
+integrals around exactly the enclosed breathing roots.
+
+This packages the outer-rectangle to local-squares comparison theorem without
+introducing any generic multi-boundary residue API.
+-/
+theorem boundaryRectIntegral_breathingFunction_eq_sum_quarter_infsep_centeredSquareIntegrals_of_no_boundary_roots
+    {x0 x1 y0 y1 : ℝ}
+    (hx : x0 < x1) (hy : y0 < y1)
+    (hboundary :
+      ∀ k : ZMod CycleLen, breathingRoot k ∉ frontier (closedRect x0 x1 y0 y1)) :
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1 =
+      Finset.sum (breathingRootsInInteriorRect x0 x1 y0 y1) (fun k =>
+        boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction
+          ((breathingRoot k).re - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+          ((breathingRoot k).re + ((Set.range breathingRoot : Set ℂ).infsep / 4))
+          ((breathingRoot k).im - ((Set.range breathingRoot : Set ℂ).infsep / 4))
+          ((breathingRoot k).im + ((Set.range breathingRoot : Set ℂ).infsep / 4))) := by
+  rw [boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots
+    hx hy hboundary]
+  rw [sum_boundaryRectIntegral_breathingFunction_quarter_infsep_centeredSquare_eq_two_pi_I_mul_sum_residueCandidate
+    (S := breathingRootsInInteriorRect x0 x1 y0 y1)]
+
+/--
+If every breathing root lies strictly inside a positively oriented rectangle,
+then the breathing-function boundary integral around that rectangle is zero.
+
+This is the all-roots cancellation corollary of the boundary-clean rectangle
+residue formula and the global identity
+`∑ k, residueCandidateAt k = 0`.
+-/
+theorem boundaryRectIntegral_breathingFunction_eq_zero_of_all_breathingRoots_mem_interior_closedRect
+    {x0 x1 y0 y1 : ℝ}
+    (hx : x0 < x1) (hy : y0 < y1)
+    (hinside :
+      ∀ k : ZMod CycleLen,
+        breathingRoot k ∈ interior (closedRect x0 x1 y0 y1)) :
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1 = 0 := by
+  have hboundary :
+      ∀ k : ZMod CycleLen, breathingRoot k ∉ frontier (closedRect x0 x1 y0 y1) := by
+    intro k
+    exact (mem_interior_iff_notMem_frontier (interior_subset (hinside k))).1 (hinside k)
+  have hS : breathingRootsInInteriorRect x0 x1 y0 y1 = Finset.univ := by
+    ext k
+    simp [hinside k]
+  rw [boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots
+    hx hy hboundary, hS, UFRF.ResidueDefinition.total_residue_candidate_zero, mul_zero]
+
+/--
+Every breathing root lies strictly inside the centered square `[-R, R] × [-R, R]`
+whenever `R > 1`.
+
+This is the variable-radius rectangle analogue of the existing outer-circle
+regime `R > 1`.
+-/
+theorem breathingRoot_mem_interior_closedRect_centeredSquare_of_one_lt
+    {R : ℝ} (hR : 1 < R) (k : ZMod CycleLen) :
+    breathingRoot k ∈ interior (closedRect (-R) R (-R) R) := by
+  have hside : -R < R := by linarith
+  have hre : (breathingRoot k).re ∈ Set.Ioo (-R) R := by
+    have hre' : |(breathingRoot k).re| < R := by
+      calc
+        |(breathingRoot k).re| ≤ ‖breathingRoot k‖ := Complex.abs_re_le_norm _
+        _ = 1 := norm_breathingRoot_eq_one k
+        _ < R := hR
+    exact abs_lt.mp hre'
+  have him : (breathingRoot k).im ∈ Set.Ioo (-R) R := by
+    have him' : |(breathingRoot k).im| < R := by
+      calc
+        |(breathingRoot k).im| ≤ ‖breathingRoot k‖ := Complex.abs_im_le_norm _
+        _ = 1 := norm_breathingRoot_eq_one k
+        _ < R := hR
+    exact abs_lt.mp him'
+  simpa [closedRect, interior_reProdIm, Set.uIcc_of_le hside.le, interior_Icc, mem_reProdIm]
+    using And.intro hre him
+
+/--
+For every variable radius `R > 1`, the boundary integral of `breathingFunction`
+around the centered square `[-R, R] × [-R, R]` is zero.
+
+This keeps the large-rectangle convenience theorem parameterized by `R`,
+rather than hardcoding a single enclosing box.
+-/
+theorem boundaryRectIntegral_breathingFunction_eq_zero_of_one_lt_centeredSquare
+    {R : ℝ} (hR : 1 < R) :
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction (-R) R (-R) R = 0 := by
+  have hside : -R < R := by linarith
+  exact
+    boundaryRectIntegral_breathingFunction_eq_zero_of_all_breathingRoots_mem_interior_closedRect
+      hside hside (breathingRoot_mem_interior_closedRect_centeredSquare_of_one_lt hR)
+
+/--
+If a positively oriented rectangle strictly contains the unit square
+`[-1, 1] × [-1, 1]`, then every breathing root lies in its interior.
+
+This is the asymmetric rectangle version of the centered-square `R > 1`
+enclosure theorem.
+-/
+theorem breathingRoot_mem_interior_closedRect_of_encloses_unitSquare
+    {x0 x1 y0 y1 : ℝ}
+    (hx0 : x0 < -1) (hx1 : 1 < x1)
+    (hy0 : y0 < -1) (hy1 : 1 < y1)
+    (k : ZMod CycleLen) :
+    breathingRoot k ∈ interior (closedRect x0 x1 y0 y1) := by
+  have hx : x0 < x1 := by linarith
+  have hy : y0 < y1 := by linarith
+  have hre_mem : (breathingRoot k).re ∈ Set.Ioo x0 x1 := by
+    have hre_abs : |(breathingRoot k).re| ≤ 1 := by
+      calc
+        |(breathingRoot k).re| ≤ ‖breathingRoot k‖ := Complex.abs_re_le_norm _
+        _ = 1 := norm_breathingRoot_eq_one k
+    rcases abs_le.mp hre_abs with ⟨hre_lo, hre_hi⟩
+    exact ⟨by linarith, by linarith⟩
+  have him_mem : (breathingRoot k).im ∈ Set.Ioo y0 y1 := by
+    have him_abs : |(breathingRoot k).im| ≤ 1 := by
+      calc
+        |(breathingRoot k).im| ≤ ‖breathingRoot k‖ := Complex.abs_im_le_norm _
+        _ = 1 := norm_breathingRoot_eq_one k
+    rcases abs_le.mp him_abs with ⟨him_lo, him_hi⟩
+    exact ⟨by linarith, by linarith⟩
+  simpa [closedRect, interior_reProdIm, Set.uIcc_of_le hx.le, Set.uIcc_of_le hy.le,
+    interior_Icc, mem_reProdIm] using And.intro hre_mem him_mem
+
+/--
+If a positively oriented rectangle strictly contains the unit square
+`[-1, 1] × [-1, 1]`, then the boundary integral of `breathingFunction` around
+that rectangle is zero.
+
+This packages the current all-roots-interior rectangle theorem as the smallest
+asymmetric large-rectangle convenience corollary.
+-/
+theorem boundaryRectIntegral_breathingFunction_eq_zero_of_encloses_unitSquare
+    {x0 x1 y0 y1 : ℝ}
+    (hx0 : x0 < -1) (hx1 : 1 < x1)
+    (hy0 : y0 < -1) (hy1 : 1 < y1) :
+    boundaryRectIntegral UFRF.ResidueDefinition.breathingFunction x0 x1 y0 y1 = 0 := by
+  have hx : x0 < x1 := by linarith
+  have hy : y0 < y1 := by linarith
+  exact
+    boundaryRectIntegral_breathingFunction_eq_zero_of_all_breathingRoots_mem_interior_closedRect
+      hx hy (breathingRoot_mem_interior_closedRect_of_encloses_unitSquare hx0 hx1 hy0 hy1)
 
 /--
 If the breathing denominator never vanishes on a closed rectangle, then the

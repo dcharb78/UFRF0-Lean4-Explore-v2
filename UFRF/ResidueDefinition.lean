@@ -202,6 +202,162 @@ theorem total_residue_candidate_zero :
   simp [complete_breath_sums_to_zero]
 
 /--
+For exponents strictly between `0` and `13`, the corresponding power sum over
+the breathing roots vanishes.
+
+This is the finite-character orthogonality statement needed for the concrete
+partial-fraction identity of `1 / (z^13 - 1)`.
+-/
+theorem sum_breathingRoot_pow_eq_zero_of_pos_lt_cycleLen
+    {m : ℕ} (hm : 0 < m) (hm_lt : m < CycleLen) :
+    ∑ k : ZMod CycleLen, breathingRoot k ^ m = 0 := by
+  let ψ : AddChar (ZMod CycleLen) ℂ :=
+    AddChar.mulShift breathingCharacter (m : ZMod CycleLen)
+  have hmz_ne : (m : ZMod CycleLen) ≠ 0 := by
+    intro hmz
+    have hdiv : CycleLen ∣ m := (ZMod.natCast_eq_zero_iff m CycleLen).mp hmz
+    exact Nat.not_dvd_of_pos_of_lt hm hm_lt hdiv
+  have hψ_ne : ψ ≠ 1 := by
+    rw [AddChar.zmod_char_ne_one_iff]
+    simpa [ψ, AddChar.mulShift_apply, breathingRoot] using
+      fun hroot =>
+        hmz_ne ((breathingCharacter_is_primitive.zmod_char_eq_one_iff CycleLen
+          (m : ZMod CycleLen)).mp hroot)
+  simpa [ψ, breathingRoot, AddChar.mulShift_apply, ← nsmul_eq_mul, AddChar.map_nsmul_eq_pow] using
+    (AddChar.sum_eq_zero_of_ne_one (ψ := ψ) hψ_ne)
+
+/--
+Summing the residue candidates against the local factors gives exactly `1`.
+
+This is the concrete algebraic identity behind the breathing-function
+partial-fraction decomposition.
+-/
+theorem sum_residueCandidateAt_mul_localFactorAt_eq_one
+    (z : ℂ) :
+    ∑ k : ZMod CycleLen, residueCandidateAt k * localFactorAt k z = 1 := by
+  simp only [residueCandidateAt, localFactorAt]
+  simp_rw [Finset.mul_sum]
+  rw [Finset.sum_comm]
+  have hterm :
+      ∀ i ∈ Finset.range CycleLen,
+        ∑ k : ZMod CycleLen,
+          ((CycleLen : ℂ)⁻¹ * breathingRoot k) *
+              (z ^ i * breathingRoot k ^ (CycleLen - 1 - i)) =
+            (CycleLen : ℂ)⁻¹ * z ^ i *
+              ∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - i) := by
+    intro i hi
+    calc
+      ∑ k : ZMod CycleLen,
+          ((CycleLen : ℂ)⁻¹ * breathingRoot k) *
+            (z ^ i * breathingRoot k ^ (CycleLen - 1 - i))
+          = ∑ k : ZMod CycleLen,
+              (CycleLen : ℂ)⁻¹ * z ^ i * breathingRoot k ^ (CycleLen - i) := by
+                refine Finset.sum_congr rfl ?_
+                intro k hk
+                have hi_lt : i < CycleLen := Finset.mem_range.mp hi
+                have hexp : CycleLen - i = (CycleLen - 1 - i) + 1 := by omega
+                calc
+                  ((CycleLen : ℂ)⁻¹ * breathingRoot k) *
+                      (z ^ i * breathingRoot k ^ (CycleLen - 1 - i))
+                      = (CycleLen : ℂ)⁻¹ * z ^ i *
+                          (breathingRoot k * breathingRoot k ^ (CycleLen - 1 - i)) := by ring
+                  _ = (CycleLen : ℂ)⁻¹ * z ^ i * breathingRoot k ^ (CycleLen - i) := by
+                        rw [show breathingRoot k * breathingRoot k ^ (CycleLen - 1 - i) =
+                            breathingRoot k ^ ((CycleLen - 1 - i) + 1) by
+                              rw [pow_succ', mul_comm],
+                          hexp]
+      _ = (CycleLen : ℂ)⁻¹ * z ^ i *
+            ∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - i) := by
+              rw [Finset.mul_sum]
+  have hrewrite :
+      ∑ x ∈ Finset.range CycleLen,
+        ∑ k : ZMod CycleLen,
+          ((CycleLen : ℂ)⁻¹ * breathingRoot k) *
+            (z ^ x * breathingRoot k ^ (CycleLen - 1 - x))
+        = ∑ x ∈ Finset.range CycleLen,
+            (CycleLen : ℂ)⁻¹ * z ^ x *
+              ∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - x) := by
+    refine Finset.sum_congr rfl ?_
+    intro x hx
+    exact hterm x hx
+  rw [hrewrite]
+  have hsplit0 :=
+    Finset.sum_range_succ'
+      (f := fun x : ℕ =>
+        (CycleLen : ℂ)⁻¹ * z ^ x * ∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - x))
+      (n := CycleLen - 1)
+  have hsplit0' :
+      ∑ x ∈ Finset.range CycleLen,
+        (CycleLen : ℂ)⁻¹ * z ^ x * ∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - x) =
+          ∑ x ∈ Finset.range (CycleLen - 1),
+            (CycleLen : ℂ)⁻¹ * z ^ (x + 1) * ∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - (x + 1)) +
+              (CycleLen : ℂ)⁻¹ * z ^ 0 * ∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - 0) := by
+    simpa [Nat.sub_add_cancel (Nat.succ_le_of_lt cycleLen_pos)] using hsplit0
+  rw [hsplit0']
+  have hcast : ((CycleLen : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne CycleLen)
+  have hsum_cycle :
+      ∑ k : ZMod CycleLen, breathingRoot k ^ CycleLen = (CycleLen : ℂ) := by
+    simp [breathingRoot_pow_cycleLen_eq_one]
+  have hrest :
+      ∑ x ∈ Finset.range (CycleLen - 1),
+        (CycleLen : ℂ)⁻¹ * z ^ (x + 1) * ∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - (x + 1))
+        = 0 := by
+    refine Finset.sum_eq_zero ?_
+    intro x hx
+    have hx_lt : x + 1 < CycleLen := by
+      have hx_lt' : x < CycleLen - 1 := Finset.mem_range.mp hx
+      omega
+    have hpow_zero :
+        ∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - (x + 1)) = 0 := by
+      apply sum_breathingRoot_pow_eq_zero_of_pos_lt_cycleLen
+      · omega
+      · omega
+    simp [hpow_zero]
+  rw [hrest, zero_add, pow_zero]
+  rw [show (∑ k : ZMod CycleLen, breathingRoot k ^ (CycleLen - 0)) = (CycleLen : ℂ) by
+    simpa [Nat.sub_zero] using hsum_cycle]
+  have hfinal : (CycleLen : ℂ)⁻¹ * 1 * (CycleLen : ℂ) = 1 := by
+    field_simp [hcast]
+  exact hfinal
+
+/--
+Away from the breathing roots, the specific breathing function is exactly the
+sum of its concrete simple-pole partial fractions.
+
+This stays specific to `1 / (z^13 - 1)` and does not introduce a general
+residue API.
+-/
+theorem breathingFunction_eq_sum_residueCandidateAt_sub_inv
+    {z : ℂ} (hz : breathingDenominator z ≠ 0) :
+    breathingFunction z =
+      ∑ k : ZMod CycleLen, residueCandidateAt k * (z - breathingRoot k)⁻¹ := by
+  have hterm :
+      ∀ k : ZMod CycleLen,
+        residueCandidateAt k * (z - breathingRoot k)⁻¹ =
+          residueCandidateAt k * localFactorAt k z * breathingFunction z := by
+    intro k
+    have hzroot : z ≠ breathingRoot k := by
+      intro hz_eq
+      exact hz (hz_eq ▸ breathingDenominator_vanishes_at_root k)
+    have hlocal : localFactorAt k z ≠ 0 := by
+      intro hzero
+      apply hz
+      rw [← localFactorAt_mul_root_diff k z, hzero, zero_mul]
+    rw [breathingFunction, ← localFactorAt_mul_root_diff k z]
+    field_simp [hlocal, hzroot]
+  symm
+  calc
+    ∑ k : ZMod CycleLen, residueCandidateAt k * (z - breathingRoot k)⁻¹
+        = ∑ k : ZMod CycleLen, residueCandidateAt k * localFactorAt k z * breathingFunction z := by
+            refine Finset.sum_congr rfl ?_
+            intro k hk
+            exact hterm k
+    _ = (∑ k : ZMod CycleLen, residueCandidateAt k * localFactorAt k z) * breathingFunction z := by
+          rw [Finset.sum_mul]
+    _ = breathingFunction z := by
+          rw [sum_residueCandidateAt_mul_localFactorAt_eq_one, one_mul]
+
+/--
 Away from denominator zeros, the punctured function desingularizes to the
 inverse local factor.
 

@@ -71,7 +71,7 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | PrimeSemantics | Formal prime taxonomy | `standard_and_ufrf_agree_below_13` |
 | ComplexBreathing | 13th roots of unity / complex cycle | `complete_breath_sums_to_zero` |
 | ResidueDefinition | Specific pole data for `1 / (z^13 - 1)` | `breathingFunction_simplePole_limit` |
-| CircleIntegralBreathing | Specific circle-integral bridge for `1 / (z^13 - 1)` | `sum_circleIntegral_breathingFunction_of_lt_half_infsep_allRoots_eq_outerCircle_of_one_lt` |
+| CircleIntegralBreathing | Specific circle/rectangle contour bridge for `1 / (z^13 - 1)` | `boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots` |
 | FineStructure | α⁻¹ = 4π³ + π² + π | `alpha_inv_floor_137` |
 | Waveform | Piecewise breathing shape | `seed_expansion_match` |
 | PrimeChoreography | Prime superposition | `prime_phase_residues` |

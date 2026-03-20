@@ -1,87 +1,86 @@
 # UFRF Proof Documentation - Index
 
 ## Overview
-This directory contains human-readable markdown documentation for all Lean 4 proofs in the UFRF (Universal Field Resonance Framework) formalization.
 
-## Module Status: 32 modules, 0 sorry, 0 axioms
+This directory contains selected human-readable proof notes for the current
+Lean 4 formalization.
 
-### Foundation
-1. **[Trinity](01_Trinity.md)** — The axiomatic foundation: `{-½, 0, +½}`
-2. **[Simplex](21_Simplex.md)** — C(4,3) = 4 from simplicial topology
-3. **[KeplerTriangle](22_KeplerTriangle.md)** — √φ from geometric mean
-4. **[Structure13](23_Structure13.md)** — Projective plane: a²+a+1 = 13
-5. **[Foundation](24_Foundation.md)** — Cycle length derivation
-6. **[Constants](20_Constants.md)** — φ, τ, π, peak amplitude
-7. **[ThreeLOG](02_ThreeLOG.md)** — The three tensor grades (Linear, Curved, Cubed)
-8. **[BreathingCycle](03_BreathingCycle.md)** — The 13-position discrete cycle
+It is not a complete one-to-one index of every current Lean module. Some notes
+were written against earlier snapshots and are best used as orientation rather
+than as a full theorem inventory.
 
-### Physics
-9. **[FineStructure](04_FineStructure.md)** — Derivation of α⁻¹ = 4π³ + π² + π ≈ 137.036
-10. **[GoldenAngle](05_GoldenAngle.md)** — Golden Angle mappings to the cycle
-11. **[Manifold](06_Manifold.md)** — The Toroidal topology (T² = S¹ × S¹)
-12. **[Phenomena](07_Phenomena.md)** — Mapping physical constants to coordinates
-13. **[AngularEmbedding](09_AngularEmbedding.md)** — Rod/Staff orthogonality and S¹
-14. **[Noether](14_Noether.md)** — Gauge symmetry, conservation laws, Fibonacci
+When there is any mismatch:
 
-### Mathematics
-15. **[Riemann](08_Riemann.md)** — The Riemann Hypothesis and the critical line
-16. **[Monster](13_Monster.md)** — Connection to the Monster Group (196,884)
-17. **[NumberBases](12_NumberBases.md)** — Derivation of Bases 10, 12, 13
-18. **[DivisionAlgebras](11_DivisionAlgebras.md)** — Dimensional accumulation (1, 2, 4, 8)
-19. **[Calculus](15_Calculus.md)** — Differentiation as scale descent
-20. **[Projections](16_Projections.md)** — 2D collapse and shadow manifolds
+- the Lean source is canonical,
+- [`docs/README.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/README.md),
+  [`docs/REVIEW_GUIDE.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/REVIEW_GUIDE.md),
+  and [`docs/FAQ.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/FAQ.md) are the
+  current reviewer-facing entry points.
 
-### Dynamics & Structure
-21. **[Waveform](17_Waveform.md)** — The universal breathing shape W(t)
-22. **[PrimeChoreography](18_PrimeChoreography.md)** — Prime superposition dynamics
-23. **[Recursion](10_Recursion.md)** — Infinite scale invariance
-24. **[Addressing](19_Addressing.md)** — The (depth, phase) coordinate system
+## Current High-Signal Note
 
-### Algebraic & Adelic
-25. **PRISMAlgebra** — Primitive roots, comp/neg, CRT decomposition
-26. **Padic** — Universal p-adic conservation (∀ prime p)
-27. **Adele** — Adelic product ring (5 cycle primes)
+- [`25_ResidueContourSlice.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/25_ResidueContourSlice.md):
+  exact proved surface for `ResidueDefinition` and
+  `CircleIntegralBreathing`, including the current proof boundary for the
+  specific contour package around `1 / (z^13 - 1)`.
 
-### Geometric Extensions (New)
-28. **StarPolygon** — Prime visit orders on ℤ/13ℤ, mirror symmetry
-29. **PositionalPhase** — Golden angle emergence from position: |5/13 − 1/φ²| < 0.003
-30. **KissingEigen** — K(3)+1 = 13 (sphere packing → cycle length)
+## Selected Note Index
 
-### Verification
-31. **KernelProof** — 86 cross-module examples across 25 layers
+### Foundations
 
----
+- [`01_Trinity.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/01_Trinity.md)
+- [`02_ThreeLOG.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/02_ThreeLOG.md)
+- [`03_BreathingCycle.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/03_BreathingCycle.md)
+- [`20_Constants.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/20_Constants.md)
+- [`21_Simplex.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/21_Simplex.md)
+- [`22_KeplerTriangle.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/22_KeplerTriangle.md)
+- [`23_Structure13.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/23_Structure13.md)
+- [`24_Foundation.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/24_Foundation.md)
 
-## Zero Axioms
+### Geometry, Dynamics, And Arithmetic
 
-All former axioms have been eliminated. Every claim in the codebase is
-a `theorem` or `def` with a complete proof, verified by the Lean kernel.
+- [`05_GoldenAngle.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/05_GoldenAngle.md)
+- [`06_Manifold.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/06_Manifold.md)
+- [`09_AngularEmbedding.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/09_AngularEmbedding.md)
+- [`10_Recursion.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/10_Recursion.md)
+- [`11_DivisionAlgebras.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/11_DivisionAlgebras.md)
+- [`12_NumberBases.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/12_NumberBases.md)
+- [`14_Noether.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/14_Noether.md)
+- [`15_Calculus.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/15_Calculus.md)
+- [`16_Projections.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/16_Projections.md)
+- [`17_Waveform.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/17_Waveform.md)
+- [`18_PrimeChoreography.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/18_PrimeChoreography.md)
+- [`19_Addressing.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/19_Addressing.md)
 
----
+### Interpretation-Heavy Historical Notes
 
-## How to Read
+- [`04_FineStructure.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/04_FineStructure.md)
+- [`07_Phenomena.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/07_Phenomena.md)
+- [`08_Riemann.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/08_Riemann.md)
+- [`13_Monster.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/13_Monster.md)
 
-Each proof document contains:
-- **Overview**: High-level description
-- **Key Definitions**: Important types and functions
-- **Proven Theorems**: Formal statements with proof strategies
-- **Significance**: Physical or mathematical interpretation
+These are useful for context, but they should be read with the Phase 4 fence in
+mind: explanatory language in these notes is not automatically a proved theorem
+claim.
 
-The documents are organized to be read in order, building from the axiomatic foundation to the physical predictions.
+## How To Use This Folder
 
----
+1. Start with [`docs/REVIEW_GUIDE.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/REVIEW_GUIDE.md)
+   for an audit path.
+2. Use [`docs/FAQ.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/FAQ.md) for the
+   `definition` / `theorem` / `interpretation` / `open` fence.
+3. Use the files in this folder for focused module notes or theorem inventories.
 
 ## Verification
 
-All proofs are formally verified in Lean 4 with Mathlib. To verify:
+To verify the current repo state:
 
 ```bash
-cd /Users/dcharb/Downloads/UFRF.Lean.V3
+cd /Users/dcharb/Documents/UFRF-Lean-V2
 lake build
+./scripts/verify.sh
+./scripts/certify.sh
 ```
 
-The build confirms:
-- Zero `sorry` statements
-- All theorems proven
-- All definitions well-typed
-- Consistency with Mathlib
+These checks confirm the current Lean source, not the historical wording of any
+individual proof note.

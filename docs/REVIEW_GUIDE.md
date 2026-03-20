@@ -56,6 +56,19 @@ Chain: `simplex3_face_count` (C(4,3)=4) → `log3_geometric_factor_is_four` → 
 ### Step 6b: The Scale Handoff (3 min)
 **`UFRF/Recursion.lean`** — `bridge_to_seed` gives the modular next-scale handoff, `bridge_to_seed_matches_terminal_chart` ties it directly to the chart `10,11,12,13 ↦ 0,1,2,3`, and `bridge_to_seed_matches_terminal_chart_at_scale` shows the same handoff law survives every `13·s` relabeling.
 
+### Step 7: The Residue Slice (5 min)
+**`UFRF/ResidueDefinition.lean`** → **`UFRF/CircleIntegralBreathing.lean`**
+Check that the analytic layer is concrete and function-specific, not generic.
+Start with `breathingFunction_simplePole_limit`, then inspect
+`boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots`
+and
+`boundaryRectIntegral_breathingFunction_eq_zero_of_encloses_unitSquare`.
+For the reviewer-facing proof boundary, read the residue entry in
+[`docs/FAQ.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/FAQ.md), which now
+separates `definition`, `theorem`, `interpretation`, and `open`.
+For a compact theorem inventory, use
+[`docs/proofs/25_ResidueContourSlice.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/25_ResidueContourSlice.md).
+
 ---
 
 ## 3-Hour Audit
@@ -65,13 +78,14 @@ Chain: `simplex3_face_count` (C(4,3)=4) → `log3_geometric_factor_is_four` → 
 43 modules. Read theorem STATEMENTS (compiler verified proofs).
 
 ```
-Core (33 modules):
+Core (36 modules):
 □ Trinity          □ Structure13      □ Simplex
 □ ThreeLOG         □ KeplerTriangle   □ Foundation
 □ BreathingCycle   □ Constants        □ PrimeSemantics
 □ AngularEmbedding
 □ Addressing       □ Manifold         □ Recursion
 □ DivisionAlgebras □ NumberBases      □ FineStructure
+□ ComplexBreathing □ ResidueDefinition □ CircleIntegralBreathing
 □ Waveform         □ PrimeChoreography □ GoldenAngle
 □ Projections      □ Noether          □ Calculus
 □ Phenomena        □ PRISMAlgebra     □ Padic
@@ -104,7 +118,7 @@ Open `docs/DERIVATION_CHAIN.md`. Follow any path from `trinity.conservation` to 
 
 | Metric | Value |
 |---|---|
-| Modules | 40 (33 core + 7 Allen) |
+| Modules | 43 (36 core + 7 Allen) |
 | Theorems + lemmas | 396 |
 | Definitions | 140 |
 | Total proven entities | 536+ |

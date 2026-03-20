@@ -315,16 +315,90 @@ Current status:
   `boundaryRectIntegral`,
   `closedRect`,
   `boundaryRectIntegral_sub_inv_eq_zero_of_not_mem_closedRect`,
+  `boundaryRectIntegral_inv_centeredSquare`,
   and
-  `boundaryRectIntegral_inv_centeredSquare`
+  `boundaryRectIntegral_sub_inv_arbitraryCenterSquare`,
+  and
+  `boundaryRectIntegral_sub_inv_eq_two_pi_I_of_mem_interior_closedRect`
   package the coordinate rectangle boundary integral, prove that the standard
   kernel `(z - a)⁻¹` contributes `0` when its pole `a` lies outside the closed
-  rectangle, and prove the explicit centered-square kernel value
-  `2πi` for `z ↦ z⁻¹` on `[-r, r] × [-r, r]`.
-  This is still a kernel-level theorem layer, not yet an arbitrary-center
-  rectangle theorem and not yet a breathing-function theorem, but it gives the
-  first honest noncircular nonzero kernel computation now available in the
-  repo.
+  rectangle, prove the explicit centered-square kernel value
+  `2πi` for `z ↦ z⁻¹` on `[-r, r] × [-r, r]`, and transport that computation
+  to the arbitrary-center square
+  `[(a.re - r), (a.re + r)] × [(a.im - r), (a.im + r)]`, and then to an
+  arbitrary positively oriented rectangle whose pole lies in the interior.
+- The repo now also has its first honest noncircular nonzero square theorem
+  for the specific breathing function:
+  `boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_of_no_otherRoots_centeredSquare`
+  proves that if a square centered at `breathingRoot k` contains no other
+  breathing roots, then the rectangle boundary integral of `breathingFunction`
+  around that square is exactly `2πi * residueCandidateAt k`.
+  This is still deliberately local and specific: it does not introduce a
+  generic rectangle residue API, and it keeps the geometric hypothesis explicit
+  instead of hiding it behind an unproved canonical square scale.
+- The repo now also has the canonical small-square corollary:
+  `quarter_infsep_closedRect_excludes_other_breathingRoots`
+  derives the needed square-isolation hypothesis from the global breathing-root
+  separation package, and
+  `boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_quarter_infsep_centeredSquare`
+  packages the resulting quarter-`infsep` centered-square boundary integral
+  formula for `breathingFunction`.
+  This keeps the theorem specific to `1 / (z^13 - 1)` while removing the last
+  ad hoc geometric hypothesis from the local noncircular square layer.
+- The repo now also has its first honest finite-enclosure rectangle theorem:
+  `breathingRootsInInteriorRect`
+  and
+  `boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_interior_or_outside`
+  show that if every breathing root is either strictly inside a positively
+  oriented rectangle or completely outside its closed region, then the
+  rectangle boundary integral of `breathingFunction` is exactly `2πi` times
+  the sum of `residueCandidateAt` over the enclosed labels.
+  This is still deliberately explicit and specific: it does not introduce a
+  generic rectangle residue API, and it does not yet hide the geometric
+  partition hypothesis behind an unproved boundary-safe selector theorem.
+- The repo now also has the boundary-clean rectangle corollary:
+  `boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots`
+  shows that if no breathing root lies on the boundary of a positively
+  oriented rectangle, then the same rectangle boundary integral is exactly
+  `2πi` times the sum of `residueCandidateAt` over
+  `breathingRootsInInteriorRect`.
+  This packages the natural boundary-safe rectangle hypothesis into the
+  existing explicit finite-enclosure theorem without introducing a generic
+  rectangle residue API.
+- The repo now also has the direct outer-rectangle to local-squares comparison:
+  `sum_boundaryRectIntegral_breathingFunction_quarter_infsep_centeredSquare_eq_two_pi_I_mul_sum_residueCandidate`
+  packages the canonical quarter-`infsep` local squares as a finite contour
+  family, and
+  `boundaryRectIntegral_breathingFunction_eq_sum_quarter_infsep_centeredSquareIntegrals_of_no_boundary_roots`
+  shows that a boundary-clean outer rectangle has exactly the same
+  breathing-function boundary integral as the sum of those local square
+  boundary integrals over the enclosed breathing roots.
+  This now aligns the noncircular outer-boundary theorem with the canonical
+  local square layer without introducing any generic multi-boundary residue
+  API.
+- The repo now also has the all-roots cancellation corollary:
+  `boundaryRectIntegral_breathingFunction_eq_zero_of_all_breathingRoots_mem_interior_closedRect`
+  shows that if every breathing root lies strictly inside a positively
+  oriented rectangle, then the boundary integral of `breathingFunction`
+  around that rectangle is zero.
+- The repo now also has the reusable variable-radius large-square corollary:
+  `breathingRoot_mem_interior_closedRect_centeredSquare_of_one_lt`
+  and
+  `boundaryRectIntegral_breathingFunction_eq_zero_of_one_lt_centeredSquare`
+  show that for every `R > 1`, every breathing root lies strictly inside the
+  centered square `[-R, R] × [-R, R]`, and therefore the breathing-function
+  boundary integral around that square is zero.
+  This keeps the enclosing-rectangle corollary parameterized by a variable
+  `R`, rather than hardcoding one specific box size.
+- The repo now also has the asymmetric large-rectangle corollary:
+  `breathingRoot_mem_interior_closedRect_of_encloses_unitSquare`
+  and
+  `boundaryRectIntegral_breathingFunction_eq_zero_of_encloses_unitSquare`
+  show that if a positively oriented rectangle strictly contains the unit square
+  `[-1, 1] × [-1, 1]`, then every breathing root lies in its interior and the
+  breathing-function boundary integral around that rectangle is zero.
+  This is the smallest reusable non-centered wrapper around the current
+  norm-one root geometry.
 - Exact next blocker for a broader contour layer:
   the repo now has a canonical single-root contour theorem, a strict-radius
   separation package, a fixed quarter-`infsep` separated-circle theorem, and a
@@ -337,21 +411,26 @@ Current status:
   together with the matching enclosing-circle/local-circles comparison theorem.
   The remaining gap is no longer to compare one enclosing circle to the
   enclosed separated local circles; that bridge now exists. The remaining
-  structural gap is instead a nonzero noncircular theorem. The new kernel layer
-  narrows that gap: the next missing step is either an arbitrary-center square
-  kernel theorem for `(z - a)⁻¹`, or a direct rectangle decomposition theorem
-  reducing `breathingFunction` to the enclosed kernel terms. After that, one
-  can promote the noncircular layer from pole-free vanishing to actual pole
-  detection.
-- Next smallest theorem needed:
-  prove the arbitrary-center square kernel theorem:
-  for any `a : ℂ` and any `r > 0`,
-  `boundaryRectIntegral (fun z => (z - a)⁻¹) (a.re - r) (a.re + r) (a.im - r) (a.im + r) = 2πi`.
-  This is the smallest direct bridge from the new centered-square computation
-  to a real noncircular breathing theorem. Once it exists, combine it with the
-  pole-outside rectangle zero theorem and the concrete partial-fraction
-  identity in `ResidueDefinition` to get a small-square noncircular theorem for
-  `breathingFunction` around a chosen breathing root.
+  structural gap is no longer the first nonzero noncircular theorem, and it is
+  no longer the lack of a canonical local square scale. The repo now has a
+  quarter-`infsep` centered-square theorem with no extra geometric hypothesis,
+  and it now also has the explicit finite-enclosure rectangle theorem, its
+  boundary-clean corollary, the direct outer-rectangle to local-squares
+  comparison theorem, the all-roots interior cancellation corollary, and the
+  variable-radius `R > 1` large-square zero corollary, plus its asymmetric
+  enclosing-rectangle wrapper. There is no longer a missing structural
+  rectangle-comparison step in Phase 3.
+  Further work in this direction is now convenience packaging rather than a
+  foundational blocker.
+- Next optional theorem if desired:
+  generalize the canonical quarter-`infsep` local-square package from its fixed
+  radius to a variable half-side.
+  Concretely, prove a square-family theorem of the form
+  `0 < r < infsep(range breathingRoot) / 4`
+  implies that the centered square of half-side `r` around `breathingRoot k`
+  contains no other breathing roots, then lift the current quarter-`infsep`
+  square integral and outer/local-square comparison theorems to that variable
+  square scale.
 
 ### Phase 4: Interpretation Fence
 
@@ -366,6 +445,14 @@ Required doc pattern:
 - `definition`,
 - `interpretation`,
 - `open`.
+
+Started:
+- `docs/FAQ.md` now includes a residue-specific reviewer entry that applies the
+  `definition` / `theorem` / `interpretation` / `open` fence to
+  `ResidueDefinition` and `CircleIntegralBreathing`.
+- `docs/proofs/25_ResidueContourSlice.md` now inventories the exact theorem
+  surface for `ResidueDefinition` and `CircleIntegralBreathing`, and the review
+  entry points link to it.
 
 Acceptance gate:
 - no reviewer can mistake interpretation for proof.
