@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.CauchyIntegral
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Topology.MetricSpace.Infsep
 import UFRF.ResidueDefinition
@@ -1047,5 +1048,517 @@ theorem sum_circleIntegral_breathingFunction_quarter_infsep_allRoots_eq_zero :
   rw [sum_circleIntegral_breathingFunction_quarter_infsep_eq_two_pi_I_mul_sum_residueCandidate
     (S := Finset.univ)]
   rw [UFRF.ResidueDefinition.total_residue_candidate_zero, mul_zero]
+
+/--
+The finite set of breathing-root labels whose poles lie strictly inside the
+circle centered at `c` with radius `R`.
+-/
+noncomputable def breathingRootsInBall (c : ℂ) (R : ℝ) : Finset (ZMod CycleLen) := by
+  classical
+  exact Finset.univ.filter (fun k : ZMod CycleLen => breathingRoot k ∈ Metric.ball c R)
+
+@[simp] theorem mem_breathingRootsInBall {c : ℂ} {R : ℝ} {k : ZMod CycleLen} :
+    k ∈ breathingRootsInBall c R ↔ breathingRoot k ∈ Metric.ball c R := by
+  classical
+  simp [breathingRootsInBall]
+
+/--
+If the pole `w` lies outside the closed disk bounded by `C(c, R)`, then the
+standard circle kernel `(z - w)⁻¹` has zero circle integral on that contour.
+-/
+theorem circleIntegral_kernel_eq_zero_of_not_mem_closedBall
+    {c w : ℂ} {R : ℝ} (hR : 0 ≤ R)
+    (hw : w ∉ Metric.closedBall c R) :
+    (∮ z in C(c, R), (z - w)⁻¹) = 0 := by
+  apply Complex.circleIntegral_eq_zero_of_differentiable_on_off_countable
+    (c := c) (R := R) (s := ∅) hR countable_empty
+  · refine (continuousOn_id.sub continuousOn_const).inv₀ ?_
+    intro z hz
+    exact sub_ne_zero.mpr (by
+      intro hzw
+      exact hw (hzw ▸ hz))
+  · intro z hz
+    have hzball : z ∈ Metric.ball c R := by simpa [diff_empty] using hz
+    have hne : z ≠ w := by
+      intro hzw
+      exact hw (hzw ▸ Metric.ball_subset_closedBall hzball)
+    exact (differentiableAt_id.sub_const w).inv (sub_ne_zero.mpr hne)
+
+/--
+On any positive-radius circle whose boundary contains no breathing root, the
+circle integral of the specific breathing function equals `2πi` times the sum
+of the explicit residue candidates for exactly the enclosed breathing roots.
+
+This is a concrete subset-sensitive contour formula for `z ↦ 1 / (z^13 - 1)`.
+It stays specific to the breathing setup and does not promote the result to a
+general residue theorem or a generic residue API.
+-/
+theorem circleIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots
+    (c : ℂ) {R : ℝ} (hR : 0 < R)
+    (hboundary : ∀ k : ZMod CycleLen, breathingRoot k ∉ Metric.sphere c R) :
+    (∮ z in C(c, R), UFRF.ResidueDefinition.breathingFunction z) =
+      (2 * Real.pi * Complex.I) *
+        Finset.sum (breathingRootsInBall c R) UFRF.ResidueDefinition.residueCandidateAt := by
+  classical
+  let S : Finset (ZMod CycleLen) := breathingRootsInBall c R
+  let f : ZMod CycleLen → ℂ → ℂ := fun k z =>
+    UFRF.ResidueDefinition.residueCandidateAt k * (z - breathingRoot k)⁻¹
+  have hEqOn :
+      EqOn UFRF.ResidueDefinition.breathingFunction
+        (fun z : ℂ => Finset.sum Finset.univ (fun k : ZMod CycleLen => f k z))
+        (Metric.sphere c R) := by
+    intro z hz
+    simpa [f] using
+      UFRF.ResidueDefinition.breathingFunction_eq_sum_residueCandidateAt_sub_inv (by
+        intro hzero
+        obtain ⟨k, hk⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+        subst hk
+        exact hboundary k hz)
+  have hInt :
+      (∮ z in C(c, R), UFRF.ResidueDefinition.breathingFunction z) =
+        ∮ z in C(c, R), Finset.sum Finset.univ (fun k : ZMod CycleLen => f k z) := by
+    refine circleIntegral.integral_congr hR.le ?_
+    intro z hz
+    exact hEqOn hz
+  have hIntf :
+      ∀ k ∈ Finset.univ, CircleIntegrable (f k) c R := by
+    intro k hk
+    have hcont : ContinuousOn (f k) (Metric.sphere c R) := by
+      refine continuousOn_const.mul ?_
+      refine (continuousOn_id.sub continuousOn_const).inv₀ ?_
+      intro z hz
+      exact sub_ne_zero.mpr (by
+        intro hzw
+        exact hboundary k (hzw ▸ hz))
+    exact hcont.circleIntegrable hR.le
+  rw [hInt]
+  rw [circleIntegral.integral_fun_sum (s := Finset.univ) hIntf]
+  rw [← S.sum_add_sum_compl (fun k : ZMod CycleLen => ∮ z in C(c, R), f k z)]
+  have hinside :
+      Finset.sum S (fun k => ∮ z in C(c, R), f k z) =
+        (2 * Real.pi * Complex.I) *
+          Finset.sum S UFRF.ResidueDefinition.residueCandidateAt := by
+    calc
+      Finset.sum S (fun k => ∮ z in C(c, R), f k z)
+          = Finset.sum S
+              (fun k =>
+                UFRF.ResidueDefinition.residueCandidateAt k * (2 * Real.pi * Complex.I)) := by
+                refine Finset.sum_congr rfl ?_
+                intro k hk
+                have hkball : breathingRoot k ∈ Metric.ball c R := by simpa [S] using hk
+                simp [f, circleIntegral.integral_const_mul,
+                  circleIntegral.integral_sub_inv_of_mem_ball hkball]
+      _ = Finset.sum S
+            (fun k => (2 * Real.pi * Complex.I) * UFRF.ResidueDefinition.residueCandidateAt k) := by
+              refine Finset.sum_congr rfl ?_
+              intro k hk
+              ring
+      _ = (2 * Real.pi * Complex.I) *
+            Finset.sum S UFRF.ResidueDefinition.residueCandidateAt := by
+              rw [Finset.mul_sum]
+  have houtside_zero :
+      Finset.sum Sᶜ (fun k => ∮ z in C(c, R), f k z) = 0 := by
+    refine Finset.sum_eq_zero ?_
+    intro k hk
+    have hknotS : k ∉ S := Finset.mem_compl.mp hk
+    have hknotBall : breathingRoot k ∉ Metric.ball c R := by
+      intro hkball
+      have hkS : k ∈ S := by
+        simpa [S] using hkball
+      exact hknotS hkS
+    have hknotClosed : breathingRoot k ∉ Metric.closedBall c R := by
+      intro hkclosed
+      have hle : dist (breathingRoot k) c ≤ R := by
+        simpa [Metric.mem_closedBall, dist_comm] using hkclosed
+      have hnotlt : ¬ dist (breathingRoot k) c < R := by
+        intro hlt
+        exact hknotBall (by simpa [Metric.mem_ball, dist_comm] using hlt)
+      have heq : dist (breathingRoot k) c = R := le_antisymm hle (le_of_not_gt hnotlt)
+      have hkSphere : breathingRoot k ∈ Metric.sphere c R := by
+        rw [Metric.mem_sphere]
+        simpa [dist_comm] using heq
+      exact hboundary k hkSphere
+    simp [f, circleIntegral.integral_const_mul,
+      circleIntegral_kernel_eq_zero_of_not_mem_closedBall hR.le hknotClosed]
+  rw [houtside_zero, add_zero, hinside]
+
+/--
+An enclosing circle that avoids the breathing roots on its boundary has the
+same breathing-function integral as the sum of the separated local circles
+around exactly the enclosed breathing roots.
+
+The common local radius can be any `r` with
+`0 < r < infsep(range breathingRoot) / 2`, so the inner circles stay in the
+already proved separated regime.
+-/
+theorem circleIntegral_breathingFunction_eq_sum_localCircleIntegrals_of_lt_half_infsep_of_no_boundary_roots
+    (c : ℂ) {R r : ℝ} (hR : 0 < R) (hr : 0 < r)
+    (hrlt : r < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (hboundary : ∀ k : ZMod CycleLen, breathingRoot k ∉ Metric.sphere c R) :
+    (∮ z in C(c, R), UFRF.ResidueDefinition.breathingFunction z) =
+      Finset.sum (breathingRootsInBall c R) (fun k =>
+        (∮ z in C(breathingRoot k, r), UFRF.ResidueDefinition.breathingFunction z)) := by
+  rw [sum_circleIntegral_breathingFunction_of_lt_half_infsep_eq_two_pi_I_mul_sum_residueCandidate
+    (S := breathingRootsInBall c R) hr hrlt]
+  exact circleIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots
+    c hR hboundary
+
+/--
+The coordinate form of the positively oriented boundary integral around the
+closed rectangle with horizontal endpoints `x0`, `x1` and vertical endpoints
+`y0`, `y1`.
+-/
+def boundaryRectIntegral (f : ℂ → ℂ) (x0 x1 y0 y1 : ℝ) : ℂ :=
+  (∫ x : ℝ in x0..x1, f (x + y0 * Complex.I)) -
+    (∫ x : ℝ in x0..x1, f (x + y1 * Complex.I)) +
+    Complex.I • (∫ y : ℝ in y0..y1, f (x1 + y * Complex.I)) -
+    Complex.I • (∫ y : ℝ in y0..y1, f (x0 + y * Complex.I))
+
+/-- The closed rectangle with horizontal endpoints `x0`, `x1` and vertical
+endpoints `y0`, `y1`. -/
+def closedRect (x0 x1 y0 y1 : ℝ) : Set ℂ :=
+  uIcc x0 x1 ×ℂ uIcc y0 y1
+
+private lemma sub_mul_I_ne_zero {r x : ℝ} (hr : 0 < r) :
+    ((x : ℂ) - r * Complex.I) ≠ 0 := by
+  intro hzero
+  have him := congrArg Complex.im hzero
+  have : r = 0 := by simpa using him
+  exact hr.ne' this
+
+private lemma add_mul_I_ne_zero {r x : ℝ} (hr : 0 < r) :
+    ((x : ℂ) + r * Complex.I) ≠ 0 := by
+  intro hzero
+  have him := congrArg Complex.im hzero
+  have : r = 0 := by simpa using him
+  exact hr.ne' this
+
+private lemma re_add_im_mul_I_ne_zero {r y : ℝ} (hr : 0 < r) :
+    ((r : ℂ) + y * Complex.I) ≠ 0 := by
+  intro hzero
+  have hre := congrArg Complex.re hzero
+  have : r = 0 := by simpa using hre
+  exact hr.ne' this
+
+private lemma neg_re_add_im_mul_I_ne_zero {r y : ℝ} (hr : 0 < r) :
+    (((-r : ℂ) + y * Complex.I) : ℂ) ≠ 0 := by
+  intro hzero
+  have hre := congrArg Complex.re hzero
+  have : r = 0 := by simpa using hre
+  exact hr.ne' this
+
+private lemma intervalIntegrable_sub_mul_I_inv {r a b : ℝ} (hr : 0 < r) :
+    IntervalIntegrable (fun x : ℝ => ((x : ℂ) - r * Complex.I)⁻¹)
+      MeasureTheory.volume a b := by
+  have hcont : Continuous fun x : ℝ => ((x : ℂ) - r * Complex.I : ℂ) := by
+    fun_prop
+  exact ContinuousOn.intervalIntegrable
+    (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ))
+    (hcont.inv₀ (fun x => sub_mul_I_ne_zero (r := r) (x := x) hr)).continuousOn
+
+private lemma intervalIntegrable_add_mul_I_inv {r a b : ℝ} (hr : 0 < r) :
+    IntervalIntegrable (fun x : ℝ => ((x : ℂ) + r * Complex.I)⁻¹)
+      MeasureTheory.volume a b := by
+  have hcont : Continuous fun x : ℝ => ((x : ℂ) + r * Complex.I : ℂ) := by
+    fun_prop
+  exact ContinuousOn.intervalIntegrable
+    (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ))
+    (hcont.inv₀ (fun x => add_mul_I_ne_zero (r := r) (x := x) hr)).continuousOn
+
+private lemma intervalIntegrable_re_add_im_mul_I_inv {r a b : ℝ} (hr : 0 < r) :
+    IntervalIntegrable (fun y : ℝ => ((r : ℂ) + y * Complex.I)⁻¹)
+      MeasureTheory.volume a b := by
+  have hcont : Continuous fun y : ℝ => ((r : ℂ) + y * Complex.I : ℂ) := by
+    fun_prop
+  exact ContinuousOn.intervalIntegrable
+    (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ))
+    (hcont.inv₀ (fun y => re_add_im_mul_I_ne_zero (r := r) (y := y) hr)).continuousOn
+
+private lemma intervalIntegrable_neg_re_add_im_mul_I_inv {r a b : ℝ} (hr : 0 < r) :
+    IntervalIntegrable (fun y : ℝ => (((-r : ℂ) + y * Complex.I) : ℂ)⁻¹)
+      MeasureTheory.volume a b := by
+  have hcont : Continuous fun y : ℝ => (((-r : ℂ) + y * Complex.I) : ℂ) := by
+    fun_prop
+  exact ContinuousOn.intervalIntegrable
+    (μ := (MeasureTheory.volume : MeasureTheory.Measure ℝ))
+    (hcont.inv₀ (fun y => neg_re_add_im_mul_I_ne_zero (r := r) (y := y) hr)).continuousOn
+
+private lemma sub_inv_bottom_top_eq {r x : ℝ} (hr : 0 < r) :
+    (((x : ℂ) - r * Complex.I)⁻¹ - ((x : ℂ) + r * Complex.I)⁻¹) =
+      (2 * r * Complex.I : ℂ) * (r ^ 2 + x ^ 2)⁻¹ := by
+  have hx1 : ((x : ℂ) - r * Complex.I) ≠ 0 := sub_mul_I_ne_zero (r := r) (x := x) hr
+  have hx2 : ((x : ℂ) + r * Complex.I) ≠ 0 := add_mul_I_ne_zero (r := r) (x := x) hr
+  have hnum : (((x : ℂ) + r * Complex.I) - ((x : ℂ) - r * Complex.I)) =
+      (2 * r * Complex.I : ℂ) := by
+    ring
+  have hden :
+      (((x : ℂ) - r * Complex.I) * ((x : ℂ) + r * Complex.I)) =
+        ((r ^ 2 + x ^ 2 : ℝ) : ℂ) := by
+    ring_nf
+    simp [pow_two]
+    ring
+  calc
+    (((x : ℂ) - r * Complex.I)⁻¹ - ((x : ℂ) + r * Complex.I)⁻¹)
+        = ((((x : ℂ) + r * Complex.I) - ((x : ℂ) - r * Complex.I)) /
+            (((x : ℂ) - r * Complex.I) * ((x : ℂ) + r * Complex.I))) := by
+              simpa using inv_sub_inv hx1 hx2
+    _ = (2 * r * Complex.I : ℂ) / ((r ^ 2 + x ^ 2 : ℝ) : ℂ) := by rw [hnum, hden]
+    _ = (2 * r * Complex.I : ℂ) * (r ^ 2 + x ^ 2)⁻¹ := by
+      simp [div_eq_mul_inv]
+
+private lemma I_mul_sub_inv_right_left_eq {r y : ℝ} (hr : 0 < r) :
+    Complex.I * ((((r : ℂ) + y * Complex.I)⁻¹) - (((-r : ℂ) + y * Complex.I)⁻¹)) =
+      (2 * r * Complex.I : ℂ) * (r ^ 2 + y ^ 2)⁻¹ := by
+  have ha : ((r : ℂ) + y * Complex.I) ≠ 0 := re_add_im_mul_I_ne_zero (r := r) (y := y) hr
+  have hb : (((-r : ℂ) + y * Complex.I) : ℂ) ≠ 0 :=
+    neg_re_add_im_mul_I_ne_zero (r := r) (y := y) hr
+  have hsq : (r ^ 2 + y ^ 2 : ℝ) ≠ 0 := by
+    nlinarith [sq_nonneg r, sq_nonneg y, hr]
+  have hnum : (((-r : ℂ) + y * Complex.I) - ((r : ℂ) + y * Complex.I)) = (-2 * r : ℂ) := by
+    ring
+  have hden :
+      (((r : ℂ) + y * Complex.I) * (((-r : ℂ) + y * Complex.I))) =
+        (-((r ^ 2 + y ^ 2 : ℝ) : ℂ)) := by
+    ring_nf
+    simp [pow_two]
+    ring
+  have hsub :
+      (((r : ℂ) + y * Complex.I)⁻¹) - (((-r : ℂ) + y * Complex.I)⁻¹) =
+        ((((-r : ℂ) + y * Complex.I) - ((r : ℂ) + y * Complex.I)) /
+          (((r : ℂ) + y * Complex.I) * (((-r : ℂ) + y * Complex.I)))) := by
+    exact inv_sub_inv ha hb
+  have hsubI :
+      Complex.I * ((((r : ℂ) + y * Complex.I)⁻¹) - (((-r : ℂ) + y * Complex.I)⁻¹)) =
+        Complex.I *
+          (((((-r : ℂ) + y * Complex.I) - ((r : ℂ) + y * Complex.I)) /
+            (((r : ℂ) + y * Complex.I) * (((-r : ℂ) + y * Complex.I))))) := by
+    rw [hsub]
+  calc
+    Complex.I * ((((r : ℂ) + y * Complex.I)⁻¹) - (((-r : ℂ) + y * Complex.I)⁻¹))
+        = Complex.I *
+            (((((-r : ℂ) + y * Complex.I) - ((r : ℂ) + y * Complex.I)) /
+              (((r : ℂ) + y * Complex.I) * (((-r : ℂ) + y * Complex.I))))) := by
+                exact hsubI
+    _ = Complex.I * (((-2 * r : ℂ)) / (-((r ^ 2 + y ^ 2 : ℝ) : ℂ))) := by rw [hnum, hden]
+    _ = Complex.I * (((2 * r : ℂ)) / (((r ^ 2 + y ^ 2 : ℝ) : ℂ))) := by
+      have hsqC : ((r ^ 2 + y ^ 2 : ℝ) : ℂ) ≠ 0 := by
+        exact_mod_cast hsq
+      field_simp [hsqC]
+    _ = (2 * r * Complex.I : ℂ) * (r ^ 2 + y ^ 2)⁻¹ := by
+      simp [div_eq_mul_inv, mul_assoc, mul_comm]
+
+/--
+If the standard kernel `z ↦ z⁻¹` has no pole inside a closed rectangle, then
+its boundary integral around that rectangle is zero.
+-/
+theorem boundaryRectIntegral_sub_inv_eq_zero_of_not_mem_closedRect
+    {u : ℂ} {x0 x1 y0 y1 : ℝ}
+    (hu : u ∉ closedRect x0 x1 y0 y1) :
+    boundaryRectIntegral (fun z : ℂ => (z - u)⁻¹) x0 x1 y0 y1 = 0 := by
+  have hcont :
+      ContinuousOn (fun z : ℂ => (z - u)⁻¹) (closedRect x0 x1 y0 y1) := by
+    refine (continuousOn_id.sub continuousOn_const).inv₀ ?_
+    intro z hz
+    exact sub_ne_zero.mpr (by
+      intro hzu
+      exact hu (hzu ▸ hz))
+  have hdiff :
+      DifferentiableOn ℂ (fun z : ℂ => (z - u)⁻¹)
+        (Ioo (min x0 x1) (max x0 x1) ×ℂ Ioo (min y0 y1) (max y0 y1)) := by
+    intro z hz
+    have hzInterior : z ∈ interior (closedRect x0 x1 y0 y1) := by
+      simpa [closedRect, interior_reProdIm, uIcc, interior_Icc] using hz
+    have hzClosed : z ∈ closedRect x0 x1 y0 y1 := interior_subset hzInterior
+    have hzu : z - u ≠ 0 := by
+      refine sub_ne_zero.mpr ?_
+      intro hEq
+      exact hu (hEq ▸ hzClosed)
+    exact ((differentiableAt_id.sub_const u).inv hzu).differentiableWithinAt
+  have hcont' :
+      ContinuousOn (fun z : ℂ => (z - u)⁻¹)
+        (uIcc (x0 + y0 * Complex.I).re (x1 + y1 * Complex.I).re ×ℂ
+          uIcc (x0 + y0 * Complex.I).im (x1 + y1 * Complex.I).im) := by
+    simpa [closedRect] using hcont
+  have hdiff' :
+      DifferentiableOn ℂ (fun z : ℂ => (z - u)⁻¹)
+        (Ioo (min (x0 + y0 * Complex.I).re (x1 + y1 * Complex.I).re)
+            (max (x0 + y0 * Complex.I).re (x1 + y1 * Complex.I).re) ×ℂ
+          Ioo (min (x0 + y0 * Complex.I).im (x1 + y1 * Complex.I).im)
+            (max (x0 + y0 * Complex.I).im (x1 + y1 * Complex.I).im)) := by
+    simpa using hdiff
+  simpa [boundaryRectIntegral] using
+    Complex.integral_boundary_rect_eq_zero_of_continuousOn_of_differentiableOn
+      (fun z : ℂ => (z - u)⁻¹) (x0 + y0 * Complex.I) (x1 + y1 * Complex.I) hcont' hdiff'
+
+/--
+The standard kernel `z ↦ z⁻¹` has rectangle boundary integral `2πi` around the
+origin-centered square `[-r, r] × [-r, r]` for every `r > 0`.
+-/
+theorem boundaryRectIntegral_inv_centeredSquare {r : ℝ} (hr : 0 < r) :
+    boundaryRectIntegral (fun z : ℂ => z⁻¹) (-r) r (-r) r = 2 * Real.pi * Complex.I := by
+  have hbottom :
+      (∫ x : ℝ in -r..r, ((x : ℂ) - r * Complex.I)⁻¹) -
+        (∫ x : ℝ in -r..r, ((x : ℂ) + r * Complex.I)⁻¹) =
+          ∫ x : ℝ in -r..r, (2 * r * Complex.I : ℂ) * (r ^ 2 + x ^ 2)⁻¹ := by
+    rw [← intervalIntegral.integral_sub
+      (intervalIntegrable_sub_mul_I_inv (a := -r) (b := r) hr)
+      (intervalIntegrable_add_mul_I_inv (a := -r) (b := r) hr)]
+    refine intervalIntegral.integral_congr ?_
+    intro x hx
+    simpa using sub_inv_bottom_top_eq (r := r) (x := x) hr
+  have hvertical :
+      Complex.I * (∫ y : ℝ in -r..r, ((r : ℂ) + y * Complex.I)⁻¹) -
+        Complex.I * (∫ y : ℝ in -r..r, (((-r : ℂ) + y * Complex.I) : ℂ)⁻¹) =
+          ∫ y : ℝ in -r..r, (2 * r * Complex.I : ℂ) * (r ^ 2 + y ^ 2)⁻¹ := by
+    rw [← mul_sub]
+    rw [← intervalIntegral.integral_sub
+      (intervalIntegrable_re_add_im_mul_I_inv (a := -r) (b := r) hr)
+      (intervalIntegrable_neg_re_add_im_mul_I_inv (a := -r) (b := r) hr)]
+    let f : ℝ → ℂ := fun y =>
+      (((r : ℂ) + y * Complex.I)⁻¹ - (((-r : ℂ) + y * Complex.I)⁻¹))
+    have hconstmul :
+        Complex.I * (∫ y : ℝ in -r..r, f y) =
+          ∫ y : ℝ in -r..r, Complex.I * f y := by
+      exact
+        (intervalIntegral.integral_const_mul (μ := MeasureTheory.volume) (a := -r) (b := r)
+          Complex.I f).symm
+    rw [hconstmul]
+    refine intervalIntegral.integral_congr ?_
+    intro y hy
+    simpa [f, mul_assoc] using I_mul_sub_inv_right_left_eq (r := r) (y := y) hr
+  have hpiece :
+      (∫ x : ℝ in -r..r, (2 * r * Complex.I : ℂ) * (r ^ 2 + x ^ 2)⁻¹) =
+        Real.pi * Complex.I := by
+    change (∫ x : ℝ in -r..r, (2 * r * Complex.I : ℂ) * ((((r ^ 2 + x ^ 2)⁻¹ : ℝ) : ℂ))) =
+      Real.pi * Complex.I
+    let g : ℝ → ℂ := fun x => ((((r ^ 2 + x ^ 2)⁻¹ : ℝ) : ℂ))
+    have hconstmul :
+        (∫ x : ℝ in -r..r, (2 * r * Complex.I : ℂ) * g x) =
+          (2 * r * Complex.I : ℂ) * (∫ x : ℝ in -r..r, g x) := by
+      exact
+        (intervalIntegral.integral_const_mul (μ := MeasureTheory.volume) (a := -r) (b := r)
+          (2 * r * Complex.I : ℂ) g)
+    rw [hconstmul]
+    have hofreal :
+        (∫ x : ℝ in -r..r, g x) = ↑(∫ x : ℝ in -r..r, (r ^ 2 + x ^ 2)⁻¹) := by
+      dsimp [g]
+      exact
+        (intervalIntegral.integral_ofReal (μ := MeasureTheory.volume) (a := -r) (b := r)
+          (f := fun x : ℝ => (r ^ 2 + x ^ 2)⁻¹))
+    rw [hofreal, integral_inv_sq_add_sq (a := -r) (b := r) hr.ne']
+    have harctan : Real.arctan (r / r) - Real.arctan (-r / r) = Real.pi / 2 := by
+      rw [div_self hr.ne', neg_div, div_self hr.ne', Real.arctan_one, Real.arctan_neg,
+        Real.arctan_one]
+      ring
+    rw [harctan]
+    have hreal : (2 * r : ℝ) * (r⁻¹ * (Real.pi / 2)) = Real.pi := by
+      field_simp [hr.ne']
+    calc
+      (2 * r * Complex.I : ℂ) * ((r⁻¹ * (Real.pi / 2) : ℝ) : ℂ)
+          = (((2 * r : ℝ) * (r⁻¹ * (Real.pi / 2)) : ℝ) : ℂ) * Complex.I := by
+              simp [mul_left_comm, mul_comm]
+      _ = Real.pi * Complex.I := by rw [hreal]
+  have hbottom' :
+      ((∫ x : ℝ in -r..r, (fun z : ℂ => z⁻¹) (x + (-r) * Complex.I)) -
+        (∫ x : ℝ in -r..r, (fun z : ℂ => z⁻¹) (x + r * Complex.I))) =
+          ∫ x : ℝ in -r..r, (2 * r * Complex.I : ℂ) * (r ^ 2 + x ^ 2)⁻¹ := by
+    simpa using hbottom
+  have hvertical' :
+      (Complex.I • (∫ y : ℝ in -r..r, (fun z : ℂ => z⁻¹) (r + y * Complex.I)) -
+        Complex.I • (∫ y : ℝ in -r..r, (fun z : ℂ => z⁻¹) (-r + y * Complex.I))) =
+          ∫ y : ℝ in -r..r, (2 * r * Complex.I : ℂ) * (r ^ 2 + y ^ 2)⁻¹ := by
+    simpa [smul_eq_mul] using hvertical
+  calc
+    boundaryRectIntegral (fun z : ℂ => z⁻¹) (-r) r (-r) r
+        = ((∫ x : ℝ in -r..r, (fun z : ℂ => z⁻¹) (x + (-r) * Complex.I)) -
+            (∫ x : ℝ in -r..r, (fun z : ℂ => z⁻¹) (x + r * Complex.I))) +
+          (Complex.I • (∫ y : ℝ in -r..r, (fun z : ℂ => z⁻¹) (r + y * Complex.I)) -
+            Complex.I • (∫ y : ℝ in -r..r, (fun z : ℂ => z⁻¹) (-r + y * Complex.I))) := by
+              simp [boundaryRectIntegral, sub_eq_add_neg, add_assoc]
+    _ = (∫ x : ℝ in -r..r, (2 * r * Complex.I : ℂ) * (r ^ 2 + x ^ 2)⁻¹) +
+          (∫ y : ℝ in -r..r, (2 * r * Complex.I : ℂ) * (r ^ 2 + y ^ 2)⁻¹) := by
+            rw [hbottom', hvertical']
+    _ = Real.pi * Complex.I + Real.pi * Complex.I := by
+          rw [hpiece]
+    _ = 2 * Real.pi * Complex.I := by ring
+
+/--
+If the breathing denominator never vanishes on a closed rectangle, then the
+boundary integral of the breathing function around that rectangle is zero.
+
+This is the first noncircular outer-boundary theorem in the residue pipeline.
+It is still specific to `z ↦ 1 / (z^13 - 1)` and relies only on Mathlib's
+rectangle-boundary Cauchy-Goursat theorem.
+-/
+theorem integral_boundary_rect_breathingFunction_eq_zero_of_breathingDenominator_ne_zero
+    (z w : ℂ)
+    (hden :
+      ∀ x ∈ (uIcc z.re w.re ×ℂ uIcc z.im w.im),
+        UFRF.ResidueDefinition.breathingDenominator x ≠ 0) :
+    (∫ x : ℝ in z.re..w.re, UFRF.ResidueDefinition.breathingFunction (x + z.im * Complex.I)) -
+      (∫ x : ℝ in z.re..w.re, UFRF.ResidueDefinition.breathingFunction (x + w.im * Complex.I)) +
+      Complex.I •
+        (∫ y : ℝ in z.im..w.im,
+          UFRF.ResidueDefinition.breathingFunction (w.re + y * Complex.I)) -
+      Complex.I •
+        (∫ y : ℝ in z.im..w.im,
+          UFRF.ResidueDefinition.breathingFunction (z.re + y * Complex.I)) = 0 := by
+  let rect : Set ℂ := uIcc z.re w.re ×ℂ uIcc z.im w.im
+  let openRect : Set ℂ :=
+    Ioo (min z.re w.re) (max z.re w.re) ×ℂ Ioo (min z.im w.im) (max z.im w.im)
+  have hcontDen : ContinuousOn UFRF.ResidueDefinition.breathingDenominator rect := by
+    intro x hx
+    change ContinuousWithinAt (fun u : ℂ => u ^ UFRF.ResidueDefinition.CycleLen - (1 : ℂ)) rect x
+    fun_prop
+  have hcont :
+      ContinuousOn UFRF.ResidueDefinition.breathingFunction rect := by
+    simpa [rect, UFRF.ResidueDefinition.breathingFunction] using
+      (continuousOn_const.div hcontDen hden)
+  have hdiffDen : DifferentiableOn ℂ UFRF.ResidueDefinition.breathingDenominator openRect := by
+    intro x hx
+    change DifferentiableWithinAt ℂ
+      (fun u : ℂ => u ^ UFRF.ResidueDefinition.CycleLen - (1 : ℂ)) openRect x
+    fun_prop
+  have hconst : DifferentiableOn ℂ (fun _ : ℂ => (1 : ℂ)) openRect := by
+    intro x hx
+    exact (differentiableAt_const (c := (1 : ℂ))).differentiableWithinAt
+  have hden_open :
+      ∀ x ∈ openRect, UFRF.ResidueDefinition.breathingDenominator x ≠ 0 := by
+    intro x hx
+    apply hden x
+    have hxint : x ∈ interior rect := by
+      simpa [rect, openRect, interior_reProdIm, uIcc, interior_Icc] using hx
+    exact interior_subset hxint
+  have hdiff :
+      DifferentiableOn ℂ UFRF.ResidueDefinition.breathingFunction openRect := by
+    simpa [openRect, UFRF.ResidueDefinition.breathingFunction] using
+      hconst.div hdiffDen hden_open
+  exact Complex.integral_boundary_rect_eq_zero_of_continuousOn_of_differentiableOn
+    UFRF.ResidueDefinition.breathingFunction z w hcont hdiff
+
+/--
+If a closed rectangle contains no breathing root, then the boundary integral
+of the breathing function around that rectangle is zero.
+
+This packages the rectangle theorem above in the breathing-root language, using
+the proved classification of every zero of `z^13 - 1` as a breathing root.
+-/
+theorem integral_boundary_rect_breathingFunction_eq_zero_of_no_breathingRoots
+    (z w : ℂ)
+    (hroot :
+      ∀ k : ZMod CycleLen,
+        breathingRoot k ∉ (uIcc z.re w.re ×ℂ uIcc z.im w.im)) :
+    (∫ x : ℝ in z.re..w.re, UFRF.ResidueDefinition.breathingFunction (x + z.im * Complex.I)) -
+      (∫ x : ℝ in z.re..w.re, UFRF.ResidueDefinition.breathingFunction (x + w.im * Complex.I)) +
+      Complex.I •
+        (∫ y : ℝ in z.im..w.im,
+          UFRF.ResidueDefinition.breathingFunction (w.re + y * Complex.I)) -
+      Complex.I •
+        (∫ y : ℝ in z.im..w.im,
+          UFRF.ResidueDefinition.breathingFunction (z.re + y * Complex.I)) = 0 := by
+  apply integral_boundary_rect_breathingFunction_eq_zero_of_breathingDenominator_ne_zero z w
+  intro x hx hzero
+  obtain ⟨k, hkx⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hzero
+  exact hroot k (hkx ▸ hx)
 
 end UFRF.CircleIntegralBreathing

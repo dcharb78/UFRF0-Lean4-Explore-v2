@@ -278,6 +278,53 @@ Current status:
   This is therefore an explicit enclosing-contour comparison for the full
   breathing-root family, but it is not yet a finite-subset theorem and not yet
   a direct multi-boundary decomposition theorem.
+- The repo now also has a direct subset-sensitive single-circle contour
+  theorem:
+  `breathingRootsInBall`,
+  `circleIntegral_kernel_eq_zero_of_not_mem_closedBall`,
+  and
+  `circleIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots`
+  prove that for any center `c`, any radius `R > 0`, and any circle `C(c, R)`
+  whose boundary contains no breathing root, the circle integral of
+  `breathingFunction` equals `2πi` times the sum of the explicit residue
+  candidates over exactly the breathing roots strictly inside
+  `Metric.ball c R`.
+  This is the first honest proper-subset/nonzero contour theorem in the repo,
+  and it is obtained from the concrete partial-fraction identity in
+  `ResidueDefinition`, not from a general residue API.
+- The repo now also has the corresponding enclosing-circle to local-circles
+  comparison theorem:
+  `circleIntegral_breathingFunction_eq_sum_localCircleIntegrals_of_lt_half_infsep_of_no_boundary_roots`
+  proves that any circle `C(c, R)` with `R > 0` and no breathing root on its
+  boundary has the same integral as the sum of the breathing-function integrals
+  over the separated local circles of any common radius
+  `0 < r < infsep(range breathingRoot) / 2` around exactly the enclosed
+  breathing roots.
+  This gives a real proper-subset boundary-comparison theorem without invoking
+  a general multi-boundary residue package.
+- The repo now also has its first honest noncircular outer-boundary theorem:
+  `integral_boundary_rect_breathingFunction_eq_zero_of_breathingDenominator_ne_zero`
+  and
+  `integral_boundary_rect_breathingFunction_eq_zero_of_no_breathingRoots`
+  prove that the boundary integral of `breathingFunction` around a closed
+  rectangle is zero whenever the rectangle contains no poles, equivalently no
+  breathing roots.
+  This moves the contour layer beyond circles while staying inside Mathlib's
+  existing rectangle-boundary Cauchy-Goursat support.
+- The repo now also has a rectangle-kernel support layer:
+  `boundaryRectIntegral`,
+  `closedRect`,
+  `boundaryRectIntegral_sub_inv_eq_zero_of_not_mem_closedRect`,
+  and
+  `boundaryRectIntegral_inv_centeredSquare`
+  package the coordinate rectangle boundary integral, prove that the standard
+  kernel `(z - a)⁻¹` contributes `0` when its pole `a` lies outside the closed
+  rectangle, and prove the explicit centered-square kernel value
+  `2πi` for `z ↦ z⁻¹` on `[-r, r] × [-r, r]`.
+  This is still a kernel-level theorem layer, not yet an arbitrary-center
+  rectangle theorem and not yet a breathing-function theorem, but it gives the
+  first honest noncircular nonzero kernel computation now available in the
+  repo.
 - Exact next blocker for a broader contour layer:
   the repo now has a canonical single-root contour theorem, a strict-radius
   separation package, a fixed quarter-`infsep` separated-circle theorem, and a
@@ -285,19 +332,26 @@ Current status:
   common radius `0 < R < infsep(range breathingRoot) / 2`, together with
   same-center annulus comparison theorems for one chosen breathing root and
   for finite common-radius families, plus an explicit origin-centered
-  outer-circle theorem and a full-family inner-to-outer comparison corollary.
-  The remaining gap is now specifically a theorem that handles a finite proper
-  subset of breathing roots or a genuinely nonzero total contour sum, and more
-  structurally, a direct multi-center contour-comparison or boundary-additivity
-  theorem rather than a zero-equals-zero comparison.
+  outer-circle theorem, a full-family inner-to-outer comparison corollary, and
+  now a direct subset-sensitive single-circle formula for arbitrary centers,
+  together with the matching enclosing-circle/local-circles comparison theorem.
+  The remaining gap is no longer to compare one enclosing circle to the
+  enclosed separated local circles; that bridge now exists. The remaining
+  structural gap is instead a nonzero noncircular theorem. The new kernel layer
+  narrows that gap: the next missing step is either an arbitrary-center square
+  kernel theorem for `(z - a)⁻¹`, or a direct rectangle decomposition theorem
+  reducing `breathingFunction` to the enclosed kernel terms. After that, one
+  can promote the noncircular layer from pole-free vanishing to actual pole
+  detection.
 - Next smallest theorem needed:
-  either prove a specific outer-contour theorem for a finite proper subset of
-  breathing roots, or prove a direct multi-center contour-additivity theorem
-  for a disk or region boundary with finitely many excluded closed balls around
-  the poles.
-  The enclosing outer-contour step for the full breathing-root family is now
-  complete, so the next theorem should address a nonzero total contour sum or
-  a genuine multi-boundary geometry theorem.
+  prove the arbitrary-center square kernel theorem:
+  for any `a : ℂ` and any `r > 0`,
+  `boundaryRectIntegral (fun z => (z - a)⁻¹) (a.re - r) (a.re + r) (a.im - r) (a.im + r) = 2πi`.
+  This is the smallest direct bridge from the new centered-square computation
+  to a real noncircular breathing theorem. Once it exists, combine it with the
+  pole-outside rectangle zero theorem and the concrete partial-fraction
+  identity in `ResidueDefinition` to get a small-square noncircular theorem for
+  `breathingFunction` around a chosen breathing root.
 
 ### Phase 4: Interpretation Fence
 
