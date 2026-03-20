@@ -148,15 +148,94 @@ Current status:
   `circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_via_simplePole_limit`
   show that the punctured simple-pole limit theorem already plugs directly into Mathlib's
   punctured-center Cauchy formula.
+- The local isolation package is now also explicit:
+  `exists_pos_radius_closedBall_zero_unique_for_breathingDenominator`
+  proves that on some sufficiently small closed ball around `breathingRoot k`,
+  the denominator `z^13 - 1` vanishes only at that root, and
+  `exists_pos_radius_closedBall_excludes_other_breathingRoots`
+  specializes this to a radius criterion excluding every other breathing root.
+- The algebraic zero pattern of the local factor is now partly explicit too:
+  `localFactorAt_vanishes_at_other_breathingRoot`
+  records that for fixed `k`, the local factor `localFactorAt k` vanishes at
+  every other breathing root `breathingRoot j` with `j ≠ k`.
+- The separation statement is now slightly more quantitative:
+  `exists_pos_radius_lt_dist_other_breathingRoots`
+  upgrades the same existential radius into a strict positive lower bound,
+  for each fixed `k`, on the distance from `breathingRoot k` to every other
+  breathing root.
+- The repo also now has a global finite-separation package for the whole
+  breathing-root configuration:
+  `breathingRootSet_infsep_pos`,
+  `half_infsep_lt_dist_breathingRoots`,
+  and
+  `half_infsep_closedBall_excludes_other_breathingRoots`
+  provide a canonical uniform radius
+  `infsep(range breathingRoot) / 2`
+  that excludes every other breathing root around any chosen center.
+- The zero set of the denominator is now fully tied back to the breathing-root
+  interface:
+  `exists_breathingRoot_of_breathingDenominator_eq_zero`
+  proves that every zero of `z^13 - 1` is some `breathingRoot j`.
+- The canonical nonvanishing bridge is now in place:
+  `localFactorAt_nonzero_closedBall_half_infsep`
+  shows that on the closed ball
+  `closedBall (breathingRoot k) (infsep(range breathingRoot) / 2)`,
+  the local factor `localFactorAt k` never vanishes.
+- The single-root contour theorem has now been upgraded from an existential
+  radius statement to a canonical-radius statement:
+  `circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_half_infsep`
+  proves that on the circle of radius
+  `infsep(range breathingRoot) / 2`
+  around `breathingRoot k`, the breathing function integrates to
+  `2πi * residueCandidateAt k`.
+- The geometric disjointness layer is now explicit too:
+  `disjoint_ball_half_infsep_breathingRoots`
+  proves that the canonical open balls of radius
+  `infsep(range breathingRoot) / 2`
+  around distinct breathing roots are disjoint, while
+  `disjoint_closedBall_of_lt_half_infsep_breathingRoots`
+  and
+  `disjoint_sphere_of_lt_half_infsep_breathingRoots`
+  give the stronger closed-ball and circle disjointness package for any common
+  radius `R < infsep(range breathingRoot) / 2`.
+- The repo now also exposes a fixed canonical closed-neighborhood scale for
+  that separation package:
+  `quarter_infsep_closedBall_disjoint_closedBall_breathingRoots`
+  and
+  `quarter_infsep_sphere_disjoint_sphere_breathingRoots`
+  specialize the strict-radius disjointness theorems to the concrete radius
+  `infsep(range breathingRoot) / 4`.
+- The local nonvanishing and contour bridge have now been transported to that
+  separated-circle scale:
+  `localFactorAt_nonzero_closedBall_quarter_infsep`
+  and
+  `circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_quarter_infsep`
+  give the same specific contour formula on the quarter-`infsep` circles.
+- The repo now has a finite-subset multi-circle sum theorem at the separated
+  quarter-`infsep` scale:
+  `sum_circleIntegral_breathingFunction_quarter_infsep_eq_two_pi_I_mul_sum_residueCandidate`
+  proves that for any finite set of breathing roots, the sum of the
+  corresponding quarter-`infsep` circle integrals equals `2πi` times the sum
+  of the explicit residue candidates.
+- The all-roots zero statement is now packaged as a corollary of that finite
+  subset formula:
+  `sum_circleIntegral_breathingFunction_quarter_infsep_allRoots_eq_zero`
+  shows that the sum of the circle integrals over the full family of separated
+  quarter-`infsep` breathing-root circles is zero.
 - Exact next blocker for a broader contour layer:
-  the current theorems are still local small-circle results around a single breathing root.
-  A larger contour theorem that cleanly handles multiple enclosed breathing roots will need
-  an explicit root-separation package and then either contour decomposition or a carefully
-  bounded multi-pole circle/annulus argument.
+  the repo now has a canonical single-root contour theorem, a strict-radius
+  separation package, a fixed quarter-`infsep` separated-circle theorem, and a
+  finite multi-circle cancellation formula.
+  The remaining gap is a theorem that compares those separated inner circles to
+  a single enclosing contour or annular boundary, without pretending that
+  Mathlib already gives a general residue theorem for this setup.
 - Next smallest theorem needed:
-  prove a concrete positive lower bound on the distance between distinct breathing roots, then
-  package a radius criterion guaranteeing that a circle centered at `breathingRoot k` encloses
-  no other breathing root.
+  prove a specific contour-additivity or annulus-decomposition theorem for a
+  finite union of disjoint quarter-`infsep` circles, or relate the sum of those
+  inner circle integrals to an explicit outer contour enclosing the same set of
+  breathing roots.
+  That keeps the next step concrete and honest before any broader
+  sum-of-residues-style promotion.
 
 ### Phase 4: Interpretation Fence
 

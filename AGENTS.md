@@ -25,3 +25,31 @@
 - Make the smallest change that preserves theorem intent and import stability.
 - When touching proof-heavy files, prefer extending existing theorem packages and bridge layers over introducing duplicate statements.
 - If a change affects project-wide semantics, mention the impacted modules in the final summary.
+
+## Suggested Subagent Roster
+
+Use a small fixed roster instead of inventing new agent roles each session.
+
+- `Plan Guardian`
+  Read `AGENTS.md`, `docs/RESIDUE_INTEGRATION_PLAN.md`, the touched modules, and `UFRF.lean`.
+  Check for drift between theorem names, blockers, docs, and reviewer-facing framing.
+  Default output: findings first, then a single best next plan step. No code edits.
+- `Invariant Auditor`
+  Read the touched modules and nearby docs.
+  Check the standing constraints: no fake general residue theorem or generic `Res` API, no projection-law promotion, no modular/complex residue conflation, preserve the prime semantics split, and avoid unnecessary import drift.
+  Default output: findings first, then residual risks. No code edits.
+- `Mathlib Scout`
+  Before nontrivial analytic bridges, search for the smallest Mathlib-supported theorem path.
+  Prefer exact lemma names, required hypotheses, and proof skeletons over broad strategy.
+  Default output: one concrete theorem candidate and the lemmas needed to prove it.
+- `Validation Sentinel`
+  After Lean edits, run `./scripts/verify.sh`.
+  For core semantic or cross-module changes, also run `./scripts/certify.sh` and `git diff --check`.
+  Default output: only failures, regressions, or missing coverage.
+
+## Suggested Use Pattern
+
+- Start `Plan Guardian` and `Mathlib Scout` before proof-heavy work.
+- Run `Invariant Auditor` before promoting new docs or semantic framing.
+- Run `Validation Sentinel` after edits and before handoff.
+- Keep subagents read-only unless the task explicitly calls for parallel code edits.

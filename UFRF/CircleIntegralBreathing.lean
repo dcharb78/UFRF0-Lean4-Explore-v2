@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.CauchyIntegral
+import Mathlib.Topology.MetricSpace.Infsep
 import UFRF.ResidueDefinition
 
 /-!
@@ -47,6 +48,240 @@ theorem exists_pos_radius_localFactorAt_nonzero_closedBall (k : ZMod CycleLen) :
   intro z hz
   apply hsub
   exact Metric.closedBall_subset_ball (by linarith) hz
+
+/--
+For a fixed pole label `k`, the local factor vanishes at every other breathing
+root `breathingRoot j` with `j ≠ k`.
+-/
+theorem localFactorAt_vanishes_at_other_breathingRoot
+    (k j : ZMod CycleLen) (hjk : j ≠ k) :
+    UFRF.ResidueDefinition.localFactorAt k (breathingRoot j) = 0 := by
+  have hmul :=
+    UFRF.ResidueDefinition.localFactorAt_mul_root_diff k (breathingRoot j)
+  rw [UFRF.ResidueDefinition.breathingDenominator_vanishes_at_root j] at hmul
+  have hroot_ne : breathingRoot j - breathingRoot k ≠ 0 := by
+    apply sub_ne_zero.mpr
+    intro hroot
+    exact hjk (UFRF.ComplexBreathing.breathingRoot_injective hroot)
+  exact (mul_eq_zero.mp hmul).resolve_right hroot_ne
+
+/--
+On a sufficiently small closed ball around a chosen breathing root, the
+denominator `z^13 - 1` vanishes only at that root.
+-/
+theorem exists_pos_radius_closedBall_zero_unique_for_breathingDenominator
+    (k : ZMod CycleLen) :
+    ∃ R > 0, ∀ z : ℂ, z ∈ Metric.closedBall (breathingRoot k) R →
+      UFRF.ResidueDefinition.breathingDenominator z = 0 → z = breathingRoot k := by
+  rcases exists_pos_radius_localFactorAt_nonzero_closedBall k with ⟨R, hR, hlocal⟩
+  refine ⟨R, hR, ?_⟩
+  intro z hz hzero
+  have hmul : UFRF.ResidueDefinition.localFactorAt k z * (z - breathingRoot k) = 0 := by
+    simpa [hzero] using UFRF.ResidueDefinition.localFactorAt_mul_root_diff k z
+  have hlocal_ne : UFRF.ResidueDefinition.localFactorAt k z ≠ 0 := hlocal z hz
+  rcases mul_eq_zero.mp hmul with hfac | hdiff
+  · exact False.elim (hlocal_ne hfac)
+  · exact sub_eq_zero.mp hdiff
+
+/--
+Every chosen breathing root admits a sufficiently small closed ball that
+contains no other breathing root.
+-/
+theorem exists_pos_radius_closedBall_excludes_other_breathingRoots
+    (k : ZMod CycleLen) :
+    ∃ R > 0, ∀ j : ZMod CycleLen, j ≠ k →
+      breathingRoot j ∉ Metric.closedBall (breathingRoot k) R := by
+  rcases exists_pos_radius_closedBall_zero_unique_for_breathingDenominator k with
+    ⟨R, hR, hunique⟩
+  refine ⟨R, hR, ?_⟩
+  intro j hj hjmem
+  have heq : breathingRoot j = breathingRoot k :=
+    hunique (breathingRoot j) hjmem
+      (UFRF.ResidueDefinition.breathingDenominator_vanishes_at_root j)
+  exact hj (UFRF.ComplexBreathing.breathingRoot_injective heq)
+
+/--
+Every chosen breathing root admits a strictly positive distance buffer to every
+other breathing root.
+-/
+theorem exists_pos_radius_lt_dist_other_breathingRoots
+    (k : ZMod CycleLen) :
+    ∃ R > 0, ∀ j : ZMod CycleLen, j ≠ k →
+      R < dist (breathingRoot k) (breathingRoot j) := by
+  rcases exists_pos_radius_closedBall_excludes_other_breathingRoots k with
+    ⟨R, hR, hexcl⟩
+  refine ⟨R, hR, ?_⟩
+  intro j hj
+  have hnot : breathingRoot j ∉ Metric.closedBall (breathingRoot k) R := hexcl j hj
+  rw [Metric.mem_closedBall, not_le] at hnot
+  simpa [dist_comm] using hnot
+
+/--
+The full breathing-root configuration has a strictly positive global infimum
+separation in the complex plane.
+-/
+theorem breathingRootSet_infsep_pos :
+    0 < (Set.range breathingRoot : Set ℂ).infsep := by
+  have hfinite : (Set.range breathingRoot : Set ℂ).Finite := Set.finite_range breathingRoot
+  have hnontrivial : (Set.range breathingRoot : Set ℂ).Nontrivial := by
+    refine ⟨breathingRoot 0, ⟨0, rfl⟩, breathingRoot 1, ⟨1, rfl⟩, ?_⟩
+    intro hroot
+    have h01 : (0 : ZMod CycleLen) = 1 :=
+      UFRF.ComplexBreathing.breathingRoot_injective hroot
+    exact zero_ne_one h01
+  exact (hfinite.infsep_pos_iff_nontrivial).2 hnontrivial
+
+/--
+Half of the global breathing-root infimum separation is still strictly smaller
+than the distance between any two distinct breathing roots.
+-/
+theorem half_infsep_lt_dist_breathingRoots {j k : ZMod CycleLen} (hjk : j ≠ k) :
+    ((Set.range breathingRoot : Set ℂ).infsep) / 2 <
+      dist (breathingRoot j) (breathingRoot k) := by
+  have hpos : 0 < (Set.range breathingRoot : Set ℂ).infsep := breathingRootSet_infsep_pos
+  have hjmem : breathingRoot j ∈ (Set.range breathingRoot : Set ℂ) := ⟨j, rfl⟩
+  have hkmem : breathingRoot k ∈ (Set.range breathingRoot : Set ℂ) := ⟨k, rfl⟩
+  have hroot_ne : breathingRoot j ≠ breathingRoot k := by
+    intro hroot
+    have hjk_eq : j = k := UFRF.ComplexBreathing.breathingRoot_injective hroot
+    exact hjk hjk_eq
+  have hle :
+      (Set.range breathingRoot : Set ℂ).infsep ≤
+        dist (breathingRoot j) (breathingRoot k) :=
+    Set.infsep_le_dist_of_mem hjmem hkmem hroot_ne
+  exact (half_lt_self hpos).trans_le hle
+
+/--
+The canonical radius `infsep(range breathingRoot) / 2` excludes every other
+breathing root from the closed ball around a chosen breathing root.
+-/
+theorem half_infsep_closedBall_excludes_other_breathingRoots
+    (k : ZMod CycleLen) :
+    ∀ j : ZMod CycleLen, j ≠ k →
+      breathingRoot j ∉ Metric.closedBall (breathingRoot k)
+        (((Set.range breathingRoot : Set ℂ).infsep) / 2) := by
+  intro j hj
+  rw [Metric.mem_closedBall, not_le]
+  simpa [dist_comm] using half_infsep_lt_dist_breathingRoots (j := k) (k := j) hj.symm
+
+/--
+Every zero of the denominator `z^13 - 1` is one of the breathing roots.
+
+This packages the full zero set of the specific denominator into the existing
+`breathingRoot` interface without introducing any general residue API.
+-/
+theorem exists_breathingRoot_of_breathingDenominator_eq_zero {z : ℂ}
+    (hz : UFRF.ResidueDefinition.breathingDenominator z = 0) :
+    ∃ j : ZMod CycleLen, z = breathingRoot j := by
+  have hzpow : z ^ CycleLen = 1 := by
+    rw [UFRF.ResidueDefinition.breathingDenominator] at hz
+    exact sub_eq_zero.mp hz
+  let ζ : rootsOfUnity CycleLen ℂ := rootsOfUnity.mkOfPowEq z hzpow
+  obtain ⟨j, hj⟩ :=
+    surjective_rootsOfUnityCircleEquiv_comp_rootsOfUnityAddChar CycleLen ζ
+  refine ⟨j, ?_⟩
+  have hval := congrArg (fun w : rootsOfUnity CycleLen ℂ => ((w : ℂˣ) : ℂ)) hj
+  simpa [ζ, breathingRootOfUnity, breathingRootOfUnity_val] using hval.symm
+
+/--
+On the canonical half-`infsep` closed ball around `breathingRoot k`, the local
+factor `localFactorAt k` never vanishes.
+
+This is the quantitative bridge that upgrades the earlier existential
+nonvanishing radius into a canonical radius derived from the full breathing-root
+configuration.
+-/
+theorem localFactorAt_nonzero_closedBall_half_infsep
+    (k : ZMod CycleLen) :
+    ∀ z : ℂ,
+      z ∈ Metric.closedBall (breathingRoot k)
+        (((Set.range breathingRoot : Set ℂ).infsep) / 2) →
+      UFRF.ResidueDefinition.localFactorAt k z ≠ 0 := by
+  intro z hzball hzero
+  have hden_zero : UFRF.ResidueDefinition.breathingDenominator z = 0 := by
+    rw [← UFRF.ResidueDefinition.localFactorAt_mul_root_diff k z, hzero, zero_mul]
+  obtain ⟨j, hjz⟩ := exists_breathingRoot_of_breathingDenominator_eq_zero hden_zero
+  subst hjz
+  by_cases hj : j = k
+  · subst hj
+    exact UFRF.ResidueDefinition.localFactorAt_root_ne_zero j hzero
+  · exact (half_infsep_closedBall_excludes_other_breathingRoots k j hj) hzball
+
+/--
+The canonical open balls of radius `infsep(range breathingRoot) / 2` around
+distinct breathing roots are disjoint.
+-/
+theorem disjoint_ball_half_infsep_breathingRoots {j k : ZMod CycleLen} (hjk : j ≠ k) :
+    Disjoint
+      (Metric.ball (breathingRoot j) (((Set.range breathingRoot : Set ℂ).infsep) / 2))
+      (Metric.ball (breathingRoot k) (((Set.range breathingRoot : Set ℂ).infsep) / 2)) := by
+  refine Set.disjoint_left.2 ?_
+  intro z hzj hzk
+  have hdist_le :
+      (Set.range breathingRoot : Set ℂ).infsep ≤ dist (breathingRoot j) (breathingRoot k) :=
+    Set.infsep_le_dist_of_mem ⟨j, rfl⟩ ⟨k, rfl⟩ (by
+      intro hroot
+      exact hjk (UFRF.ComplexBreathing.breathingRoot_injective hroot))
+  have hdist_lt :
+      dist (breathingRoot j) (breathingRoot k) < (Set.range breathingRoot : Set ℂ).infsep := by
+    calc
+      dist (breathingRoot j) (breathingRoot k)
+          ≤ dist (breathingRoot j) z + dist (breathingRoot k) z := dist_triangle_right _ _ _
+      _ = dist (breathingRoot j) z + dist z (breathingRoot k) := by
+          rw [dist_comm (breathingRoot k) z]
+      _ < (((Set.range breathingRoot : Set ℂ).infsep) / 2) +
+            (((Set.range breathingRoot : Set ℂ).infsep) / 2) := by
+            exact add_lt_add
+              (by simpa [Metric.mem_ball, dist_comm] using hzj)
+              (by simpa [Metric.mem_ball] using hzk)
+      _ = (Set.range breathingRoot : Set ℂ).infsep := by ring
+  exact not_lt_of_ge hdist_le hdist_lt
+
+/--
+Any common radius strictly smaller than `infsep(range breathingRoot) / 2`
+produces pairwise disjoint closed balls around distinct breathing roots.
+-/
+theorem disjoint_closedBall_of_lt_half_infsep_breathingRoots
+    {R : ℝ}
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep) / 2)
+    {j k : ZMod CycleLen} (hjk : j ≠ k) :
+    Disjoint
+      (Metric.closedBall (breathingRoot j) R)
+      (Metric.closedBall (breathingRoot k) R) := by
+  refine Set.disjoint_left.2 ?_
+  intro z hzj hzk
+  have hdist_le :
+      (Set.range breathingRoot : Set ℂ).infsep ≤ dist (breathingRoot j) (breathingRoot k) :=
+    Set.infsep_le_dist_of_mem ⟨j, rfl⟩ ⟨k, rfl⟩ (by
+      intro hroot
+      exact hjk (UFRF.ComplexBreathing.breathingRoot_injective hroot))
+  have hdist_lt :
+      dist (breathingRoot j) (breathingRoot k) < (Set.range breathingRoot : Set ℂ).infsep := by
+    calc
+      dist (breathingRoot j) (breathingRoot k)
+          ≤ dist (breathingRoot j) z + dist (breathingRoot k) z := dist_triangle_right _ _ _
+      _ = dist (breathingRoot j) z + dist z (breathingRoot k) := by
+          rw [dist_comm (breathingRoot k) z]
+      _ ≤ R + R := by
+            exact add_le_add
+              (by simpa [Metric.mem_closedBall, dist_comm] using hzj)
+              (by simpa [Metric.mem_closedBall] using hzk)
+      _ < (Set.range breathingRoot : Set ℂ).infsep := by
+          linarith
+  exact not_lt_of_ge hdist_le hdist_lt
+
+/--
+Any common radius strictly smaller than `infsep(range breathingRoot) / 2`
+also produces pairwise disjoint circles around distinct breathing roots.
+-/
+theorem disjoint_sphere_of_lt_half_infsep_breathingRoots
+    {R : ℝ} (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep) / 2)
+    {j k : ZMod CycleLen} (hjk : j ≠ k) :
+    Disjoint
+      (Metric.sphere (breathingRoot j) R)
+      (Metric.sphere (breathingRoot k) R) := by
+  exact (disjoint_closedBall_of_lt_half_infsep_breathingRoots (R := R) hRlt hjk).mono
+    Metric.sphere_subset_closedBall Metric.sphere_subset_closedBall
 
 /--
 The desingularized breathing function attached to a chosen breathing root.
@@ -247,5 +482,145 @@ theorem exists_pos_radius_circleIntegral_breathingFunction_eq_two_pi_I_mul_resid
         (2 * Real.pi * Complex.I) * UFRF.ResidueDefinition.residueCandidateAt k := by
   rcases exists_pos_radius_localFactorAt_nonzero_closedBall k with ⟨R, hR, hlocal⟩
   exact ⟨R, hR, circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate k hR hlocal⟩
+
+/--
+The breathing function integrates to `2πi` times the explicit residue
+candidate on the canonical circle of radius `infsep(range breathingRoot) / 2`
+around any chosen breathing root.
+-/
+theorem circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_half_infsep
+    (k : ZMod CycleLen) :
+    (∮ z in C(breathingRoot k, ((Set.range breathingRoot : Set ℂ).infsep / 2)),
+      UFRF.ResidueDefinition.breathingFunction z) =
+        (2 * Real.pi * Complex.I) * UFRF.ResidueDefinition.residueCandidateAt k := by
+  have hR : 0 < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    exact half_pos breathingRootSet_infsep_pos
+  apply circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate k hR
+  exact localFactorAt_nonzero_closedBall_half_infsep k
+
+/--
+For distinct breathing roots, the canonical open balls of radius
+`infsep(range breathingRoot) / 2` are disjoint.
+
+This is the sharp open-ball separation statement extracted from the global
+finite breathing-root configuration.
+-/
+theorem half_infsep_ball_disjoint_ball_breathingRoots
+    {j k : ZMod CycleLen} (hjk : j ≠ k) :
+    Disjoint
+      (Metric.ball (breathingRoot j) (((Set.range breathingRoot : Set ℂ).infsep) / 2))
+      (Metric.ball (breathingRoot k) (((Set.range breathingRoot : Set ℂ).infsep) / 2)) := by
+  apply Metric.ball_disjoint_ball
+  have hjmem : breathingRoot j ∈ (Set.range breathingRoot : Set ℂ) := ⟨j, rfl⟩
+  have hkmem : breathingRoot k ∈ (Set.range breathingRoot : Set ℂ) := ⟨k, rfl⟩
+  have hroot_ne : breathingRoot j ≠ breathingRoot k := by
+    intro hroot
+    exact hjk (UFRF.ComplexBreathing.breathingRoot_injective hroot)
+  have hle :
+      (Set.range breathingRoot : Set ℂ).infsep ≤
+        dist (breathingRoot j) (breathingRoot k) :=
+    Set.infsep_le_dist_of_mem hjmem hkmem hroot_ne
+  linarith
+
+/--
+For distinct breathing roots, the closed balls of radius
+`infsep(range breathingRoot) / 4` are disjoint.
+
+This is the canonical closed-neighborhood separation package that avoids the
+touching issue at radius `infsep / 2`.
+-/
+theorem quarter_infsep_closedBall_disjoint_closedBall_breathingRoots
+    {j k : ZMod CycleLen} (hjk : j ≠ k) :
+    Disjoint
+      (Metric.closedBall (breathingRoot j) (((Set.range breathingRoot : Set ℂ).infsep) / 4))
+      (Metric.closedBall (breathingRoot k) (((Set.range breathingRoot : Set ℂ).infsep) / 4)) := by
+  apply Metric.closedBall_disjoint_closedBall
+  have hlt := half_infsep_lt_dist_breathingRoots (j := j) (k := k) hjk
+  linarith
+
+/--
+For distinct breathing roots, the quarter-`infsep` contour circles are
+disjoint.
+
+This provides the clean geometric input for any later finite multi-circle
+decomposition theorem.
+-/
+theorem quarter_infsep_sphere_disjoint_sphere_breathingRoots
+    {j k : ZMod CycleLen} (hjk : j ≠ k) :
+    Disjoint
+      (Metric.sphere (breathingRoot j) (((Set.range breathingRoot : Set ℂ).infsep) / 4))
+      (Metric.sphere (breathingRoot k) (((Set.range breathingRoot : Set ℂ).infsep) / 4)) := by
+  refine (quarter_infsep_closedBall_disjoint_closedBall_breathingRoots (j := j) (k := k) hjk).mono
+    Metric.sphere_subset_closedBall Metric.sphere_subset_closedBall
+
+/--
+The local factor also stays nonzero on the smaller canonical closed ball of
+radius `infsep(range breathingRoot) / 4`.
+
+This is the nonvanishing form suited to the pairwise-disjoint closed-ball
+package.
+-/
+theorem localFactorAt_nonzero_closedBall_quarter_infsep (k : ZMod CycleLen) :
+    ∀ z : ℂ,
+      z ∈ Metric.closedBall (breathingRoot k)
+        (((Set.range breathingRoot : Set ℂ).infsep) / 4) →
+      UFRF.ResidueDefinition.localFactorAt k z ≠ 0 := by
+  intro z hz
+  have hpos : 0 < (Set.range breathingRoot : Set ℂ).infsep := breathingRootSet_infsep_pos
+  apply localFactorAt_nonzero_closedBall_half_infsep k z
+  exact Metric.closedBall_subset_closedBall (by linarith) hz
+
+/--
+The breathing function integrates to `2πi` times the explicit residue
+candidate on the quarter-`infsep` circle around any chosen breathing root.
+
+This is the separated-circle version of the single-root contour theorem, ready
+for later finite multi-circle assembly.
+-/
+theorem circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_quarter_infsep
+    (k : ZMod CycleLen) :
+    (∮ z in C(breathingRoot k, ((Set.range breathingRoot : Set ℂ).infsep / 4)),
+      UFRF.ResidueDefinition.breathingFunction z) =
+        (2 * Real.pi * Complex.I) * UFRF.ResidueDefinition.residueCandidateAt k := by
+  have hpos : 0 < (Set.range breathingRoot : Set ℂ).infsep := breathingRootSet_infsep_pos
+  have hR : 0 < ((Set.range breathingRoot : Set ℂ).infsep / 4) := by
+    positivity
+  exact circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate k hR
+    (localFactorAt_nonzero_closedBall_quarter_infsep k)
+
+/--
+For any finite family of breathing roots, the sum of the quarter-`infsep`
+circle integrals equals `2πi` times the sum of the explicit residue
+candidates.
+
+This is the finite-subset multi-circle formula at the separated quarter-`infsep`
+scale. It remains specific to the breathing function and does not compare the
+inner-circle sum to any enclosing contour.
+-/
+theorem sum_circleIntegral_breathingFunction_quarter_infsep_eq_two_pi_I_mul_sum_residueCandidate
+    (S : Finset (ZMod CycleLen)) :
+    Finset.sum S (fun k =>
+      (∮ z in C(breathingRoot k, ((Set.range breathingRoot : Set ℂ).infsep / 4)),
+        UFRF.ResidueDefinition.breathingFunction z)) =
+      (2 * Real.pi * Complex.I) * Finset.sum S UFRF.ResidueDefinition.residueCandidateAt := by
+  simp_rw [circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_quarter_infsep]
+  rw [← Finset.mul_sum]
+
+/--
+The separated quarter-`infsep` circles around all breathing roots have total
+circle integral zero.
+
+This is a genuine finite multi-circle contour statement: it sums the already
+proved single-root formulas over the full breathing configuration without
+promoting that sum to a general residue theorem or to an enclosing-contour
+statement that has not yet been formalized.
+-/
+theorem sum_circleIntegral_breathingFunction_quarter_infsep_allRoots_eq_zero :
+    ∑ k : ZMod CycleLen,
+      (∮ z in C(breathingRoot k, ((Set.range breathingRoot : Set ℂ).infsep / 4)),
+        UFRF.ResidueDefinition.breathingFunction z) = 0 := by
+  rw [sum_circleIntegral_breathingFunction_quarter_infsep_eq_two_pi_I_mul_sum_residueCandidate
+    (S := Finset.univ)]
+  rw [UFRF.ResidueDefinition.total_residue_candidate_zero, mul_zero]
 
 end UFRF.CircleIntegralBreathing
