@@ -222,10 +222,21 @@ Current status:
   `sum_circleIntegral_breathingFunction_quarter_infsep_allRoots_eq_zero`
   shows that the sum of the circle integrals over the full family of separated
   quarter-`infsep` breathing-root circles is zero.
+- The local contour package now also works uniformly at every common separated
+  radius:
+  `circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_of_lt_half_infsep`,
+  `sum_circleIntegral_breathingFunction_of_lt_half_infsep_eq_two_pi_I_mul_sum_residueCandidate`,
+  and
+  `sum_circleIntegral_breathingFunction_of_lt_half_infsep_allRoots_eq_zero`
+  extend the single-root, finite-subset, and all-roots formulas to any radius
+  `R` satisfying `0 < R < infsep(range breathingRoot) / 2`.
+  This strengthens the local separated-circle layer without yet comparing those
+  inner circles to any outer contour.
 - Exact next blocker for a broader contour layer:
   the repo now has a canonical single-root contour theorem, a strict-radius
   separation package, a fixed quarter-`infsep` separated-circle theorem, and a
-  finite multi-circle cancellation formula.
+  finite multi-circle cancellation formula, all now promoted to an arbitrary
+  common radius `0 < R < infsep(range breathingRoot) / 2`.
   The remaining gap is a theorem that compares those separated inner circles to
   a single enclosing contour or annular boundary, without pretending that
   Mathlib already gives a general residue theorem for this setup.

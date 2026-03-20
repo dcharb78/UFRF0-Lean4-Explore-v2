@@ -499,6 +499,62 @@ theorem circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_half_i
   exact localFactorAt_nonzero_closedBall_half_infsep k
 
 /--
+On any circle around `breathingRoot k` with radius strictly less than
+`infsep(range breathingRoot) / 2`, the breathing function integrates to
+`2πi` times the explicit residue candidate at that root.
+
+This packages the single-root contour formula at any common separated radius,
+not only at the canonical half-`infsep` or quarter-`infsep` scales.
+-/
+theorem circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_of_lt_half_infsep
+    (k : ZMod CycleLen) {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (∮ z in C(breathingRoot k, R), UFRF.ResidueDefinition.breathingFunction z) =
+      (2 * Real.pi * Complex.I) * UFRF.ResidueDefinition.residueCandidateAt k := by
+  apply circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate k hR
+  intro z hz
+  apply localFactorAt_nonzero_closedBall_half_infsep k z
+  exact Metric.closedBall_subset_closedBall hRlt.le hz
+
+/--
+For any finite family of breathing roots and any common radius
+`0 < R < infsep(range breathingRoot) / 2`, the sum of the corresponding circle
+integrals equals `2πi` times the sum of the explicit residue candidates.
+
+This is the generic-radius finite multi-circle formula inside the separated
+regime.
+-/
+theorem sum_circleIntegral_breathingFunction_of_lt_half_infsep_eq_two_pi_I_mul_sum_residueCandidate
+    (S : Finset (ZMod CycleLen)) {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    Finset.sum S (fun k =>
+      (∮ z in C(breathingRoot k, R), UFRF.ResidueDefinition.breathingFunction z)) =
+      (2 * Real.pi * Complex.I) * Finset.sum S UFRF.ResidueDefinition.residueCandidateAt := by
+  simp_rw [circleIntegral_breathingFunction_eq_two_pi_I_mul_residueCandidate_of_lt_half_infsep
+    (R := R) (hR := hR) (hRlt := hRlt)]
+  rw [← Finset.mul_sum]
+
+/--
+For any common radius `0 < R < infsep(range breathingRoot) / 2`, the sum of the
+breathing-function circle integrals over the full breathing-root family is zero.
+
+This is the generic-radius all-roots cancellation theorem in the separated
+regime.
+-/
+theorem sum_circleIntegral_breathingFunction_of_lt_half_infsep_allRoots_eq_zero
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (∑ k : ZMod CycleLen,
+      (∮ z in C(breathingRoot k, R), UFRF.ResidueDefinition.breathingFunction z)) = 0 := by
+  rw [show (∑ k : ZMod CycleLen,
+      (∮ z in C(breathingRoot k, R), UFRF.ResidueDefinition.breathingFunction z)) =
+      Finset.sum Finset.univ (fun k : ZMod CycleLen =>
+        (∮ z in C(breathingRoot k, R), UFRF.ResidueDefinition.breathingFunction z)) by rfl]
+  rw [sum_circleIntegral_breathingFunction_of_lt_half_infsep_eq_two_pi_I_mul_sum_residueCandidate
+    (S := Finset.univ) (R := R) hR hRlt]
+  rw [UFRF.ResidueDefinition.total_residue_candidate_zero, mul_zero]
+
+/--
 For distinct breathing roots, the canonical open balls of radius
 `infsep(range breathingRoot) / 2` are disjoint.
 
