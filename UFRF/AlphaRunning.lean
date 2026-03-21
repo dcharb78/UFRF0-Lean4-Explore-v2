@@ -713,6 +713,41 @@ theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_root_scalar_of_floor_e
       (R := R) hR hRlt with ⟨_, hroot⟩
   simpa [hk'] using hroot
 
+/--
+If a channel `k` is selected by the alpha arithmetic, then the centered
+one-step comparison and the root/scalar one-step formula are the same scalar
+written in two equivalent forms.
+-/
+theorem alpha_selected_centered_comparison_eq_root_scalar_of_floor_eq
+    {k : ZMod CycleLen}
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k)
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    Complex.re
+      (alphaInvRunningModel 1 k R -
+        ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel 1 j R)) /
+      alphaPhaseObserverModelNormalization =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt k) /
+        alphaPhaseObserverModelNormalization := by
+  calc
+    Complex.re
+        (alphaInvRunningModel 1 k R -
+          ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel 1 j R)) /
+        alphaPhaseObserverModelNormalization =
+        alphaPhaseObserverNormalizedRealCorrection 1 R := by
+          symm
+          exact alphaPhaseObserverNormalizedRealCorrection_one_eq_centered_comparison_of_floor_eq
+            (k := k) hk hR hRlt
+    _ =
+        Complex.re
+          (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+            UFRF.ResidueDefinition.residueCandidateAt k) /
+          alphaPhaseObserverModelNormalization :=
+        alphaPhaseObserverNormalizedRealCorrection_one_eq_root_scalar_of_floor_eq
+          (k := k) hk hR hRlt
+
 theorem alphaPhaseObserverNormalizedRealCorrection_one_sub_codataGap_eq_alpha_selected_centered_comparison_sub_codataGap
     {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
@@ -740,6 +775,26 @@ theorem alphaPhaseObserverNormalizedRealCorrection_one_sub_codataGap_eq_alpha_se
       (R := R) hR hRlt with ⟨hsel, hroot⟩
   refine ⟨hsel, ?_⟩
   rw [hroot]
+
+/--
+The same selector-aware equivalence persists after subtracting the static
+CODATA comparison gap.
+-/
+theorem alpha_selected_centered_comparison_sub_codataGap_eq_root_scalar_sub_codataGap_of_floor_eq
+    {k : ZMod CycleLen}
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k)
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    Complex.re
+      (alphaInvRunningModel 1 k R -
+        ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel 1 j R)) /
+      alphaPhaseObserverModelNormalization - alphaCodata2022Gap =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt k) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap := by
+  rw [alpha_selected_centered_comparison_eq_root_scalar_of_floor_eq
+    (k := k) hk hR hRlt]
 
 theorem alpha_selected_centered_comparison_sub_codataGap_unique_by_arithmetic
     {k : ZMod CycleLen} {R : ℝ} (hR : 0 < R)

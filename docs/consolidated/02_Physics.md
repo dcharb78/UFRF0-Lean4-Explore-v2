@@ -47,7 +47,9 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`phase7OneStepModelPrediction_is_alpha_selected_root_scalar`**: the current one-step prediction is the explicit root/scalar formula built from the alpha-selected observer channel
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_root_scalar`**: the one-step normalized observable itself also has that same alpha-selected root/scalar form
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_root_scalar_of_floor_eq`**: more generally, any channel `k` satisfying `floor α mod 13 = k` gives that same one-step root/scalar formula
+- **`alpha_selected_centered_comparison_eq_root_scalar_of_floor_eq`**: for any channel `k` satisfying `floor α mod 13 = k`, the centered one-step comparison formula and the explicit root/scalar one-step formula at `k` are exactly the same scalar
 - **`alphaPhaseObserverNormalizedRealCorrection_one_sub_codataGap_eq_alpha_selected_root_scalar_sub_codataGap`**: the one-step normalized observable minus the static CODATA gap also has that same alpha-selected root/scalar-minus-gap form
+- **`alpha_selected_centered_comparison_sub_codataGap_eq_root_scalar_sub_codataGap_of_floor_eq`**: for any channel `k` satisfying `floor α mod 13 = k`, the centered one-step comparison-minus-gap formula and the root/scalar-minus-gap formula at `k` are exactly the same scalar
 - **`alpha_selected_root_scalar_sub_codataGap_unique_by_arithmetic`**: if `k` satisfies `floor α mod 13 = k`, then `k` is exactly the selected observer channel and gives that same root/scalar one-step gap comparison
 - **`alphaPhaseObserverCorrection_eq_alpha_selected_scalar_mul_residueCandidate`**: the observer correction itself is also rewritten directly through the alpha-selected residue channel
 - **`alphaPhaseObserverNormalizedRealCorrection_eq_re_alpha_selected_scalar_mul_residueCandidate`**: the normalized real comparison observable likewise has an observer-indexed scalar/root formula
@@ -81,6 +83,9 @@ on the legacy `phase7OneStepModelPrediction` wrapper.
 Those same one-step formulas now also transport to any `k` satisfying
 `floor α mod 13 = k`, so the arithmetic selection statement is no longer tied
 to one hard-coded symbol name.
+The repo now also proves directly that, for any such selected `k`, the centered
+one-step comparison formula and the explicit root/scalar formula coincide, both
+before and after subtracting the static CODATA gap.
 The correction and centered-deviation formulas now also have observer-indexed
 versions, so the comparison package is less tied to literal phase syntax.
 It also proves exact one-step rewrite theorems for the observable-minus-gap and

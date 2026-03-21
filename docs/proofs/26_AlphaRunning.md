@@ -123,6 +123,10 @@ The point of this module is narrow:
   more generally, if a channel `k` satisfies `floor α mod 13 = k`, then the
   same one-step normalized observable is exactly the centered comparison scalar
   written at that `k`.
+- `alpha_selected_centered_comparison_eq_root_scalar_of_floor_eq`:
+  for any channel `k` satisfying `floor α mod 13 = k`, the centered one-step
+  comparison scalar and the explicit root/scalar one-step formula written at
+  `k` are exactly the same quantity.
 - `alphaPhaseObserverNormalizedRealCorrection_one_sub_codataGap_eq_alpha_selected_centered_comparison_sub_codataGap`:
   the one-step normalized observable minus the static CODATA 2022 gap is
   exactly that same alpha-selected centered comparison scalar minus the same
@@ -179,6 +183,10 @@ The point of this module is narrow:
   equivalently, the one-step normalized observable minus the static CODATA 2022
   gap is also packaged directly as that same alpha-selected root/scalar formula
   minus the same gap.
+- `alpha_selected_centered_comparison_sub_codataGap_eq_root_scalar_sub_codataGap_of_floor_eq`:
+  for any channel `k` satisfying `floor α mod 13 = k`, the centered one-step
+  comparison-minus-gap scalar and the root/scalar-minus-gap formula written at
+  `k` are exactly the same quantity.
 - `alpha_selected_root_scalar_sub_codataGap_unique_by_arithmetic`:
   if a channel `k` satisfies `floor α mod 13 = k`, then `k` is exactly the
   selected observer channel and the one-step normalized observable minus the
@@ -235,6 +243,9 @@ The safe interpretation is:
 - those same one-step formulas now also transport to any `k` that satisfies
   `floor α mod 13 = k`, so the arithmetic selection statement is no longer
   tied to one hard-coded symbol name,
+- Lean now also proves directly, for any such selected `k`, that the centered
+  one-step comparison formula and the explicit root/scalar one-step formula are
+  identical, both before and after subtracting the static CODATA gap,
 - the correction, normalized observable, and centered deviation formulas now
   also have observer-indexed versions, so the exposed comparison story is less
   tied to literal phase syntax,
