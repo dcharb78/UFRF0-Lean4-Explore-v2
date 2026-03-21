@@ -8,18 +8,25 @@ import UFRF.Structure13
 /-!
 # UFRF.KissingHierarchy
 
-**From Trinity to Hex: Allen's Numbers as Theorems**
+**From Trinity to Hex: Allen's Numbers as Arithmetic Consequences**
 
-Every number in Allen's QUART hex transport paper is a theorem of the
-Trinity axiom via the kissing number hierarchy. None are parameters,
-choices, or empirical inputs. The chain:
+Every number in Allen's QUART hex transport paper is an arithmetic
+consequence of the kissing number hierarchy. The kissing numbers
+K(2)=6 and K(3)=12 are derivable from Trinity via TWO independent routes:
+
+1. **Algebraic** (KissingEigen): a²+a+1 = 13, K(3) = 13-1 = 12, K(2) = 12/2 = 6
+2. **Tensor** (KissingEigen.threelog_kissing_chain):
+   3 LOG grades × 2 (polarity) = 6 = K(2), × 2 = 12 = K(3)
+
+The *coincidence* with sphere packing (Fejes Tóth 1940, Schütte–van der
+Waerden 1953) is the physical content — the numbers match. The chain:
 
 ```
 Trinity {-½, 0, +½}
   │
   ├── uniqueness_of_three: a = 3
-  ├── K(2) = 6: 2D kissing number (hex inevitable)
-  ├── K(3) = 12: 3D kissing number
+  ├── K(2) = 6: 3 LOG grades × 2 polarities (= (13-1)/2)
+  ├── K(3) = 12: K(2) × 2 (= 13-1)
   └── C(4,3) = 4: simplex faces
        │
        ├── K(2) + 1 = 7         (2D flip threshold)
@@ -31,9 +38,10 @@ Trinity {-½, 0, +½}
        └── 13² − 12² = 5²       (curvature term)
 ```
 
-Allen's hex lattice isn't a choice — it's K(2), the Trinity expressing
-in two dimensions. Just as K(3)+1 = 13 forces the cycle length in 3D,
-K(2) = 6 forces hex in 2D.
+Allen's hex lattice isn't a choice — it's K(2), the unique optimal 2D
+sphere packing. K(2)=6 coincides with the Fejes Tóth result, but is
+independently derivable from Trinity (see `threelog_generates_k2`).
+Given K(2)=6 and K(3)=12, all of Allen's numbers follow by arithmetic.
 
 ## The Dimensional Projection Law
 
@@ -155,12 +163,12 @@ theorem alpha_floor_from_kissing :
 /--
 **Allen's 96-step closure = 2 × K(3) × C(4,3).**
 
-Every factor is DERIVED from the Trinity:
-- 2 = parity (from Conservation: neg + pos = 0)
-- 12 = K(3) (from sphere packing in 3D)
-- 4 = C(4,3) (from simplicial topology)
+Factors:
+- 2 = parity (DERIVED from Trinity conservation)
+- 12 = K(3) (DERIVED: 3 LOG grades × 2² polarities, coincides with Schütte–van der Waerden 1953)
+- 4 = C(4,3) (DERIVED from simplicial topology)
 
-✅ PROVEN
+✅ PROVEN (arithmetic from mixed derived/external inputs)
 -/
 theorem allen_closure_from_kissing :
     2 * kissing_number_3d * simplex3_boundary_face_count = 96 := by
@@ -244,9 +252,12 @@ theorem kissing_ratio : kissing_number_3d / kissing_number_2d = 2 := by
 /--
 **Master Theorem: Allen's complete number inventory.**
 
-Given only K(2)=6, K(3)=12, and C(4,3)=4 — all proven from
-the Trinity — every structural constant in Allen's QUART paper
-is determined:
+Given:
+- K(2)=6 (external: Fejes Tóth 1940)
+- K(3)=12 (external: Schütte–van der Waerden 1953)
+- C(4,3)=4 (derived from Trinity via simplicial topology)
+
+Every structural constant in Allen's QUART paper is determined:
 
 | Allen's Number | Formula | Value |
 |---|---|---|

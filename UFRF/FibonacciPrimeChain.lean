@@ -68,7 +68,7 @@ The 2D flip threshold (K(2)+1=7) escalates to the 3D cycle length.
 ✅ PROVEN
 -/
 theorem chain_7_to_13 : nextScale 7 = 13 := by
-  unfold nextScale; native_decide
+  unfold nextScale; norm_num
 
 /--
 **Level 1 → Level 2**: F(13) = 233.
@@ -77,7 +77,7 @@ The 13-cycle escalates to a 233-position breathing cycle.
 ✅ PROVEN
 -/
 theorem chain_13_to_233 : nextScale 13 = 233 := by
-  unfold nextScale; native_decide
+  unfold nextScale; norm_num
 
 /--
 **233 is prime.** The next scale generates a valid breathing cycle.
@@ -109,7 +109,7 @@ two gives 233. Each step is a dimensional escalation.
 ✅ PROVEN
 -/
 theorem chain_two_steps : nextScale (nextScale 7) = 233 := by
-  unfold nextScale; native_decide
+  unfold nextScale; norm_num
 
 /--
 **Complete chain primality**: 7, 13, and 233 are all prime.
@@ -131,7 +131,7 @@ of each one. -/
 
 ✅ PROVEN
 -/
-theorem axiom_value : Nat.fib 4 = 3 := by native_decide
+theorem axiom_value : Nat.fib 4 = 3 := by norm_num
 
 /--
 **3 is a UFRF prime.** The axiom count is prime in the framework.
@@ -215,11 +215,11 @@ theorem fibonacci_ufrf_primes_in_cycle :
     is_ufrf_prime (Nat.fib 13) := by -- F(13) = 233
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
   · simpa using one_is_ufrf_prime
-  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 4) (by native_decide) (by native_decide)
-  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 5) (by native_decide) (by native_decide)
-  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 7) (by native_decide) (by native_decide)
-  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 11) (by native_decide) (by native_decide)
-  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 13) (by native_decide) (by native_decide)
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 4) (by norm_num) (by norm_num)
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 5) (by norm_num) (by norm_num)
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 7) (by norm_num) (by norm_num)
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 11) (by norm_num) (by norm_num)
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 13) (by norm_num) (by norm_num)
 
 /--
 **F(3) = 2 is NOT UFRF-prime.** The shadow: 2 is excluded from
@@ -231,7 +231,7 @@ Both disjuncts are false (2≠1, and 2≠2 is false).
 ✅ PROVEN
 -/
 theorem fib_3_not_ufrf_prime : ¬is_ufrf_prime (Nat.fib 3) := by
-  simpa [show Nat.fib 3 = 2 from by native_decide] using two_is_not_ufrf_prime
+  simpa [show Nat.fib 3 = 2 from by norm_num] using two_is_not_ufrf_prime
 
 /-! ## Spiral Primes vs Axiom
 
@@ -256,7 +256,7 @@ theorem spiral_primes :
   unfold is_ufrf_prime
   refine ⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩⟩
   -- Each pair: index is UFRF prime, value is UFRF prime
-  all_goals (first | left; native_decide | right; constructor <;> native_decide)
+  all_goals (first | left; norm_num | right; constructor <;> norm_num)
 
 /-! ## Parameterized Breathing Scale
 
@@ -321,7 +321,7 @@ theorem tower_0 : tower 0 7 = 7 := rfl
 ✅ PROVEN
 -/
 theorem tower_1 : tower 1 7 = 13 := by
-  simp [tower]; native_decide
+  simp [tower]; norm_num
 
 /--
 **Tower from 7, depth 2 = F(13) = 233.**
@@ -329,7 +329,7 @@ theorem tower_1 : tower 1 7 = 13 := by
 ✅ PROVEN
 -/
 theorem tower_2 : tower 2 7 = 233 := by
-  simp [tower]; native_decide
+  simp [tower]; norm_num
 
 /--
 **Every scale in the tower up to depth 2 is prime.**
@@ -343,9 +343,9 @@ theorem tower_primes :
   refine ⟨?_, ?_, ?_⟩
   · show Nat.Prime 7; norm_num
   · show Nat.Prime (tower 1 7)
-    simp [tower]; native_decide
+    simp [tower]; norm_num
   · show Nat.Prime (tower 2 7)
-    simp [tower]; native_decide
+    simp [tower]; norm_num
 
 /-! ## F(12) = 144 = K(3)² at the Kissing Index
 
@@ -360,6 +360,6 @@ The observer scale is 10³ copies of the Fibonacci number at K(3).
 -/
 theorem observer_scale :
     1000 * Nat.fib kissing_number_3d = 144000 := by
-  unfold kissing_number_3d; native_decide
+  unfold kissing_number_3d; norm_num
 
 end UFRF.FibonacciPrimeChain

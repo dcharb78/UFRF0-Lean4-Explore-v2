@@ -45,7 +45,7 @@ number at the K(3) index. F(K(3)) = K(3)².
 ✅ PROVEN
 -/
 theorem fib_at_kissing_3d :
-    Nat.fib 12 = 144 := by native_decide
+    Nat.fib 12 = 144 := by norm_num
 
 /--
 **K(3)² = F(K(3)).** Stated using the UFRF definition.
@@ -54,7 +54,7 @@ theorem fib_at_kissing_3d :
 -/
 theorem allen_transport_is_fibonacci :
     Nat.fib kissing_number_3d = kissing_number_3d ^ 2 := by
-  unfold kissing_number_3d; native_decide
+  unfold kissing_number_3d; norm_num
 
 /--
 **The Fibonacci-Kissing Bridge: F(K(2)+1) = K(3)+1.**
@@ -68,7 +68,7 @@ K(2) = 6 → +1 → 7 → F(7) = 13 = K(3) + 1
 -/
 theorem fibonacci_kissing_bridge :
     Nat.fib (kissing_number_2d + 1) = kissing_number_3d + 1 := by
-  unfold kissing_number_2d kissing_number_3d; native_decide
+  unfold kissing_number_2d kissing_number_3d; norm_num
 
 /--
 **The next level: F(K(3)+1) = F(13) = 233.** A Fibonacci prime.
@@ -77,7 +77,7 @@ theorem fibonacci_kissing_bridge :
 -/
 theorem fib_at_cycle_length :
     Nat.fib (kissing_number_3d + 1) = 233 := by
-  unfold kissing_number_3d; native_decide
+  unfold kissing_number_3d; norm_num
 
 /--
 **233 is prime.** F(13) is a Fibonacci prime.
@@ -157,35 +157,35 @@ theorem fib_values :
     Nat.fib 7 = 13 ∧ Nat.fib 8 = 21 ∧ Nat.fib 9 = 34 ∧
     Nat.fib 10 = 55 ∧ Nat.fib 11 = 89 ∧ Nat.fib 12 = 144 ∧
     Nat.fib 13 = 233 := by
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> native_decide
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> norm_num
 
 /--
 **F(5) = 5 is prime.** At the golden angle position.
 
 ✅ PROVEN
 -/
-theorem fib_5_is_prime : Nat.Prime (Nat.fib 5) := by native_decide
+theorem fib_5_is_prime : Nat.Prime (Nat.fib 5) := by norm_num
 
 /--
 **F(7) = 13 is prime.** At the flip threshold K(2)+1.
 
 ✅ PROVEN
 -/
-theorem fib_7_is_prime : Nat.Prime (Nat.fib 7) := by native_decide
+theorem fib_7_is_prime : Nat.Prime (Nat.fib 7) := by norm_num
 
 /--
 **F(11) = 89 is prime.** At the bridge start position.
 
 ✅ PROVEN
 -/
-theorem fib_11_is_prime : Nat.Prime (Nat.fib 11) := by native_decide
+theorem fib_11_is_prime : Nat.Prime (Nat.fib 11) := by norm_num
 
 /--
 **F(13) = 233 is prime.** At the cycle length K(3)+1.
 
 ✅ PROVEN
 -/
-theorem fib_13_is_prime' : Nat.Prime (Nat.fib 13) := by native_decide
+theorem fib_13_is_prime' : Nat.Prime (Nat.fib 13) := by norm_num
 
 /--
 **F(4) = 3 is prime.** The Trinity at the checkpoint (non-prime index).
@@ -196,7 +196,7 @@ a prime position because 3 IS the source, not a result of spiraling.
 -/
 theorem fib_4_is_prime_at_checkpoint :
     Nat.Prime (Nat.fib 4) ∧ Nat.fib 4 = 3 ∧ ¬Nat.Prime 4 := by
-  refine ⟨?_, ?_, ?_⟩ <;> native_decide
+  refine ⟨?_, ?_, ?_⟩ <;> norm_num
 
 /--
 **The checkpoint index equals the simplex face count.**
@@ -220,7 +220,7 @@ theorem spiral_fibonacci_primes :
     (Nat.Prime 7 ∧ Nat.Prime (Nat.fib 7)) ∧
     (Nat.Prime 11 ∧ Nat.Prime (Nat.fib 11)) ∧
     (Nat.Prime 13 ∧ Nat.Prime (Nat.fib 13)) := by
-  refine ⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩⟩ <;> native_decide
+  refine ⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩⟩ <;> norm_num
 
 /--
 **F(3) = 2 is prime but its index 3 is prime too.**
@@ -232,7 +232,7 @@ fact is stated here.
 -/
 theorem fib_3_standard :
     Nat.fib 3 = 2 ∧ Nat.Prime 2 ∧ Nat.Prime 3 := by
-  refine ⟨?_, ?_, ?_⟩ <;> native_decide
+  refine ⟨?_, ?_, ?_⟩ <;> norm_num
 
 /--
 **F(12) = 144 is NOT prime.** Allen's transport space sits at K(3),
@@ -240,7 +240,7 @@ carrying no primality — it's pure structure.
 
 ✅ PROVEN
 -/
-theorem fib_12_not_prime : ¬Nat.Prime (Nat.fib 12) := by native_decide
+theorem fib_12_not_prime : ¬Nat.Prime (Nat.fib 12) := by norm_num
 
 /-! ## Section 4: Neural Network Architecture Parameters
 
@@ -313,7 +313,7 @@ theorem five_convergence :
     Nat.Prime 5 := by
   unfold kissing_number_2d kissing_number_3d
   refine ⟨?_, ?_, ?_, ?_⟩
-  · native_decide
+  · norm_num
   · norm_num
   · norm_num
   · norm_num
