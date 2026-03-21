@@ -757,6 +757,22 @@ theorem alpha_selected_centered_comparison_sub_codataGap_unique_by_arithmetic
   refine ⟨hk', ?_⟩
   simpa [hk'] using hcmp
 
+theorem alpha_selected_root_scalar_sub_codataGap_unique_by_arithmetic
+    {k : ZMod CycleLen} {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k) :
+    k = alphaPhaseObserver ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R - alphaCodata2022Gap =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt k) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap := by
+  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
+  rcases alphaPhaseObserverNormalizedRealCorrection_one_sub_codataGap_eq_alpha_selected_root_scalar_sub_codataGap
+      (R := R) hR hRlt with ⟨_, hroot⟩
+  refine ⟨hk', ?_⟩
+  simpa [hk'] using hroot
+
 theorem phase7OneStepModelResidual_eq_alpha_selected_centered_comparison_sub_codataGap
     {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :

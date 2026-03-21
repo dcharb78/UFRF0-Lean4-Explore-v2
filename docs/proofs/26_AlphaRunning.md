@@ -179,6 +179,11 @@ The point of this module is narrow:
   equivalently, the one-step normalized observable minus the static CODATA 2022
   gap is also packaged directly as that same alpha-selected root/scalar formula
   minus the same gap.
+- `alpha_selected_root_scalar_sub_codataGap_unique_by_arithmetic`:
+  if a channel `k` satisfies `floor α mod 13 = k`, then `k` is exactly the
+  selected observer channel and the one-step normalized observable minus the
+  static CODATA 2022 gap is exactly the root/scalar formula written at that
+  same `k`.
 - `cycle_prime_channels_hit_alphaPhaseObserver`:
   each local cycle-prime channel `3, 5, 7, 11` hits the selected phase-7
   observer at some step.
@@ -250,7 +255,8 @@ The safe interpretation is:
   legacy `phase7OneStepModelResidual` alias,
 - the same compared quantity is now also unique in the arithmetic sense:
   any `k` satisfying `floor α mod 13 = k` is forced to be the selected
-  observer channel and yields the same centered one-step gap comparison,
+  observer channel and yields the same centered and root/scalar one-step gap
+  comparison formulas,
 - the one-step residual against the static CODATA gap is also contour-stable in
   the separated annulus, so the comparison does not depend on an arbitrary
   local radius choice there,

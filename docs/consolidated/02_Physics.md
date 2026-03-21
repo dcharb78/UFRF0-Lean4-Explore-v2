@@ -48,6 +48,7 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_root_scalar`**: the one-step normalized observable itself also has that same alpha-selected root/scalar form
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_root_scalar_of_floor_eq`**: more generally, any channel `k` satisfying `floor α mod 13 = k` gives that same one-step root/scalar formula
 - **`alphaPhaseObserverNormalizedRealCorrection_one_sub_codataGap_eq_alpha_selected_root_scalar_sub_codataGap`**: the one-step normalized observable minus the static CODATA gap also has that same alpha-selected root/scalar-minus-gap form
+- **`alpha_selected_root_scalar_sub_codataGap_unique_by_arithmetic`**: if `k` satisfies `floor α mod 13 = k`, then `k` is exactly the selected observer channel and gives that same root/scalar one-step gap comparison
 - **`alphaPhaseObserverCorrection_eq_alpha_selected_scalar_mul_residueCandidate`**: the observer correction itself is also rewritten directly through the alpha-selected residue channel
 - **`alphaPhaseObserverNormalizedRealCorrection_eq_re_alpha_selected_scalar_mul_residueCandidate`**: the normalized real comparison observable likewise has an observer-indexed scalar/root formula
 - **`alphaPhaseObserverDeviationFromAverage_eq_alpha_selected_scalar_mul_residueCandidate`**: the centered observer deviation is likewise rewritten through the alpha-selected residue channel
@@ -88,7 +89,7 @@ alpha-selected root/scalar forms, and the one-step CODATA residual is
 contour-invariant in the allowed regime.
 It now also proves arithmetic uniqueness in the narrow safe sense: any channel
 `k` satisfying `floor α mod 13 = k` is forced to be the selected observer and
-gives the same centered one-step gap comparison formula.
+gives the same centered and root/scalar one-step gap comparison formulas.
 What is not proved yet is that this current candidate quantity is numerically
 accurate or uniquely physically correct.
 
