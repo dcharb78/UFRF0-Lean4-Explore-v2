@@ -45,6 +45,10 @@ abbrev cycle_len : ℕ := UFRF.Foundation.derived_cycle_length
 theorem cycle_has_13_positions : cycle_len = 13 :=
   UFRF.Foundation.cycle_is_thirteen
 
+instance : NeZero cycle_len := ⟨by
+  simp [cycle_len, UFRF.Foundation.derived_cycle_length,
+    UFRF.Foundation.trinity_dimension, UFRF.Structure13.projective_order]⟩
+
 /--
 **The Cycle Position (ZMod Ring)**
 We use `ZMod cycle_len` to enforce the toroidal topology algebraically.
@@ -149,6 +153,12 @@ theorem labeledPosition_one_is_entry :
 theorem labeledPosition_thirteen_is_seed :
     labeledPosition 13 = seedPosition := by
   unfold labeledPosition seedPosition
+  decide
+
+/-- Label `14` is the re-entry to the entry position in the human-facing chart. -/
+theorem labeledPosition_fourteen_is_entry :
+    labeledPosition 14 = entryPosition := by
+  unfold labeledPosition entryPosition
   decide
 
 /--
@@ -377,6 +387,26 @@ theorem position_thirteen_has_contextual_coordinates :
   exact terminal_block_reindexes_as_zero_to_three.2.2.2
 
 /--
+**`14` is not a new closure point; it is the first re-entry label.**
+
+The human-facing label `14` is the next-cycle restart of label `1`. So:
+- `13` is the seed/closure label of the current cycle,
+- `14` is the first label of the restarted cycle,
+- the step `13 → 14` is the same unit successor as `0 → 1`.
+
+This separates closure from re-entry in the human-facing chart.
+
+✅ PROVEN
+-/
+theorem fourteen_restarts_after_thirteen :
+    labeledPosition 13 = seedPosition ∧
+    labeledPosition 14 = entryPosition ∧
+    sameStep 13 14 0 1 := by
+  refine ⟨labeledPosition_thirteen_is_seed, labeledPosition_fourteen_is_entry, ?_⟩
+  unfold sameStep
+  decide
+
+/--
 **Every terminal block reindexes the same way.**
 
 For any whole-cycle shift `13·s`, the block
@@ -455,6 +485,62 @@ theorem terminal_block_closes_and_restarts_at_scale (s : ℕ) :
       _ = (13 : CyclePos) := by rw [full_cycle_shift_vanishes]; simp
       _ = 0 := full_cycle_identity
   · exact bridge_to_seed_step_matches_entry_step_at_scale s
+
+/--
+**The terminal block extends one more step into the restarted cycle.**
+
+For any whole-cycle shift `13·s`, the five-label handoff block
+`10 + 13·s, 11 + 13·s, 12 + 13·s, 13 + 13·s, 14 + 13·s`
+has the local coordinates `0,1,2,3,4`. So:
+- `10 + 13·s` is the REST anchor,
+- `11 + 13·s` and `12 + 13·s` are the nested bridge steps,
+- `13 + 13·s` is the seed/closure point,
+- `14 + 13·s` is the first re-entry of the restarted cycle.
+
+This is the explicit scale-invariant form of the tail nesting.
+
+✅ PROVEN
+-/
+theorem terminal_block_handoff_reindexes_at_scale (s : ℕ) :
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (10 + cycle_len * s)) = 0 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (11 + cycle_len * s)) = 1 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (12 + cycle_len * s)) = 2 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (13 + cycle_len * s)) = 3 ∧
+    localCoordinate (labeledPosition (10 + cycle_len * s))
+      (labeledPosition (14 + cycle_len * s)) = 4 := by
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using localCoordinate_of_labeled_offset (10 + cycle_len * s) 0
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using localCoordinate_of_labeled_offset (10 + cycle_len * s) 1
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using localCoordinate_of_labeled_offset (10 + cycle_len * s) 2
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using localCoordinate_of_labeled_offset (10 + cycle_len * s) 3
+  · simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
+      using localCoordinate_of_labeled_offset (10 + cycle_len * s) 4
+
+/--
+**Every `14 + 13·s` is the first re-entry label.**
+
+The restart happens one step after the seed/closure point at every scale.
+
+✅ PROVEN
+-/
+theorem fourteen_restarts_after_thirteen_at_scale (s : ℕ) :
+    labeledPosition (13 + cycle_len * s) = seedPosition ∧
+    labeledPosition (14 + cycle_len * s) = entryPosition ∧
+    sameStep (13 + cycle_len * s) (14 + cycle_len * s) 0 1 := by
+  refine ⟨?_, ?_, ?_⟩
+  · exact (labeledPosition_periodic 13 s).trans labeledPosition_thirteen_is_seed
+  · exact (labeledPosition_periodic 14 s).trans labeledPosition_fourteen_is_entry
+  · unfold sameStep
+    simp [sub_eq_add_neg]
+    norm_num
 
 /-! ### Continuous Geometry -/
 
@@ -547,5 +633,61 @@ Proof: `neg(comp(0)) = 1`, `neg(comp(1)) = 2`, etc.
 theorem prism_generates_from_zero : neg (comp 0) = (1 : CyclePos) := by
   unfold neg comp
   ring
+
+/--
+Iterating the PRISM step from `0` walks the cycle by successive unit steps.
+
+After `n` applications of `neg ∘ comp`, the cycle position is exactly `n`
+modulo the 13-cycle.
+
+✅ PROVEN
+-/
+theorem prism_step_iterate_from_zero (n : ℕ) :
+    ((fun x : CyclePos => neg (comp x))^[n]) 0 = (n : CyclePos) := by
+  induction n with
+  | zero =>
+      rw [Function.iterate_zero_apply]
+      simp
+  | succ n ih =>
+      rw [Function.iterate_succ_apply', ih, prism_identity]
+      simp
+
+/--
+Every cycle position is reached by the PRISM walk starting from `0`.
+
+This makes the informal statement "all hit the 13 positions" literal in the
+cycle package itself.
+
+✅ PROVEN
+-/
+theorem prism_step_hits_every_position (x : CyclePos) :
+    ∃ n : ℕ, ((fun y : CyclePos => neg (comp y))^[n]) 0 = x := by
+  haveI : NeZero cycle_len := by
+    rw [cycle_has_13_positions]
+    infer_instance
+  refine ⟨x.val, ?_⟩
+  exact (prism_step_iterate_from_zero x.val).trans (ZMod.natCast_zmod_val x)
+
+/--
+The PRISM walk repeats after a full cycle shift.
+
+So the local cycle story does not terminate after position `13`; it continues
+forever with the same 13-step pattern.
+
+✅ PROVEN
+-/
+theorem prism_step_periodic_from_zero (n : ℕ) :
+    ((fun x : CyclePos => neg (comp x))^[n + cycle_len]) 0 =
+      ((fun x : CyclePos => neg (comp x))^[n]) 0 := by
+  rw [prism_step_iterate_from_zero, prism_step_iterate_from_zero]
+  have hcycle : ((cycle_len : ℕ) : CyclePos) = 0 := by
+    change ((cycle_len * 1 : ℕ) : CyclePos) = 0
+    exact full_cycle_shift_vanishes 1
+  have hcast :
+      ((n + cycle_len : ℕ) : CyclePos) =
+        (n : CyclePos) + ((cycle_len : ℕ) : CyclePos) := by
+    simp
+  rw [hcast, hcycle]
+  simp
 
 end BreathingCycle

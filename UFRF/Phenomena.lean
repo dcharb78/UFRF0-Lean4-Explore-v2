@@ -15,7 +15,8 @@ coordinate system `(depth : ℤ, phase : ZMod 13)`.
 
 ## The Addressing Principle
 
-Every phenomenon P has a unique address `A(P) = (S, p)` where:
+This module records chart addresses `A(P) = (S, p)` for the phenomena it
+tracks, where:
 - `S` is the scale depth (integer)
 - `p` is the phase position (ZMod 13)
 
@@ -25,14 +26,15 @@ Every phenomenon P has a unique address `A(P) = (S, p)` where:
    - Theoretical Value: `4π³ + π² + π ≈ 137.036`
    - Integer Part: 137
    - Address: `(0, 137 % 13)`
-   - Prediction: Phase 7 (Start of Contraction / Log3)
+   - Arithmetic chart label: phase `7`
 
 2. **Electron Mass**
    - Derived from α⁻¹ and the geometric "pinch" at the flip boundary.
      Full mass derivation requires the complete UFRF mass framework.
 
 3. **Prime Distribution**
-   - Primes map to "void" phases where harmonic interference is minimized.
+   - Standard prime labels can be compared with cycle positions, but arithmetic
+     primality remains distinct from the repo's structural phase roles.
 -/
 
 namespace UFRF.Phenomena
@@ -47,7 +49,7 @@ open UFRF.Constants
 /--
 **Theorem 26: α⁻¹ maps to Phase 7**
 We project the Real value `ufrf_alpha_inv` to the Integer Ring ZMod 13.
-This proves that the *calculated* physics constant lands on the *structural* phase 7.
+This proves that the *calculated* physics constant lands on cycle phase label 7.
 -/
 theorem alpha_inv_projects_to_phase_7 :
     (Int.floor ufrf_alpha_inv : ZMod 13) = (7 : ZMod 13) := by
@@ -76,12 +78,15 @@ def nat_to_phase (n : ℕ) : Phase :=
   n
 
 /--
-**Theorem 27: Prime 137 is a Portal**
+**Theorem 27: Prime 137 projects to phase 7**
 
-The prime number 137 (α⁻¹) corresponds to Phase 7.
-7 is also prime.
-The 7th position is the first position after the Flip (6.5).
-It is the "entry" into the contraction/materialization phase.
+The prime number 137 (α⁻¹) corresponds arithmetically to phase label 7 modulo
+13. The label 7 is also a standard prime natural number. In the 13-cycle chart
+it is the first position after the Flip (6.5), namely the first
+contraction-side position.
+
+This theorem records only those arithmetic/chart facts. It does not promote
+phase 7 to a distinct repo-level structural irreducibility theorem.
 
 ✅ PROVEN
 -/
@@ -93,14 +98,14 @@ theorem prime_137_phase_is_7 :
 /-! ### 3. PRISM-Refined Alpha Mapping -/
 
 /--
-**Theorem: α⁻¹ Structural Decomposition (PRISM)**
+**Theorem: α⁻¹ refined decomposition (PRISM)**
 137 decomposes as 13 × 10 + 7.
-This places the fine structure constant at the intersection of:
-- The **REST** Scale (depth 10)
-- The **Contraction** Phase (7, start of Log3)
+In the refined chart this records the address `(10, 7)`:
+- REST depth `10`
+- phase label `7`
 
-The fine structure constant is the **Resonant Bridge** between
-the Rest State and the Contraction Phase.
+This theorem records only that arithmetic/chart decomposition. It does not by
+itself assert a separate resonance theorem.
 
 ✅ PROVEN
 -/
@@ -112,6 +117,34 @@ PRISM reveals it sits at REST depth (10), not depth 0.
 -/
 def alpha_coordinate_refined : Coordinate :=
   { depth := 10, phase := 7 }
+
+/--
+**The refined alpha address flows into the terminal handoff in fixed steps.**
+
+Starting from the refined address `(10, 7)`, two unit steps land at REST,
+then two further unit steps land on the bridge strip, then one more lands on
+the seed/closure point, and one more successor from there restarts at the next
+depth.
+
+✅ PROVEN
+-/
+theorem alpha_coordinate_refined_handoff_path :
+    (alpha_coordinate_refined.advance 2).phase = restPhase ∧
+    (alpha_coordinate_refined.advance 3).phase = (10 : Phase) ∧
+    (alpha_coordinate_refined.advance 4).phase = (11 : Phase) ∧
+    (alpha_coordinate_refined.advance 5).phase = (12 : Phase) ∧
+    Coordinate.step (alpha_coordinate_refined.advance 5) = ⟨11, 0⟩ := by
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · unfold alpha_coordinate_refined Coordinate.advance restPhase
+    decide
+  · unfold alpha_coordinate_refined Coordinate.advance
+    decide
+  · unfold alpha_coordinate_refined Coordinate.advance
+    decide
+  · unfold alpha_coordinate_refined Coordinate.advance
+    decide
+  · unfold alpha_coordinate_refined Coordinate.step Coordinate.advance
+    decide
 
 /-! ### 4. Phase Classification -/
 
@@ -139,31 +172,40 @@ theorem alpha_is_contraction : Addressing.isContraction alpha_coordinate.phase :
   show Addressing.isContraction (7 : Phase)
   exact phase_7_is_contraction
 
-/-! ### 5. Adelic Resolution of α⁻¹
+/-! ### 5. Arithmetic Residues of α⁻¹
 
-The fine structure constant exists at every resolution depth simultaneously:
-- At p=3: 137 mod 3 = 2 (even → contraction parity)
-- At p=7: 137 mod 7 = 4 (central → balanced)
-- At p=13: 137 mod 13 = 7 (contraction start)
+The same integer can be viewed modulo different primes:
+- At p=3: 137 mod 3 = 2
+- At p=7: 137 mod 7 = 4
+- At p=13: 137 mod 13 = 7
 
-Same constant. Same ring ℤ. Three depths of view.
+Same integer. Same ring ℤ. Three congruence views.
 -/
 
 /--
-**α⁻¹ at three prime resolutions.**
+**α⁻¹ residues modulo 3, 7, and 13.**
 
-The fine structure constant's integer part, viewed at three
-different prime depths, reveals its structural position in each:
+The fine structure constant's integer part has the following arithmetic
+residues:
 
-- Coarse (mod 3): 2 — in the contraction parity of the trinity
-- Medium (mod 7): 4 — centrally positioned in the heptad
-- Fine (mod 13): 7 — exactly at contraction start
+- Mod 3: 2
+- Mod 7: 4
+- Mod 13: 7
+
+This theorem records only those congruence facts. It does not by itself
+promote them to a general structural-position theorem across distinct prime
+depths.
 
 ✅ PROVEN
 -/
-theorem alpha_at_three_resolutions :
+theorem alpha_residues_mod_3_7_13 :
     137 % 3 = 2 ∧ 137 % 7 = 4 ∧ 137 % 13 = 7 := by
   refine ⟨?_, ?_, ?_⟩ <;> norm_num
+
+/-- Historical alias for `alpha_residues_mod_3_7_13`. -/
+theorem alpha_at_three_resolutions :
+    137 % 3 = 2 ∧ 137 % 7 = 4 ∧ 137 % 13 = 7 :=
+  alpha_residues_mod_3_7_13
 
 /--
 **α⁻¹ traverses exactly 10 full cycles.**
@@ -180,15 +222,19 @@ theorem alpha_traverses_full_decade :
   constructor <;> norm_num
 
 /--
-**Phase 7 is prime: α⁻¹ lands on a prime phase.**
+**Arithmetic fact: the selected phase label is the prime natural number 7.**
 
-The fine structure constant maps to phase 7, which is itself prime.
-This makes α⁻¹ a "prime at a prime" — a phenomenon sitting at a
-structurally irreducible position in the cycle. Double primality
-suggests phase 7 is a structural attractor.
+Together with `alpha_inv_projects_to_phase_7`, this records only the
+arithmetic fact that the selected phase label is a prime natural number. It
+does not identify phase 7 with the repo's distinct seed/entry
+structural-irreducibility notions.
 
 ✅ PROVEN
 -/
-theorem contraction_start_is_prime : Nat.Prime 7 := by decide
+theorem phase_label_seven_is_nat_prime : Nat.Prime 7 := by decide
+
+/-- Historical alias for `phase_label_seven_is_nat_prime`. -/
+theorem contraction_start_is_prime : Nat.Prime 7 :=
+  phase_label_seven_is_nat_prime
 
 end UFRF.Phenomena

@@ -4,6 +4,7 @@ import UFRF.Addressing
 import UFRF.Adele
 import UFRF.AllenBridge
 import UFRF.AllenEmbedding
+import UFRF.AlphaRunning
 import UFRF.AngularEmbedding
 import UFRF.AxiomAudit
 import UFRF.BreathingCycle
@@ -73,6 +74,7 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | ResidueDefinition | Specific pole data for `1 / (z^13 - 1)` | `breathingFunction_simplePole_limit` |
 | CircleIntegralBreathing | Specific circle/rectangle contour bridge for `1 / (z^13 - 1)` | `boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots` |
 | FineStructure | α⁻¹ = 4π³ + π² + π | `alpha_inv_floor_137` |
+| AlphaRunning | Discrete contour/Fourier running model for α⁻¹ | `alphaInvRunningModel_eq_of_le_lt_half_infsep` |
 | Waveform | Piecewise breathing shape | `seed_expansion_match` |
 | PrimeChoreography | Prime superposition | `prime_phase_residues` |
 | GoldenAngle | Golden Angle → Position 5 | `golden_angle_bins_to_5` |

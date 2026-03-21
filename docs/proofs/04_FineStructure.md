@@ -17,6 +17,12 @@ def codata_alpha_inv : ℝ := 137.035999084
 ```
 The CODATA 2018 empirical value.
 
+### `codata2022_alpha_inv`
+```lean
+def codata2022_alpha_inv : ℝ := 137.035999177
+```
+The CODATA 2022 empirical value.
+
 ---
 
 ## Proven Theorems
@@ -38,19 +44,61 @@ theorem alpha_inv_floor_137 :
 
 ---
 
-### **Theorem: UFRF Matches CODATA**
+### **Theorem: UFRF Matches CODATA 2022**
 ```lean
-theorem ufrf_matches_codata : 
-    |ufrf_alpha_inv - codata_alpha_inv| < 0.05
+theorem ufrf_matches_codata :
+    |ufrf_alpha_inv - codata_alpha_inv| < 0.00031
 ```
 
 **Proof Strategy**:
-1. Define `poly(x) = 4x³ + x² + x`
-2. Prove `poly` is strictly monotonic on `[0, ∞)`
-3. Use π bounds to establish `136.99 < poly(π) < 137.05`
-4. Apply absolute value inequality
+1. Use Mathlib's `20`-decimal π bounds.
+2. Prove `137.036303775 < ufrf_alpha_inv < 137.036303776`.
+3. Compare that interval directly to the CODATA 2022 value.
+4. Apply `abs_lt`.
 
-**Significance**: The UFRF prediction matches the empirical value to **99.9998% accuracy**. This is a **falsifiable prediction**, not a fit.
+**Significance**: The UFRF prediction differs from CODATA 2022 by less than `3.1 × 10⁻⁴`. This is a **falsifiable prediction**, not a fit.
+
+---
+
+### **Theorem: Six-Decimal Prediction Window**
+```lean
+theorem alpha_inv_six_decimal_window :
+    137.036303 < ufrf_alpha_inv ∧ ufrf_alpha_inv < 137.036304
+```
+
+**Proof Strategy**:
+1. Define `poly(x) = 4x³ + x² + x`.
+2. Use `Real.pi_gt_d20` and `Real.pi_lt_d20`.
+3. Apply monotonicity of `poly` on `[0, ∞)`.
+4. Check the endpoint inequalities with `norm_num`.
+
+**Significance**: This pins the next reported decimal block for the UFRF value inside the explicit six-decimal window `137.036303` to `137.036304`.
+
+---
+
+### **Theorem: Nine-Decimal Prediction Window**
+```lean
+theorem alpha_inv_bounds_d9 :
+    137.036303775 < ufrf_alpha_inv ∧ ufrf_alpha_inv < 137.036303776
+```
+
+**Proof Strategy**:
+1. Define `poly(x) = 4x³ + x² + x`.
+2. Use `Real.pi_gt_d20` and `Real.pi_lt_d20`.
+3. Apply monotonicity of `poly` on `[0, ∞)`.
+4. Check the endpoint inequalities with `norm_num`.
+
+**Significance**: This promotes the fine-structure prediction from a floor statement to an explicit next-decimal-place window.
+
+---
+
+### **Theorem: Nine-Decimal Rounded Prediction**
+```lean
+theorem alpha_inv_rounds_to_137_036303776 :
+    |ufrf_alpha_inv - 137.036303776| < 0.000000001
+```
+
+**Significance**: The UFRF prediction rounds to `137.036303776` at the `10^-9` place.
 
 ---
 

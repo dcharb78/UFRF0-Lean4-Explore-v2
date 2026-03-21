@@ -400,16 +400,16 @@ example : 15 = 12 + (3 : ℕ) := visible_equals_gauge_plus_trinity
 
 /-! ## Layer 17: Phenomena at Every Resolution -/
 
--- α⁻¹ at three prime depths: 137 mod 3=2, mod 7=4, mod 13=7
+-- α⁻¹ residues modulo 3, 7, and 13: 137 mod 3=2, mod 7=4, mod 13=7
 example : 137 % 3 = 2 ∧ 137 % 7 = 4 ∧ 137 % 13 = 7 :=
-  UFRF.Phenomena.alpha_at_three_resolutions
+  UFRF.Phenomena.alpha_residues_mod_3_7_13
 
 -- α⁻¹ traverses 10 full cycles: 137 = 10×13 + 7
 example : 137 / 13 = 10 ∧ 137 % 13 = 7 :=
   UFRF.Phenomena.alpha_traverses_full_decade
 
--- Phase 7 is prime (double primality)
-example : Nat.Prime 7 := UFRF.Phenomena.contraction_start_is_prime
+-- The selected phase label is the prime natural number 7
+example : Nat.Prime 7 := UFRF.Phenomena.phase_label_seven_is_nat_prime
 
 /-! ## Layer 17: CRT Adelic Decomposition -/
 

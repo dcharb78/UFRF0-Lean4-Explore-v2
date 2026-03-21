@@ -11,7 +11,7 @@ open UFRF.Constants
 /-!
 # UFRF.FineStructure
 
-**Theorem 23: α⁻¹ = 4π³ + π² + π ≈ 137.036**
+**Theorem 23: α⁻¹ = 4π³ + π² + π ≈ 137.036303775878...**
 
 The inverse fine structure constant is derived from zero free parameters.
 It is the continuous cycle geometry (π) processed through the Three-LOG
@@ -29,9 +29,9 @@ The integer part 137 encodes the breathing cycle's critical phase markers:
 - **7**: First position post-flip (start of Log3)
 
 ## Measured vs. UFRF values
-- CODATA 2018: α⁻¹ = 137.035999084(21)
-- UFRF: α⁻¹ = 4π³ + π² + π ≈ 137.03604...
-- Agreement: 99.9998%
+- CODATA 2022: α⁻¹ = 137.035999177(21)
+- UFRF: α⁻¹ = 4π³ + π² + π ≈ 137.036303775878...
+- Gap: < 3.1e-4
 
 ## Status
 - `ufrf_alpha_inv` definition: ✅ compiles
@@ -147,6 +147,101 @@ theorem alpha_polynomial_form :
   unfold ufrf_alpha_inv; dsimp [ufrf_tensor_structure]; simp
 
 /--
+The UFRF fine-structure candidate lies in the explicit six-decimal window
+`137.036303 < α⁻¹ < 137.036304`.
+
+This is the current decimal-place prediction promoted from the tighter `π`
+bounds already available in Mathlib.
+-/
+theorem alpha_inv_six_decimal_window :
+    137.036303 < ufrf_alpha_inv ∧ ufrf_alpha_inv < 137.036304 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : 3.14159265358979323846 < π := Real.pi_gt_d20
+  have pi_hi : π < 3.14159265358979323847 := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      137.036303 < 4 * π ^ 3 + π ^ 2 + π := by
+    change 137.036303 < poly π
+    have hmono : poly 3.14159265358979323846 < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : 137.036303 < poly 3.14159265358979323846 := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < 137.036304 := by
+    change poly π < 137.036304
+    have hmono : poly π < poly 3.14159265358979323847 :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly 3.14159265358979323847 < 137.036304 := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
+Nine-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_six_decimal_window` to a one-nanounit interval using
+Mathlib's 20-decimal bounds on `π`.
+-/
+theorem alpha_inv_bounds_d9 :
+    (137.036303775 : ℝ) < ufrf_alpha_inv ∧ ufrf_alpha_inv < 137.036303776 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.14159265358979323846 : ℝ) < π := Real.pi_gt_d20
+  have pi_hi : π < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.036303775 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.036303775 : ℝ) < poly π
+    have hmono : poly (3.14159265358979323846 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.036303775 : ℝ) < poly (3.14159265358979323846 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.036303776 : ℝ) := by
+    change poly π < (137.036303776 : ℝ)
+    have hmono : poly π < poly (3.14159265358979323847 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.14159265358979323847 : ℝ) < (137.036303776 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
+The UFRF inverse fine-structure prediction rounds to `137.036303776`
+at the `10^-9` place.
+-/
+theorem alpha_inv_rounds_to_137_036303776 :
+    |ufrf_alpha_inv - 137.036303776| < 0.000000001 := by
+  rcases alpha_inv_bounds_d9 with ⟨hlo, hhi⟩
+  rw [abs_lt]
+  constructor <;> linarith
+
+/--
 **Phase Markers 1, 3, 7**
 
 The digits of 137 correspond to breathing cycle checkpoints:
@@ -182,10 +277,16 @@ contribute simultaneously, creating a double-reflection duality.
 theorem merkaba_duality : 2 * 2 = 4 := by norm_num
 
 /--
-The CODATA 2018 recommended value for the inverse fine structure constant.
-Value: 137.035999084
+The CODATA 2018 recommended value for the inverse fine-structure constant.
+Value: `137.035999084(21)`.
 -/
-def codata_alpha_inv : ℝ := 137.035999084
+def codata2018_alpha_inv : ℝ := 137.035999084
+
+/--
+The CODATA 2022 recommended value for the inverse fine-structure constant.
+Value: `137.035999177(21)`.
+-/
+def codata_alpha_inv : ℝ := 137.035999177
 
 /--
 **Theorem: Prediction Accuracy**
@@ -195,53 +296,21 @@ to within 0.05.
 This is not a definition, but a falsifiable prediction of the theory.
 -/
 theorem ufrf_matches_codata : 
-    |ufrf_alpha_inv - codata_alpha_inv| < 0.05 := by
-  -- Unfold globally so linarith sees the polynomial terms
-  unfold ufrf_alpha_inv codata_alpha_inv
-  dsimp [ufrf_tensor_structure]
-  
-  -- The polynomial f(x) = 4x^3 + x^2 + x
-  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
-  
-  -- Monotonicity on [0, infinity)
-  have mono : StrictMonoOn poly (Set.Ici 0) := by
-    intro a ha b hb hab
-    simp at ha hb
-    dsimp [poly]
-    gcongr
-  
-  -- Bounds for Pi (using standard d4 bounds: 3.1415 < pi < 3.1416)
-  have pi_lo : 3.1415 < π := Real.pi_gt_d4
-  have pi_hi : π < 3.1416 := Real.pi_lt_d4
-  
-  -- Evaluate/bound poly values numerically
-  have val_lo : poly 3.1415 > 136.99 := by
-    dsimp [poly]
-    norm_num
-  
-  have val_hi : poly 3.1416 < 137.05 := by
-    dsimp [poly]
-    norm_num
-  
-  -- Project bounds to poly(pi)
-  have exp_lo : 136.99 < 4 * π ^ 3 + π ^ 2 + π := by
-    change 136.99 < poly π
-    have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
-    have : poly 3.1415 < poly π := mono (by norm_num) h_nonneg_pi pi_lo
-    exact lt_trans val_lo this
-
-  have exp_hi : 4 * π ^ 3 + π ^ 2 + π < 137.05 := by
-    change poly π < 137.05
-    have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
-    have : poly π < poly 3.1416 := mono h_nonneg_pi (by norm_num) pi_hi
-    exact lt_trans this val_hi
-
-  -- Final absolute value inequality
+    |ufrf_alpha_inv - codata_alpha_inv| < 0.00031 := by
+  rcases alpha_inv_bounds_d9 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
   rw [abs_lt]
-  dsimp [AlphaPolynomial.c1, AlphaPolynomial.c2, AlphaPolynomial.c3,
-         LOGGrade.duality_factor, log3_geometric_factor,
-         simplex3_boundary_face_count] at *
-  simp at *
+  constructor <;> linarith
+
+/--
+Against the CODATA 2018 value, the current UFRF static candidate differs by
+less than `3.05 × 10⁻⁴`.
+-/
+theorem ufrf_matches_codata2018 :
+    |ufrf_alpha_inv - codata2018_alpha_inv| < 0.000305 := by
+  rcases alpha_inv_bounds_d9 with ⟨hlo, hhi⟩
+  unfold codata2018_alpha_inv
+  rw [abs_lt]
   constructor <;> linarith
 
 end

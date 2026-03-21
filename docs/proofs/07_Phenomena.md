@@ -1,7 +1,8 @@
 # Phenomena - Mapping Physical Constants
 
 ## Overview
-This module maps specific real-world phenomena to the Master Manifold's coordinate system `(depth : ℤ, phase : ZMod 13)`.
+This module records chart addresses for specific real-world phenomena in the
+coordinate system `(depth : ℤ, phase : ZMod 13)`.
 
 ## Key Definitions
 
@@ -12,7 +13,8 @@ structure Coordinate where
   phase : Phase  -- ZMod 13
 ```
 
-Every phenomenon has a unique address on the manifold.
+The selected phenomena discussed here are assigned explicit chart addresses on
+the manifold.
 
 ---
 
@@ -28,7 +30,9 @@ theorem alpha_inv_projects_to_phase_7 :
 1. Use `alpha_inv_floor_137` from `FineStructure` to establish `⌊ufrf_alpha_inv⌋ = 137`
 2. Compute `137 ≡ 7 (mod 13)` via `rfl`
 
-**Significance**: The *calculated* polynomial value projects to Phase 7, the start of the Log3 contraction phase. This is the "Strong Force" sector of the breathing cycle.
+**Significance**: The calculated value projects arithmetically to phase label `7`
+in the 13-cycle chart. This is an address statement, not a standalone theorem
+about a distinct physical sector.
 
 **Red Team III Fix**: This theorem now uses the **direct projection** from the calculated polynomial, not a hardcoded integer.
 
@@ -41,13 +45,33 @@ theorem prime_137_phase_is_7 :
 ```
 **Proof**: `rfl`
 
-**Significance**: The prime number 137 corresponds to Phase 7, which is also prime. The 7th position is the first position after the Flip (6.5)—the "entry" into the contraction/materialization phase.
+**Significance**: The integer `137` maps arithmetically to phase label `7`, and
+the natural number `7` is prime. This is an arithmetic/chart fact only; it is
+not a theorem that phase `7` carries a separate repo-level structural-prime
+status.
+
+---
+
+### **Theorem: Refined Alpha Address Runs Into the Handoff**
+```lean
+theorem alpha_coordinate_refined_handoff_path :
+    (alpha_coordinate_refined.advance 2).phase = restPhase ∧
+    (alpha_coordinate_refined.advance 3).phase = (10 : Phase) ∧
+    (alpha_coordinate_refined.advance 4).phase = (11 : Phase) ∧
+    (alpha_coordinate_refined.advance 5).phase = (12 : Phase) ∧
+    Coordinate.step (alpha_coordinate_refined.advance 5) = ⟨11, 0⟩
+```
+**Proof**: direct computation from `alpha_coordinate_refined = ⟨10, 7⟩`, `Coordinate.advance`, and `Coordinate.step`.
+
+**Significance**: the refined alpha address is not just “at phase 7.” It sits a
+fixed number of unit steps before the terminal handoff: two steps before REST,
+then bridge, bridge, seed/closure, and then re-entry at the next depth.
 
 ---
 
 ## Addressing Principle
 
-Every phenomenon P has a unique address `A(P) = (S, p)` where:
+The module uses addresses `A(P) = (S, p)` for the phenomena it tracks, where:
 - `S` is the scale depth (integer)
 - `p` is the phase position (ZMod 13)
 
@@ -69,8 +93,10 @@ def electron_mass_address : Coordinate :=
 
 ## Prime Distribution Hypothesis
 
-Primes map to "void" phases where harmonic interference is minimized. The general mapping is:
+This section is contextual and not formalized by the theorems in this module.
+The basic arithmetic mapping is:
 
 $$p \mapsto (\text{depth}, p \bmod 13)$$
 
-This establishes a connection between prime distribution and the breathing cycle's phase structure.
+This records a charting heuristic only. It is not a proved general theorem
+about prime distribution or structural phase roles.
