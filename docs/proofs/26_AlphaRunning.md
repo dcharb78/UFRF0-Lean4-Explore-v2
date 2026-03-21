@@ -26,6 +26,10 @@ The point of this module is narrow:
   `7` through `Phenomena.alpha_coordinate_refined`.
 - `alphaPhaseObserverCorrection n R`: the deviation of the phase-7 observer
   channel from the static UFRF inverse fine-structure value.
+- `alphaPhaseObserverOneStepComparison`: observer-indexed name for the current
+  one-step comparison scalar.
+- `alphaPhaseObserverOneStepResidual R`: observer-indexed name for the current
+  one-step comparison residual against the static CODATA 2022 gap.
 
 ## Theorem
 
@@ -113,8 +117,20 @@ The point of this module is narrow:
 - `alphaPhaseObserverNormalizedRealCorrection_is_alpha_selected_centered_comparison`:
   the current comparison quantity is exactly the normalized real part of the
   centered running observable at the alpha-selected observer channel.
+- `alpha_selected_centered_comparison_eq_alpha_selected_root_scalar`:
+  equivalently, those same observer-indexed centered and root/scalar
+  presentations are exactly the same normalized real quantity.
+- `alphaPhaseObserverOneStepComparison_is_alpha_selected_root_scalar`:
+  the observer-indexed one-step comparison alias is the same explicit
+  alpha-selected root/scalar formula as the historical phase-7 wrapper.
 - `phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison`:
   the current radius-free one-step prediction is exactly that same
+  alpha-selected centered comparison scalar.
+- `alphaPhaseObserverNormalizedRealCorrection_one_eq_oneStepComparison`:
+  equivalently, the one-step normalized observable is also exactly the
+  observer-indexed one-step comparison alias.
+- `alphaPhaseObserverOneStepComparison_eq_alpha_selected_centered_comparison`:
+  the observer-indexed one-step comparison alias is exactly that same
   alpha-selected centered comparison scalar.
 - `alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centered_comparison`:
   equivalently, the one-step normalized observable itself is exactly that same
@@ -136,15 +152,27 @@ The point of this module is narrow:
   selected observer channel and the one-step normalized observable minus the
   static CODATA 2022 gap is exactly the centered comparison scalar written at
   that same `k`.
+- `alphaPhaseObserverOneStepResidual_eq_oneStepComparison_sub_codataGap`:
+  the observer-indexed one-step residual alias is exactly the observer-indexed
+  one-step comparison alias minus the static CODATA 2022 gap.
 - `phase7OneStepModelResidual_eq_alpha_selected_centered_comparison_sub_codataGap`:
   the compared one-step residual is exactly the alpha-selected centered
   comparison scalar minus the static CODATA 2022 gap.
+- `alphaPhaseObserverOneStepResidual_eq_alpha_selected_centered_comparison_sub_codataGap`:
+  equivalently, the observer-indexed one-step residual alias is exactly that
+  same centered comparison scalar minus the same gap.
 - `phase7OneStepModelResidual_is_alpha_selected_root_scalar_sub_codataGap`:
   equivalently, the compared one-step residual is the explicit
   alpha-selected root/scalar formula minus the static CODATA 2022 gap.
+- `alphaPhaseObserverOneStepResidual_is_alpha_selected_root_scalar_sub_codataGap`:
+  equivalently, the observer-indexed one-step residual alias is the same
+  alpha-selected root/scalar-minus-gap formula.
 - `phase7OneStepModelResidual_eq_of_le_lt_half_infsep`:
   the one-step residual against the static CODATA 2022 gap is contour-invariant
   inside the allowed regime.
+- `alphaPhaseObserverOneStepResidual_eq_of_le_lt_half_infsep`:
+  the observer-indexed one-step residual alias is contour-invariant in that
+  same allowed regime.
 - `no_terminal_scale_for_alpha_running`:
   there is no terminal scale for the running/projection picture.
 - `prime_tower_is_coherent`:
@@ -237,9 +265,10 @@ The safe interpretation is:
   alpha-selected observer root/scalar package, rather than only as a formula
   with the literal phase `7`,
 - the one-step normalized observable itself now also has direct
-  observer-indexed root/scalar and centered-comparison forms, so the exposed
-  comparison stack depends less on the legacy `phase7OneStepModelPrediction`
-  wrapper,
+  observer-indexed root/scalar and centered-comparison forms, and Lean now
+  also exposes an explicit `alphaPhaseObserverOneStepComparison` alias, so the
+  exposed comparison stack depends less on the legacy
+  `phase7OneStepModelPrediction` wrapper,
 - those same one-step formulas now also transport to any `k` that satisfies
   `floor α mod 13 = k`, so the arithmetic selection statement is no longer
   tied to one hard-coded symbol name,
@@ -258,12 +287,17 @@ The safe interpretation is:
 - the current comparison scalar is also no longer described only informally:
   Lean now packages it as the normalized real part of the observer-local
   running deviation after subtracting the global breathing-root average,
+- that observer-indexed centered presentation is now also tied directly to the
+  observer-indexed root/scalar presentation before any one-step or gap
+  specialization, so the two current candidate packages are visibly the same
+  quantity and not merely parallel rewrites through older aliases,
 - the current radius-free one-step prediction is now proved to be exactly that
   same alpha-selected centered comparison scalar,
 - the actual one-step normalized observable minus the static CODATA gap now
   also has direct observer-indexed centered-comparison and root/scalar forms,
-  so the compared quantity no longer has to be introduced only through the
-  legacy `phase7OneStepModelResidual` alias,
+  and Lean now also exposes an explicit `alphaPhaseObserverOneStepResidual`
+  alias, so the compared quantity no longer has to be introduced only through
+  the legacy `phase7OneStepModelResidual` wrapper,
 - the same compared quantity is now also unique in the arithmetic sense:
   any `k` satisfying `floor α mod 13 = k` is forced to be the selected
   observer channel and yields the same centered and root/scalar one-step gap

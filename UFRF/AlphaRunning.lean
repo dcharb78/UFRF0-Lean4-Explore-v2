@@ -344,6 +344,16 @@ def phase7OneStepModelPrediction : ℝ :=
       UFRF.ResidueDefinition.residueCandidateAt (7 : ZMod CycleLen)) /
     alphaPhaseObserverModelNormalization
 
+/--
+Observer-indexed name for the current one-step comparison scalar.
+
+This is definitionally the same quantity as the historical
+`phase7OneStepModelPrediction` wrapper, but keeps the public surface aligned
+with the arithmetic-selected observer language.
+-/
+def alphaPhaseObserverOneStepComparison : ℝ :=
+  phase7OneStepModelPrediction
+
 theorem phase7OneStepModelPrediction_is_alpha_selected_root_scalar :
     (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
     phase7OneStepModelPrediction =
@@ -353,6 +363,16 @@ theorem phase7OneStepModelPrediction_is_alpha_selected_root_scalar :
         alphaPhaseObserverModelNormalization := by
   refine ⟨alphaPhaseObserver_selected_by_alpha_arithmetic, ?_⟩
   rw [phase7OneStepModelPrediction, alphaPhaseObserver_eq_phase7]
+
+theorem alphaPhaseObserverOneStepComparison_is_alpha_selected_root_scalar :
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
+        alphaPhaseObserverModelNormalization := by
+  simpa [alphaPhaseObserverOneStepComparison] using
+    phase7OneStepModelPrediction_is_alpha_selected_root_scalar
 
 /--
 The static UFRF-to-CODATA 2022 gap used for comparison.
@@ -366,6 +386,16 @@ static CODATA 2022 gap.
 -/
 def phase7OneStepModelResidual (R : ℝ) : ℝ :=
   alphaPhaseObserverNormalizedRealCorrection 1 R - alphaCodata2022Gap
+
+/--
+Observer-indexed name for the current one-step comparison residual against the
+static CODATA 2022 gap.
+
+This is definitionally the same quantity as the historical
+`phase7OneStepModelResidual` wrapper.
+-/
+def alphaPhaseObserverOneStepResidual (R : ℝ) : ℝ :=
+  phase7OneStepModelResidual R
 
 theorem alphaPhaseObserverRealCorrection_eq_re_phase7_scalar_mul_residueCandidate
     (n : ℤ) {R : ℝ} (hR : 0 < R)
@@ -429,6 +459,14 @@ theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_modelPrediction
     phase7OneStepModelPrediction]
   simp
 
+theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_oneStepComparison
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    alphaPhaseObserverNormalizedRealCorrection 1 R = alphaPhaseObserverOneStepComparison := by
+  simpa [alphaPhaseObserverOneStepComparison] using
+    alphaPhaseObserverNormalizedRealCorrection_one_eq_modelPrediction
+      (R := R) hR hRlt
+
 theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_root_scalar
     {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
@@ -451,6 +489,15 @@ theorem phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap
   rw [phase7OneStepModelResidual,
     alphaPhaseObserverNormalizedRealCorrection_one_eq_modelPrediction
       (R := R) hR hRlt]
+
+theorem alphaPhaseObserverOneStepResidual_eq_oneStepComparison_sub_codataGap
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    alphaPhaseObserverOneStepResidual R =
+      alphaPhaseObserverOneStepComparison - alphaCodata2022Gap := by
+  simpa [alphaPhaseObserverOneStepResidual, alphaPhaseObserverOneStepComparison] using
+    phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap
+      (R := R) hR hRlt
 
 theorem alphaPhaseObserverCorrection_eq_of_le_lt_half_infsep
     (n : ℤ) {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
@@ -485,6 +532,14 @@ theorem phase7OneStepModelResidual_eq_of_le_lt_half_infsep
   unfold phase7OneStepModelResidual
   rw [alphaPhaseObserverNormalizedRealCorrection_eq_of_le_lt_half_infsep
       (n := 1) (r := r) (R := R) hr hrR hRlt]
+
+theorem alphaPhaseObserverOneStepResidual_eq_of_le_lt_half_infsep
+    {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    alphaPhaseObserverOneStepResidual R = alphaPhaseObserverOneStepResidual r := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_eq_of_le_lt_half_infsep
+      (r := r) (R := R) hr hrR hRlt
 
 theorem alphaPhaseObserverCorrection_ne_zero_of_ne_zero_of_lt_half_infsep
     {n : ℤ} (hn : n ≠ 0) {R : ℝ} (hR : 0 < R)
@@ -653,6 +708,41 @@ theorem alphaPhaseObserverNormalizedRealCorrection_is_alpha_selected_centered_co
     alphaPhaseObserverRealCorrection_eq_re_deviationFromAverage
       (n := n) (R := R) hR hRlt]
 
+/--
+The centered observer comparison and the explicit observer root/scalar formula
+are the same normalized real quantity.
+
+This is the direct bridge between the two current candidate presentations,
+without adding any stronger physical-selection claim.
+-/
+theorem alpha_selected_centered_comparison_eq_alpha_selected_root_scalar
+    (n : ℤ) {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    Complex.re
+        (alphaInvRunningModel n alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R)) /
+        alphaPhaseObserverModelNormalization =
+      Complex.re
+        (((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
+        alphaPhaseObserverModelNormalization := by
+  rcases alphaPhaseObserverNormalizedRealCorrection_is_alpha_selected_centered_comparison
+      (n := n) (R := R) hR hRlt with ⟨_, hcenter⟩
+  calc
+    Complex.re
+        (alphaInvRunningModel n alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R)) /
+        alphaPhaseObserverModelNormalization =
+        alphaPhaseObserverNormalizedRealCorrection n R := by
+          simpa using hcenter.symm
+    _ =
+      Complex.re
+        (((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
+        alphaPhaseObserverModelNormalization := by
+          exact alphaPhaseObserverNormalizedRealCorrection_eq_re_alpha_selected_scalar_mul_residueCandidate
+            (n := n) (R := R) hR hRlt
+
 theorem phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison
     {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
@@ -667,6 +757,19 @@ theorem phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison
   refine ⟨hsel, ?_⟩
   rw [← alphaPhaseObserverNormalizedRealCorrection_one_eq_modelPrediction
       (R := R) hR hRlt, hcmp]
+
+theorem alphaPhaseObserverOneStepComparison_eq_alpha_selected_centered_comparison
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization := by
+  simpa [alphaPhaseObserverOneStepComparison] using
+    phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison
+      (R := R) hR hRlt
 
 theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centered_comparison
     {R : ℝ} (hR : 0 < R)
@@ -842,6 +945,19 @@ theorem phase7OneStepModelResidual_eq_alpha_selected_centered_comparison_sub_cod
   refine ⟨hsel, ?_⟩
   rw [phase7OneStepModelResidual, hpred]
 
+theorem alphaPhaseObserverOneStepResidual_eq_alpha_selected_centered_comparison_sub_codataGap
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_eq_alpha_selected_centered_comparison_sub_codataGap
+      (R := R) hR hRlt
+
 theorem phase7OneStepModelResidual_is_alpha_selected_root_scalar_sub_codataGap
     {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
@@ -855,6 +971,19 @@ theorem phase7OneStepModelResidual_is_alpha_selected_root_scalar_sub_codataGap
       (R := R) hR hRlt with ⟨hsel, hpred⟩
   refine ⟨hsel, ?_⟩
   rw [phase7OneStepModelResidual, hpred]
+
+theorem alphaPhaseObserverOneStepResidual_is_alpha_selected_root_scalar_sub_codataGap
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_is_alpha_selected_root_scalar_sub_codataGap
+      (R := R) hR hRlt
 
 /--
 There is no terminal scale for the running/projection picture: the recursive

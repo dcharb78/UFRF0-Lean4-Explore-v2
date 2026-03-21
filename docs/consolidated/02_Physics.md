@@ -44,6 +44,7 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alphaPhaseObserver_is_seven_steps_on_seed_orbit`**: phase `7` is reached by seven ordinary successor steps from the seed, so it is a contextual point on the universal orbit rather than an absolute origin
 - **`alphaPhaseObserver_enters_terminal_handoff_in_fixed_steps`**: the selected phase-7 observer hits REST, then the two bridge positions, then seed/closure, and then restart after fixed successor steps
 - **`alphaPhaseObserver_selected_by_alpha_arithmetic`**: the selected observer channel is exactly the phase picked out by the integer projection of `ufrf_alpha_inv`
+- **`alphaPhaseObserverOneStepComparison_is_alpha_selected_root_scalar`**: the observer-indexed one-step comparison alias is the same alpha-selected root/scalar one-step formula as the historical phase-7 wrapper
 - **`phase7OneStepModelPrediction_is_alpha_selected_root_scalar`**: the current one-step prediction is the explicit root/scalar formula built from the alpha-selected observer channel
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_root_scalar`**: the one-step normalized observable itself also has that same alpha-selected root/scalar form
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_root_scalar_of_floor_eq`**: more generally, any channel `k` satisfying `floor α mod 13 = k` gives that same one-step root/scalar formula
@@ -55,12 +56,16 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alphaPhaseObserverNormalizedRealCorrection_eq_re_alpha_selected_scalar_mul_residueCandidate`**: the normalized real comparison observable likewise has an observer-indexed scalar/root formula
 - **`alphaPhaseObserverDeviationFromAverage_eq_alpha_selected_scalar_mul_residueCandidate`**: the centered observer deviation is likewise rewritten through the alpha-selected residue channel
 - **`alphaPhaseObserverNormalizedRealCorrection_is_alpha_selected_centered_comparison`**: the current comparison quantity is the normalized real part of the centered running observable at that alpha-selected channel
+- **`alpha_selected_centered_comparison_eq_alpha_selected_root_scalar`**: the observer-indexed centered comparison formula and the observer-indexed root/scalar formula are exactly the same normalized real quantity
+- **`alphaPhaseObserverOneStepComparison_eq_alpha_selected_centered_comparison`**: the observer-indexed one-step comparison alias is exactly that centered alpha-selected comparison scalar
 - **`phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison`**: the current radius-free one-step prediction is exactly that centered alpha-selected comparison scalar
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centered_comparison`**: equivalently, the one-step normalized observable itself is exactly that centered alpha-selected comparison scalar
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_centered_comparison_of_floor_eq`**: more generally, any channel `k` satisfying `floor α mod 13 = k` gives that same centered one-step comparison formula
 - **`alphaPhaseObserverNormalizedRealCorrection_one_sub_codataGap_eq_alpha_selected_centered_comparison_sub_codataGap`**: equivalently, the one-step normalized observable minus the static CODATA gap is exactly that centered alpha-selected comparison scalar minus the same gap
 - **`alpha_selected_centered_comparison_sub_codataGap_unique_by_arithmetic`**: if `k` satisfies `floor α mod 13 = k`, then `k` is exactly the selected observer channel and gives that same centered one-step gap comparison
+- **`alphaPhaseObserverOneStepResidual_eq_alpha_selected_centered_comparison_sub_codataGap`**: the observer-indexed one-step residual alias is exactly that centered alpha-selected comparison scalar minus the static CODATA gap
 - **`phase7OneStepModelResidual_eq_alpha_selected_centered_comparison_sub_codataGap`**: the compared one-step residual is exactly that alpha-selected centered comparison scalar minus the static CODATA gap
+- **`alphaPhaseObserverOneStepResidual_is_alpha_selected_root_scalar_sub_codataGap`**: equivalently, the observer-indexed one-step residual alias is the explicit alpha-selected root/scalar formula minus the static CODATA gap
 - **`phase7OneStepModelResidual_is_alpha_selected_root_scalar_sub_codataGap`**: equivalently, the compared one-step residual is the explicit alpha-selected root/scalar formula minus the static CODATA gap
 - **`phase7OneStepModelResidual_eq_of_le_lt_half_infsep`**: the one-step residual against the static CODATA gap is contour-invariant in the allowed regime
 - **`cycle_prime_channels_hit_alphaPhaseObserver`**: each local cycle-prime channel `3, 5, 7, 11` also hits the selected phase-7 observer
@@ -78,8 +83,9 @@ channel.
 It also rewrites the one-step prediction directly in terms of that
 alpha-selected observer root/scalar package.
 The one-step normalized observable itself now also has direct observer-indexed
-root/scalar and centered-comparison forms, so the comparison stack depends less
-on the legacy `phase7OneStepModelPrediction` wrapper.
+root/scalar and centered-comparison forms, and the repo now also exposes an
+explicit `alphaPhaseObserverOneStepComparison` alias, so the comparison stack
+depends less on the legacy `phase7OneStepModelPrediction` wrapper.
 Those same one-step formulas now also transport to any `k` satisfying
 `floor α mod 13 = k`, so the arithmetic selection statement is no longer tied
 to one hard-coded symbol name.
@@ -88,10 +94,14 @@ one-step comparison formula and the explicit root/scalar formula coincide, both
 before and after subtracting the static CODATA gap.
 The correction and centered-deviation formulas now also have observer-indexed
 versions, so the comparison package is less tied to literal phase syntax.
+The observer-indexed centered and root/scalar presentations are now also
+proved directly equal before specializing to one-step or subtracting the
+CODATA gap.
 It also proves exact one-step rewrite theorems for the observable-minus-gap and
 residual-minus-gap packages, including both centered-comparison and
-alpha-selected root/scalar forms, and the one-step CODATA residual is
-contour-invariant in the allowed regime.
+alpha-selected root/scalar forms, and the repo now also exposes an explicit
+`alphaPhaseObserverOneStepResidual` alias for that same compared quantity. The
+one-step CODATA residual is contour-invariant in the allowed regime.
 It now also proves arithmetic uniqueness in the narrow safe sense: any channel
 `k` satisfying `floor α mod 13 = k` is forced to be the selected observer and
 gives the same centered and root/scalar one-step gap comparison formulas.
