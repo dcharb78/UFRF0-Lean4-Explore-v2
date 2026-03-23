@@ -51,6 +51,7 @@ When there is any mismatch:
 - [`17_Waveform.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/17_Waveform.md)
 - [`18_PrimeChoreography.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/18_PrimeChoreography.md)
 - [`19_Addressing.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/19_Addressing.md)
+- [`27_NumerizationSeeds.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/27_NumerizationSeeds.md)
 
 ### Interpretation-Heavy Historical Notes
 

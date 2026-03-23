@@ -68,6 +68,19 @@ Each theorem is tagged:
 All original phases are complete. Every theorem that was marked 🔧 TACTIC or
 🏗️ DESIGN has been proven. The codebase compiles with zero sorry and zero custom axioms.
 
+## Scoped Sidecar Workstreams
+
+The main dependency chain above remains the canonical core. Additional work
+should be integrated only when it preserves the repo's existing theorem
+boundaries and semantics.
+
+- Numerization seed-prime arithmetic is now tracked as a separate arithmetic
+  sidecar lane in
+  [`docs/NUMERIZATION_SEED_PRIME_INTEGRATION_PLAN.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/NUMERIZATION_SEED_PRIME_INTEGRATION_PLAN.md).
+  It is explicitly scoped to shifted-triangular seed/completion arithmetic near
+  `PrimeSemantics` and `FineStructure`, and it does not automatically promote
+  Allen, residue, projection-law, or neural-network claims into the Lean core.
+
 ---
 
 ## Key Design Decisions

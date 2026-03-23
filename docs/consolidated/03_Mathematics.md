@@ -76,6 +76,20 @@ The claim is: IF zeta zeros are sub-scale breathing resonances, THEN Re(s) = 1/2
 
 ---
 
+## 8. NumerizationSeeds - Arithmetic Seed/Completion Sidecar
+
+### Proven Theorems
+- **`numerizationSeed_not_dvd_three`**: the shifted triangular arithmetic seed `n * (n - 1) / 2 + 1` is never divisible by `3`
+- **`numerizationSeed_not_dvd_five`**: that same arithmetic seed is never divisible by `5`
+- **`numerizationCompletion_not_prime`**: the triangular completion quantity `n * (n + 1) / 2` is not prime once `n ≥ 3`
+- **`numerizationSeed_seventeen_eq_137`**: the shifted triangular arithmetic seed at `17` is exactly `137`
+- **`alpha_inv_floor_eq_numerizationSeed_seventeen`**: the already-proved fine-structure floor matches that same arithmetic seed
+
+### Status
+✅ Arithmetic sidecar package only. No residue, projection-law, Allen, or neural-network claim is promoted here.
+
+---
+
 ## Summary
 
 | Module | Status | Placeholders |
@@ -87,3 +101,4 @@ The claim is: IF zeta zeros are sub-scale breathing resonances, THEN Re(s) = 1/2
 | Noether | ✅ Arithmetic proven | 0 |
 | Calculus | ✅ Scale arithmetic proven | 0 |
 | Projections | ✅ Arithmetic proven | 0 |
+| NumerizationSeeds | ✅ Arithmetic sidecar | 0 |

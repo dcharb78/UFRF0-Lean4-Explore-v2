@@ -13,6 +13,7 @@ import UFRF.Recursion
 import UFRF.DivisionAlgebras
 import UFRF.NumberBases
 import UFRF.FineStructure
+import UFRF.NumerizationSeeds
 import UFRF.Waveform
 import UFRF.PrimeChoreography
 import UFRF.GoldenAngle
@@ -94,6 +95,14 @@ A theorem is **axiom-free** if it depends only on Lean core axioms.
 
 -- ═══ LAYER 9: Fine Structure ═══
 #print axioms alpha_inv_floor_137
+
+-- ═══ LAYER 9b: Numerization Sidecar ═══
+#print axioms UFRF.numerizationSeed_not_dvd_three
+#print axioms UFRF.numerizationSeed_not_dvd_five
+#print axioms UFRF.numerizationCompletion_not_prime
+#print axioms UFRF.existsUnique_numerizationEntry
+#print axioms UFRF.numerizationSeed_seventeen_eq_137
+#print axioms UFRF.alpha_inv_floor_eq_numerizationSeed_seventeen
 
 -- ═══ LAYER 10: Waveform ═══
 #print axioms UFRF.Dynamics.seed_expansion_match

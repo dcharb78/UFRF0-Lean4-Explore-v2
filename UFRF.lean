@@ -27,6 +27,7 @@ import UFRF.KissingHierarchy
 import UFRF.Manifold
 import UFRF.Noether
 import UFRF.NumberBases
+import UFRF.NumerizationSeeds
 import UFRF.PRISMAlgebra
 import UFRF.Padic
 import UFRF.PhaseSpaceCartography
@@ -70,6 +71,7 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | DivisionAlgebras | Hurwitz, 15 dimensions | `visible_dimension_count` |
 | NumberBases | Base 10/12/13 (derived) | `base13_is_full_cycle` |
 | PrimeSemantics | Formal prime taxonomy | `standard_and_ufrf_agree_below_13` |
+| NumerizationSeeds | Arithmetic seed/completion sidecar | `alpha_inv_floor_eq_numerizationSeed_seventeen` |
 | ComplexBreathing | 13th roots of unity / complex cycle | `complete_breath_sums_to_zero` |
 | ResidueDefinition | Specific pole data for `1 / (z^13 - 1)` | `breathingFunction_simplePole_limit` |
 | CircleIntegralBreathing | Specific circle/rectangle contour bridge for `1 / (z^13 - 1)` | `boundaryRectIntegral_breathingFunction_eq_two_pi_I_mul_sum_residueCandidate_of_no_boundary_roots` |

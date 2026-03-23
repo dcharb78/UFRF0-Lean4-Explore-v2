@@ -8,6 +8,7 @@ import UFRF.ThreeLOG
 import UFRF.BreathingCycle
 import UFRF.Waveform
 import UFRF.FineStructure
+import UFRF.NumerizationSeeds
 import UFRF.Phenomena
 import UFRF.AngularEmbedding
 import UFRF.Addressing
@@ -201,6 +202,21 @@ example : 1 ^ 2 + Real.sqrt phi ^ 2 = phi ^ 2 := kepler_pythagorean
 
 -- Fine Structure Constant
 example : Int.floor ufrf_alpha_inv = 137 := alpha_inv_floor_137
+
+-- Arithmetic sidecar: the shifted triangular seed at 17 lands on the same integer
+example : UFRF.numerizationSeed 17 = 137 :=
+  UFRF.numerizationSeed_seventeen_eq_137
+example : Int.floor ufrf_alpha_inv = (UFRF.numerizationSeed 17 : Int) :=
+  UFRF.alpha_inv_floor_eq_numerizationSeed_seventeen
+example (n : ℕ) : ¬ 3 ∣ UFRF.numerizationSeed n :=
+  UFRF.numerizationSeed_not_dvd_three n
+example (n : ℕ) : ¬ 5 ∣ UFRF.numerizationSeed n :=
+  UFRF.numerizationSeed_not_dvd_five n
+example (n : ℕ) (hn : 3 ≤ n) : ¬ Nat.Prime (UFRF.numerizationCompletion n) :=
+  UFRF.numerizationCompletion_not_prime n hn
+example (m : ℕ) (hm : 0 < m) :
+    ∃! p : ℕ × ℕ, 1 ≤ p.2 ∧ p.2 ≤ p.1 ∧ UFRF.numerizationEntry p.1 p.2 = m :=
+  UFRF.existsUnique_numerizationEntry m hm
 
 -- 137 has arithmetic chart label 7 modulo 13
 example : (Int.floor ufrf_alpha_inv : ZMod 13) = (7 : ZMod 13) :=
