@@ -74,6 +74,8 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alphaPhaseObserverOneStepResidual_bounds_micro`**: equivalently, the observer-indexed one-step residual alias satisfies that same explicit micro interval
 - **`phase7OneStepModelResidual_abs_lt_one_millionth`**: in the separated regime, the absolute one-step residual against the static CODATA gap is bounded by `0.000001`
 - **`alphaPhaseObserverOneStepResidual_abs_lt_one_millionth`**: equivalently, the observer-indexed one-step residual alias satisfies that same absolute `10⁻⁶` bound
+- **`alphaPhaseObserverResidueCheckAbsError_bounds_micro`**: the script-aligned absolute error between the observer-indexed one-step comparison scalar and the static CODATA gap lies in the explicit interval `0.000000921017 < error < 0.000000947269`
+- **`alphaPhaseObserverResidueCheckAbsError_lt_one_millionth`**: in particular, that same script-aligned absolute error is below the external script's `10⁻⁶` tolerance
 - **`phase7OneStepModelResidual_abs_lt_one_thousandth`**: in the separated regime, the absolute one-step residual against the static CODATA gap is bounded by `0.001`
 - **`alphaPhaseObserverOneStepResidual_abs_lt_one_thousandth`**: equivalently, the observer-indexed one-step residual alias satisfies that same absolute `0.001` bound
 - **`alphaPhaseObserverOneStepResidual_eq_alpha_selected_centered_comparison_sub_codataGap`**: the observer-indexed one-step residual alias is exactly that centered alpha-selected comparison scalar minus the static CODATA gap
@@ -119,7 +121,8 @@ alpha-selected root/scalar forms, and the repo now also exposes an explicit
 now also proves an explicit micro residual window and the absolute bound
 `|residual| < 0.000001` for that exposed residual, while retaining the earlier
 coarse `0.001` fallback bound; the one-step CODATA residual is also
-contour-invariant in the allowed regime.
+contour-invariant in the allowed regime. Lean now also proves the real-number
+`10⁻⁶` pass condition checked by `scripts/alpha_phase7_residue_check.py`.
 It now also proves arithmetic uniqueness in the narrow safe sense: any channel
 `k` satisfying `floor α mod 13 = k` is forced to be the selected observer and
 gives the same centered and root/scalar one-step gap comparison formulas.

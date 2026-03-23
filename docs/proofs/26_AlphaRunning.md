@@ -195,6 +195,19 @@ The point of this module is narrow:
 - `alphaPhaseObserverOneStepResidual_abs_lt_one_millionth`:
   equivalently, the observer-indexed one-step residual alias satisfies that
   same absolute `10⁻⁶` bound.
+- `alphaPhaseObserverResidueCheckAbsError`:
+  the script-aligned absolute error quantity is the absolute difference between
+  the observer-indexed one-step comparison scalar and the static CODATA 2022
+  gap.
+- `alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs`:
+  in the separated regime, that script-aligned absolute error is exactly the
+  absolute value of the observer-indexed one-step residual alias.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_micro`:
+  the script-aligned absolute error lies in the explicit micro interval
+  `0.000000921017 < error < 0.000000947269`.
+- `alphaPhaseObserverResidueCheckAbsError_lt_one_millionth`:
+  in particular, the same script-aligned absolute error is strictly below the
+  external script's `10⁻⁶` tolerance.
 - `phase7OneStepModelResidual_abs_lt_one_thousandth`:
   in the separated regime, the absolute one-step residual against the static
   CODATA 2022 gap is bounded above by `0.001`.
@@ -405,7 +418,13 @@ derived from the repo.
   `phase7_projection = 0.000305537183...`
   `abs_error = 9.38e-7`
 
-This is evidence for the selected-observer residue channel, not yet a Lean theorem.
+Lean now proves the real-number pass condition behind that check:
+`alphaPhaseObserverResidueCheckAbsError_lt_one_millionth` formalizes that the
+same absolute error is below `10⁻⁶`, and
+`alphaPhaseObserverResidueCheckAbsError_bounds_micro` pins it to the explicit
+window `0.000000921017 < error < 0.000000947269`.
+
+What Lean still does not prove is the script's floating-point printout itself.
 
 ## Open
 
@@ -415,6 +434,8 @@ This is evidence for the selected-observer residue channel, not yet a Lean theor
   comparison.
 - Lean now proves an explicit micro residual window and an absolute
   `0.000001` bound on the one-step residual.
+- Lean now also proves the real-number `10⁻⁶` pass condition checked by the
+  external script.
 - What Lean still does not prove is the external script's floating-point output
   itself, or any stronger projection-law / physical-selection claim.
 - The current `4 × 7` normalization is present only as an explicit model choice.

@@ -793,6 +793,16 @@ This is definitionally the same quantity as the historical
 def alphaPhaseObserverOneStepResidual (R : ℝ) : ℝ :=
   phase7OneStepModelResidual R
 
+/--
+Absolute error quantity checked by `scripts/alpha_phase7_residue_check.py`.
+
+This mirrors the script's comparison between the current selected-observer
+one-step comparison scalar and the static CODATA 2022 gap, while keeping the
+Lean surface on the observer-indexed name.
+-/
+def alphaPhaseObserverResidueCheckAbsError : ℝ :=
+  |alphaCodata2022Gap - alphaPhaseObserverOneStepComparison|
+
 theorem alphaPhaseObserverRealCorrection_eq_re_phase7_scalar_mul_residueCandidate
     (n : ℤ) {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
@@ -936,6 +946,41 @@ theorem alphaPhaseObserverOneStepResidual_abs_lt_one_millionth
     |alphaPhaseObserverOneStepResidual R| < 0.000001 := by
   simpa [alphaPhaseObserverOneStepResidual] using
     phase7OneStepModelResidual_abs_lt_one_millionth (R := R) hR hRlt
+
+theorem alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    alphaPhaseObserverResidueCheckAbsError =
+      |alphaPhaseObserverOneStepResidual R| := by
+  rw [alphaPhaseObserverResidueCheckAbsError,
+    alphaPhaseObserverOneStepResidual_eq_oneStepComparison_sub_codataGap
+      (R := R) hR hRlt]
+  simp [abs_sub_comm]
+
+theorem alphaPhaseObserverResidueCheckAbsError_bounds_micro :
+    (0.000000921017 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.000000947269 := by
+  let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
+  have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
+    UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
+  have hR : 0 < R := by
+    dsimp [R]
+    positivity
+  have hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    dsimp [R]
+    linarith
+  rcases alphaPhaseObserverOneStepResidual_bounds_micro (R := R) hR hRlt with
+    ⟨hlo, hhi⟩
+  have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
+    linarith
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt, abs_of_pos hpos]
+  exact ⟨hlo, hhi⟩
+
+theorem alphaPhaseObserverResidueCheckAbsError_lt_one_millionth :
+    alphaPhaseObserverResidueCheckAbsError < 0.000001 := by
+  rcases alphaPhaseObserverResidueCheckAbsError_bounds_micro with ⟨_, hhi⟩
+  linarith
 
 /--
 The current one-step residual against the static CODATA 2022 gap is bounded by
