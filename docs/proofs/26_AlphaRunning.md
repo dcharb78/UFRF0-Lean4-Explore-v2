@@ -22,9 +22,9 @@ The point of this module is narrow:
   shift times normalized local contour.
 - `alphaInvRunningModel n k R`: the static `ufrf_alpha_inv` plus `n` copies of
   the contour running increment.
-- `alphaPhaseObserver`: the selected physics observer channel, tied to phase
+- `alphaPhaseObserver`: the selected physics observer channel, tied to label
   `7` through `Phenomena.alpha_coordinate_refined`.
-- `alphaPhaseObserverCorrection n R`: the deviation of the phase-7 observer
+- `alphaPhaseObserverCorrection n R`: the deviation of the selected observer
   channel from the static UFRF inverse fine-structure value.
 - `alphaPhaseObserverOneStepComparison`: observer-indexed name for the current
   one-step comparison scalar.
@@ -50,27 +50,27 @@ The point of this module is narrow:
 - `sum_contourRunningIncrement_allRoots_eq_zero`:
   the full breathing-root family of running increments cancels exactly.
 - `alphaPhaseObserverCorrection_ne_zero_of_ne_zero_of_lt_half_infsep`:
-  the selected phase-7 observer channel deviates nontrivially from the static
+  the selected observer channel deviates nontrivially from the static
   UFRF value once a nonzero scale step is chosen.
 - `alphaPhaseObserverCorrection_eq_phase7_scalar_mul_residueCandidate`:
   in the separated-radius regime, the selected observer correction is exactly a
-  fixed scalar times the explicit phase-7 residue coefficient.
+  fixed scalar times the explicit legacy `7`-channel residue coefficient.
 - `alphaPhaseObserverRealCorrection_eq_re_phase7_scalar_mul_residueCandidate`:
   taking the real channel of the selected observer correction yields a
-  well-typed real observable induced by that same explicit phase-7 residue
+  well-typed real observable induced by that same explicit legacy residue
   coefficient.
 - `alphaPhaseObserverModelNormalization_eq_twenty_eight`:
   the current model normalization is explicitly `4 × 7 = 28`, packaging the
   simplex boundary factor `4` with the selected phase label `7`.
 - `alphaPhaseObserverNormalizedRealCorrection_eq_re_phase7_scalar_mul_residueCandidate`:
-  the normalized real comparison observable is the real phase-7 correction
+  the normalized real comparison observable is the real selected-observer correction
   divided by that explicit model normalization.
 - `alphaPhaseObserverNormalizedRealCorrection_eq_realCorrection_div_twenty_eight`:
-  equivalently, the current normalized observable is just the real phase-7
+  equivalently, the current normalized observable is just the real selected-observer
   correction divided by `28`.
 - `alphaPhaseObserverCorrection_eq_alpha_selected_scalar_mul_residueCandidate`:
   the selected observer correction is also packaged directly through
-  `alphaPhaseObserver`, not only through a literal phase-7 residue label.
+  `alphaPhaseObserver`, not only through a literal legacy wrapper label.
 - `alphaPhaseObserverRealCorrection_eq_re_alpha_selected_scalar_mul_residueCandidate`:
   the real comparison observable likewise has an observer-indexed scalar/root
   formula.
@@ -78,10 +78,10 @@ The point of this module is narrow:
   the normalized real comparison observable is likewise rewritten directly in
   terms of the alpha-selected observer channel.
 - `alphaPhaseObserverCorrection_eq_of_le_lt_half_infsep`:
-  the selected phase-7 observer correction is radius-invariant inside the
+  the selected observer correction is radius-invariant inside the
   separated annulus.
 - `alphaPhaseObserverRealCorrection_eq_of_le_lt_half_infsep`:
-  the induced real phase-7 observable is radius-invariant there as well.
+  the induced real selected-observer observable is radius-invariant there as well.
 - `alphaPhaseObserverNormalizedRealCorrection_eq_of_le_lt_half_infsep`:
   the normalized real comparison observable is likewise radius-invariant in the
   allowed contour-deformation regime.
@@ -97,11 +97,11 @@ The point of this module is narrow:
   averaging over the full breathing-root family collapses back to the static
   UFRF inverse fine-structure candidate.
 - `alphaPhaseObserverDeviationFromAverage_eq_phase7_residue_correction`:
-  the selected phase-7 observer deviation from the global average is exactly
-  the phase-7 residue correction term.
+  the selected observer deviation from the global average is exactly
+  the legacy `7`-channel residue correction term.
 - `alphaPhaseObserverDeviationFromAverage_eq_phase7_scalar_mul_residueCandidate`:
   equivalently, the selected deviation is exactly a fixed scalar times the
-  explicit phase-7 residue coefficient.
+  explicit legacy `7`-channel residue coefficient.
 - `alphaPhaseObserverDeviationFromAverage_eq_alpha_selected_residue_correction`:
   the selected observer deviation from the global average is also packaged
   directly through `alphaPhaseObserver`.
@@ -122,7 +122,7 @@ The point of this module is narrow:
   presentations are exactly the same normalized real quantity.
 - `alphaPhaseObserverOneStepComparison_is_alpha_selected_root_scalar`:
   the observer-indexed one-step comparison alias is the same explicit
-  alpha-selected root/scalar formula as the historical phase-7 wrapper.
+  alpha-selected root/scalar formula as the historical legacy wrapper.
 - `phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison`:
   the current radius-free one-step prediction is exactly that same
   alpha-selected centered comparison scalar.
@@ -135,14 +135,41 @@ The point of this module is narrow:
 - `alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centered_comparison`:
   equivalently, the one-step normalized observable itself is exactly that same
   alpha-selected centered comparison scalar.
-- `alphaPhaseObserverNormalizedRealCorrection_one_eq_centered_comparison_of_floor_eq`:
+- `alphaPhaseObserverNormalizedRealCorrection_eq_centered_comparison_of_floor_eq`:
   more generally, if a channel `k` satisfies `floor α mod 13 = k`, then the
-  same one-step normalized observable is exactly the centered comparison scalar
-  written at that `k`.
+  same normalized real observable at any discrete running step `n` is exactly
+  the centered comparison scalar written at that `k`.
+- `alphaPhaseObserverNormalizedRealCorrection_eq_root_scalar_of_floor_eq`:
+  equivalently, at any discrete running step `n`, the same normalized real
+  observable is also exactly the root/scalar formula written at that `k`.
+- `alphaPhaseObserverNormalizedRealCorrection_one_eq_centered_comparison_of_floor_eq`:
+  in particular, at `n = 1`, the one-step normalized observable is exactly the
+  centered comparison scalar written at that `k`.
+- `alpha_selected_centered_observable_eq_root_scalar_of_floor_eq`:
+  more generally, at any discrete running step `n`, the centered observable
+  formula and the explicit root/scalar formula written at `k` are exactly the
+  same normalized real quantity.
 - `alpha_selected_centered_comparison_eq_root_scalar_of_floor_eq`:
   for any channel `k` satisfying `floor α mod 13 = k`, the centered one-step
   comparison scalar and the explicit root/scalar one-step formula written at
   `k` are exactly the same quantity.
+- `alpha_selected_centered_observable_unique_by_arithmetic`:
+  if a channel `k` satisfies `floor α mod 13 = k`, then `k` is exactly the
+  selected observer channel and the normalized real centered observable itself
+  is exactly the centered comparison scalar written at that same `k`.
+- `alpha_selected_root_scalar_observable_unique_by_arithmetic`:
+  equivalently, if a channel `k` satisfies `floor α mod 13 = k`, then `k` is
+  exactly the selected observer channel and the normalized real observable
+  itself is exactly the root/scalar formula written at that same `k`.
+- `alpha_selected_centered_comparison_unique_by_arithmetic`:
+  if a channel `k` satisfies `floor α mod 13 = k`, then `k` is exactly the
+  selected observer channel and the observer-indexed one-step comparison alias
+  is exactly the centered one-step comparison scalar written at that same `k`.
+- `alpha_selected_root_scalar_unique_by_arithmetic`:
+  equivalently, if a channel `k` satisfies `floor α mod 13 = k`, then `k` is
+  exactly the selected observer channel and the observer-indexed one-step
+  comparison alias is exactly the root/scalar one-step formula written at that
+  same `k`.
 - `alphaPhaseObserverNormalizedRealCorrection_one_sub_codataGap_eq_alpha_selected_centered_comparison_sub_codataGap`:
   the one-step normalized observable minus the static CODATA 2022 gap is
   exactly that same alpha-selected centered comparison scalar minus the same
@@ -155,6 +182,25 @@ The point of this module is narrow:
 - `alphaPhaseObserverOneStepResidual_eq_oneStepComparison_sub_codataGap`:
   the observer-indexed one-step residual alias is exactly the observer-indexed
   one-step comparison alias minus the static CODATA 2022 gap.
+- `phase7OneStepModelResidual_bounds_micro`:
+  in the separated regime, the one-step residual against the static CODATA
+  2022 gap lies in the explicit micro interval
+  `0.000000921017 < residual < 0.000000947269`.
+- `alphaPhaseObserverOneStepResidual_bounds_micro`:
+  equivalently, the observer-indexed one-step residual alias satisfies that
+  same explicit micro interval.
+- `phase7OneStepModelResidual_abs_lt_one_millionth`:
+  in the separated regime, the absolute one-step residual against the static
+  CODATA 2022 gap is bounded above by `0.000001`.
+- `alphaPhaseObserverOneStepResidual_abs_lt_one_millionth`:
+  equivalently, the observer-indexed one-step residual alias satisfies that
+  same absolute `10⁻⁶` bound.
+- `phase7OneStepModelResidual_abs_lt_one_thousandth`:
+  in the separated regime, the absolute one-step residual against the static
+  CODATA 2022 gap is bounded above by `0.001`.
+- `alphaPhaseObserverOneStepResidual_abs_lt_one_thousandth`:
+  equivalently, the observer-indexed one-step residual alias satisfies that
+  same absolute `0.001` bound.
 - `phase7OneStepModelResidual_eq_alpha_selected_centered_comparison_sub_codataGap`:
   the compared one-step residual is exactly the alpha-selected centered
   comparison scalar minus the static CODATA 2022 gap.
@@ -167,6 +213,16 @@ The point of this module is narrow:
 - `alphaPhaseObserverOneStepResidual_is_alpha_selected_root_scalar_sub_codataGap`:
   equivalently, the observer-indexed one-step residual alias is the same
   alpha-selected root/scalar-minus-gap formula.
+- `alpha_selected_centered_residual_unique_by_arithmetic`:
+  if a channel `k` satisfies `floor α mod 13 = k`, then `k` is exactly the
+  selected observer channel and the observer-indexed one-step residual alias is
+  exactly the centered one-step comparison-minus-gap scalar written at that
+  same `k`.
+- `alpha_selected_root_scalar_residual_unique_by_arithmetic`:
+  equivalently, if a channel `k` satisfies `floor α mod 13 = k`, then `k` is
+  exactly the selected observer channel and the observer-indexed one-step
+  residual alias is exactly the root/scalar-minus-gap formula written at that
+  same `k`.
 - `phase7OneStepModelResidual_eq_of_le_lt_half_infsep`:
   the one-step residual against the static CODATA 2022 gap is contour-invariant
   inside the allowed regime.
@@ -186,11 +242,11 @@ The point of this module is narrow:
 - `cycle_seed_zero_to_one`:
   the smallest breathing step is the literal cycle move `0 -> 1`.
 - `alphaPhaseObserver_is_seven_steps_on_seed_orbit`:
-  the selected phase-7 observer is reached from the seed by seven universal
-  successor steps, so phase `7` is a contextual point on the shared
+  the selected observer label is reached from the seed by seven universal
+  successor steps, so label `7` is a contextual point on the shared
   `0 -> 1 -> 2 -> ...` orbit rather than a separate absolute origin.
 - `alphaPhaseObserver_enters_terminal_handoff_in_fixed_steps`:
-  the selected phase-7 observer reaches REST after `+2`, the bridge strip after
+  the selected observer label reaches REST after `+2`, the bridge strip after
   `+3,+4`, the seed/closure point after `+5`, and the restarted cycle point
   after `+6`.
 - `alphaPhaseObserver_selected_by_alpha_arithmetic`:
@@ -221,7 +277,7 @@ The point of this module is narrow:
   static CODATA 2022 gap is exactly the root/scalar formula written at that
   same `k`.
 - `cycle_prime_channels_hit_alphaPhaseObserver`:
-  each local cycle-prime channel `3, 5, 7, 11` hits the selected phase-7
+  each local cycle-prime channel `3, 5, 7, 11` hits the selected
   observer at some step.
 - `cycle_prime_paths_cover_all_positions`:
   the four cycle-prime channels `3, 5, 7, 11` each carry a full 13-position
@@ -240,10 +296,10 @@ The safe interpretation is:
 - together these yield a discrete RG-style ansatz for `α⁻¹`, anchored at the
   static UFRF value,
 - on the analytic side, the global breathing function decomposes into explicit
-  local coefficient channels, and the phase-7 observer is now collapsed to one
+  local coefficient channels, and the selected observer is now collapsed to one
   explicit residue coefficient times a fixed scalar,
 - the repo now also carries a real-valued observable extracted from that
-  complex phase-7 correction, so comparison with measured real gaps is
+  complex selected-observer correction, so comparison with measured real gaps is
   mathematically well-typed,
 - the current external normalization choice is no longer hidden in the script;
   it is named explicitly in Lean as a model normalization factor,
@@ -257,7 +313,7 @@ The safe interpretation is:
   preserved under the native projection laws there as well,
 - no theorem here identifies complex residues with p-adic projections, and no
   theorem here identifies CRT with the analytic partial-fraction package,
-- the phase-7 observer channel is the current candidate local comparison
+- the selected observer channel is the current candidate local comparison
   channel,
 - that channel is now selected in Lean by the alpha arithmetic itself, not just
   by external naming: `Int.floor ufrf_alpha_inv` lands on the same observer,
@@ -275,6 +331,19 @@ The safe interpretation is:
 - Lean now also proves directly, for any such selected `k`, that the centered
   one-step comparison formula and the explicit root/scalar one-step formula are
   identical, both before and after subtracting the static CODATA gap,
+- Lean now also packages the underlying normalized real centered observable
+  itself with that same arithmetic uniqueness shape before any one-step alias
+  is introduced,
+- the same generic transport now also exists on the root/scalar side for any
+  discrete running step `n`, so the centered and root/scalar presentations are
+  matched before specializing to the one-step alias layer,
+- Lean now also packages the raw one-step comparison alias itself with the
+  same arithmetic uniqueness shape: any such `k` is forced to be the selected
+  observer channel and yields the same centered and root/scalar one-step
+  comparison formulas before the CODATA subtraction,
+- the observer-indexed one-step residual alias now has the same arithmetic
+  uniqueness packaging after the CODATA subtraction, so the exposed residual
+  API matches the comparison API on both the centered and root/scalar sides,
 - the correction, normalized observable, and centered deviation formulas now
   also have observer-indexed versions, so the exposed comparison story is less
   tied to literal phase syntax,
@@ -298,6 +367,13 @@ The safe interpretation is:
   and Lean now also exposes an explicit `alphaPhaseObserverOneStepResidual`
   alias, so the compared quantity no longer has to be introduced only through
   the legacy `phase7OneStepModelResidual` wrapper,
+- Lean now also proves a micro-scale numeric theorem about that compared
+  quantity itself: throughout the separated regime, the exposed one-step
+  residual lies in the explicit interval
+  `0.000000921017 < residual < 0.000000947269`, and hence also satisfies the
+  absolute bound `|residual| < 0.000001`,
+- the earlier coarse `0.001` residual bound is still present as a simpler
+  fallback estimate,
 - the same compared quantity is now also unique in the arithmetic sense:
   any `k` satisfying `floor α mod 13 = k` is forced to be the selected
   observer channel and yields the same centered and root/scalar one-step gap
@@ -322,14 +398,14 @@ derived from the repo.
 
 ## External Numeric Check
 
-- `scripts/alpha_phase7_residue_check.py` evaluates the phase-7 residue
+- `scripts/alpha_phase7_residue_check.py` evaluates the selected-observer residue
   projection scalar externally.
 - Current output:
   `gap = 0.000304598878...`
   `phase7_projection = 0.000305537183...`
   `abs_error = 9.38e-7`
 
-This is evidence for the phase-7 residue channel, not yet a Lean theorem.
+This is evidence for the selected-observer residue channel, not yet a Lean theorem.
 
 ## Open
 
@@ -337,7 +413,10 @@ This is evidence for the phase-7 residue channel, not yet a Lean theorem.
 - No weak-coupling or strong-coupling prediction theorem is proved here.
 - Lean now does attach exact one-step rewrite theorems to the static CODATA gap
   comparison.
-- No theorem yet proves the numeric accuracy of that CODATA comparison.
+- Lean now proves an explicit micro residual window and an absolute
+  `0.000001` bound on the one-step residual.
+- What Lean still does not prove is the external script's floating-point output
+  itself, or any stronger projection-law / physical-selection claim.
 - The current `4 × 7` normalization is present only as an explicit model choice.
 - The repo now proves that the current candidate comparison quantity is the
   normalized real, centered observable at the alpha-selected channel.

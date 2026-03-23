@@ -74,7 +74,7 @@ Everything derives from `Trinity := {-½, 0, +½}` with sum = 0.
     │    └── 2+3 = 5, 8+5 = 13  (Fibonacci in gauge representations)
     │
     └── ⌊4π³ + π² + π⌋ = 137    (FineStructure)
-         ├── 137 mod 13 = 7     (Phenomena: Phase 7 contraction start)
+         ├── 137 mod 13 = 7     (Phenomena: arithmetic chart label 7)
          ├── 137 mod 3=2, mod 7=4  (Adelic: Same constant, three depths)
          └── 3, 13, 137 prime   (FineStructure: UFRF constants)
 ```
@@ -202,9 +202,9 @@ example : 1 ^ 2 + Real.sqrt phi ^ 2 = phi ^ 2 := kepler_pythagorean
 -- Fine Structure Constant
 example : Int.floor ufrf_alpha_inv = 137 := alpha_inv_floor_137
 
--- 137 at Phase 7
+-- 137 has arithmetic chart label 7 modulo 13
 example : (Int.floor ufrf_alpha_inv : ZMod 13) = (7 : ZMod 13) :=
-  UFRF.Phenomena.alpha_inv_projects_to_phase_7
+  UFRF.Phenomena.alpha_inv_floor_mod_13_eq_seven
 
 -- 137 = 13 × REST + Phase
 example : 137 = 13 * 10 + 7 := UFRF.Phenomena.alpha_inv_decomposition
@@ -292,7 +292,7 @@ example :
 -- α⁻¹ in native geometry: 137 = 7 + 10×13 in base 13
 example : 137 = 7 + 10 * 13 + 0 * 13 ^ 2 := alpha_inv_base13
 
--- α⁻¹ mod 13 = 7 (contraction start)
+-- α⁻¹ mod 13 = 7 as an arithmetic chart label
 example : 137 % 13 = 7 := alpha_inv_mod_13
 
 -- 13ⁿ always odd → midpoint always fractional
@@ -307,8 +307,8 @@ example : ∀ x : ZMod 13, (12 : ZMod 13) - ((12 : ZMod 13) - x) = x := comp_inv
 -- 13 = 0 in its own field (observer paradox)
 example : (13 : ZMod 13) = 0 := observer_is_void
 
--- 137 ≡ 7 mod 13 (α⁻¹ IS Phase 7 algebraically)
-example : (137 : ZMod 13) = (7 : ZMod 13) := alpha_inherits_contraction
+-- 137 ≡ 7 mod 13 in ZMod 13
+example : (137 : ZMod 13) = (7 : ZMod 13) := alpha_floor_cast_eq_seven_mod_13
 
 -- α⁻¹ really is a primitive root, not merely an element with 12th power 1
 example : is_primitive_root_mod_13 (137 : ZMod 13) := alpha_inv_is_primitive_root
@@ -408,8 +408,8 @@ example : 137 % 3 = 2 ∧ 137 % 7 = 4 ∧ 137 % 13 = 7 :=
 example : 137 / 13 = 10 ∧ 137 % 13 = 7 :=
   UFRF.Phenomena.alpha_traverses_full_decade
 
--- The selected phase label is the prime natural number 7
-example : Nat.Prime 7 := UFRF.Phenomena.phase_label_seven_is_nat_prime
+-- The selected chart label is the prime natural number 7
+example : Nat.Prime 7 := UFRF.Phenomena.chart_label_seven_is_nat_prime
 
 /-! ## Layer 17: CRT Adelic Decomposition -/
 

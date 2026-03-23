@@ -8,7 +8,7 @@ import Mathlib.Tactic.NormNum
 /-!
 # UFRF.Phenomena
 
-**Phase 7: Application & Addressing**
+**Arithmetic Addressing for Selected Phenomena**
 
 This module maps specific real-world phenomena to the Master Manifold's
 coordinate system `(depth : ℤ, phase : ZMod 13)`.
@@ -26,7 +26,7 @@ tracks, where:
    - Theoretical Value: `4π³ + π² + π ≈ 137.036`
    - Integer Part: 137
    - Address: `(0, 137 % 13)`
-   - Arithmetic chart label: phase `7`
+   - Arithmetic chart label: `7`
 
 2. **Electron Mass**
    - Derived from α⁻¹ and the geometric "pinch" at the flip boundary.
@@ -47,11 +47,11 @@ open UFRF.Constants
 /-! ### 1. Fine Structure Mapping -/
 
 /--
-**Theorem 26: α⁻¹ maps to Phase 7**
-We project the Real value `ufrf_alpha_inv` to the Integer Ring ZMod 13.
-This proves that the *calculated* physics constant lands on cycle phase label 7.
+**Theorem 26: ⌊α⁻¹⌋ reduces to label `7` modulo `13`**
+We project the Real value `ufrf_alpha_inv` to the integer ring `ZMod 13`.
+This proves only the arithmetic chart label selected by the calculated constant.
 -/
-theorem alpha_inv_projects_to_phase_7 :
+theorem alpha_inv_floor_mod_13_eq_seven :
     (Int.floor ufrf_alpha_inv : ZMod 13) = (7 : ZMod 13) := by
   -- 1. Import the proof that floor(alpha) = 137
   have h_floor := alpha_inv_floor_137
@@ -78,19 +78,15 @@ def nat_to_phase (n : ℕ) : Phase :=
   n
 
 /--
-**Theorem 27: Prime 137 projects to phase 7**
+**Theorem 27: 137 has chart label `7` modulo `13`**
 
-The prime number 137 (α⁻¹) corresponds arithmetically to phase label 7 modulo
-13. The label 7 is also a standard prime natural number. In the 13-cycle chart
-it is the first position after the Flip (6.5), namely the first
-contraction-side position.
-
-This theorem records only those arithmetic/chart facts. It does not promote
-phase 7 to a distinct repo-level structural irreducibility theorem.
+The prime number `137` corresponds arithmetically to chart label `7` modulo
+`13`. This theorem records only that arithmetic/chart fact. It does not
+promote label `7` to a distinct repo-level structural irreducibility theorem.
 
 ✅ PROVEN
 -/
-theorem prime_137_phase_is_7 :
+theorem nat_137_chart_label_eq_seven :
     (nat_to_phase 137 : ZMod 13) = (7 : ZMod 13) := by
   dsimp [nat_to_phase]
   rfl
@@ -146,31 +142,32 @@ theorem alpha_coordinate_refined_handoff_path :
   · unfold alpha_coordinate_refined Coordinate.step Coordinate.advance
     decide
 
-/-! ### 4. Phase Classification -/
+/-! ### 4. Chart Classification -/
 
 /--
-**Theorem: Phase 7 is Contraction**
+**Theorem: label `7` lies in the contraction half**
 
-Phase 7 has value ≥ 6, placing it in the contraction half of the cycle.
-The fine structure constant lives in the contraction/materialization zone.
+The chart label `7` has value `≥ 6`, placing it in the contraction half of the
+cycle partition used by `Addressing.isContraction`.
 
 ✅ PROVEN
 -/
-theorem phase_7_is_contraction : Addressing.isContraction (7 : Phase) := by
+theorem label_seven_is_in_contraction_half : Addressing.isContraction (7 : Phase) := by
   unfold Addressing.isContraction
   decide
 
 /--
-**Theorem: α⁻¹ is a Contraction Phenomenon**
+**Theorem: α⁻¹'s selected chart label lies in the contraction half**
 
-Since α⁻¹ maps to Phase 7 and Phase 7 is contraction,
-the fine structure constant is a materialization/contraction phenomenon.
+Since `alpha_coordinate.phase = 7`, the selected chart label for `α⁻¹` lies in
+the contraction half of the addressing partition.
 
 ✅ PROVEN
 -/
-theorem alpha_is_contraction : Addressing.isContraction alpha_coordinate.phase := by
+theorem alpha_label_is_in_contraction_half :
+    Addressing.isContraction alpha_coordinate.phase := by
   show Addressing.isContraction (7 : Phase)
-  exact phase_7_is_contraction
+  exact label_seven_is_in_contraction_half
 
 /-! ### 5. Arithmetic Residues of α⁻¹
 
@@ -222,19 +219,15 @@ theorem alpha_traverses_full_decade :
   constructor <;> norm_num
 
 /--
-**Arithmetic fact: the selected phase label is the prime natural number 7.**
+**Arithmetic fact: the selected chart label is the prime natural number `7`.**
 
-Together with `alpha_inv_projects_to_phase_7`, this records only the
-arithmetic fact that the selected phase label is a prime natural number. It
-does not identify phase 7 with the repo's distinct seed/entry
+Together with `alpha_inv_floor_mod_13_eq_seven`, this records only the
+arithmetic fact that the selected chart label is a prime natural number. It
+does not identify label `7` with the repo's distinct seed/entry
 structural-irreducibility notions.
 
 ✅ PROVEN
 -/
-theorem phase_label_seven_is_nat_prime : Nat.Prime 7 := by decide
-
-/-- Historical alias for `phase_label_seven_is_nat_prime`. -/
-theorem contraction_start_is_prime : Nat.Prime 7 :=
-  phase_label_seven_is_nat_prime
+theorem chart_label_seven_is_nat_prime : Nat.Prime 7 := by decide
 
 end UFRF.Phenomena

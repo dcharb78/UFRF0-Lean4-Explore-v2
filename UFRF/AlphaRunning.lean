@@ -1,3 +1,5 @@
+import Mathlib.Analysis.Complex.Norm
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
 import UFRF.Calculus
 import UFRF.CircleIntegralBreathing
 import UFRF.FineStructure
@@ -113,6 +115,29 @@ theorem standardModePhaseShift_eq_breathingCharacter_one_sub_one :
     standardModePhaseShift = (breathingCharacter 1 - 1) * breathingCharacter 0 := hshift
     _ = breathingCharacter 1 - 1 := by simp
 
+theorem norm_standardModePhaseShift_le_two_pi_div_thirteen :
+    ‖standardModePhaseShift‖ ≤ 2 * Real.pi / 13 := by
+  rw [standardModePhaseShift_eq_breathingCharacter_one_sub_one]
+  change ‖breathingRoot (1 : ZMod CycleLen) - 1‖ ≤ 2 * Real.pi / 13
+  rw [breathingRoot_eq_exp (1 : ZMod CycleLen)]
+  have hone : (((1 : ZMod CycleLen).val : ℂ)) = 1 := by
+    letI : Fact (1 < CycleLen) := ⟨by
+      norm_num [CycleLen, UFRF.CircleIntegralBreathing.CycleLen,
+        UFRF.ComplexBreathing.CycleLen, FourierCycleLen,
+        BreathingCycle.cycle_len, UFRF.Foundation.derived_cycle_length,
+        UFRF.Foundation.trinity_dimension, UFRF.Structure13.projective_order]⟩
+    exact_mod_cast (ZMod.val_one CycleLen)
+  rw [hone]
+  have harg :
+      2 * Real.pi * Complex.I * (1 : ℂ) / CycleLen =
+        Complex.I * ((2 * Real.pi / 13 : ℝ) : ℂ) := by
+    simp [UFRF.ResidueDefinition.cycleLen_eq_thirteen, div_eq_mul_inv,
+      mul_assoc, mul_left_comm, mul_comm]
+  rw [harg]
+  have hnonneg : 0 ≤ 2 * Real.pi / 13 := by positivity
+  simpa [Real.norm_eq_abs, abs_of_nonneg hnonneg, abs_of_nonneg Real.pi_pos.le] using
+    (Real.norm_exp_I_mul_ofReal_sub_one_le (x := 2 * Real.pi / 13))
+
 theorem breathingCharacter_one_ne_one : breathingCharacter 1 ≠ 1 := by
   intro h
   have hroot : breathingRoot (1 : ZMod CycleLen) = breathingRoot 0 := by
@@ -215,12 +240,12 @@ def alphaInvRunningModel (n : ℤ) (k : ZMod CycleLen) (R : ℝ) : ℂ :=
   (ufrf_alpha_inv : ℂ) + (n : ℂ) * contourRunningIncrement k R
 
 /--
-The physics observer channel selected by the existing phase-addressing layer:
-the fine-structure phenomenon lives at phase `7`.
+The observer channel selected by the existing arithmetic-addressing layer:
+the fine-structure floor reduces to label `7` modulo `13`.
 -/
 def alphaPhaseObserver : ZMod CycleLen := UFRF.Phenomena.alpha_coordinate_refined.phase
 
-theorem alphaPhaseObserver_eq_phase7 :
+theorem alphaPhaseObserver_eq_seven :
     alphaPhaseObserver = (7 : ZMod CycleLen) := rfl
 
 /--
@@ -228,15 +253,16 @@ The selected observer channel is exactly the phase picked out by the integer
 projection of the static UFRF inverse fine-structure value.
 
 This is the safe arithmetic-selection statement for the current layer: phase
-`7` is not chosen ad hoc, but inherited from `Phenomena.alpha_inv_projects_to_phase_7`.
+`7` is not chosen ad hoc, but inherited from
+`Phenomena.alpha_inv_floor_mod_13_eq_seven`.
 -/
 theorem alphaPhaseObserver_selected_by_alpha_arithmetic :
     (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver := by
-  rw [alphaPhaseObserver_eq_phase7]
-  exact UFRF.Phenomena.alpha_inv_projects_to_phase_7
+  rw [alphaPhaseObserver_eq_seven]
+  exact UFRF.Phenomena.alpha_inv_floor_mod_13_eq_seven
 
 /--
-The selected phase-7 observer reaches the terminal handoff in fixed unit
+The selected observer channel reaches the terminal handoff in fixed unit
 steps on the 13-cycle.
 
 This packages the cycle-side selection story as:
@@ -252,10 +278,10 @@ theorem alphaPhaseObserver_enters_terminal_handoff_in_fixed_steps :
     alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
     alphaPhaseObserver + 6 = (0 : ZMod CycleLen) := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;>
-    rw [alphaPhaseObserver_eq_phase7] <;> decide
+    rw [alphaPhaseObserver_eq_seven] <;> decide
 
 /--
-The selected phase-7 observer is a point on the universal seed orbit, not a
+The selected observer label is a point on the universal seed orbit, not a
 separate absolute origin.
 
 The same `0 -> 1 -> 2 -> ...` successor law that generates the whole cycle
@@ -267,7 +293,7 @@ theorem alphaPhaseObserver_is_seven_steps_on_seed_orbit :
   exact BreathingCycle.prism_step_iterate_from_zero 7
 
 /--
-The local observer correction is the deviation of the selected phase-7 channel
+The local observer correction is the deviation of the selected observer channel
 from the static UFRF inverse fine-structure value.
 -/
 def alphaPhaseObserverCorrection (n : ℤ) (R : ℝ) : ℂ :=
@@ -281,7 +307,7 @@ theorem alphaPhaseObserverCorrection_eq
 theorem alphaPhaseObserverCorrection_eq_phase7
     (n : ℤ) (R : ℝ) :
     alphaPhaseObserverCorrection n R = (n : ℂ) * contourRunningIncrement (7 : ZMod CycleLen) R := by
-  rw [alphaPhaseObserverCorrection_eq, alphaPhaseObserver_eq_phase7]
+  rw [alphaPhaseObserverCorrection_eq, alphaPhaseObserver_eq_seven]
 
 theorem alphaPhaseObserverCorrection_eq_phase7_scalar_mul_residueCandidate
     (n : ℤ) {R : ℝ} (hR : 0 < R)
@@ -300,23 +326,23 @@ theorem alphaPhaseObserverCorrection_eq_alpha_selected_scalar_mul_residueCandida
     alphaPhaseObserverCorrection n R =
       ((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
         UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver := by
-  rw [alphaPhaseObserver_eq_phase7]
+  rw [alphaPhaseObserver_eq_seven]
   exact alphaPhaseObserverCorrection_eq_phase7_scalar_mul_residueCandidate
     (n := n) (R := R) hR hRlt
 
 /--
-A real-valued observable extracted from the selected phase-7 observer
+A real-valued observable extracted from the selected observer
 correction.
 -/
 def alphaPhaseObserverRealCorrection (n : ℤ) (R : ℝ) : ℝ :=
   Complex.re (alphaPhaseObserverCorrection n R)
 
 /--
-Model normalization for the phase-7 comparison observable.
+Model normalization for the selected-observer comparison observable.
 
 This packages the existing simplex boundary factor `4` together with the
-selected phase label `7` into the explicit scalar used by the external
-phase-7 check.
+selected label `7` into the explicit scalar used by the external
+legacy one-step check.
 -/
 def alphaPhaseObserverModelNormalization : ℝ :=
   (simplex3_boundary_face_count : ℝ) * 7
@@ -327,16 +353,17 @@ theorem alphaPhaseObserverModelNormalization_eq_twenty_eight :
   norm_num [simplex3_face_count]
 
 /--
-Normalized real-valued phase-7 correction used for model comparison.
+Normalized real-valued selected-observer correction used for model comparison.
 -/
 def alphaPhaseObserverNormalizedRealCorrection (n : ℤ) (R : ℝ) : ℝ :=
   alphaPhaseObserverRealCorrection n R / alphaPhaseObserverModelNormalization
 
 /--
-Fixed one-step phase-7 model prediction, expressed without a radius parameter.
+Fixed one-step model prediction, expressed without a radius parameter.
 
-This is the explicit real scalar extracted from the selected phase-7 residue
-channel after one running step and the current model normalization.
+This is the explicit real scalar extracted from the selected observer residue
+channel after one running step and the current model normalization. The
+identifier is retained as a legacy wrapper name.
 -/
 def phase7OneStepModelPrediction : ℝ :=
   Complex.re
@@ -354,6 +381,368 @@ with the arithmetic-selected observer language.
 def alphaPhaseObserverOneStepComparison : ℝ :=
   phase7OneStepModelPrediction
 
+theorem phase7OneStepModelPrediction_eq_cos_pi_div_thirteen_sub_cos_three_pi_div_thirteen :
+    phase7OneStepModelPrediction =
+      (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 := by
+  rw [phase7OneStepModelPrediction, standardModePhaseShift_eq_breathingCharacter_one_sub_one,
+    UFRF.ResidueDefinition.residueCandidateAt_eq_div,
+    alphaPhaseObserverModelNormalization_eq_twenty_eight]
+  change Complex.re
+      (((1 : ℂ) * ((midpointWeight : ℂ) * (breathingRoot (1 : ZMod CycleLen) - 1))) *
+        (breathingRoot (7 : ZMod CycleLen) / CycleLen)) / 28 =
+      (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728
+  have hone : (((1 : ZMod CycleLen).val : ℂ)) = 1 := by
+    letI : Fact (1 < CycleLen) := ⟨by
+      norm_num [CycleLen, UFRF.CircleIntegralBreathing.CycleLen,
+        UFRF.ComplexBreathing.CycleLen, FourierCycleLen,
+        BreathingCycle.cycle_len, UFRF.Foundation.derived_cycle_length,
+        UFRF.Foundation.trinity_dimension, UFRF.Structure13.projective_order]⟩
+    exact_mod_cast (ZMod.val_one CycleLen)
+  have hseven : (((7 : ZMod CycleLen).val : ℂ)) = 7 := by
+    have h7lt : (7 : ℕ) < CycleLen := by
+      norm_num [CycleLen, UFRF.CircleIntegralBreathing.CycleLen,
+        UFRF.ComplexBreathing.CycleLen, FourierCycleLen,
+        BreathingCycle.cycle_len, UFRF.Foundation.derived_cycle_length,
+        UFRF.Foundation.trinity_dimension, UFRF.Structure13.projective_order]
+    exact_mod_cast (ZMod.val_natCast_of_lt h7lt)
+  rw [breathingRoot_eq_exp (1 : ZMod CycleLen), breathingRoot_eq_exp (7 : ZMod CycleLen),
+    hone, hseven]
+  have harg1 :
+      2 * Real.pi * Complex.I * (1 : ℂ) / CycleLen =
+        ((2 * Real.pi / 13 : ℝ) : ℂ) * Complex.I := by
+    simp [UFRF.ResidueDefinition.cycleLen_eq_thirteen, div_eq_mul_inv,
+      mul_assoc, mul_left_comm, mul_comm]
+  have harg7 :
+      2 * Real.pi * Complex.I * (7 : ℂ) / CycleLen =
+        ((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I := by
+    simp [UFRF.ResidueDefinition.cycleLen_eq_thirteen, div_eq_mul_inv,
+      mul_assoc, mul_left_comm, mul_comm]
+    ring
+  have hcycle : ((CycleLen : ℕ) : ℂ) = 13 := by
+    norm_num [CycleLen, UFRF.CircleIntegralBreathing.CycleLen,
+      UFRF.ComplexBreathing.CycleLen, FourierCycleLen,
+      BreathingCycle.cycle_len, UFRF.Foundation.derived_cycle_length,
+      UFRF.Foundation.trinity_dimension, UFRF.Structure13.projective_order]
+  rw [harg1, harg7, hcycle]
+  have hmulExp :
+      Complex.exp (((2 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) *
+          Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) =
+        Complex.exp (((16 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) := by
+    rw [← Complex.exp_add]
+    congr 1
+    apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring
+  have hmain :
+      (((1 : ℂ) * ((midpointWeight : ℂ) *
+          (Complex.exp (((2 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) - 1))) *
+        (Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) / 13)) =
+        (Complex.exp (((16 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) -
+          Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I)) / 26 := by
+    calc
+      (((1 : ℂ) * ((midpointWeight : ℂ) *
+          (Complex.exp (((2 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) - 1))) *
+        (Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) / 13)) =
+          ((Complex.exp (((2 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) - 1) *
+            Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I)) / 26 := by
+              simp [midpointWeight, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm]
+              ring_nf
+      _ =
+          (Complex.exp (((2 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) *
+              Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) -
+            Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I)) / 26 := by
+              ring
+      _ =
+          (Complex.exp (((16 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) -
+            Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I)) / 26 := by
+              rw [hmulExp]
+  rw [hmain]
+  have hcos :
+      Complex.re
+          ((Complex.exp (((16 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) -
+            Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I)) / 26) / 28 =
+        (Real.cos (16 * Real.pi / 13) - Real.cos (14 * Real.pi / 13)) / 728 := by
+    rw [div_eq_mul_inv]
+    have hdiv26 :
+        (Complex.exp (((16 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) -
+            Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I)) / 26 =
+          (Complex.exp (((16 * Real.pi / 13 : ℝ) : ℂ) * Complex.I) -
+              Complex.exp (((14 * Real.pi / 13 : ℝ) : ℂ) * Complex.I)) *
+            (((1 / 26 : ℝ) : ℂ)) := by
+      norm_num [div_eq_mul_inv]
+    rw [hdiv26, Complex.re_mul_ofReal, Complex.sub_re,
+      Complex.exp_ofReal_mul_I_re, Complex.exp_ofReal_mul_I_re]
+    ring
+  rw [hcos]
+  have h16 : 16 * Real.pi / 13 = 3 * Real.pi / 13 + Real.pi := by ring
+  have h14 : 14 * Real.pi / 13 = Real.pi / 13 + Real.pi := by ring
+  rw [h16, h14, Real.cos_add_pi, Real.cos_add_pi]
+  ring
+
+theorem phase7OneStepModelPrediction_eq_sin_sq_pi_div_thirteen_mul_cos_pi_div_thirteen :
+    phase7OneStepModelPrediction =
+      Real.sin (Real.pi / 13) ^ 2 * Real.cos (Real.pi / 13) / 182 := by
+  rw [phase7OneStepModelPrediction_eq_cos_pi_div_thirteen_sub_cos_three_pi_div_thirteen]
+  have hthree :
+      Real.cos (3 * (Real.pi / 13)) =
+        4 * Real.cos (Real.pi / 13) ^ 3 - 3 * Real.cos (Real.pi / 13) := by
+    simpa using Real.cos_three_mul (Real.pi / 13)
+  have hsq : Real.sin (Real.pi / 13) ^ 2 = 1 - Real.cos (Real.pi / 13) ^ 2 := by
+    nlinarith [Real.sin_sq_add_cos_sq (Real.pi / 13)]
+  rw [show 3 * Real.pi / 13 = 3 * (Real.pi / 13) by ring, hthree, hsq]
+  ring
+
+set_option maxHeartbeats 2000000 in
+theorem phase7OneStepModelPrediction_bounds_micro :
+    (0.000305520017 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < 0.000305545269 := by
+  let y : ℝ := Real.pi / 52
+  have hy_eq : Real.pi / 13 = 4 * y := by
+    dsimp [y]
+    ring
+  have hy_nonneg : 0 ≤ y := by
+    dsimp [y]
+    positivity
+  have hy_abs : |y| ≤ 1 := by
+    rw [abs_of_nonneg hy_nonneg]
+    dsimp [y]
+    have hpi : Real.pi < 4 := Real.pi_lt_four
+    nlinarith
+  have hyabs_eq : |y| = y := abs_of_nonneg hy_nonneg
+  have hylo : (0.0604152433 : ℝ) < y := by
+    dsimp [y]
+    have hpi : (3.14159265358979323846 : ℝ) < Real.pi := Real.pi_gt_d20
+    nlinarith
+  have hyhi : y < (0.0604152434 : ℝ) := by
+    dsimp [y]
+    have hpi : Real.pi < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+    nlinarith
+  have hsin := Real.sin_bound (x := y) hy_abs
+  have hcos := Real.cos_bound (x := y) hy_abs
+  have hsin_lower :
+      y - y ^ 3 / 6 - y ^ 4 * (5 / 96) ≤ Real.sin y := by
+    have h := abs_sub_le_iff.mp (by simpa [hyabs_eq] using hsin)
+    linarith
+  have hsin_upper :
+      Real.sin y ≤ y - y ^ 3 / 6 + y ^ 4 * (5 / 96) := by
+    have h := abs_sub_le_iff.mp (by simpa [hyabs_eq] using hsin)
+    linarith
+  have hcos_lower :
+      1 - y ^ 2 / 2 - y ^ 4 * (5 / 96) ≤ Real.cos y := by
+    have h := abs_sub_le_iff.mp (by simpa [hyabs_eq] using hcos)
+    linarith
+  have hcos_upper :
+      Real.cos y ≤ 1 - y ^ 2 / 2 + y ^ 4 * (5 / 96) := by
+    have h := abs_sub_le_iff.mp (by simpa [hyabs_eq] using hcos)
+    linarith
+  have hy2_lo : (0.0604152433 : ℝ) ^ 2 < y ^ 2 := by
+    nlinarith [hylo, hy_nonneg]
+  have hy2_hi : y ^ 2 < (0.0604152434 : ℝ) ^ 2 := by
+    nlinarith [hyhi, hy_nonneg]
+  have hy3_lo : (0.0604152433 : ℝ) ^ 3 < y ^ 3 := by
+    nlinarith [hylo, hy_nonneg]
+  have hy3_hi : y ^ 3 < (0.0604152434 : ℝ) ^ 3 := by
+    nlinarith [hyhi, hy_nonneg]
+  have hy4_hi : y ^ 4 < (0.0604152434 : ℝ) ^ 4 := by
+    nlinarith [hyhi, hy_nonneg]
+  have hsin_y :
+      (0.0603777961 : ℝ) < Real.sin y ∧ Real.sin y < 0.06037918466 := by
+    constructor
+    · have hpoly :
+          (0.0604152433 : ℝ) - (0.0604152434 : ℝ) ^ 3 / 6 -
+              (0.0604152434 : ℝ) ^ 4 * (5 / 96) <
+            Real.sin y := by
+        nlinarith [hsin_lower, hylo, hy3_hi, hy4_hi]
+      have hconst :
+          (0.0603777961 : ℝ) <
+            (0.0604152433 : ℝ) - (0.0604152434 : ℝ) ^ 3 / 6 -
+              (0.0604152434 : ℝ) ^ 4 * (5 / 96) := by
+        norm_num
+      exact lt_trans hconst hpoly
+    · have hpoly :
+          Real.sin y <
+            (0.0604152434 : ℝ) - (0.0604152433 : ℝ) ^ 3 / 6 +
+              (0.0604152434 : ℝ) ^ 4 * (5 / 96) := by
+        nlinarith [hsin_upper, hyhi, hy3_lo, hy4_hi]
+      have hconst :
+          (0.0604152434 : ℝ) - (0.0604152433 : ℝ) ^ 3 / 6 +
+              (0.0604152434 : ℝ) ^ 4 * (5 / 96) <
+            0.06037918466 := by
+        norm_num
+      exact lt_trans hpoly hconst
+  have hcos_y :
+      (0.998174305 : ℝ) < Real.cos y ∧ Real.cos y < 0.99817569307 := by
+    constructor
+    · have hpoly :
+          1 - (0.0604152434 : ℝ) ^ 2 / 2 - (0.0604152434 : ℝ) ^ 4 * (5 / 96) <
+            Real.cos y := by
+        nlinarith [hcos_lower, hy2_hi, hy4_hi]
+      have hconst :
+          (0.998174305 : ℝ) <
+            1 - (0.0604152434 : ℝ) ^ 2 / 2 - (0.0604152434 : ℝ) ^ 4 * (5 / 96) := by
+        norm_num
+      exact lt_trans hconst hpoly
+    · have hpoly :
+          Real.cos y <
+            1 - (0.0604152433 : ℝ) ^ 2 / 2 + (0.0604152434 : ℝ) ^ 4 * (5 / 96) := by
+        nlinarith [hcos_upper, hy2_lo, hy4_hi]
+      have hconst :
+          1 - (0.0604152433 : ℝ) ^ 2 / 2 + (0.0604152434 : ℝ) ^ 4 * (5 / 96) <
+            0.99817569307 := by
+        norm_num
+      exact lt_trans hpoly hconst
+  have hsin_2y :
+      (0.1205351293 : ℝ) < Real.sin (2 * y) ∧
+      Real.sin (2 * y) < 0.120538069 := by
+    rw [Real.sin_two_mul]
+    rcases hsin_y with ⟨hslo, hshi⟩
+    rcases hcos_y with ⟨hclo, hchi⟩
+    have hc_pos : 0 < Real.cos y := by
+      nlinarith [hclo]
+    have hprod_lo :
+        (0.0603777961 : ℝ) * 0.998174305 < Real.sin y * Real.cos y := by
+      nlinarith [hslo, hclo]
+    have hprod_hi :
+        Real.sin y * Real.cos y < (0.06037918466 : ℝ) * 0.99817569307 := by
+      nlinarith [hshi, hchi, hc_pos]
+    have hlo' :
+        (2 : ℝ) * ((0.0603777961 : ℝ) * 0.998174305) <
+          2 * Real.sin y * Real.cos y := by
+      simpa [mul_assoc] using
+        (mul_lt_mul_of_pos_left hprod_lo (show (0 : ℝ) < 2 by norm_num))
+    have hhi' :
+        2 * Real.sin y * Real.cos y <
+          (2 : ℝ) * ((0.06037918466 : ℝ) * 0.99817569307) := by
+      simpa [mul_assoc] using
+        (mul_lt_mul_of_pos_left hprod_hi (show (0 : ℝ) < 2 by norm_num))
+    have hlo_const :
+        (0.1205351293 : ℝ) < (2 : ℝ) * ((0.0603777961 : ℝ) * 0.998174305) := by
+      norm_num
+    have hhi_const :
+        (2 : ℝ) * ((0.06037918466 : ℝ) * 0.99817569307) < 0.120538069 := by
+      norm_num
+    exact ⟨lt_trans hlo_const hlo', lt_trans hhi' hhi_const⟩
+  have hcos_2y :
+      (0.9927038863 : ℝ) < Real.cos (2 * y) ∧
+      Real.cos (2 * y) < 0.9927094285 := by
+    rw [Real.cos_two_mul]
+    rcases hcos_y with ⟨hclo, hchi⟩
+    have hc_pos : 0 < Real.cos y := by
+      nlinarith [hclo]
+    have hc_nonneg : 0 ≤ Real.cos y := le_of_lt hc_pos
+    have hsq_lo : (0.998174305 : ℝ) ^ 2 < Real.cos y ^ 2 := by
+      nlinarith [hclo, hc_nonneg]
+    have hsq_hi : Real.cos y ^ 2 < (0.99817569307 : ℝ) ^ 2 := by
+      nlinarith [hchi, hc_nonneg]
+    have hlo' :
+        (2 : ℝ) * (0.998174305 : ℝ) ^ 2 - 1 < 2 * Real.cos y ^ 2 - 1 := by
+      nlinarith [hsq_lo]
+    have hhi' :
+        2 * Real.cos y ^ 2 - 1 < (2 : ℝ) * (0.99817569307 : ℝ) ^ 2 - 1 := by
+      nlinarith [hsq_hi]
+    have hlo_const :
+        (0.9927038863 : ℝ) < (2 : ℝ) * (0.998174305 : ℝ) ^ 2 - 1 := by
+      norm_num
+    have hhi_const :
+        (2 : ℝ) * (0.99817569307 : ℝ) ^ 2 - 1 < 0.9927094285 := by
+      norm_num
+    exact ⟨lt_trans hlo_const hlo', lt_trans hhi' hhi_const⟩
+  have hsin_4y :
+      (0.2393113825 : ℝ) < Real.sin (4 * y) ∧
+      Real.sin (4 * y) < 0.2393185559 := by
+    rw [show 4 * y = 2 * (2 * y) by ring, Real.sin_two_mul]
+    rcases hsin_2y with ⟨hslo, hshi⟩
+    rcases hcos_2y with ⟨hclo, hchi⟩
+    have hc_pos : 0 < Real.cos (2 * y) := by
+      nlinarith [hclo]
+    have hprod_lo :
+        (0.1205351293 : ℝ) * 0.9927038863 <
+          Real.sin (2 * y) * Real.cos (2 * y) := by
+      nlinarith [hslo, hclo]
+    have hprod_hi :
+        Real.sin (2 * y) * Real.cos (2 * y) <
+          (0.120538069 : ℝ) * 0.9927094285 := by
+      nlinarith [hshi, hchi, hc_pos]
+    have hlo' :
+        (2 : ℝ) * ((0.1205351293 : ℝ) * 0.9927038863) <
+          2 * Real.sin (2 * y) * Real.cos (2 * y) := by
+      simpa [mul_assoc] using
+        (mul_lt_mul_of_pos_left hprod_lo (show (0 : ℝ) < 2 by norm_num))
+    have hhi' :
+        2 * Real.sin (2 * y) * Real.cos (2 * y) <
+          (2 : ℝ) * ((0.120538069 : ℝ) * 0.9927094285) := by
+      simpa [mul_assoc] using
+        (mul_lt_mul_of_pos_left hprod_hi (show (0 : ℝ) < 2 by norm_num))
+    have hlo_const :
+        (0.2393113825 : ℝ) <
+          (2 : ℝ) * ((0.1205351293 : ℝ) * 0.9927038863) := by
+      norm_num
+    have hhi_const :
+        (2 : ℝ) * ((0.120538069 : ℝ) * 0.9927094285) < 0.2393185559 := by
+      norm_num
+    exact ⟨lt_trans hlo_const hlo', lt_trans hhi' hhi_const⟩
+  have hcos_4y :
+      (0.9709220117 : ℝ) < Real.cos (4 * y) ∧
+      Real.cos (4 * y) < 0.9709440189 := by
+    rw [show 4 * y = 2 * (2 * y) by ring, Real.cos_two_mul]
+    rcases hcos_2y with ⟨hclo, hchi⟩
+    have hc_pos : 0 < Real.cos (2 * y) := by
+      nlinarith [hclo]
+    have hc_nonneg : 0 ≤ Real.cos (2 * y) := le_of_lt hc_pos
+    have hsq_lo : (0.9927038863 : ℝ) ^ 2 < Real.cos (2 * y) ^ 2 := by
+      nlinarith [hclo, hc_nonneg]
+    have hsq_hi : Real.cos (2 * y) ^ 2 < (0.9927094285 : ℝ) ^ 2 := by
+      nlinarith [hchi, hc_nonneg]
+    have hlo' :
+        (2 : ℝ) * (0.9927038863 : ℝ) ^ 2 - 1 < 2 * Real.cos (2 * y) ^ 2 - 1 := by
+      nlinarith [hsq_lo]
+    have hhi' :
+        2 * Real.cos (2 * y) ^ 2 - 1 < (2 : ℝ) * (0.9927094285 : ℝ) ^ 2 - 1 := by
+      nlinarith [hsq_hi]
+    have hlo_const :
+        (0.9709220117 : ℝ) < (2 : ℝ) * (0.9927038863 : ℝ) ^ 2 - 1 := by
+      norm_num
+    have hhi_const :
+        (2 : ℝ) * (0.9927094285 : ℝ) ^ 2 - 1 < 0.9709440189 := by
+      norm_num
+    exact ⟨lt_trans hlo_const hlo', lt_trans hhi' hhi_const⟩
+  rw [phase7OneStepModelPrediction_eq_sin_sq_pi_div_thirteen_mul_cos_pi_div_thirteen, hy_eq]
+  rcases hsin_4y with ⟨hslo, hshi⟩
+  rcases hcos_4y with ⟨hclo, hchi⟩
+  have hs_pos : 0 < Real.sin (4 * y) := by
+    nlinarith [hslo]
+  have hc_pos : 0 < Real.cos (4 * y) := by
+    nlinarith [hclo]
+  have hs_nonneg : 0 ≤ Real.sin (4 * y) := le_of_lt hs_pos
+  have hc_nonneg : 0 ≤ Real.cos (4 * y) := le_of_lt hc_pos
+  have hsq_lo : (0.2393113825 : ℝ) ^ 2 < Real.sin (4 * y) ^ 2 := by
+    nlinarith [hslo, hs_nonneg]
+  have hsq_hi : Real.sin (4 * y) ^ 2 < (0.2393185559 : ℝ) ^ 2 := by
+    nlinarith [hshi, hs_nonneg]
+  have hprod_lo :
+      (0.2393113825 : ℝ) ^ 2 * 0.9709220117 <
+        Real.sin (4 * y) ^ 2 * Real.cos (4 * y) := by
+    nlinarith [hsq_lo, hclo]
+  have hprod_hi :
+      Real.sin (4 * y) ^ 2 * Real.cos (4 * y) <
+        (0.2393185559 : ℝ) ^ 2 * 0.9709440189 := by
+    nlinarith [hsq_hi, hchi, hc_pos]
+  have hpred_lo :
+      ((0.2393113825 : ℝ) ^ 2 * 0.9709220117) / 182 <
+        Real.sin (4 * y) ^ 2 * Real.cos (4 * y) / 182 := by
+    exact div_lt_div_of_pos_right hprod_lo (show (0 : ℝ) < 182 by norm_num)
+  have hpred_hi :
+      Real.sin (4 * y) ^ 2 * Real.cos (4 * y) / 182 <
+        ((0.2393185559 : ℝ) ^ 2 * 0.9709440189) / 182 := by
+    exact div_lt_div_of_pos_right hprod_hi (show (0 : ℝ) < 182 by norm_num)
+  have hlo_const :
+      (0.000305520017 : ℝ) <
+        ((0.2393113825 : ℝ) ^ 2 * 0.9709220117) / 182 := by
+    norm_num
+  have hhi_const :
+      ((0.2393185559 : ℝ) ^ 2 * 0.9709440189) / 182 <
+        0.000305545269 := by
+    norm_num
+  exact ⟨lt_trans hlo_const hpred_lo, lt_trans hpred_hi hhi_const⟩
+
 theorem phase7OneStepModelPrediction_is_alpha_selected_root_scalar :
     (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
     phase7OneStepModelPrediction =
@@ -362,7 +751,7 @@ theorem phase7OneStepModelPrediction_is_alpha_selected_root_scalar :
           UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
         alphaPhaseObserverModelNormalization := by
   refine ⟨alphaPhaseObserver_selected_by_alpha_arithmetic, ?_⟩
-  rw [phase7OneStepModelPrediction, alphaPhaseObserver_eq_phase7]
+  rw [phase7OneStepModelPrediction, alphaPhaseObserver_eq_seven]
 
 theorem alphaPhaseObserverOneStepComparison_is_alpha_selected_root_scalar :
     (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
@@ -380,8 +769,15 @@ The static UFRF-to-CODATA 2022 gap used for comparison.
 def alphaCodata2022Gap : ℝ :=
   ufrf_alpha_inv - codata_alpha_inv
 
+theorem alphaCodata2022Gap_bounds_d6 :
+    (0.000304598 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.000304599 := by
+  rcases alpha_inv_bounds_d9 with ⟨hlo, hhi⟩
+  unfold alphaCodata2022Gap codata_alpha_inv
+  constructor <;> linarith
+
 /--
-Exact residual between the one-step normalized phase-7 model prediction and the
+Exact residual between the one-step normalized legacy prediction wrapper and the
 static CODATA 2022 gap.
 -/
 def phase7OneStepModelResidual (R : ℝ) : ℝ :=
@@ -415,7 +811,7 @@ theorem alphaPhaseObserverRealCorrection_eq_re_alpha_selected_scalar_mul_residue
       Complex.re
         (((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
           UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) := by
-  rw [alphaPhaseObserver_eq_phase7]
+  rw [alphaPhaseObserver_eq_seven]
   exact alphaPhaseObserverRealCorrection_eq_re_phase7_scalar_mul_residueCandidate
     (n := n) (R := R) hR hRlt
 
@@ -439,7 +835,7 @@ theorem alphaPhaseObserverNormalizedRealCorrection_eq_re_alpha_selected_scalar_m
         (((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
           UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
         alphaPhaseObserverModelNormalization := by
-  rw [alphaPhaseObserver_eq_phase7]
+  rw [alphaPhaseObserver_eq_seven]
   exact alphaPhaseObserverNormalizedRealCorrection_eq_re_phase7_scalar_mul_residueCandidate
     (n := n) (R := R) hR hRlt
 
@@ -497,6 +893,117 @@ theorem alphaPhaseObserverOneStepResidual_eq_oneStepComparison_sub_codataGap
       alphaPhaseObserverOneStepComparison - alphaCodata2022Gap := by
   simpa [alphaPhaseObserverOneStepResidual, alphaPhaseObserverOneStepComparison] using
     phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap
+      (R := R) hR hRlt
+
+/--
+The current one-step residual against the static CODATA 2022 gap lies in a
+micro-scale positive interval.
+
+This is still a model-layer numeric theorem: it sharpens the residual estimate
+without promoting a broader projection-law or physical-selection claim.
+-/
+theorem phase7OneStepModelResidual_bounds_micro
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.000000921017 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.000000947269 := by
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  rcases phase7OneStepModelPrediction_bounds_micro with ⟨hpred_lo, hpred_hi⟩
+  rcases alphaCodata2022Gap_bounds_d6 with ⟨hgap_lo, hgap_hi⟩
+  constructor <;> linarith
+
+theorem alphaPhaseObserverOneStepResidual_bounds_micro
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.000000921017 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.000000947269 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_bounds_micro (R := R) hR hRlt
+
+theorem phase7OneStepModelResidual_abs_lt_one_millionth
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    |phase7OneStepModelResidual R| < 0.000001 := by
+  rcases phase7OneStepModelResidual_bounds_micro (R := R) hR hRlt with ⟨hlo, hhi⟩
+  have hpos : 0 < phase7OneStepModelResidual R := by
+    nlinarith [hlo]
+  rw [abs_of_pos hpos]
+  linarith
+
+theorem alphaPhaseObserverOneStepResidual_abs_lt_one_millionth
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    |alphaPhaseObserverOneStepResidual R| < 0.000001 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_abs_lt_one_millionth (R := R) hR hRlt
+
+/--
+The current one-step residual against the static CODATA 2022 gap is bounded by
+`10⁻³` in absolute value.
+
+This is a first honest numeric theorem for the exposed comparison quantity. It
+stays intentionally coarse: the repo proves a milliscale model bound, not the
+much sharper external script tolerance.
+-/
+theorem phase7OneStepModelResidual_abs_lt_one_thousandth
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    |phase7OneStepModelResidual R| < 0.001 := by
+  have hgap : |alphaCodata2022Gap| < 0.00031 := by
+    simpa [alphaCodata2022Gap] using ufrf_matches_codata
+  have hresidue :
+      ‖UFRF.ResidueDefinition.residueCandidateAt (7 : ZMod CycleLen)‖ = 1 / 13 := by
+    rw [UFRF.ResidueDefinition.residueCandidateAt_eq_div, norm_div,
+      UFRF.CircleIntegralBreathing.norm_breathingRoot_eq_one]
+    simp [UFRF.ResidueDefinition.cycleLen_eq_thirteen]
+  have hpred_le :
+      |phase7OneStepModelPrediction| ≤
+        (((1 / 2 : ℝ) * (2 * Real.pi / 13) * (1 / 13)) / 28) := by
+    rw [phase7OneStepModelPrediction, abs_div,
+      alphaPhaseObserverModelNormalization_eq_twenty_eight]
+    have hre :
+        |Complex.re
+            (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+              UFRF.ResidueDefinition.residueCandidateAt (7 : ZMod CycleLen))|
+          ≤ (1 / 2 : ℝ) * ‖standardModePhaseShift‖ * (1 / 13) := by
+      calc
+        |Complex.re
+            (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+              UFRF.ResidueDefinition.residueCandidateAt (7 : ZMod CycleLen))|
+            ≤ ‖(((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+                UFRF.ResidueDefinition.residueCandidateAt (7 : ZMod CycleLen))‖ :=
+              abs_re_le_norm _
+        _ = ‖(1 : ℂ)‖ * ‖(midpointWeight : ℂ)‖ * ‖standardModePhaseShift‖ *
+              ‖UFRF.ResidueDefinition.residueCandidateAt (7 : ZMod CycleLen)‖ := by
+              rw [norm_mul, norm_mul, norm_mul]
+              ring
+        _ = (1 / 2 : ℝ) * ‖standardModePhaseShift‖ * (1 / 13) := by
+              rw [hresidue]
+              norm_num [midpointWeight]
+    have hphase_scaled :
+        (1 / 2 : ℝ) * ‖standardModePhaseShift‖ * (1 / 13) ≤
+          (1 / 2 : ℝ) * (2 * Real.pi / 13) * (1 / 13) := by
+      nlinarith [norm_standardModePhaseShift_le_two_pi_div_thirteen]
+    have habs_twenty_eight : |(28 : ℝ)| = 28 := by norm_num
+    rw [habs_twenty_eight]
+    exact div_le_div_of_nonneg_right (le_trans hre hphase_scaled) (by norm_num)
+  have hpred : |phase7OneStepModelPrediction| < 0.00069 := by
+    have hpi : Real.pi < 3.1416 := Real.pi_lt_d4
+    exact lt_of_le_of_lt hpred_le (by nlinarith)
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  calc
+    |phase7OneStepModelPrediction - alphaCodata2022Gap|
+      ≤ |phase7OneStepModelPrediction| + |alphaCodata2022Gap| := by
+          simpa using (abs_sub_le phase7OneStepModelPrediction (0 : ℝ) alphaCodata2022Gap)
+    _ < 0.00069 + 0.00031 := add_lt_add hpred hgap
+    _ = 0.001 := by norm_num
+
+theorem alphaPhaseObserverOneStepResidual_abs_lt_one_thousandth
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    |alphaPhaseObserverOneStepResidual R| < 0.001 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_abs_lt_one_thousandth
       (R := R) hR hRlt
 
 theorem alphaPhaseObserverCorrection_eq_of_le_lt_half_infsep
@@ -637,7 +1144,7 @@ theorem alphaPhaseObserverDeviationFromAverage_eq_alpha_selected_residue_correct
     alphaInvRunningModel n alphaPhaseObserver R -
       ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R) =
         (n : ℂ) * contourRunningIncrement alphaPhaseObserver R := by
-  rw [alphaPhaseObserver_eq_phase7]
+  rw [alphaPhaseObserver_eq_seven]
   exact alphaPhaseObserverDeviationFromAverage_eq_phase7_residue_correction
     (n := n) (R := R) hR hRlt
 
@@ -659,7 +1166,7 @@ theorem alphaPhaseObserverDeviationFromAverage_eq_alpha_selected_scalar_mul_resi
       ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R) =
         ((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
           UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver := by
-  rw [alphaPhaseObserver_eq_phase7]
+  rw [alphaPhaseObserver_eq_seven]
   exact alphaPhaseObserverDeviationFromAverage_eq_phase7_scalar_mul_residueCandidate
     (n := n) (R := R) hR hRlt
 
@@ -786,6 +1293,36 @@ theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centere
   rw [alphaPhaseObserverNormalizedRealCorrection_one_eq_modelPrediction
       (R := R) hR hRlt, hcmp]
 
+theorem alphaPhaseObserverNormalizedRealCorrection_eq_centered_comparison_of_floor_eq
+    {k : ZMod CycleLen} (n : ℤ)
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k)
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      Complex.re
+        (alphaInvRunningModel n k R -
+          ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel n j R)) /
+        alphaPhaseObserverModelNormalization := by
+  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
+  rcases alphaPhaseObserverNormalizedRealCorrection_is_alpha_selected_centered_comparison
+      (n := n) (R := R) hR hRlt with ⟨_, hcmp⟩
+  simpa [hk'] using hcmp
+
+theorem alphaPhaseObserverNormalizedRealCorrection_eq_root_scalar_of_floor_eq
+    {k : ZMod CycleLen} (n : ℤ)
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k)
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      Complex.re
+        (((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt k) /
+        alphaPhaseObserverModelNormalization := by
+  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
+  simpa [hk'] using
+    alphaPhaseObserverNormalizedRealCorrection_eq_re_alpha_selected_scalar_mul_residueCandidate
+      (n := n) (R := R) hR hRlt
+
 theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_centered_comparison_of_floor_eq
     {k : ZMod CycleLen}
     (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k)
@@ -796,10 +1333,8 @@ theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_centered_comparison_of
         (alphaInvRunningModel 1 k R -
           ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel 1 j R)) /
         alphaPhaseObserverModelNormalization := by
-  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
-  rcases alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centered_comparison
-      (R := R) hR hRlt with ⟨_, hcmp⟩
-  simpa [hk'] using hcmp
+  simpa using alphaPhaseObserverNormalizedRealCorrection_eq_centered_comparison_of_floor_eq
+    (k := k) (n := 1) hk hR hRlt
 
 theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_root_scalar_of_floor_eq
     {k : ZMod CycleLen}
@@ -811,10 +1346,38 @@ theorem alphaPhaseObserverNormalizedRealCorrection_one_eq_root_scalar_of_floor_e
         (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
           UFRF.ResidueDefinition.residueCandidateAt k) /
         alphaPhaseObserverModelNormalization := by
-  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
-  rcases alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_root_scalar
-      (R := R) hR hRlt with ⟨_, hroot⟩
-  simpa [hk'] using hroot
+  simpa using alphaPhaseObserverNormalizedRealCorrection_eq_root_scalar_of_floor_eq
+    (k := k) (n := 1) hk hR hRlt
+
+theorem alpha_selected_centered_observable_eq_root_scalar_of_floor_eq
+    {k : ZMod CycleLen} (n : ℤ)
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k)
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    Complex.re
+      (alphaInvRunningModel n k R -
+        ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel n j R)) /
+      alphaPhaseObserverModelNormalization =
+      Complex.re
+        (((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt k) /
+        alphaPhaseObserverModelNormalization := by
+  calc
+    Complex.re
+        (alphaInvRunningModel n k R -
+          ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel n j R)) /
+        alphaPhaseObserverModelNormalization =
+        alphaPhaseObserverNormalizedRealCorrection n R := by
+          symm
+          exact alphaPhaseObserverNormalizedRealCorrection_eq_centered_comparison_of_floor_eq
+            (k := k) (n := n) hk hR hRlt
+    _ =
+      Complex.re
+        (((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt k) /
+        alphaPhaseObserverModelNormalization :=
+      alphaPhaseObserverNormalizedRealCorrection_eq_root_scalar_of_floor_eq
+        (k := k) (n := n) hk hR hRlt
 
 /--
 If a channel `k` is selected by the alpha arithmetic, then the centered
@@ -834,22 +1397,76 @@ theorem alpha_selected_centered_comparison_eq_root_scalar_of_floor_eq
         (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
           UFRF.ResidueDefinition.residueCandidateAt k) /
         alphaPhaseObserverModelNormalization := by
-  calc
-    Complex.re
+  simpa using alpha_selected_centered_observable_eq_root_scalar_of_floor_eq
+    (k := k) (n := 1) hk hR hRlt
+
+theorem alpha_selected_centered_observable_unique_by_arithmetic
+    {k : ZMod CycleLen} (n : ℤ) {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k) :
+    k = alphaPhaseObserver ∧
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      Complex.re
+        (alphaInvRunningModel n k R -
+          ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel n j R)) /
+        alphaPhaseObserverModelNormalization := by
+  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
+  refine ⟨hk', ?_⟩
+  exact alphaPhaseObserverNormalizedRealCorrection_eq_centered_comparison_of_floor_eq
+    (k := k) (n := n) hk hR hRlt
+
+theorem alpha_selected_root_scalar_observable_unique_by_arithmetic
+    {k : ZMod CycleLen} (n : ℤ) {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k) :
+    k = alphaPhaseObserver ∧
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      Complex.re
+        (((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt k) /
+        alphaPhaseObserverModelNormalization := by
+  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
+  refine ⟨hk', ?_⟩
+  exact alphaPhaseObserverNormalizedRealCorrection_eq_root_scalar_of_floor_eq
+    (k := k) (n := n) hk hR hRlt
+
+theorem alpha_selected_centered_comparison_unique_by_arithmetic
+    {k : ZMod CycleLen} {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k) :
+    k = alphaPhaseObserver ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
         (alphaInvRunningModel 1 k R -
           ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel 1 j R)) /
-        alphaPhaseObserverModelNormalization =
-        alphaPhaseObserverNormalizedRealCorrection 1 R := by
-          symm
-          exact alphaPhaseObserverNormalizedRealCorrection_one_eq_centered_comparison_of_floor_eq
-            (k := k) hk hR hRlt
+        alphaPhaseObserverModelNormalization := by
+  rcases alpha_selected_centered_observable_unique_by_arithmetic
+      (k := k) (n := 1) hR hRlt hk with ⟨hk', hobs⟩
+  refine ⟨hk', ?_⟩
+  calc
+    alphaPhaseObserverOneStepComparison = alphaPhaseObserverNormalizedRealCorrection 1 R := by
+      symm
+      exact alphaPhaseObserverNormalizedRealCorrection_one_eq_oneStepComparison
+        (R := R) hR hRlt
     _ =
-        Complex.re
-          (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
-            UFRF.ResidueDefinition.residueCandidateAt k) /
-          alphaPhaseObserverModelNormalization :=
-        alphaPhaseObserverNormalizedRealCorrection_one_eq_root_scalar_of_floor_eq
-          (k := k) hk hR hRlt
+      Complex.re
+        (alphaInvRunningModel 1 k R -
+          ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel 1 j R)) /
+        alphaPhaseObserverModelNormalization := hobs
+
+theorem alpha_selected_root_scalar_unique_by_arithmetic
+    {k : ZMod CycleLen}
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k) :
+    k = alphaPhaseObserver ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt k) /
+        alphaPhaseObserverModelNormalization := by
+  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
+  rcases alphaPhaseObserverOneStepComparison_is_alpha_selected_root_scalar with ⟨_, hroot⟩
+  refine ⟨hk', ?_⟩
+  simpa [hk'] using hroot
 
 theorem alphaPhaseObserverNormalizedRealCorrection_one_sub_codataGap_eq_alpha_selected_centered_comparison_sub_codataGap
     {R : ℝ} (hR : 0 < R)
@@ -985,6 +1602,38 @@ theorem alphaPhaseObserverOneStepResidual_is_alpha_selected_root_scalar_sub_coda
     phase7OneStepModelResidual_is_alpha_selected_root_scalar_sub_codataGap
       (R := R) hR hRlt
 
+theorem alpha_selected_centered_residual_unique_by_arithmetic
+    {k : ZMod CycleLen} {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k) :
+    k = alphaPhaseObserver ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (alphaInvRunningModel 1 k R -
+          ((13 : ℂ)⁻¹) * (∑ j : ZMod CycleLen, alphaInvRunningModel 1 j R)) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap := by
+  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
+  rcases alphaPhaseObserverOneStepResidual_eq_alpha_selected_centered_comparison_sub_codataGap
+      (R := R) hR hRlt with ⟨_, hres⟩
+  refine ⟨hk', ?_⟩
+  simpa [hk'] using hres
+
+theorem alpha_selected_root_scalar_residual_unique_by_arithmetic
+    {k : ZMod CycleLen} {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (hk : (Int.floor ufrf_alpha_inv : ZMod CycleLen) = k) :
+    k = alphaPhaseObserver ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt k) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap := by
+  have hk' : k = alphaPhaseObserver := hk.symm.trans alphaPhaseObserver_selected_by_alpha_arithmetic
+  rcases alphaPhaseObserverOneStepResidual_is_alpha_selected_root_scalar_sub_codataGap
+      (R := R) hR hRlt with ⟨_, hres⟩
+  refine ⟨hk', ?_⟩
+  simpa [hk'] using hres
+
 /--
 There is no terminal scale for the running/projection picture: the recursive
 descent never stops.
@@ -1099,10 +1748,10 @@ theorem cycle_prime_paths_cover_all_positions :
     UFRF.StarPolygon.visit_order_7, UFRF.StarPolygon.visit_order_11⟩
 
 /--
-Every local cycle-prime channel hits the selected phase-7 observer.
+Every local cycle-prime channel hits the selected observer label.
 
 This is the local concurrency statement specialized to the alpha observer:
-phase `7` is not exclusive to the `7`-channel, but a shared position visited by
+label `7` is not exclusive to the `7`-channel, but a shared position visited by
 all four cycle-prime paths.
 -/
 theorem cycle_prime_channels_hit_alphaPhaseObserver :
@@ -1112,7 +1761,7 @@ theorem cycle_prime_channels_hit_alphaPhaseObserver :
       (n7 * 7 : ZMod 13) = alphaPhaseObserver ∧
       (n11 * 11 : ZMod 13) = alphaPhaseObserver := by
   refine ⟨11, 4, 1, 3, ?_, ?_, ?_, ?_⟩ <;>
-    rw [alphaPhaseObserver_eq_phase7] <;> decide
+    rw [alphaPhaseObserver_eq_seven] <;> decide
 
 /--
 All four cycle-prime paths close after 13 steps.

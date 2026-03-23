@@ -126,11 +126,11 @@ A theorem is **axiom-free** if it depends only on Lean core axioms.
 #print axioms distinguished_primitive_roots_mod_13
 #print axioms comp_neg_is_succ
 #print axioms observer_is_void
-#print axioms alpha_inherits_contraction
+#print axioms alpha_floor_cast_eq_seven_mod_13
 
 -- ═══ LAYER 16: Phenomena ═══
 #print axioms UFRF.Phenomena.alpha_inv_decomposition
-#print axioms UFRF.Phenomena.alpha_inv_projects_to_phase_7
+#print axioms UFRF.Phenomena.alpha_inv_floor_mod_13_eq_seven
 
 -- ═══ LAYER 17: Star Polygons ═══
 #print axioms UFRF.StarPolygon.visit_order_5

@@ -51,7 +51,7 @@ theorem allen_transport_space_mod13 : (144 : ZMod 13) = 1 := by decide
 
 /--
 Allen's 7 global symmetry modes (3 translations + 3 rotations + 1 scaling).
-7 ≡ 7 (mod 13) — this is the contraction start position in the breathing cycle.
+7 ≡ 7 (mod 13) as an arithmetic label in the 13-cycle chart.
 
 ✅ PROVEN
 -/
@@ -130,12 +130,13 @@ Both frameworks agree on the integer part.
 theorem both_frameworks_137 : 144 - 7 = 137 := by norm_num
 
 /--
-Allen's 7 symmetry modes = UFRF's primitive root / contraction start.
-Connection: 137 ≡ 7 (mod 13) per PRISMAlgebra.alpha_inv_mod_13.
+Allen's 7 symmetry modes share the same arithmetic label as the α⁻¹ floor
+modulo 13. Connection: `137 ≡ 7 (mod 13)` per `PRISMAlgebra.alpha_inv_mod_13`.
 
 ✅ PROVEN
 -/
-theorem symmetry_is_contraction_start : (7 : ZMod 13) = (137 : ZMod 13) := by decide
+theorem symmetry_quotient_matches_alpha_floor_mod13 :
+    (7 : ZMod 13) = (137 : ZMod 13) := by decide
 
 /-! ## Layer 2: The Group-Theoretic Embedding Question
 

@@ -20,9 +20,9 @@ the manifold.
 
 ## Proven Theorems
 
-### **Theorem: α⁻¹ Projects to Phase 7**
+### **Theorem: ⌊α⁻¹⌋ Has Chart Label 7 Modulo 13**
 ```lean
-theorem alpha_inv_projects_to_phase_7 :
+theorem alpha_inv_floor_mod_13_eq_seven :
     (Int.floor ufrf_alpha_inv : ZMod 13) = (7 : ZMod 13)
 ```
 
@@ -30,7 +30,7 @@ theorem alpha_inv_projects_to_phase_7 :
 1. Use `alpha_inv_floor_137` from `FineStructure` to establish `⌊ufrf_alpha_inv⌋ = 137`
 2. Compute `137 ≡ 7 (mod 13)` via `rfl`
 
-**Significance**: The calculated value projects arithmetically to phase label `7`
+**Significance**: The calculated value projects arithmetically to chart label `7`
 in the 13-cycle chart. This is an address statement, not a standalone theorem
 about a distinct physical sector.
 
@@ -38,16 +38,16 @@ about a distinct physical sector.
 
 ---
 
-### **Theorem: Prime 137 Phase is 7**
+### **Theorem: 137 Has Chart Label 7**
 ```lean
-theorem prime_137_phase_is_7 :
+theorem nat_137_chart_label_eq_seven :
     (nat_to_phase 137 : ZMod 13) = (7 : ZMod 13)
 ```
 **Proof**: `rfl`
 
-**Significance**: The integer `137` maps arithmetically to phase label `7`, and
+**Significance**: The integer `137` maps arithmetically to chart label `7`, and
 the natural number `7` is prime. This is an arithmetic/chart fact only; it is
-not a theorem that phase `7` carries a separate repo-level structural-prime
+not a theorem that label `7` carries a separate repo-level structural-prime
 status.
 
 ---
@@ -63,7 +63,7 @@ theorem alpha_coordinate_refined_handoff_path :
 ```
 **Proof**: direct computation from `alpha_coordinate_refined = ⟨10, 7⟩`, `Coordinate.advance`, and `Coordinate.step`.
 
-**Significance**: the refined alpha address is not just “at phase 7.” It sits a
+**Significance**: the refined alpha address is not just “at label 7.” It sits a
 fixed number of unit steps before the terminal handoff: two steps before REST,
 then bridge, bridge, seed/closure, and then re-entry at the next depth.
 

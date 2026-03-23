@@ -23,7 +23,7 @@ encodes the breathing cycle's core operations:
    Binary computation is one distinguished traversal of the full 13-cycle.
 
 2. **α⁻¹ in Native Geometry**: 137 = 7 + 10×13 in base 13.
-   The fine structure constant's lowest digit is 7 (contraction start),
+   The fine structure constant's lowest base-13 digit is 7,
    which is itself a primitive root of 13.
 
 3. **Scale Projection**: The canonical map ℤ/(13²)ℤ → ℤ/13ℤ is a ring
@@ -126,7 +126,7 @@ theorem two_is_primitive_root_mod_13 :
 
 137 = 7 + 10 × 13 + 0 × 169
 
-Digit 0 (units): 7 = contraction start (first post-flip position)
+Digit 0 (units): 7 = arithmetic label
 Digit 1 (13s):  10 = REST position
 Digit 2 (169s):  0 = source / Möbius point
 
@@ -135,10 +135,10 @@ Digit 2 (169s):  0 = source / Möbius point
 theorem alpha_inv_base13 : 137 = 7 + 10 * 13 + 0 * 13 ^ 2 := by norm_num
 
 /--
-**137 mod 13 = 7 (contraction start)**
+**137 mod 13 = 7**
 
-The fine structure constant's integer part, reduced to the
-breathing cycle, lands at Phase 7 — the first contraction position.
+The fine structure constant's integer part reduces to arithmetic label `7`
+modulo `13`.
 
 ✅ PROVEN
 -/
@@ -421,14 +421,12 @@ theorem observer_is_void : (13 : ZMod 13) = 0 := by decide
 /--
 **137 inherits 7's generation power.**
 
-137 ≡ 7 (mod 13), so α⁻¹ participates in the breathing cycle
-with the same multiplicative properties as 7 (a primitive root).
-The fine structure constant doesn't just land on Phase 7 — it IS
-Phase 7 algebraically.
+137 ≡ 7 (mod 13), so α⁻¹ has the same multiplicative properties as `7`
+in `ZMod 13`, including primitive-root behavior.
 
 ✅ PROVEN
 -/
-theorem alpha_inherits_contraction :
+theorem alpha_floor_cast_eq_seven_mod_13 :
     (137 : ZMod 13) = (7 : ZMod 13) := by decide
 
 /--

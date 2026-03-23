@@ -51,7 +51,7 @@ def ufrf_prime_number : ℕ := 137
 **Significance**: The "UFRF Prime" is 137, which is:
 - The floor of α⁻¹
 - A prime number itself
-- Maps to Phase 7 (mod 13)
+- Has chart label 7 (mod 13)
 
 ---
 

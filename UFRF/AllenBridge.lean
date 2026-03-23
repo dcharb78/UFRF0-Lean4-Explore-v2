@@ -108,7 +108,7 @@ Allen's curvature denominator: 252 = 12 × 21.
 theorem curvature_denom : 252 = 12 * 21 := by norm_num
 
 /--
-21 = 3 × 7 (Trinity × contraction start).
+21 = 3 × 7 (Trinity × arithmetic label 7).
 
 ✅ PROVEN
 -/
