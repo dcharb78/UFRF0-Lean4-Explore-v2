@@ -217,6 +217,12 @@ The point of this module is narrow:
 - `alphaPhaseObserverResidueCheckAbsError_rounds_to_0_0000009`:
   the same script-aligned absolute error rounds to `0.0000009` at seven
   decimal places.
+- `alphaCodata2022Gap_bounds_d13`:
+  the static UFRF-to-CODATA 2022 gap lies in the explicit interval
+  `0.0003045988784 < gap < 0.0003045988785`.
+- `alphaCodata2022Gap_rounds_to_0_000304598878`:
+  equivalently, that same static gap rounds to `0.000304598878` at the
+  `10^-12` place.
 - `phase7OneStepModelResidual_abs_lt_one_thousandth`:
   in the separated regime, the absolute one-step residual against the static
   CODATA 2022 gap is bounded above by `0.001`.
@@ -434,6 +440,9 @@ same absolute error is below `10⁻⁶`, and
 window `0.000000921017 < error < 0.000000947269`.
 It also now proves seven-decimal rounding theorems for both the current
 one-step comparison scalar and the script-aligned absolute error.
+Separately, the static CODATA comparison gap itself is now pinned to
+`0.0003045988784 < gap < 0.0003045988785`, with a corresponding
+`10^-12` rounding theorem.
 
 What Lean still does not prove is the script's floating-point printout itself.
 
@@ -449,6 +458,8 @@ What Lean still does not prove is the script's floating-point printout itself.
   external script.
 - Lean now also proves seven-decimal rounding theorems for the exposed
   one-step comparison scalar and the script-aligned absolute error.
+- Lean now also sharpens the static CODATA comparison gap to a
+  thirteen-decimal window and a `10^-12` rounding theorem.
 - What Lean still does not prove is the external script's floating-point output
   itself, or any stronger projection-law / physical-selection claim.
 - The current `4 × 7` normalization is present only as an explicit model choice.

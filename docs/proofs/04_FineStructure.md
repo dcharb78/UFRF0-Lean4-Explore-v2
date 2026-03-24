@@ -102,6 +102,34 @@ theorem alpha_inv_rounds_to_137_036303776 :
 
 ---
 
+### **Theorem: Thirteen-Decimal Prediction Window**
+```lean
+theorem alpha_inv_bounds_d13 :
+    137.0363037758784 < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.0363037758785
+```
+
+**Proof Strategy**:
+1. Reuse the same monotone polynomial `poly(x) = 4x³ + x² + x`.
+2. Reuse Mathlib's `20`-decimal π bounds.
+3. Check the tighter endpoint inequalities with `norm_num`.
+
+**Significance**: This sharpens the static UFRF prediction to an explicit
+thirteen-decimal interval.
+
+---
+
+### **Theorem: Twelve-Decimal Rounded Prediction**
+```lean
+theorem alpha_inv_rounds_to_137_036303775878 :
+    |ufrf_alpha_inv - 137.036303775878| < 0.0000000000005
+```
+
+**Significance**: The UFRF prediction rounds to `137.036303775878` at the
+`10^-12` place.
+
+---
+
 ### **Theorem: Alpha Polynomial Form**
 ```lean
 theorem alpha_polynomial_form :

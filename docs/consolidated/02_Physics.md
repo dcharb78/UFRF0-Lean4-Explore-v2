@@ -13,6 +13,8 @@ This document consolidates the physics-related modules.
 
 - **`alpha_inv_floor_137`**: ⌊4π³ + π² + π⌋ = 137 (proven via tight π bounds)
 - **`alpha_inv_bounds_d9`**: `137.036303775 < α⁻¹ < 137.036303776`
+- **`alpha_inv_bounds_d13`**: `137.0363037758784 < α⁻¹ < 137.0363037758785`
+- **`alpha_inv_rounds_to_137_036303775878`**: `α⁻¹` rounds to `137.036303775878` at the `10^-12` place
 - **`ufrf_matches_codata`**: `|ufrf − CODATA 2022| < 0.00031`
 - **`alpha_polynomial_form`**: Coefficients are {4, 1, 1} from LOGGrade duality
 
@@ -76,6 +78,8 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alphaPhaseObserverOneStepResidual_bounds_micro`**: equivalently, the observer-indexed one-step residual alias satisfies that same explicit micro interval
 - **`phase7OneStepModelResidual_abs_lt_one_millionth`**: in the separated regime, the absolute one-step residual against the static CODATA gap is bounded by `0.000001`
 - **`alphaPhaseObserverOneStepResidual_abs_lt_one_millionth`**: equivalently, the observer-indexed one-step residual alias satisfies that same absolute `10⁻⁶` bound
+- **`alphaCodata2022Gap_bounds_d13`**: the static UFRF-to-CODATA 2022 gap lies in the explicit interval `0.0003045988784 < gap < 0.0003045988785`
+- **`alphaCodata2022Gap_rounds_to_0_000304598878`**: that same static gap rounds to `0.000304598878` at the `10^-12` place
 - **`alphaPhaseObserverResidueCheckAbsError_bounds_micro`**: the script-aligned absolute error between the observer-indexed one-step comparison scalar and the static CODATA gap lies in the explicit interval `0.000000921017 < error < 0.000000947269`
 - **`alphaPhaseObserverResidueCheckAbsError_lt_one_millionth`**: in particular, that same script-aligned absolute error is below the external script's `10⁻⁶` tolerance
 - **`alphaPhaseObserverResidueCheckAbsError_rounds_to_0_0000009`**: the same script-aligned absolute error rounds to `0.0000009` at seven decimal places
@@ -128,6 +132,9 @@ contour-invariant in the allowed regime. Lean now also proves the real-number
 `10⁻⁶` pass condition checked by `scripts/alpha_phase7_residue_check.py`, plus
 seven-decimal rounding theorems for the one-step comparison scalar and the
 script-aligned absolute error.
+It now also sharpens the static CODATA comparison gap itself to a
+thirteen-decimal window, together with a `10^-12` rounding theorem for that
+same gap.
 It now also proves arithmetic uniqueness in the narrow safe sense: any channel
 `k` satisfying `floor α mod 13 = k` is forced to be the selected observer and
 gives the same centered and root/scalar one-step gap comparison formulas.

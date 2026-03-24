@@ -787,6 +787,19 @@ theorem alphaCodata2022Gap_bounds_d6 :
   unfold alphaCodata2022Gap codata_alpha_inv
   constructor <;> linarith
 
+theorem alphaCodata2022Gap_bounds_d13 :
+    (0.0003045988784 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.0003045988785 := by
+  rcases alpha_inv_bounds_d13 with ⟨hlo, hhi⟩
+  unfold alphaCodata2022Gap codata_alpha_inv
+  constructor <;> linarith
+
+theorem alphaCodata2022Gap_rounds_to_0_000304598878 :
+    |alphaCodata2022Gap - 0.000304598878| < 0.0000000000005 := by
+  rcases alphaCodata2022Gap_bounds_d13 with ⟨hlo, hhi⟩
+  rw [abs_lt]
+  constructor <;> linarith
+
 /--
 Exact residual between the one-step normalized legacy prediction wrapper and the
 static CODATA 2022 gap.

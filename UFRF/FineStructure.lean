@@ -242,6 +242,58 @@ theorem alpha_inv_rounds_to_137_036303776 :
   constructor <;> linarith
 
 /--
+Thirteen-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_bounds_d9` using the same 20-decimal bounds on `π`.
+-/
+theorem alpha_inv_bounds_d13 :
+    (137.0363037758784 : ℝ) < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.0363037758785 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.14159265358979323846 : ℝ) < π := Real.pi_gt_d20
+  have pi_hi : π < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.0363037758784 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.0363037758784 : ℝ) < poly π
+    have hmono : poly (3.14159265358979323846 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.0363037758784 : ℝ) < poly (3.14159265358979323846 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.0363037758785 : ℝ) := by
+    change poly π < (137.0363037758785 : ℝ)
+    have hmono : poly π < poly (3.14159265358979323847 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.14159265358979323847 : ℝ) < (137.0363037758785 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
+The UFRF inverse fine-structure prediction rounds to `137.036303775878`
+at the `10^-12` place.
+-/
+theorem alpha_inv_rounds_to_137_036303775878 :
+    |ufrf_alpha_inv - 137.036303775878| < 0.0000000000005 := by
+  rcases alpha_inv_bounds_d13 with ⟨hlo, hhi⟩
+  rw [abs_lt]
+  constructor <;> linarith
+
+/--
 **Phase Markers 1, 3, 7**
 
 The digits of 137 correspond to breathing cycle checkpoints:
