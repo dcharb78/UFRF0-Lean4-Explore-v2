@@ -6,6 +6,9 @@
 - Run recall before planning with queries that include `UFRF-Lean-V2`, `codex:project:UFRF-Lean-V2`, and the module or theorem names you are touching.
 - Treat repository state as canonical. If recalled memory conflicts with current files, trust the repo and save a correction memory.
 - Save small, durable memories for theorem additions, semantic decisions, and verification outcomes. Avoid saving raw logs or speculative ideas.
+- If `supermemory/whoAmI` succeeds but `recall` or `memory` times out twice, treat Supermemory as degraded for the rest of the turn instead of blocking work.
+- In degraded mode, recover context from local canonical sources in this order: current repo state and branch head, recent `git log`, `AGENTS.md`, `docs/RESIDUE_INTEGRATION_PLAN.md`, and the touched modules/proof notes.
+- After local recovery, keep a short working-context block in the thread and continue normally; if Supermemory recovers later, save one compact repo-verified summary or correction memory.
 
 ## Project Invariants
 
