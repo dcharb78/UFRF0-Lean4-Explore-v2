@@ -131,8 +131,12 @@ The point of this module is narrow:
 - `phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison`:
   the current radius-free one-step prediction is exactly that same
   alpha-selected centered comparison scalar.
+- `phase7OneStepModelPrediction_bounds_d13`:
+  the current radius-free one-step prediction lies in the tighter explicit
+  interval
+  `0.00030553718304 < prediction < 0.00030553718305`.
 - `phase7OneStepModelPrediction_bounds_d12`:
-  the current radius-free one-step prediction lies in the explicit
+  equivalently, the same prediction also satisfies the weaker explicit
   `10^-12`-scale interval
   `0.0003055371830 < prediction < 0.0003055371832`.
 - `phase7OneStepModelPrediction_rounds_to_0_0003055`:
@@ -201,16 +205,25 @@ The point of this module is narrow:
   in the separated regime, the one-step residual against the static CODATA
   2022 gap lies in the explicit micro interval
   `0.000000921017 < residual < 0.000000947269`.
-- `phase7OneStepModelResidual_bounds_d12`:
+- `phase7OneStepModelResidual_bounds_d13`:
   in the separated regime, the same one-step residual is also pinned to the
-  tighter `10^-12`-scale interval
+  tighter explicit interval
+  `0.0000009383045 < residual < 0.0000009383047`.
+- `phase7OneStepModelResidual_bounds_d12`:
+  equivalently, the same residual also satisfies the weaker
+  `10^-12`-scale interval
   `0.0000009383044 < residual < 0.0000009383048`.
 - `alphaPhaseObserverOneStepResidual_bounds_micro`:
   equivalently, the observer-indexed one-step residual alias satisfies that
   same explicit micro interval.
-- `alphaPhaseObserverOneStepResidual_bounds_d12`:
+- `alphaPhaseObserverOneStepResidual_bounds_d13`:
   equivalently, the observer-indexed one-step residual alias satisfies that
-  same tighter `10^-12`-scale interval.
+  same tighter explicit interval
+  `0.0000009383045 < residual < 0.0000009383047`.
+- `alphaPhaseObserverOneStepResidual_bounds_d12`:
+  equivalently, the observer-indexed one-step residual alias also satisfies the
+  weaker `10^-12`-scale interval
+  `0.0000009383044 < residual < 0.0000009383048`.
 - `phase7OneStepModelResidual_abs_lt_one_millionth`:
   in the separated regime, the absolute one-step residual against the static
   CODATA 2022 gap is bounded above by `0.000001`.
@@ -223,9 +236,13 @@ The point of this module is narrow:
 - `alphaPhaseObserverResidueCheckAbsError_bounds_micro`:
   the script-aligned absolute error lies in the explicit micro interval
   `0.000000921017 < error < 0.000000947269`.
-- `alphaPhaseObserverResidueCheckAbsError_bounds_d12`:
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d13`:
   the same script-aligned absolute error is also pinned to the tighter
-  `10^-12`-scale interval
+  explicit interval
+  `0.0000009383045 < error < 0.0000009383047`.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d12`:
+  equivalently, the same error also satisfies the weaker `10^-12`-scale
+  interval
   `0.0000009383044 < error < 0.0000009383048`.
 - `alphaPhaseObserverResidueCheckAbsError_lt_one_millionth`:
   in particular, the same script-aligned absolute error is strictly below the
@@ -418,10 +435,10 @@ The safe interpretation is:
   absolute bound `|residual| < 0.000001`,
 - Lean now also proves a tighter `Complex.exp`-driven Taylor-remainder window
   for the actual one-step prediction itself:
-  `0.0003055371830 < prediction < 0.0003055371832`,
+  `0.00030553718304 < prediction < 0.00030553718305`,
 - that sharper prediction theorem propagates through the static CODATA gap to a
-  corresponding `10^-12`-scale residual/error window
-  `0.0000009383044 < residual,error < 0.0000009383048`,
+  corresponding tighter residual/error window
+  `0.0000009383045 < residual,error < 0.0000009383047`,
 - the earlier coarse `0.001` residual bound is still present as a simpler
   fallback estimate,
 - the same compared quantity is now also unique in the arithmetic sense:
@@ -460,9 +477,9 @@ Lean now proves the real-number pass condition behind that check:
 same absolute error is below `10⁻⁶`, and
 `alphaPhaseObserverResidueCheckAbsError_bounds_micro` pins it to the explicit
 window `0.000000921017 < error < 0.000000947269`.
-The sharper theorem `alphaPhaseObserverResidueCheckAbsError_bounds_d12` now
+The sharper theorem `alphaPhaseObserverResidueCheckAbsError_bounds_d13` now
 also pins the same error to the tighter interval
-`0.0000009383044 < error < 0.0000009383048`.
+`0.0000009383045 < error < 0.0000009383047`.
 It also now proves seven-decimal rounding theorems for both the current
 one-step comparison scalar and the script-aligned absolute error.
 Separately, the static CODATA comparison gap itself is now pinned to
@@ -479,8 +496,8 @@ What Lean still does not prove is the script's floating-point printout itself.
   comparison.
 - Lean now proves an explicit micro residual window and an absolute
   `0.000001` bound on the one-step residual.
-- Lean now also proves a `10^-12`-scale one-step prediction window and
-  propagates it to matching `10^-12`-scale residual/error windows.
+- Lean now also proves a tighter one-step prediction window and propagates it
+  to matching tighter residual/error windows.
 - Lean now also proves the real-number `10⁻⁶` pass condition checked by the
   external script.
 - Lean now also proves seven-decimal rounding theorems for the exposed
@@ -499,5 +516,5 @@ What Lean still does not prove is the script's floating-point printout itself.
   derived comparison gap `alphaCodata2022Gap` and its one-step comparison
   theorems.
 - If the next proof-heavy branch is pursued, the natural target is tighter
-  transcendental control beyond the current `Complex.exp`-based `d12` window,
+  transcendental control beyond the current `Complex.exp`-based `d13` window,
   rather than more contour infrastructure.
