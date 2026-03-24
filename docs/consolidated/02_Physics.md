@@ -61,6 +61,8 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alpha_selected_centered_comparison_eq_alpha_selected_root_scalar`**: the observer-indexed centered comparison formula and the observer-indexed root/scalar formula are exactly the same normalized real quantity
 - **`alphaPhaseObserverOneStepComparison_eq_alpha_selected_centered_comparison`**: the observer-indexed one-step comparison alias is exactly that centered alpha-selected comparison scalar
 - **`phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison`**: the current radius-free one-step prediction is exactly that centered alpha-selected comparison scalar
+- **`phase7OneStepModelPrediction_rounds_to_0_0003055`**: the current radius-free one-step prediction rounds to `0.0003055` at seven decimal places
+- **`alphaPhaseObserverOneStepComparison_rounds_to_0_0003055`**: equivalently, the observer-indexed one-step comparison alias rounds to that same seven-decimal value
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centered_comparison`**: equivalently, the one-step normalized observable itself is exactly that centered alpha-selected comparison scalar
 - **`alphaPhaseObserverNormalizedRealCorrection_eq_centered_comparison_of_floor_eq`**: more generally, any channel `k` satisfying `floor α mod 13 = k` gives that same centered comparison formula at any discrete running step `n`
 - **`alphaPhaseObserverNormalizedRealCorrection_eq_root_scalar_of_floor_eq`**: equivalently, at any discrete running step `n`, that same normalized real observable also gives the root/scalar formula at `k`
@@ -76,6 +78,7 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alphaPhaseObserverOneStepResidual_abs_lt_one_millionth`**: equivalently, the observer-indexed one-step residual alias satisfies that same absolute `10⁻⁶` bound
 - **`alphaPhaseObserverResidueCheckAbsError_bounds_micro`**: the script-aligned absolute error between the observer-indexed one-step comparison scalar and the static CODATA gap lies in the explicit interval `0.000000921017 < error < 0.000000947269`
 - **`alphaPhaseObserverResidueCheckAbsError_lt_one_millionth`**: in particular, that same script-aligned absolute error is below the external script's `10⁻⁶` tolerance
+- **`alphaPhaseObserverResidueCheckAbsError_rounds_to_0_0000009`**: the same script-aligned absolute error rounds to `0.0000009` at seven decimal places
 - **`phase7OneStepModelResidual_abs_lt_one_thousandth`**: in the separated regime, the absolute one-step residual against the static CODATA gap is bounded by `0.001`
 - **`alphaPhaseObserverOneStepResidual_abs_lt_one_thousandth`**: equivalently, the observer-indexed one-step residual alias satisfies that same absolute `0.001` bound
 - **`alphaPhaseObserverOneStepResidual_eq_alpha_selected_centered_comparison_sub_codataGap`**: the observer-indexed one-step residual alias is exactly that centered alpha-selected comparison scalar minus the static CODATA gap
@@ -122,7 +125,9 @@ now also proves an explicit micro residual window and the absolute bound
 `|residual| < 0.000001` for that exposed residual, while retaining the earlier
 coarse `0.001` fallback bound; the one-step CODATA residual is also
 contour-invariant in the allowed regime. Lean now also proves the real-number
-`10⁻⁶` pass condition checked by `scripts/alpha_phase7_residue_check.py`.
+`10⁻⁶` pass condition checked by `scripts/alpha_phase7_residue_check.py`, plus
+seven-decimal rounding theorems for the one-step comparison scalar and the
+script-aligned absolute error.
 It now also proves arithmetic uniqueness in the narrow safe sense: any channel
 `k` satisfying `floor α mod 13 = k` is forced to be the selected observer and
 gives the same centered and root/scalar one-step gap comparison formulas.

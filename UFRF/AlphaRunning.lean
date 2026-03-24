@@ -743,6 +743,17 @@ theorem phase7OneStepModelPrediction_bounds_micro :
     norm_num
   exact ⟨lt_trans hlo_const hpred_lo, lt_trans hpred_hi hhi_const⟩
 
+theorem phase7OneStepModelPrediction_rounds_to_0_0003055 :
+    |phase7OneStepModelPrediction - 0.0003055| < 0.00000005 := by
+  rcases phase7OneStepModelPrediction_bounds_micro with ⟨hlo, hhi⟩
+  rw [abs_lt]
+  constructor <;> linarith
+
+theorem alphaPhaseObserverOneStepComparison_rounds_to_0_0003055 :
+    |alphaPhaseObserverOneStepComparison - 0.0003055| < 0.00000005 := by
+  simpa [alphaPhaseObserverOneStepComparison] using
+    phase7OneStepModelPrediction_rounds_to_0_0003055
+
 theorem phase7OneStepModelPrediction_is_alpha_selected_root_scalar :
     (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
     phase7OneStepModelPrediction =
@@ -981,6 +992,12 @@ theorem alphaPhaseObserverResidueCheckAbsError_lt_one_millionth :
     alphaPhaseObserverResidueCheckAbsError < 0.000001 := by
   rcases alphaPhaseObserverResidueCheckAbsError_bounds_micro with ⟨_, hhi⟩
   linarith
+
+theorem alphaPhaseObserverResidueCheckAbsError_rounds_to_0_0000009 :
+    |alphaPhaseObserverResidueCheckAbsError - 0.0000009| < 0.00000005 := by
+  rcases alphaPhaseObserverResidueCheckAbsError_bounds_micro with ⟨hlo, hhi⟩
+  rw [abs_lt]
+  constructor <;> linarith
 
 /--
 The current one-step residual against the static CODATA 2022 gap is bounded by

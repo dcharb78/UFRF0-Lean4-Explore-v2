@@ -126,6 +126,12 @@ The point of this module is narrow:
 - `phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison`:
   the current radius-free one-step prediction is exactly that same
   alpha-selected centered comparison scalar.
+- `phase7OneStepModelPrediction_rounds_to_0_0003055`:
+  the current radius-free one-step prediction rounds to `0.0003055` at seven
+  decimal places.
+- `alphaPhaseObserverOneStepComparison_rounds_to_0_0003055`:
+  equivalently, the observer-indexed one-step comparison alias rounds to that
+  same seven-decimal value.
 - `alphaPhaseObserverNormalizedRealCorrection_one_eq_oneStepComparison`:
   equivalently, the one-step normalized observable is also exactly the
   observer-indexed one-step comparison alias.
@@ -208,6 +214,9 @@ The point of this module is narrow:
 - `alphaPhaseObserverResidueCheckAbsError_lt_one_millionth`:
   in particular, the same script-aligned absolute error is strictly below the
   external script's `10⁻⁶` tolerance.
+- `alphaPhaseObserverResidueCheckAbsError_rounds_to_0_0000009`:
+  the same script-aligned absolute error rounds to `0.0000009` at seven
+  decimal places.
 - `phase7OneStepModelResidual_abs_lt_one_thousandth`:
   in the separated regime, the absolute one-step residual against the static
   CODATA 2022 gap is bounded above by `0.001`.
@@ -423,6 +432,8 @@ Lean now proves the real-number pass condition behind that check:
 same absolute error is below `10⁻⁶`, and
 `alphaPhaseObserverResidueCheckAbsError_bounds_micro` pins it to the explicit
 window `0.000000921017 < error < 0.000000947269`.
+It also now proves seven-decimal rounding theorems for both the current
+one-step comparison scalar and the script-aligned absolute error.
 
 What Lean still does not prove is the script's floating-point printout itself.
 
@@ -436,6 +447,8 @@ What Lean still does not prove is the script's floating-point printout itself.
   `0.000001` bound on the one-step residual.
 - Lean now also proves the real-number `10⁻⁶` pass condition checked by the
   external script.
+- Lean now also proves seven-decimal rounding theorems for the exposed
+  one-step comparison scalar and the script-aligned absolute error.
 - What Lean still does not prove is the external script's floating-point output
   itself, or any stronger projection-law / physical-selection claim.
 - The current `4 × 7` normalization is present only as an explicit model choice.
