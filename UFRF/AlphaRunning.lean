@@ -217,8 +217,8 @@ theorem sum_normalizedLocalContour_allRoots_eq_zero
 Across the full breathing-root family, the contour running increment sums to
 zero.
 
-This is the projection-law statement in residue language: the full contour
-family is globally conserved, and only observer-local projections survive.
+This is the global cancellation statement for the running increments in the
+current residue-driven model.
 -/
 theorem sum_contourRunningIncrement_allRoots_eq_zero
     {R : ℝ} (hR : 0 < R)

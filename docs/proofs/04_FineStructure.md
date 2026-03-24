@@ -11,15 +11,15 @@ noncomputable def ufrf_alpha_inv : ℝ :=
     4 * π ^ 3 + π ^ 2 + π
 ```
 
-### `codata_alpha_inv`
+### `codata2018_alpha_inv`
 ```lean
-def codata_alpha_inv : ℝ := 137.035999084
+def codata2018_alpha_inv : ℝ := 137.035999084
 ```
 The CODATA 2018 empirical value.
 
-### `codata2022_alpha_inv`
+### `codata_alpha_inv`
 ```lean
-def codata2022_alpha_inv : ℝ := 137.035999177
+def codata_alpha_inv : ℝ := 137.035999177
 ```
 The CODATA 2022 empirical value.
 

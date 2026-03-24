@@ -28,8 +28,13 @@ The point of this module is narrow:
   channel from the static UFRF inverse fine-structure value.
 - `alphaPhaseObserverOneStepComparison`: observer-indexed name for the current
   one-step comparison scalar.
+- `alphaCodata2022Gap`: the static UFRF-to-CODATA 2022 gap used for the
+  current comparison layer.
 - `alphaPhaseObserverOneStepResidual R`: observer-indexed name for the current
   one-step comparison residual against the static CODATA 2022 gap.
+- `alphaPhaseObserverResidueCheckAbsError`: script-aligned absolute error
+  between the observer-indexed one-step comparison scalar and the static
+  CODATA 2022 gap.
 
 ## Theorem
 
@@ -201,10 +206,6 @@ The point of this module is narrow:
 - `alphaPhaseObserverOneStepResidual_abs_lt_one_millionth`:
   equivalently, the observer-indexed one-step residual alias satisfies that
   same absolute `10⁻⁶` bound.
-- `alphaPhaseObserverResidueCheckAbsError`:
-  the script-aligned absolute error quantity is the absolute difference between
-  the observer-indexed one-step comparison scalar and the static CODATA 2022
-  gap.
 - `alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs`:
   in the separated regime, that script-aligned absolute error is exactly the
   absolute value of the observer-indexed one-step residual alias.
@@ -467,5 +468,10 @@ What Lean still does not prove is the script's floating-point printout itself.
   normalized real, centered observable at the alpha-selected channel.
 - What remains open is the stronger claim that this current candidate quantity
   is the uniquely correct physical-selection quantity.
-- The dated CODATA comparison remains on the static side in
-  `UFRF/FineStructure.lean`.
+- The CODATA reference value itself is still defined on the static side in
+  `UFRF/FineStructure.lean`, while `UFRF/AlphaRunning.lean` now packages the
+  derived comparison gap `alphaCodata2022Gap` and its one-step comparison
+  theorems.
+- If the next proof-heavy branch is pursued, the natural target is tighter
+  transcendental control of `phase7OneStepModelPrediction`, rather than more
+  contour infrastructure.

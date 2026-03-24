@@ -399,7 +399,7 @@ Current status:
   breathing-function boundary integral around that rectangle is zero.
   This is the smallest reusable non-centered wrapper around the current
   norm-one root geometry.
-- Exact next blocker for a broader contour layer:
+- Current Phase 3 status for a broader contour layer:
   the repo now has a canonical single-root contour theorem, a strict-radius
   separation package, a fixed quarter-`infsep` separated-circle theorem, and a
   finite multi-circle cancellation formula, all now promoted to an arbitrary
@@ -421,7 +421,9 @@ Current status:
   enclosing-rectangle wrapper. There is no longer a missing structural
   rectangle-comparison step in Phase 3.
   Further work in this direction is now convenience packaging rather than a
-  foundational blocker.
+  foundational blocker. For the current physics lane, the next proof-heavy
+  blocker sits in `UFRF/AlphaRunning.lean`'s transcendental estimates rather
+  than in additional contour infrastructure.
 - Next optional theorem if desired:
   generalize the canonical quarter-`infsep` local-square package from its fixed
   radius to a variable half-side.

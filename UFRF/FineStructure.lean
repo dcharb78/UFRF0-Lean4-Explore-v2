@@ -34,9 +34,10 @@ The integer part 137 encodes the breathing cycle's critical phase markers:
 - Gap: < 3.1e-4
 
 ## Status
-- `ufrf_alpha_inv` definition: ✅ compiles
-- `alpha_inv_floor_137`: 🔧 needs π bounds from Mathlib
-- `alpha_accuracy`: 🔧 needs π numerical bounds
+- `ufrf_alpha_inv`, `codata2018_alpha_inv`, `codata_alpha_inv`: ✅ definitions
+- `alpha_inv_floor_137`, `alpha_inv_bounds_d13`: ✅ proved with π bounds
+- `alpha_inv_rounds_to_137_036303775878`: ✅ proved
+- `ufrf_matches_codata`, `ufrf_matches_codata2018`: ✅ proved
 -/
 
 noncomputable section
