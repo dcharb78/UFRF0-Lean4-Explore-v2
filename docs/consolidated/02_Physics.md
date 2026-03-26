@@ -16,6 +16,7 @@ This document consolidates the physics-related modules.
 - **`alpha_inv_bounds_d13`**: `137.0363037758784 < α⁻¹ < 137.0363037758785`
 - **`alpha_inv_bounds_d23`**: `137.03630377587843255920196 < α⁻¹ < 137.03630377587843255920323`
 - **`alpha_inv_bounds_d25`**: `137.0363037758784325592023841 < α⁻¹ < 137.0363037758784325592023968`
+- **`alpha_inv_bounds_d26`**: `137.03630377587843255920238418 < α⁻¹ < 137.03630377587843255920239676`
 - **`alpha_inv_rounds_to_137_036303775878`**: `α⁻¹` rounds to `137.036303775878` at the `10^-12` place
 - **`ufrf_matches_codata`**: `|ufrf − CODATA 2022| < 0.00031`
 - **`alpha_polynomial_form`**: Coefficients are {4, 1, 1} from LOGGrade duality
@@ -97,17 +98,21 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alphaPhaseObserverOneStepResidual_bounds_micro`**: equivalently, the observer-indexed one-step residual alias satisfies that same explicit micro interval
 - **`phase7OneStepModelResidual_bounds_d21`**: in the separated regime, the one-step residual now also lies in the sharper explicit interval `0.000000938304609955807 < residual < 0.000000938304609955811`
 - **`phase7OneStepModelResidual_bounds_d25`**: in the separated regime, the one-step residual now also lies in the sharper explicit interval `0.0000009383046099558092932 < residual < 0.0000009383046099558094159`
+- **`phase7OneStepModelResidual_bounds_d26`**: in the separated regime, the one-step residual now also lies in the sharper explicit interval `0.00000093830460995580930976 < residual < 0.00000093830460995580932235`
 - **`alphaPhaseObserverOneStepResidual_bounds_d21`**: equivalently, the observer-indexed one-step residual alias now also satisfies that sharper explicit interval
 - **`alphaPhaseObserverOneStepResidual_bounds_d25`**: equivalently, the observer-indexed one-step residual alias now also satisfies that sharper explicit interval `0.0000009383046099558092932 < residual < 0.0000009383046099558094159`
+- **`alphaPhaseObserverOneStepResidual_bounds_d26`**: equivalently, the observer-indexed one-step residual alias now also satisfies that sharper explicit interval `0.00000093830460995580930976 < residual < 0.00000093830460995580932235`
 - **`phase7OneStepModelResidual_abs_lt_one_millionth`**: in the separated regime, the absolute one-step residual against the static CODATA gap is bounded by `0.000001`
 - **`alphaPhaseObserverOneStepResidual_abs_lt_one_millionth`**: equivalently, the observer-indexed one-step residual alias satisfies that same absolute `10⁻⁶` bound
 - **`alphaCodata2022Gap_bounds_d13`**: the static UFRF-to-CODATA 2022 gap lies in the explicit interval `0.0003045988784 < gap < 0.0003045988785`
 - **`alphaCodata2022Gap_bounds_d21`**: the derived `AlphaRunning` gap alias now also lies in the sharper explicit interval `0.000304598878432559201 < gap < 0.000304598878432559204`
 - **`alphaCodata2022Gap_bounds_d25`**: the derived `AlphaRunning` gap alias now also lies in the sharper explicit interval `0.0003045988784325592023841 < gap < 0.0003045988784325592023968`
+- **`alphaCodata2022Gap_bounds_d26`**: the derived `AlphaRunning` gap alias now also lies in the sharper explicit interval `0.00030459887843255920238418 < gap < 0.00030459887843255920239676`
 - **`alphaCodata2022Gap_rounds_to_0_000304598878`**: that same static gap rounds to `0.000304598878` at the `10^-12` place
 - **`alphaPhaseObserverResidueCheckAbsError_bounds_micro`**: the script-aligned absolute error between the observer-indexed one-step comparison scalar and the static CODATA gap lies in the explicit interval `0.000000921017 < error < 0.000000947269`
 - **`alphaPhaseObserverResidueCheckAbsError_bounds_d21`**: the script-aligned absolute error now also lies in the sharper explicit interval `0.000000938304609955807 < error < 0.000000938304609955811`
 - **`alphaPhaseObserverResidueCheckAbsError_bounds_d25`**: the script-aligned absolute error now also lies in the sharper explicit interval `0.0000009383046099558092932 < error < 0.0000009383046099558094159`
+- **`alphaPhaseObserverResidueCheckAbsError_bounds_d26`**: the script-aligned absolute error now also lies in the sharper explicit interval `0.00000093830460995580930976 < error < 0.00000093830460995580932235`
 - **`alphaCodata2022Gap_gt_three_hundred_projection_error`**: the static CODATA gap is more than `300` times larger than the observer-local projection error, so the small matched quantity is not the raw static gap itself
 - **`alphaPhaseObserverResidueCheckAbsError_lt_one_millionth`**: in particular, that same script-aligned absolute error is below the external script's `10⁻⁶` tolerance
 - **`alphaPhaseObserverResidueCheckAbsError_rounds_to_0_0000009`**: the same script-aligned absolute error rounds to `0.0000009` at seven decimal places
@@ -166,9 +171,9 @@ contour-invariant in the allowed regime. Lean now also proves the real-number
 seven-decimal rounding theorems for the one-step comparison scalar and the
 script-aligned absolute error.
 It now also sharpens the static CODATA comparison gap itself to a
-twenty-five-decimal window on the static side; the exposed running prediction
-now reaches `d27`, while the exposed `AlphaRunning` gap/residual/error
-package still reaches `d25`. Further exposed tightening now requires
+twenty-six-decimal window on the static side; the exposed running prediction
+still reaches `d27`, while the exposed `AlphaRunning` gap/residual/error
+package now reaches `d26`. Further exposed tightening still requires
 stronger static-gap transport rather than more prediction-only tightening.
 It now also packages the exposed observer-indexed comparison/residual
 quantities on the same recurring-handoff channel as the selected observer, so

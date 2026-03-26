@@ -1867,6 +1867,11 @@ theorem alphaCodata2022Gap_bounds_d25 :
     alphaCodata2022Gap < 0.0003045988784325592023968 := by
   simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d25
 
+theorem alphaCodata2022Gap_bounds_d26 :
+    (0.00030459887843255920238418 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.00030459887843255920239676 := by
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d26
+
 /--
 Exact residual between the one-step normalized legacy prediction wrapper and the
 static CODATA 2022 gap.
@@ -2123,6 +2128,16 @@ theorem phase7OneStepModelResidual_bounds_d25
   rcases alphaCodata2022Gap_bounds_d25 with ⟨hgap_lo, hgap_hi⟩
   constructor <;> linarith
 
+theorem phase7OneStepModelResidual_bounds_d26
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.00000093830460995580930976 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.00000093830460995580932235 := by
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  rcases phase7OneStepModelPrediction_bounds_d27 with ⟨hpred_lo, hpred_hi⟩
+  rcases alphaCodata2022Gap_bounds_d26 with ⟨hgap_lo, hgap_hi⟩
+  constructor <;> linarith
+
 theorem alphaPhaseObserverOneStepResidual_bounds_micro
     {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
@@ -2218,6 +2233,14 @@ theorem alphaPhaseObserverOneStepResidual_bounds_d25
     alphaPhaseObserverOneStepResidual R < 0.0000009383046099558094159 := by
   simpa [alphaPhaseObserverOneStepResidual] using
     phase7OneStepModelResidual_bounds_d25 (R := R) hR hRlt
+
+theorem alphaPhaseObserverOneStepResidual_bounds_d26
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.00000093830460995580930976 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.00000093830460995580932235 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_bounds_d26 (R := R) hR hRlt
 
 theorem phase7OneStepModelResidual_abs_lt_one_millionth
     {R : ℝ} (hR : 0 < R)
@@ -2490,6 +2513,26 @@ theorem alphaPhaseObserverResidueCheckAbsError_bounds_d25 :
     dsimp [R]
     linarith
   rcases alphaPhaseObserverOneStepResidual_bounds_d25 (R := R) hR hRlt with
+    ⟨hlo, hhi⟩
+  have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
+    linarith
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt, abs_of_pos hpos]
+  exact ⟨hlo, hhi⟩
+
+theorem alphaPhaseObserverResidueCheckAbsError_bounds_d26 :
+    (0.00000093830460995580930976 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.00000093830460995580932235 := by
+  let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
+  have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
+    UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
+  have hR : 0 < R := by
+    dsimp [R]
+    positivity
+  have hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    dsimp [R]
+    linarith
+  rcases alphaPhaseObserverOneStepResidual_bounds_d26 (R := R) hR hRlt with
     ⟨hlo, hhi⟩
   have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
     linarith

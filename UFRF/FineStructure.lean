@@ -829,6 +829,50 @@ theorem alpha_inv_bounds_d25 :
   exact ⟨lo, hi⟩
 
 /--
+Twenty-six-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_bounds_d25` using the same local bounds on `π`.
+-/
+theorem alpha_inv_bounds_d26 :
+    (137.03630377587843255920238418 : ℝ) < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.03630377587843255920239676 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.1415926535897932384626433 : ℝ) < π := pi_gt_d25_local
+  have pi_hi : π < (3.1415926535897932384626434 : ℝ) := pi_lt_d25_local
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.03630377587843255920238418 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.03630377587843255920238418 : ℝ) < poly π
+    have hmono : poly (3.1415926535897932384626433 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.03630377587843255920238418 : ℝ) <
+        poly (3.1415926535897932384626433 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.03630377587843255920239676 : ℝ) := by
+    change poly π < (137.03630377587843255920239676 : ℝ)
+    have hmono : poly π < poly (3.1415926535897932384626434 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.1415926535897932384626434 : ℝ) <
+        (137.03630377587843255920239676 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
 Twenty-one-decimal bracketing for the UFRF inverse fine-structure value.
 
 This follows from the stronger `alpha_inv_bounds_d23`.
@@ -1014,6 +1058,17 @@ theorem ufrf_codata2022_gap_bounds_d25 :
     (0.0003045988784325592023841 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
     ufrf_alpha_inv - codata_alpha_inv < 0.0003045988784325592023968 := by
   rcases alpha_inv_bounds_d25 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
+  constructor <;> linarith
+
+/--
+The static UFRF-to-CODATA 2022 gap lies in the explicit interval
+`0.00030459887843255920238418 < gap < 0.00030459887843255920239676`.
+-/
+theorem ufrf_codata2022_gap_bounds_d26 :
+    (0.00030459887843255920238418 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.00030459887843255920239676 := by
+  rcases alpha_inv_bounds_d26 with ⟨hlo, hhi⟩
   unfold codata_alpha_inv
   constructor <;> linarith
 

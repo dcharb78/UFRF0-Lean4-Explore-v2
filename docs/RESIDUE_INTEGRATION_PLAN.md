@@ -425,12 +425,12 @@ Current status:
   local-origin / selected-observer / one-step-measurement bridge lane is now
   also locally closed through the present measurement, radius-invariance, and
   absolute-error packages. For the current physics lane, the static
-  alpha/CODATA-gap transport now reaches `d25`, the exposed `AlphaRunning`
-  gap/residual/error package now reaches `d25`, and the prediction package
+  alpha/CODATA-gap transport now reaches `d26`, the exposed `AlphaRunning`
+  gap/residual/error package now reaches `d26`, and the prediction package
   now reaches `d27`. The order-20 shared-`π/13` prediction kernel is therefore
   ahead of the exposed gap/residual/error frontier; if further exposed
   tightening is wanted, the next proof-heavy blocker is stronger static
-  alpha/CODATA-gap transport beyond `d25` rather than additional contour
+  alpha/CODATA-gap transport beyond `d26` rather than additional contour
   infrastructure or more prediction-only packaging.
 - Next optional theorem if desired:
   generalize the canonical quarter-`infsep` local-square package from its fixed
