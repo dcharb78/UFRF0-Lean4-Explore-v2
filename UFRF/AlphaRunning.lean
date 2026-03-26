@@ -1371,9 +1371,9 @@ theorem phase7OneStepModelPrediction_bounds_d20 :
     exact lt_trans hdiv hconst
 
 set_option maxHeartbeats 2000000 in
-theorem phase7OneStepModelPrediction_bounds_d21 :
-    (0.00030553718304251501169 : ℝ) < phase7OneStepModelPrediction ∧
-    phase7OneStepModelPrediction < (0.00030553718304251501180 : ℝ) := by
+theorem phase7OneStepModelPrediction_bounds_d25 :
+    (0.0003055371830425150117064 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.0003055371830425150117084 : ℝ) := by
   let poly18 : ℝ → ℝ := fun t =>
     1 - t ^ 2 / 2 + t ^ 4 / 24 - t ^ 6 / 720 + t ^ 8 / 40320 - t ^ 10 / 3628800 +
       t ^ 12 / 479001600 - t ^ 14 / 87178291200 + t ^ 16 / 20922789888000 -
@@ -1394,105 +1394,126 @@ theorem phase7OneStepModelPrediction_bounds_d21 :
     rw [abs_of_nonneg hpi3_nonneg]
     have hpi : Real.pi < 4 := Real.pi_lt_four
     nlinarith
-  have hpi1_lo : (0.24166097335306101834 : ℝ) < Real.pi / 13 := by
-    have hpi : (3.14159265358979323846 : ℝ) < Real.pi := Real.pi_gt_d20
+  have hpi1_lo : (0.24166097335306101834328025 : ℝ) < Real.pi / 13 := by
+    have hpi : (3.1415926535897932384626433 : ℝ) < Real.pi := pi_gt_d25_ufrf
     nlinarith
-  have hpi1_hi : Real.pi / 13 < (0.24166097335306101835 : ℝ) := by
-    have hpi : Real.pi < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have hpi1_hi : Real.pi / 13 < (0.24166097335306101834328027 : ℝ) := by
+    have hpi : Real.pi < (3.1415926535897932384626434 : ℝ) := pi_lt_d25_ufrf
     nlinarith
-  have hpi3_hi : 3 * Real.pi / 13 < (0.72498292005918305504 : ℝ) := by
-    have hpi : Real.pi < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have hpi3_hi : 3 * Real.pi / 13 < (0.72498292005918305502984079 : ℝ) := by
+    have hpi : Real.pi < (3.1415926535897932384626434 : ℝ) := pi_lt_d25_ufrf
     nlinarith
-  have hpi1_2_lo : (0.24166097335306101834 : ℝ) ^ 2 ≤ (Real.pi / 13) ^ 2 := by
+  have hpi1_2_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 2 ≤ (Real.pi / 13) ^ 2 := by
     nlinarith [hpi1_lo, hpi1_nonneg]
-  have hpi1_2_hi : (Real.pi / 13) ^ 2 ≤ (0.24166097335306101835 : ℝ) ^ 2 := by
+  have hpi1_2_hi :
+      (Real.pi / 13) ^ 2 ≤ (0.24166097335306101834328027 : ℝ) ^ 2 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
-  have hpi1_4_lo : (0.24166097335306101834 : ℝ) ^ 4 ≤ (Real.pi / 13) ^ 4 := by
+  have hpi1_4_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 4 ≤ (Real.pi / 13) ^ 4 := by
     nlinarith [hpi1_lo, hpi1_nonneg]
-  have hpi1_4_hi : (Real.pi / 13) ^ 4 ≤ (0.24166097335306101835 : ℝ) ^ 4 := by
+  have hpi1_4_hi :
+      (Real.pi / 13) ^ 4 ≤ (0.24166097335306101834328027 : ℝ) ^ 4 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
-  have hpi1_6_lo : (0.24166097335306101834 : ℝ) ^ 6 ≤ (Real.pi / 13) ^ 6 := by
+  have hpi1_6_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 6 ≤ (Real.pi / 13) ^ 6 := by
     nlinarith [hpi1_lo, hpi1_nonneg]
-  have hpi1_6_hi : (Real.pi / 13) ^ 6 ≤ (0.24166097335306101835 : ℝ) ^ 6 := by
+  have hpi1_6_hi :
+      (Real.pi / 13) ^ 6 ≤ (0.24166097335306101834328027 : ℝ) ^ 6 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
-  have hpi1_8_lo : (0.24166097335306101834 : ℝ) ^ 8 ≤ (Real.pi / 13) ^ 8 := by
+  have hpi1_8_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 8 ≤ (Real.pi / 13) ^ 8 := by
     nlinarith [hpi1_lo, hpi1_nonneg]
-  have hpi1_8_hi : (Real.pi / 13) ^ 8 ≤ (0.24166097335306101835 : ℝ) ^ 8 := by
+  have hpi1_8_hi :
+      (Real.pi / 13) ^ 8 ≤ (0.24166097335306101834328027 : ℝ) ^ 8 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
-  have hpi1_10_lo : (0.24166097335306101834 : ℝ) ^ 10 ≤ (Real.pi / 13) ^ 10 := by
+  have hpi1_10_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 10 ≤ (Real.pi / 13) ^ 10 := by
     nlinarith [hpi1_lo, hpi1_nonneg]
-  have hpi1_10_hi : (Real.pi / 13) ^ 10 ≤ (0.24166097335306101835 : ℝ) ^ 10 := by
+  have hpi1_10_hi :
+      (Real.pi / 13) ^ 10 ≤ (0.24166097335306101834328027 : ℝ) ^ 10 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
-  have hpi1_12_lo : (0.24166097335306101834 : ℝ) ^ 12 ≤ (Real.pi / 13) ^ 12 := by
+  have hpi1_12_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 12 ≤ (Real.pi / 13) ^ 12 := by
     nlinarith [hpi1_lo, hpi1_nonneg]
-  have hpi1_12_hi : (Real.pi / 13) ^ 12 ≤ (0.24166097335306101835 : ℝ) ^ 12 := by
+  have hpi1_12_hi :
+      (Real.pi / 13) ^ 12 ≤ (0.24166097335306101834328027 : ℝ) ^ 12 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
-  have hpi1_14_lo : (0.24166097335306101834 : ℝ) ^ 14 ≤ (Real.pi / 13) ^ 14 := by
+  have hpi1_14_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 14 ≤ (Real.pi / 13) ^ 14 := by
     nlinarith [hpi1_lo, hpi1_nonneg]
-  have hpi1_14_hi : (Real.pi / 13) ^ 14 ≤ (0.24166097335306101835 : ℝ) ^ 14 := by
+  have hpi1_14_hi :
+      (Real.pi / 13) ^ 14 ≤ (0.24166097335306101834328027 : ℝ) ^ 14 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
-  have hpi1_16_lo : (0.24166097335306101834 : ℝ) ^ 16 ≤ (Real.pi / 13) ^ 16 := by
+  have hpi1_16_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 16 ≤ (Real.pi / 13) ^ 16 := by
     nlinarith [hpi1_lo, hpi1_nonneg]
-  have hpi1_16_hi : (Real.pi / 13) ^ 16 ≤ (0.24166097335306101835 : ℝ) ^ 16 := by
+  have hpi1_16_hi :
+      (Real.pi / 13) ^ 16 ≤ (0.24166097335306101834328027 : ℝ) ^ 16 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
-  have hpi1_18_lo : (0.24166097335306101834 : ℝ) ^ 18 ≤ (Real.pi / 13) ^ 18 := by
+  have hpi1_18_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 18 ≤ (Real.pi / 13) ^ 18 := by
     nlinarith [hpi1_lo, hpi1_nonneg]
-  have hpi1_18_hi : (Real.pi / 13) ^ 18 ≤ (0.24166097335306101835 : ℝ) ^ 18 := by
+  have hpi1_18_hi :
+      (Real.pi / 13) ^ 18 ≤ (0.24166097335306101834328027 : ℝ) ^ 18 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
-  have hpi1_20_hi : (Real.pi / 13) ^ 20 ≤ (0.24166097335306101835 : ℝ) ^ 20 := by
+  have hpi1_20_hi :
+      (Real.pi / 13) ^ 20 ≤ (0.24166097335306101834328027 : ℝ) ^ 20 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
   have hq_lo_base :
-      (0.222431069254950928515 : ℝ) <
-        4 * (0.24166097335306101834 : ℝ) ^ 2 -
-          10 * (0.24166097335306101835 : ℝ) ^ 4 / 3 +
-          91 * (0.24166097335306101834 : ℝ) ^ 6 / 90 -
-          41 * (0.24166097335306101835 : ℝ) ^ 8 / 252 +
-          7381 * (0.24166097335306101834 : ℝ) ^ 10 / 453600 -
-          949 * (0.24166097335306101835 : ℝ) ^ 12 / 855360 +
-          597871 * (0.24166097335306101834 : ℝ) ^ 14 / 10897286400 -
-          134521 * (0.24166097335306101835 : ℝ) ^ 16 / 65383718400 +
-          532171 * (0.24166097335306101834 : ℝ) ^ 18 / 8794469376000 := by
+      (0.22243106925495092852301225248 : ℝ) <
+        4 * (0.24166097335306101834328025 : ℝ) ^ 2 -
+          10 * (0.24166097335306101834328027 : ℝ) ^ 4 / 3 +
+          91 * (0.24166097335306101834328025 : ℝ) ^ 6 / 90 -
+          41 * (0.24166097335306101834328027 : ℝ) ^ 8 / 252 +
+          7381 * (0.24166097335306101834328025 : ℝ) ^ 10 / 453600 -
+          949 * (0.24166097335306101834328027 : ℝ) ^ 12 / 855360 +
+          597871 * (0.24166097335306101834328025 : ℝ) ^ 14 / 10897286400 -
+          134521 * (0.24166097335306101834328027 : ℝ) ^ 16 / 65383718400 +
+          532171 * (0.24166097335306101834328025 : ℝ) ^ 18 / 8794469376000 := by
     norm_num
-  have hq_lo : (0.222431069254950928515 : ℝ) < poly18Diff (Real.pi / 13) := by
+  have hq_lo :
+      (0.22243106925495092852301225248 : ℝ) < poly18Diff (Real.pi / 13) := by
     have htmp :
-        4 * (0.24166097335306101834 : ℝ) ^ 2 -
-          10 * (0.24166097335306101835 : ℝ) ^ 4 / 3 +
-          91 * (0.24166097335306101834 : ℝ) ^ 6 / 90 -
-          41 * (0.24166097335306101835 : ℝ) ^ 8 / 252 +
-          7381 * (0.24166097335306101834 : ℝ) ^ 10 / 453600 -
-          949 * (0.24166097335306101835 : ℝ) ^ 12 / 855360 +
-          597871 * (0.24166097335306101834 : ℝ) ^ 14 / 10897286400 -
-          134521 * (0.24166097335306101835 : ℝ) ^ 16 / 65383718400 +
-          532171 * (0.24166097335306101834 : ℝ) ^ 18 / 8794469376000 ≤
+        4 * (0.24166097335306101834328025 : ℝ) ^ 2 -
+          10 * (0.24166097335306101834328027 : ℝ) ^ 4 / 3 +
+          91 * (0.24166097335306101834328025 : ℝ) ^ 6 / 90 -
+          41 * (0.24166097335306101834328027 : ℝ) ^ 8 / 252 +
+          7381 * (0.24166097335306101834328025 : ℝ) ^ 10 / 453600 -
+          949 * (0.24166097335306101834328027 : ℝ) ^ 12 / 855360 +
+          597871 * (0.24166097335306101834328025 : ℝ) ^ 14 / 10897286400 -
+          134521 * (0.24166097335306101834328027 : ℝ) ^ 16 / 65383718400 +
+          532171 * (0.24166097335306101834328025 : ℝ) ^ 18 / 8794469376000 ≤
         poly18Diff (Real.pi / 13) := by
       dsimp [poly18Diff]
       nlinarith [hpi1_2_lo, hpi1_4_hi, hpi1_6_lo, hpi1_8_hi, hpi1_10_lo, hpi1_12_hi,
         hpi1_14_lo, hpi1_16_hi, hpi1_18_lo]
     exact lt_of_lt_of_le hq_lo_base htmp
   have hq_hi_base :
-      4 * (0.24166097335306101835 : ℝ) ^ 2 -
-        10 * (0.24166097335306101834 : ℝ) ^ 4 / 3 +
-        91 * (0.24166097335306101835 : ℝ) ^ 6 / 90 -
-        41 * (0.24166097335306101834 : ℝ) ^ 8 / 252 +
-        7381 * (0.24166097335306101835 : ℝ) ^ 10 / 453600 -
-        949 * (0.24166097335306101834 : ℝ) ^ 12 / 855360 +
-        597871 * (0.24166097335306101835 : ℝ) ^ 14 / 10897286400 -
-        134521 * (0.24166097335306101834 : ℝ) ^ 16 / 65383718400 +
-        532171 * (0.24166097335306101835 : ℝ) ^ 18 / 8794469376000 <
-      (0.222431069254950928537 : ℝ) := by
+      4 * (0.24166097335306101834328027 : ℝ) ^ 2 -
+        10 * (0.24166097335306101834328025 : ℝ) ^ 4 / 3 +
+        91 * (0.24166097335306101834328027 : ℝ) ^ 6 / 90 -
+        41 * (0.24166097335306101834328025 : ℝ) ^ 8 / 252 +
+        7381 * (0.24166097335306101834328027 : ℝ) ^ 10 / 453600 -
+        949 * (0.24166097335306101834328025 : ℝ) ^ 12 / 855360 +
+        597871 * (0.24166097335306101834328027 : ℝ) ^ 14 / 10897286400 -
+        134521 * (0.24166097335306101834328025 : ℝ) ^ 16 / 65383718400 +
+        532171 * (0.24166097335306101834328027 : ℝ) ^ 18 / 8794469376000 <
+      (0.22243106925495092852301229502 : ℝ) := by
     norm_num
-  have hq_hi : poly18Diff (Real.pi / 13) < (0.222431069254950928537 : ℝ) := by
+  have hq_hi :
+      poly18Diff (Real.pi / 13) < (0.22243106925495092852301229502 : ℝ) := by
     have htmp :
         poly18Diff (Real.pi / 13) ≤
-          4 * (0.24166097335306101835 : ℝ) ^ 2 -
-            10 * (0.24166097335306101834 : ℝ) ^ 4 / 3 +
-            91 * (0.24166097335306101835 : ℝ) ^ 6 / 90 -
-            41 * (0.24166097335306101834 : ℝ) ^ 8 / 252 +
-            7381 * (0.24166097335306101835 : ℝ) ^ 10 / 453600 -
-            949 * (0.24166097335306101834 : ℝ) ^ 12 / 855360 +
-            597871 * (0.24166097335306101835 : ℝ) ^ 14 / 10897286400 -
-            134521 * (0.24166097335306101834 : ℝ) ^ 16 / 65383718400 +
-            532171 * (0.24166097335306101835 : ℝ) ^ 18 / 8794469376000 := by
+          4 * (0.24166097335306101834328027 : ℝ) ^ 2 -
+            10 * (0.24166097335306101834328025 : ℝ) ^ 4 / 3 +
+            91 * (0.24166097335306101834328027 : ℝ) ^ 6 / 90 -
+            41 * (0.24166097335306101834328025 : ℝ) ^ 8 / 252 +
+            7381 * (0.24166097335306101834328027 : ℝ) ^ 10 / 453600 -
+            949 * (0.24166097335306101834328025 : ℝ) ^ 12 / 855360 +
+            597871 * (0.24166097335306101834328027 : ℝ) ^ 14 / 10897286400 -
+            134521 * (0.24166097335306101834328025 : ℝ) ^ 16 / 65383718400 +
+            532171 * (0.24166097335306101834328027 : ℝ) ^ 18 / 8794469376000 := by
       dsimp [poly18Diff]
       nlinarith [hpi1_2_hi, hpi1_4_lo, hpi1_6_hi, hpi1_8_lo, hpi1_10_hi, hpi1_12_lo,
         hpi1_14_hi, hpi1_16_lo, hpi1_18_hi]
@@ -1500,38 +1521,40 @@ theorem phase7OneStepModelPrediction_bounds_d21 :
   have hrem1 : (Real.pi / 13) ^ 20 * remCoeff20 < (0.000000000000000000000000000001 : ℝ) := by
     have htmp :
         (Real.pi / 13) ^ 20 * remCoeff20 ≤
-          (0.24166097335306101835 : ℝ) ^ 20 * remCoeff20 := by
+          (0.24166097335306101834328027 : ℝ) ^ 20 * remCoeff20 := by
       have hcoeff_nonneg : 0 ≤ remCoeff20 := by
         dsimp [remCoeff20]
         positivity
       nlinarith [hpi1_20_hi, hcoeff_nonneg]
     have hconst :
-        (0.24166097335306101835 : ℝ) ^ 20 * remCoeff20 <
+        (0.24166097335306101834328027 : ℝ) ^ 20 * remCoeff20 <
           (0.000000000000000000000000000001 : ℝ) := by
       dsimp [remCoeff20]
       norm_num
     exact lt_of_le_of_lt htmp hconst
-  have hrem3 : (3 * Real.pi / 13) ^ 20 * remCoeff20 < (0.0000000000000000000008 : ℝ) := by
-    have hpi3_le : 3 * Real.pi / 13 ≤ (0.72498292005918305504 : ℝ) := by
+  have hrem3 :
+      (3 * Real.pi / 13) ^ 20 * remCoeff20 < (0.00000000000000000000069999 : ℝ) := by
+    have hpi3_le : 3 * Real.pi / 13 ≤ (0.72498292005918305502984079 : ℝ) := by
       linarith [hpi3_hi]
-    have hpi3_20_hi : (3 * Real.pi / 13) ^ 20 ≤ (0.72498292005918305504 : ℝ) ^ 20 := by
+    have hpi3_20_hi :
+        (3 * Real.pi / 13) ^ 20 ≤ (0.72498292005918305502984079 : ℝ) ^ 20 := by
       exact pow_le_pow_left₀ hpi3_nonneg hpi3_le 20
     have htmp :
         (3 * Real.pi / 13) ^ 20 * remCoeff20 ≤
-          (0.72498292005918305504 : ℝ) ^ 20 * remCoeff20 := by
+          (0.72498292005918305502984079 : ℝ) ^ 20 * remCoeff20 := by
       have hcoeff_nonneg : 0 ≤ remCoeff20 := by
         dsimp [remCoeff20]
         positivity
       nlinarith [hpi3_20_hi, hcoeff_nonneg]
     have hconst :
-        (0.72498292005918305504 : ℝ) ^ 20 * remCoeff20 <
-          (0.0000000000000000000008 : ℝ) := by
+        (0.72498292005918305502984079 : ℝ) ^ 20 * remCoeff20 <
+          (0.00000000000000000000069999 : ℝ) := by
       dsimp [remCoeff20]
       norm_num
     exact lt_of_le_of_lt htmp hconst
   have hrem_total :
       (Real.pi / 13) ^ 20 * remCoeff20 + (3 * Real.pi / 13) ^ 20 * remCoeff20 <
-        (0.000000000000000000001 : ℝ) := by
+        (0.0000000000000000000007 : ℝ) := by
     nlinarith [hrem1, hrem3]
   have hcos1_err := abs_cos_sub_taylor18_le (x := Real.pi / 13) hpi1_abs
   rcases
@@ -1580,31 +1603,55 @@ theorem phase7OneStepModelPrediction_bounds_d21 :
   rw [phase7OneStepModelPrediction_eq_cos_pi_div_thirteen_sub_cos_three_pi_div_thirteen]
   constructor
   · have hnum :
-        (0.222431069254950928515 : ℝ) - (0.000000000000000000001 : ℝ) <
+        (0.22243106925495092852301225248 : ℝ) - (0.0000000000000000000007 : ℝ) <
           Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) := by
       nlinarith [hq_lo, hrem_total, hnum_lower]
     have hdiv :
-        ((0.222431069254950928515 : ℝ) - (0.000000000000000000001 : ℝ)) / 728 <
+        ((0.22243106925495092852301225248 : ℝ) - (0.0000000000000000000007 : ℝ)) / 728 <
           (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 := by
       exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
     have hconst :
-        (0.00030553718304251501169 : ℝ) <
-          ((0.222431069254950928515 : ℝ) - (0.000000000000000000001 : ℝ)) / 728 := by
+        (0.0003055371830425150117064 : ℝ) <
+          ((0.22243106925495092852301225248 : ℝ) - (0.0000000000000000000007 : ℝ)) / 728 := by
       norm_num
     exact lt_trans hconst hdiv
   · have hnum :
         Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) <
-          (0.222431069254950928537 : ℝ) + (0.000000000000000000001 : ℝ) := by
+          (0.22243106925495092852301229502 : ℝ) + (0.0000000000000000000007 : ℝ) := by
       nlinarith [hq_hi, hrem_total, hnum_upper]
     have hdiv :
         (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 <
-          ((0.222431069254950928537 : ℝ) + (0.000000000000000000001 : ℝ)) / 728 := by
+          ((0.22243106925495092852301229502 : ℝ) + (0.0000000000000000000007 : ℝ)) / 728 := by
       exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
     have hconst :
-        ((0.222431069254950928537 : ℝ) + (0.000000000000000000001 : ℝ)) / 728 <
-          (0.00030553718304251501180 : ℝ) := by
+        ((0.22243106925495092852301229502 : ℝ) + (0.0000000000000000000007 : ℝ)) / 728 <
+          (0.0003055371830425150117084 : ℝ) := by
       norm_num
     exact lt_trans hdiv hconst
+
+theorem phase7OneStepModelPrediction_bounds_d24 :
+    (0.000305537183042515011706 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.000305537183042515011709 : ℝ) := by
+  rcases phase7OneStepModelPrediction_bounds_d25 with ⟨hlo, hhi⟩
+  constructor <;> linarith
+
+theorem phase7OneStepModelPrediction_bounds_d23 :
+    (0.0003055371830425150117 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.00030553718304251501171 : ℝ) := by
+  rcases phase7OneStepModelPrediction_bounds_d25 with ⟨hlo, hhi⟩
+  constructor <;> linarith
+
+theorem phase7OneStepModelPrediction_bounds_d22 :
+    (0.0003055371830425150117 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.0003055371830425150118 : ℝ) := by
+  rcases phase7OneStepModelPrediction_bounds_d25 with ⟨hlo, hhi⟩
+  constructor <;> linarith
+
+theorem phase7OneStepModelPrediction_bounds_d21 :
+    (0.00030553718304251501169 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.00030553718304251501180 : ℝ) := by
+  rcases phase7OneStepModelPrediction_bounds_d25 with ⟨hlo, hhi⟩
+  constructor <;> linarith
 
 theorem phase7OneStepModelPrediction_bounds_d12 :
     (0.0003055371830 : ℝ) < phase7OneStepModelPrediction ∧

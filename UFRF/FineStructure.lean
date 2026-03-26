@@ -729,6 +729,18 @@ private theorem pi_lt_d25_local : π < (3.1415926535897932384626434 : ℝ) := by
     2 - 1 / 125429550058636850073364230]
 
 /--
+Reusable twenty-five-decimal lower bound on `π` for downstream prediction proofs.
+-/
+theorem pi_gt_d25_ufrf : (3.1415926535897932384626433 : ℝ) < π :=
+  pi_gt_d25_local
+
+/--
+Reusable twenty-five-decimal upper bound on `π` for downstream prediction proofs.
+-/
+theorem pi_lt_d25_ufrf : π < (3.1415926535897932384626434 : ℝ) :=
+  pi_lt_d25_local
+
+/--
 Twenty-three-decimal bracketing for the UFRF inverse fine-structure value.
 
 This sharpens `alpha_inv_bounds_d20` using stronger local bounds on `π`.
