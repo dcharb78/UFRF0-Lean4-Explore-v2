@@ -424,11 +424,13 @@ Current status:
   foundational blocker. On the `AlphaRunning` side, the current
   local-origin / selected-observer / one-step-measurement bridge lane is now
   also locally closed through the present measurement, radius-invariance, and
-  absolute-error packages. For the current physics lane, both the static
-  alpha/CODATA-gap transport and the exposed running
-  prediction/residual/error package now reach `d20`, so the next
-  proof-heavy blocker is prediction-side tightening beyond the current
-  `3π/13` Taylor route rather than additional contour infrastructure.
+  absolute-error packages. For the current physics lane, the static
+  alpha/CODATA-gap transport now reaches `d25`, the exposed `AlphaRunning`
+  gap/residual/error package now reaches `d21`, and the prediction package
+  remains at `d21`. The stronger local `π` input is therefore no longer the
+  limiter; the next proof-heavy blocker is prediction-side tightening beyond
+  the current `π/13` Taylor route rather than additional contour
+  infrastructure or more static-gap packaging.
 - Next optional theorem if desired:
   generalize the canonical quarter-`infsep` local-square package from its fixed
   radius to a variable half-side.
