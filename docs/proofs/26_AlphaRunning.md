@@ -155,9 +155,13 @@ The point of this module is narrow:
   the same radius-free one-step prediction is now also pinned to the sharper
   explicit interval
   `0.00030553718304251501169 < prediction < 0.00030553718304251501180`.
-- `phase7OneStepModelPrediction_bounds_d25`:
+- `phase7OneStepModelPrediction_bounds_d27`:
   the same radius-free one-step prediction is now also pinned to the sharper
   explicit interval
+  `0.000305537183042515011706524 < prediction < 0.000305537183042515011706528`.
+- `phase7OneStepModelPrediction_bounds_d25`:
+  equivalently, the same prediction also satisfies the weaker compatibility
+  interval
   `0.0003055371830425150117064 < prediction < 0.0003055371830425150117084`.
 - `phase7OneStepModelPrediction_bounds_d12`:
   equivalently, the same prediction also satisfies the weaker explicit
@@ -744,13 +748,13 @@ The safe interpretation is:
   for the actual one-step prediction itself:
   `0.0003055371830425 < prediction < 0.0003055371830426`,
 - Lean now also sharpens that same prediction package again, now to the
-  `d25` interval
-  `0.0003055371830425150117064 < prediction < 0.0003055371830425150117084`,
+  `d27` interval
+  `0.000305537183042515011706524 < prediction < 0.000305537183042515011706528`,
 - the stronger local `π` control on the static side now sharpens the
   CODATA-gap ingredient further to a `d25` interval
   `0.0003045988784325592023841 < gap < 0.0003045988784325592023968`,
 - within `AlphaRunning`, the derived gap alias and the exposed
-  residual/error window now both reach `d25`:
+  residual/error window still reach `d25`:
   `0.0003045988784325592023841 < gap < 0.0003045988784325592023968` and
   `0.0000009383046099558092932 < residual,error < 0.0000009383046099558094159`,
 - the earlier coarse `0.001` residual bound is still present as a simpler
@@ -847,8 +851,8 @@ What Lean still does not prove is the script's floating-point printout itself.
   comparison.
 - Lean now proves an explicit micro residual window and an absolute
   `0.000001` bound on the one-step residual.
-- Lean now also proves a tighter one-step prediction window and propagates it
-  to matching tighter residual/error windows.
+- Lean now also proves a tighter one-step prediction window; the exposed
+  residual/error windows remain at `d25` on the current static-gap lane.
 - Lean now also proves the real-number `10⁻⁶` pass condition checked by the
   external script.
 - Lean now also proves seven-decimal rounding theorems for the exposed
@@ -856,10 +860,10 @@ What Lean still does not prove is the script's floating-point printout itself.
 - Lean now also packages the derived `AlphaRunning` CODATA gap alias through a
   `d25` window, matching the stronger static-side control in
   `UFRF/FineStructure.lean`.
-- Lean now sharpens the exposed one-step prediction package to `d25` by
+- Lean now sharpens the exposed one-step prediction package to `d27` by
   bounding the shared `π/13` prediction polynomial directly through the
-  current `Complex.exp`-based Taylor route, and the exposed residual/error
-  package now also reaches `d25`.
+  current order-20 `Complex.exp`-based Taylor route, while the exposed
+  residual/error package remains at `d25`.
 - What Lean still does not prove is the external script's floating-point output
   itself, or any stronger projection-law / physical-selection claim.
 - The current `4 × 7` normalization is present only as an explicit model choice.
@@ -871,8 +875,7 @@ What Lean still does not prove is the script's floating-point printout itself.
   `UFRF/FineStructure.lean`, while `UFRF/AlphaRunning.lean` now packages the
   derived comparison gap `alphaCodata2022Gap` and its one-step comparison
   theorems.
-- If the next proof-heavy branch is pursued, the natural target is now a
-  sharper prediction kernel beyond the current order-18 shared-`π/13` Taylor
-  route: the stronger static alpha/CODATA-gap control in
-  `UFRF/FineStructure.lean`, the exposed `AlphaRunning` prediction surface,
-  and the exposed gap/residual/error surface now all reach `d25`.
+- If the next proof-heavy branch is pursued for further exposed tightening,
+  the natural target is now stronger static alpha/CODATA-gap control beyond
+  `d25`: the exposed `AlphaRunning` prediction surface now reaches `d27`,
+  while the exposed gap/residual/error surface still reaches `d25`.

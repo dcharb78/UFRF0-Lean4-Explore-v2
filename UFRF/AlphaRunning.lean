@@ -836,6 +836,90 @@ private theorem abs_cos_sub_taylor18_le {x : ℝ} (hx : |x| ≤ 1) :
     simpa [hre] using hcos_raw
   exact hcos.trans hbound'
 
+private theorem abs_cos_sub_taylor20_le {x : ℝ} (hx : |x| ≤ 1) :
+    |Real.cos x -
+        (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+          x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+          x ^ 18 / 6402373705728000 + x ^ 20 / 2432902008176640000)| ≤
+      |x| ^ 22 * (23 / ((Nat.factorial 22 : ℝ) * 22)) := by
+  have hx' : ‖((x : ℂ) * Complex.I)‖ ≤ 1 := by
+    simpa [Complex.norm_mul, Complex.norm_I, Real.norm_eq_abs, mul_comm] using hx
+  have hsum :
+      (∑ m ∈ Finset.range 22, ((((x : ℂ) * Complex.I) ^ m) / m.factorial : ℂ)) =
+        (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+            x ^ 18 / 6402373705728000 + x ^ 20 / 2432902008176640000) +
+          (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+              x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+              x ^ 19 / 121645100408832000 + x ^ 21 / 51090942171709440000) *
+            Complex.I := by
+    apply Complex.ext <;>
+      simp [Finset.sum_range_succ, Nat.factorial, pow_succ,
+        Complex.mul_re, Complex.mul_im] <;>
+      ring
+  have hbound := Complex.exp_bound (x := (x : ℂ) * Complex.I) hx' (n := 22) (by norm_num : 0 < 22)
+  rw [hsum] at hbound
+  have hbound' :
+      ‖Complex.exp ((x : ℂ) * Complex.I) -
+          ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                x ^ 18 / 6402373705728000 + x ^ 20 / 2432902008176640000) +
+            (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                x ^ 19 / 121645100408832000 + x ^ 21 / 51090942171709440000) *
+              Complex.I)‖ ≤
+        |x| ^ 22 * (23 / ((Nat.factorial 22 : ℝ) * 22)) := by
+    simpa [Complex.norm_mul, Complex.norm_I, Real.norm_eq_abs, div_eq_mul_inv,
+      mul_assoc, mul_left_comm, mul_comm] using hbound
+  have hre :
+      (Complex.exp ((x : ℂ) * Complex.I) -
+          ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                x ^ 18 / 6402373705728000 + x ^ 20 / 2432902008176640000) +
+            (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                x ^ 19 / 121645100408832000 + x ^ 21 / 51090942171709440000) *
+              Complex.I)).re =
+        Real.cos x -
+          (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+            x ^ 18 / 6402373705728000 + x ^ 20 / 2432902008176640000) := by
+    simp [Complex.exp_ofReal_mul_I, Complex.sub_re, ← Complex.ofReal_pow, Complex.ofReal_re,
+      Complex.ofReal_im, Complex.cos_ofReal_re]
+  have hcos_raw :
+      |(Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                  x ^ 18 / 6402373705728000 + x ^ 20 / 2432902008176640000) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                  x ^ 19 / 121645100408832000 + x ^ 21 / 51090942171709440000) *
+                Complex.I)).re| ≤
+        ‖Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                  x ^ 18 / 6402373705728000 + x ^ 20 / 2432902008176640000) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                  x ^ 19 / 121645100408832000 + x ^ 21 / 51090942171709440000) *
+                Complex.I)‖ :=
+    Complex.abs_re_le_norm _
+  have hcos :
+      |Real.cos x -
+          (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+            x ^ 18 / 6402373705728000 + x ^ 20 / 2432902008176640000)| ≤
+        ‖Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                  x ^ 18 / 6402373705728000 + x ^ 20 / 2432902008176640000) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                  x ^ 19 / 121645100408832000 + x ^ 21 / 51090942171709440000) *
+                Complex.I)‖ := by
+    simpa [hre] using hcos_raw
+  exact hcos.trans hbound'
+
 set_option maxHeartbeats 2000000 in
 private theorem cos_pi_div_thirteen_bounds_tight :
     (0.970941817426052027 : ℝ) < Real.cos (Real.pi / 13) ∧
@@ -1371,19 +1455,19 @@ theorem phase7OneStepModelPrediction_bounds_d20 :
     exact lt_trans hdiv hconst
 
 set_option maxHeartbeats 2000000 in
-theorem phase7OneStepModelPrediction_bounds_d25 :
-    (0.0003055371830425150117064 : ℝ) < phase7OneStepModelPrediction ∧
-    phase7OneStepModelPrediction < (0.0003055371830425150117084 : ℝ) := by
-  let poly18 : ℝ → ℝ := fun t =>
+theorem phase7OneStepModelPrediction_bounds_d27 :
+    (0.000305537183042515011706524 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.000305537183042515011706528 : ℝ) := by
+  let poly20 : ℝ → ℝ := fun t =>
     1 - t ^ 2 / 2 + t ^ 4 / 24 - t ^ 6 / 720 + t ^ 8 / 40320 - t ^ 10 / 3628800 +
       t ^ 12 / 479001600 - t ^ 14 / 87178291200 + t ^ 16 / 20922789888000 -
-      t ^ 18 / 6402373705728000
-  let poly18Diff : ℝ → ℝ := fun t =>
+      t ^ 18 / 6402373705728000 + t ^ 20 / 2432902008176640000
+  let poly20Diff : ℝ → ℝ := fun t =>
     4 * t ^ 2 - 10 * t ^ 4 / 3 + 91 * t ^ 6 / 90 - 41 * t ^ 8 / 252 +
       7381 * t ^ 10 / 453600 - 949 * t ^ 12 / 855360 +
       597871 * t ^ 14 / 10897286400 - 134521 * t ^ 16 / 65383718400 +
-      532171 * t ^ 18 / 8794469376000
-  let remCoeff20 : ℝ := 21 / ((Nat.factorial 20 : ℝ) * 20)
+      532171 * t ^ 18 / 8794469376000 - 792451 * t ^ 20 / 552932274585600
+  let remCoeff22 : ℝ := 23 / ((Nat.factorial 22 : ℝ) * 22)
   have hpi1_nonneg : 0 ≤ Real.pi / 13 := by positivity
   have hpi1_abs : |Real.pi / 13| ≤ 1 := by
     rw [abs_of_nonneg hpi1_nonneg]
@@ -1457,11 +1541,17 @@ theorem phase7OneStepModelPrediction_bounds_d25 :
   have hpi1_18_hi :
       (Real.pi / 13) ^ 18 ≤ (0.24166097335306101834328027 : ℝ) ^ 18 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_20_lo :
+      (0.24166097335306101834328025 : ℝ) ^ 20 ≤ (Real.pi / 13) ^ 20 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
   have hpi1_20_hi :
       (Real.pi / 13) ^ 20 ≤ (0.24166097335306101834328027 : ℝ) ^ 20 := by
     nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_22_hi :
+      (Real.pi / 13) ^ 22 ≤ (0.24166097335306101834328027 : ℝ) ^ 22 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
   have hq_lo_base :
-      (0.22243106925495092852301225248 : ℝ) <
+      (0.222431069254950928522350903 : ℝ) <
         4 * (0.24166097335306101834328025 : ℝ) ^ 2 -
           10 * (0.24166097335306101834328027 : ℝ) ^ 4 / 3 +
           91 * (0.24166097335306101834328025 : ℝ) ^ 6 / 90 -
@@ -1470,10 +1560,11 @@ theorem phase7OneStepModelPrediction_bounds_d25 :
           949 * (0.24166097335306101834328027 : ℝ) ^ 12 / 855360 +
           597871 * (0.24166097335306101834328025 : ℝ) ^ 14 / 10897286400 -
           134521 * (0.24166097335306101834328027 : ℝ) ^ 16 / 65383718400 +
-          532171 * (0.24166097335306101834328025 : ℝ) ^ 18 / 8794469376000 := by
+          532171 * (0.24166097335306101834328025 : ℝ) ^ 18 / 8794469376000 -
+          792451 * (0.24166097335306101834328027 : ℝ) ^ 20 / 552932274585600 := by
     norm_num
   have hq_lo :
-      (0.22243106925495092852301225248 : ℝ) < poly18Diff (Real.pi / 13) := by
+      (0.222431069254950928522350903 : ℝ) < poly20Diff (Real.pi / 13) := by
     have htmp :
         4 * (0.24166097335306101834328025 : ℝ) ^ 2 -
           10 * (0.24166097335306101834328027 : ℝ) ^ 4 / 3 +
@@ -1483,11 +1574,12 @@ theorem phase7OneStepModelPrediction_bounds_d25 :
           949 * (0.24166097335306101834328027 : ℝ) ^ 12 / 855360 +
           597871 * (0.24166097335306101834328025 : ℝ) ^ 14 / 10897286400 -
           134521 * (0.24166097335306101834328027 : ℝ) ^ 16 / 65383718400 +
-          532171 * (0.24166097335306101834328025 : ℝ) ^ 18 / 8794469376000 ≤
-        poly18Diff (Real.pi / 13) := by
-      dsimp [poly18Diff]
+          532171 * (0.24166097335306101834328025 : ℝ) ^ 18 / 8794469376000 -
+          792451 * (0.24166097335306101834328027 : ℝ) ^ 20 / 552932274585600 ≤
+        poly20Diff (Real.pi / 13) := by
+      dsimp [poly20Diff]
       nlinarith [hpi1_2_lo, hpi1_4_hi, hpi1_6_lo, hpi1_8_hi, hpi1_10_lo, hpi1_12_hi,
-        hpi1_14_lo, hpi1_16_hi, hpi1_18_lo]
+        hpi1_14_lo, hpi1_16_hi, hpi1_18_lo, hpi1_20_hi]
     exact lt_of_lt_of_le hq_lo_base htmp
   have hq_hi_base :
       4 * (0.24166097335306101834328027 : ℝ) ^ 2 -
@@ -1498,13 +1590,14 @@ theorem phase7OneStepModelPrediction_bounds_d25 :
         949 * (0.24166097335306101834328025 : ℝ) ^ 12 / 855360 +
         597871 * (0.24166097335306101834328027 : ℝ) ^ 14 / 10897286400 -
         134521 * (0.24166097335306101834328025 : ℝ) ^ 16 / 65383718400 +
-        532171 * (0.24166097335306101834328027 : ℝ) ^ 18 / 8794469376000 <
-      (0.22243106925495092852301229502 : ℝ) := by
+        532171 * (0.24166097335306101834328027 : ℝ) ^ 18 / 8794469376000 -
+        792451 * (0.24166097335306101834328025 : ℝ) ^ 20 / 552932274585600 <
+      (0.222431069254950928522350946 : ℝ) := by
     norm_num
   have hq_hi :
-      poly18Diff (Real.pi / 13) < (0.22243106925495092852301229502 : ℝ) := by
+      poly20Diff (Real.pi / 13) < (0.222431069254950928522350946 : ℝ) := by
     have htmp :
-        poly18Diff (Real.pi / 13) ≤
+        poly20Diff (Real.pi / 13) ≤
           4 * (0.24166097335306101834328027 : ℝ) ^ 2 -
             10 * (0.24166097335306101834328025 : ℝ) ^ 4 / 3 +
             91 * (0.24166097335306101834328027 : ℝ) ^ 6 / 90 -
@@ -1513,121 +1606,132 @@ theorem phase7OneStepModelPrediction_bounds_d25 :
             949 * (0.24166097335306101834328025 : ℝ) ^ 12 / 855360 +
             597871 * (0.24166097335306101834328027 : ℝ) ^ 14 / 10897286400 -
             134521 * (0.24166097335306101834328025 : ℝ) ^ 16 / 65383718400 +
-            532171 * (0.24166097335306101834328027 : ℝ) ^ 18 / 8794469376000 := by
-      dsimp [poly18Diff]
+            532171 * (0.24166097335306101834328027 : ℝ) ^ 18 / 8794469376000 -
+            792451 * (0.24166097335306101834328025 : ℝ) ^ 20 / 552932274585600 := by
+      dsimp [poly20Diff]
       nlinarith [hpi1_2_hi, hpi1_4_lo, hpi1_6_hi, hpi1_8_lo, hpi1_10_hi, hpi1_12_lo,
-        hpi1_14_hi, hpi1_16_lo, hpi1_18_hi]
+        hpi1_14_hi, hpi1_16_lo, hpi1_18_hi, hpi1_20_lo]
     exact lt_of_le_of_lt htmp hq_hi_base
-  have hrem1 : (Real.pi / 13) ^ 20 * remCoeff20 < (0.000000000000000000000000000001 : ℝ) := by
+  have hrem1 :
+      (Real.pi / 13) ^ 22 * remCoeff22 < (0.0000000000000000000000000000000001 : ℝ) := by
     have htmp :
-        (Real.pi / 13) ^ 20 * remCoeff20 ≤
-          (0.24166097335306101834328027 : ℝ) ^ 20 * remCoeff20 := by
-      have hcoeff_nonneg : 0 ≤ remCoeff20 := by
-        dsimp [remCoeff20]
+        (Real.pi / 13) ^ 22 * remCoeff22 ≤
+          (0.24166097335306101834328027 : ℝ) ^ 22 * remCoeff22 := by
+      have hcoeff_nonneg : 0 ≤ remCoeff22 := by
+        dsimp [remCoeff22]
         positivity
-      nlinarith [hpi1_20_hi, hcoeff_nonneg]
+      nlinarith [hpi1_22_hi, hcoeff_nonneg]
     have hconst :
-        (0.24166097335306101834328027 : ℝ) ^ 20 * remCoeff20 <
-          (0.000000000000000000000000000001 : ℝ) := by
-      dsimp [remCoeff20]
+        (0.24166097335306101834328027 : ℝ) ^ 22 * remCoeff22 <
+          (0.0000000000000000000000000000000001 : ℝ) := by
+      dsimp [remCoeff22]
       norm_num
     exact lt_of_le_of_lt htmp hconst
   have hrem3 :
-      (3 * Real.pi / 13) ^ 20 * remCoeff20 < (0.00000000000000000000069999 : ℝ) := by
+      (3 * Real.pi / 13) ^ 22 * remCoeff22 < (0.00000000000000000000000079 : ℝ) := by
     have hpi3_le : 3 * Real.pi / 13 ≤ (0.72498292005918305502984079 : ℝ) := by
       linarith [hpi3_hi]
-    have hpi3_20_hi :
-        (3 * Real.pi / 13) ^ 20 ≤ (0.72498292005918305502984079 : ℝ) ^ 20 := by
-      exact pow_le_pow_left₀ hpi3_nonneg hpi3_le 20
+    have hpi3_22_hi :
+        (3 * Real.pi / 13) ^ 22 ≤ (0.72498292005918305502984079 : ℝ) ^ 22 := by
+      exact pow_le_pow_left₀ hpi3_nonneg hpi3_le 22
     have htmp :
-        (3 * Real.pi / 13) ^ 20 * remCoeff20 ≤
-          (0.72498292005918305502984079 : ℝ) ^ 20 * remCoeff20 := by
-      have hcoeff_nonneg : 0 ≤ remCoeff20 := by
-        dsimp [remCoeff20]
+        (3 * Real.pi / 13) ^ 22 * remCoeff22 ≤
+          (0.72498292005918305502984079 : ℝ) ^ 22 * remCoeff22 := by
+      have hcoeff_nonneg : 0 ≤ remCoeff22 := by
+        dsimp [remCoeff22]
         positivity
-      nlinarith [hpi3_20_hi, hcoeff_nonneg]
+      nlinarith [hpi3_22_hi, hcoeff_nonneg]
     have hconst :
-        (0.72498292005918305502984079 : ℝ) ^ 20 * remCoeff20 <
-          (0.00000000000000000000069999 : ℝ) := by
-      dsimp [remCoeff20]
+        (0.72498292005918305502984079 : ℝ) ^ 22 * remCoeff22 <
+          (0.00000000000000000000000079 : ℝ) := by
+      dsimp [remCoeff22]
       norm_num
     exact lt_of_le_of_lt htmp hconst
   have hrem_total :
-      (Real.pi / 13) ^ 20 * remCoeff20 + (3 * Real.pi / 13) ^ 20 * remCoeff20 <
-        (0.0000000000000000000007 : ℝ) := by
+      (Real.pi / 13) ^ 22 * remCoeff22 + (3 * Real.pi / 13) ^ 22 * remCoeff22 <
+        (0.0000000000000000000000008 : ℝ) := by
     nlinarith [hrem1, hrem3]
-  have hcos1_err := abs_cos_sub_taylor18_le (x := Real.pi / 13) hpi1_abs
+  have hcos1_err := abs_cos_sub_taylor20_le (x := Real.pi / 13) hpi1_abs
   rcases
       abs_sub_le_iff.mp
         (by
-          simpa [poly18, remCoeff20, abs_of_nonneg hpi1_nonneg] using hcos1_err) with
+          simpa [poly20, remCoeff22, abs_of_nonneg hpi1_nonneg] using hcos1_err) with
     ⟨hcos1_sub_upper, hcos1_sub_lower⟩
   have hcos1_lower :
-      poly18 (Real.pi / 13) - (Real.pi / 13) ^ 20 * remCoeff20 ≤ Real.cos (Real.pi / 13) := by
-    dsimp [poly18, remCoeff20] at hcos1_sub_lower ⊢
+      poly20 (Real.pi / 13) - (Real.pi / 13) ^ 22 * remCoeff22 ≤ Real.cos (Real.pi / 13) := by
+    dsimp [poly20, remCoeff22] at hcos1_sub_lower ⊢
     apply (sub_le_iff_le_add').2
     nlinarith [hcos1_sub_lower]
   have hcos1_upper :
-      Real.cos (Real.pi / 13) ≤ poly18 (Real.pi / 13) + (Real.pi / 13) ^ 20 * remCoeff20 := by
-    dsimp [poly18, remCoeff20] at hcos1_sub_upper ⊢
+      Real.cos (Real.pi / 13) ≤ poly20 (Real.pi / 13) + (Real.pi / 13) ^ 22 * remCoeff22 := by
+    dsimp [poly20, remCoeff22] at hcos1_sub_upper ⊢
     exact (sub_le_iff_le_add').1 hcos1_sub_upper
-  have hcos3_err := abs_cos_sub_taylor18_le (x := 3 * Real.pi / 13) hpi3_abs
+  have hcos3_err := abs_cos_sub_taylor20_le (x := 3 * Real.pi / 13) hpi3_abs
   rcases
       abs_sub_le_iff.mp
         (by
-          simpa [poly18, remCoeff20, abs_of_nonneg hpi3_nonneg] using hcos3_err) with
+          simpa [poly20, remCoeff22, abs_of_nonneg hpi3_nonneg] using hcos3_err) with
     ⟨hcos3_sub_upper, hcos3_sub_lower⟩
   have hcos3_lower :
-      poly18 (3 * Real.pi / 13) - (3 * Real.pi / 13) ^ 20 * remCoeff20 ≤
+      poly20 (3 * Real.pi / 13) - (3 * Real.pi / 13) ^ 22 * remCoeff22 ≤
         Real.cos (3 * Real.pi / 13) := by
-    dsimp [poly18, remCoeff20] at hcos3_sub_lower ⊢
+    dsimp [poly20, remCoeff22] at hcos3_sub_lower ⊢
     apply (sub_le_iff_le_add').2
     nlinarith [hcos3_sub_lower]
   have hcos3_upper :
       Real.cos (3 * Real.pi / 13) ≤
-        poly18 (3 * Real.pi / 13) + (3 * Real.pi / 13) ^ 20 * remCoeff20 := by
-    dsimp [poly18, remCoeff20] at hcos3_sub_upper ⊢
+        poly20 (3 * Real.pi / 13) + (3 * Real.pi / 13) ^ 22 * remCoeff22 := by
+    dsimp [poly20, remCoeff22] at hcos3_sub_upper ⊢
     exact (sub_le_iff_le_add').1 hcos3_sub_upper
   have hnum_lower :
-      poly18Diff (Real.pi / 13) -
-          ((Real.pi / 13) ^ 20 * remCoeff20 + (3 * Real.pi / 13) ^ 20 * remCoeff20) ≤
+      poly20Diff (Real.pi / 13) -
+          ((Real.pi / 13) ^ 22 * remCoeff22 + (3 * Real.pi / 13) ^ 22 * remCoeff22) ≤
         Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) := by
-    dsimp [poly18Diff, poly18] at hcos1_lower hcos3_upper ⊢
+    dsimp [poly20Diff, poly20] at hcos1_lower hcos3_upper ⊢
     nlinarith [hcos1_lower, hcos3_upper]
   have hnum_upper :
       Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) ≤
-        poly18Diff (Real.pi / 13) +
-          ((Real.pi / 13) ^ 20 * remCoeff20 + (3 * Real.pi / 13) ^ 20 * remCoeff20) := by
-    dsimp [poly18Diff, poly18] at hcos1_upper hcos3_lower ⊢
+        poly20Diff (Real.pi / 13) +
+          ((Real.pi / 13) ^ 22 * remCoeff22 + (3 * Real.pi / 13) ^ 22 * remCoeff22) := by
+    dsimp [poly20Diff, poly20] at hcos1_upper hcos3_lower ⊢
     nlinarith [hcos1_upper, hcos3_lower]
   rw [phase7OneStepModelPrediction_eq_cos_pi_div_thirteen_sub_cos_three_pi_div_thirteen]
   constructor
   · have hnum :
-        (0.22243106925495092852301225248 : ℝ) - (0.0000000000000000000007 : ℝ) <
+        (0.222431069254950928522350903 : ℝ) - (0.0000000000000000000000008 : ℝ) <
           Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) := by
       nlinarith [hq_lo, hrem_total, hnum_lower]
     have hdiv :
-        ((0.22243106925495092852301225248 : ℝ) - (0.0000000000000000000007 : ℝ)) / 728 <
+        ((0.222431069254950928522350903 : ℝ) - (0.0000000000000000000000008 : ℝ)) / 728 <
           (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 := by
       exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
     have hconst :
-        (0.0003055371830425150117064 : ℝ) <
-          ((0.22243106925495092852301225248 : ℝ) - (0.0000000000000000000007 : ℝ)) / 728 := by
+        (0.000305537183042515011706524 : ℝ) <
+          ((0.222431069254950928522350903 : ℝ) -
+              (0.0000000000000000000000008 : ℝ)) / 728 := by
       norm_num
     exact lt_trans hconst hdiv
   · have hnum :
         Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) <
-          (0.22243106925495092852301229502 : ℝ) + (0.0000000000000000000007 : ℝ) := by
+          (0.222431069254950928522350946 : ℝ) + (0.0000000000000000000000008 : ℝ) := by
       nlinarith [hq_hi, hrem_total, hnum_upper]
     have hdiv :
         (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 <
-          ((0.22243106925495092852301229502 : ℝ) + (0.0000000000000000000007 : ℝ)) / 728 := by
+          ((0.222431069254950928522350946 : ℝ) +
+              (0.0000000000000000000000008 : ℝ)) / 728 := by
       exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
     have hconst :
-        ((0.22243106925495092852301229502 : ℝ) + (0.0000000000000000000007 : ℝ)) / 728 <
-          (0.0003055371830425150117084 : ℝ) := by
+        ((0.222431069254950928522350946 : ℝ) +
+            (0.0000000000000000000000008 : ℝ)) / 728 <
+          (0.000305537183042515011706528 : ℝ) := by
       norm_num
     exact lt_trans hdiv hconst
+
+theorem phase7OneStepModelPrediction_bounds_d25 :
+    (0.0003055371830425150117064 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.0003055371830425150117084 : ℝ) := by
+  rcases phase7OneStepModelPrediction_bounds_d27 with ⟨hlo, hhi⟩
+  constructor <;> linarith
 
 theorem phase7OneStepModelPrediction_bounds_d24 :
     (0.000305537183042515011706 : ℝ) < phase7OneStepModelPrediction ∧

@@ -80,7 +80,8 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison`**: the current radius-free one-step prediction is exactly that centered alpha-selected comparison scalar
 - **`phase7OneStepModelPrediction_bounds_d20`**: the current radius-free one-step prediction lies in the explicit interval `0.00030553718304251501 < prediction < 0.00030553718304251502`
 - **`phase7OneStepModelPrediction_bounds_d21`**: the current radius-free one-step prediction is now sharpened further to the explicit interval `0.00030553718304251501169 < prediction < 0.00030553718304251501180`
-- **`phase7OneStepModelPrediction_bounds_d25`**: the current radius-free one-step prediction is now sharpened further to the explicit interval `0.0003055371830425150117064 < prediction < 0.0003055371830425150117084`
+- **`phase7OneStepModelPrediction_bounds_d27`**: the current radius-free one-step prediction is now sharpened further to the explicit interval `0.000305537183042515011706524 < prediction < 0.000305537183042515011706528`
+- **`phase7OneStepModelPrediction_bounds_d25`**: equivalently, the same prediction also satisfies the weaker compatibility interval `0.0003055371830425150117064 < prediction < 0.0003055371830425150117084`
 - **`phase7OneStepModelPrediction_rounds_to_0_0003055`**: the current radius-free one-step prediction rounds to `0.0003055` at seven decimal places
 - **`alphaPhaseObserverOneStepComparison_rounds_to_0_0003055`**: equivalently, the observer-indexed one-step comparison alias rounds to that same seven-decimal value
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centered_comparison`**: equivalently, the one-step normalized observable itself is exactly that centered alpha-selected comparison scalar
@@ -166,9 +167,9 @@ seven-decimal rounding theorems for the one-step comparison scalar and the
 script-aligned absolute error.
 It now also sharpens the static CODATA comparison gap itself to a
 twenty-five-decimal window on the static side; the exposed running prediction
-now also reaches `d25`, and the exposed `AlphaRunning` gap/residual/error
-package now also reaches `d25`. Further exposed tightening now requires a
-sharper prediction kernel rather than static-gap transport.
+now reaches `d27`, while the exposed `AlphaRunning` gap/residual/error
+package still reaches `d25`. Further exposed tightening now requires
+stronger static-gap transport rather than more prediction-only tightening.
 It now also packages the exposed observer-indexed comparison/residual
 quantities on the same recurring-handoff channel as the selected observer, so
 the measurement-side formulas are explicitly tied back to the no-bottom-scale
