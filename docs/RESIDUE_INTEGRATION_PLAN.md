@@ -421,9 +421,14 @@ Current status:
   enclosing-rectangle wrapper. There is no longer a missing structural
   rectangle-comparison step in Phase 3.
   Further work in this direction is now convenience packaging rather than a
-  foundational blocker. For the current physics lane, the next proof-heavy
-  blocker sits in `UFRF/AlphaRunning.lean`'s transcendental estimates rather
-  than in additional contour infrastructure.
+  foundational blocker. On the `AlphaRunning` side, the current
+  local-origin / selected-observer / one-step-measurement bridge lane is now
+  also locally closed through the present measurement, radius-invariance, and
+  absolute-error packages. For the current physics lane, both the static
+  alpha/CODATA-gap transport and the exposed running
+  prediction/residual/error package now reach `d20`, so the next
+  proof-heavy blocker is prediction-side tightening beyond the current
+  `3π/13` Taylor route rather than additional contour infrastructure.
 - Next optional theorem if desired:
   generalize the canonical quarter-`infsep` local-square package from its fixed
   radius to a variable half-side.

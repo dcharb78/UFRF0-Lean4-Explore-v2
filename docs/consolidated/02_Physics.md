@@ -14,6 +14,7 @@ This document consolidates the physics-related modules.
 - **`alpha_inv_floor_137`**: ⌊4π³ + π² + π⌋ = 137 (proven via tight π bounds)
 - **`alpha_inv_bounds_d9`**: `137.036303775 < α⁻¹ < 137.036303776`
 - **`alpha_inv_bounds_d13`**: `137.0363037758784 < α⁻¹ < 137.0363037758785`
+- **`alpha_inv_bounds_d20`**: `137.03630377587843255887 < α⁻¹ < 137.03630377587843256013`
 - **`alpha_inv_rounds_to_137_036303775878`**: `α⁻¹` rounds to `137.036303775878` at the `10^-12` place
 - **`ufrf_matches_codata`**: `|ufrf − CODATA 2022| < 0.00031`
 - **`alpha_polynomial_form`**: Coefficients are {4, 1, 1} from LOGGrade duality
@@ -39,10 +40,23 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alphaPhaseObserverModelNormalization_eq_twenty_eight`**: the current model normalization is explicitly `4 × 7 = 28`
 - **`alphaPhaseObserverNormalizedRealCorrection_eq_re_phase7_scalar_mul_residueCandidate`**: the normalized selected-observer real observable is the induced real channel divided by that model normalization
 - **`alphaPhaseObserverNormalizedRealCorrection_eq_of_le_lt_half_infsep`**: that normalized selected-observer real observable is radius-invariant in the allowed contour regime
+- **`alpha_running_no_terminal_scale_and_handoff`**: the running/projection layer packages no bottom scale together with the repeated local handoff `13 ↦ 3`, `14 ↦ 4` at every whole-cycle translate
+- **`alpha_selected_centered_deviation_has_local_origin_and_recurring_handoff`**: one layer earlier than the exposed real measurement, the centered complex deviation itself now explicitly carries the local origin `0`, the arithmetic-selected observer, the alpha-selected root/scalar-residue form, and the recurring handoff in one theorem
+- **`alpha_selected_real_correction_has_local_origin_radius_invariance_and_recurring_handoff`**: one layer earlier than the current `/ 28` measurement rule, the unnormalized real selected-observer correction itself now explicitly carries the local origin `0`, the arithmetic-selected observer, the centered/root-scalar real formulas, allowed-radius stability, and the recurring handoff in one theorem
+- **`alpha_selected_centered_observable_global_average_package_has_local_origin_radius_invariance_and_recurring_handoff`**: the centered observer-local observable now also explicitly packages the conserved-average story, so the all-root average stays static while the selected centered observable is the normalized real part of deviation from that average, still with allowed-radius stability and the recurring handoff in one theorem
+- **`alpha_selected_observer_sits_on_prism_orbit_before_recurring_handoff`**: a second exposed structural consequence now packages the universal PRISM walk, the fact that the arithmetic-selected observer is the contextual phase `7` reached after seven successor steps, the chart-relative `13 / 3 / 0` closure point, and the same recurring handoff at every indexed scale without promoting phase `7` into an absolute origin
+- **`alpha_selected_centered_observable_reaches_recurring_handoff`**: the exposed normalized real centered observable itself, at any discrete running step, sits on that same arithmetic-selected recurring-handoff channel
+- **`alpha_selected_centered_observable_has_local_origin_and_recurring_handoff`**: the centered-observable package now explicitly carries the local origin `0`, the arithmetic-selected observer, the exposed measurement rule, and the recurring handoff in one theorem
+- **`alpha_selected_centered_observable_has_local_origin_radius_invariance_and_recurring_handoff`**: the same centered-observable package now also proves the exposed measurement is stable under allowed contour-radius changes while keeping that local origin and recurring handoff
+- **`alpha_selected_comparison_and_residual_reach_recurring_handoff`**: the exposed observer-indexed one-step comparison and one-step residual both sit on that same arithmetic-selected recurring-handoff channel
+- **`alpha_selected_one_step_measurement_package_has_local_origin_and_recurring_handoff`**: the smallest current one-step user-facing bundle now also sits in one theorem, carrying the local origin `0`, the arithmetic-selected observer, the explicit `/ 28` measurement rule, the one-step comparison alias, the one-step residual alias, and the recurring handoff
+- **`alpha_selected_one_step_measurement_package_has_local_origin_radius_invariance_and_recurring_handoff`**: the same one-step user-facing bundle now also proves the exposed one-step measurement and residual are stable under allowed contour-radius changes while keeping that local origin, observer channel, explicit `/ 28` rule, and recurring handoff
+- **`alpha_selected_one_step_absolute_error_package_has_local_origin_and_recurring_handoff`**: the same one-step user-facing bundle now also carries the script-aligned absolute-error identity, so the absolute error is explicitly the absolute value of the observer-indexed one-step residual on that same local-origin, arithmetic-selected recurring-handoff channel
 - **`prime_tower_is_coherent`**: every prime tower is coherent across all finite depths
 - **`prime_start_pattern`**: every prime tower starts with `1` and then resolves into `p` positions at the next depth
 - **`ufrf_start_pattern`**: the UFRF specialization is the concrete `1` then `13` start pattern
 - **`cycle_seed_zero_to_one`**: the smallest breathing-cycle step is `0 -> 1`
+- **`alpha_running_coherent_start_and_handoff`**: one packaged theorem now bundles the coherent `13`-tower, the concrete `1` then `13` start pattern, the cycle-side `0 -> 1` seed step, no bottom scale, and the repeated local `13 ↦ 3`, `14 ↦ 4` handoff
 - **`alphaPhaseObserver_is_seven_steps_on_seed_orbit`**: phase `7` is reached by seven ordinary successor steps from the seed, so it is a contextual point on the universal orbit rather than an absolute origin
 - **`alphaPhaseObserver_enters_terminal_handoff_in_fixed_steps`**: the selected observer label hits REST, then the two bridge positions, then seed/closure, and then restart after fixed successor steps
 - **`alphaPhaseObserver_selected_by_alpha_arithmetic`**: the selected observer channel is exactly the phase picked out by the integer projection of `ufrf_alpha_inv`
@@ -63,6 +77,8 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alpha_selected_centered_comparison_eq_alpha_selected_root_scalar`**: the observer-indexed centered comparison formula and the observer-indexed root/scalar formula are exactly the same normalized real quantity
 - **`alphaPhaseObserverOneStepComparison_eq_alpha_selected_centered_comparison`**: the observer-indexed one-step comparison alias is exactly that centered alpha-selected comparison scalar
 - **`phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison`**: the current radius-free one-step prediction is exactly that centered alpha-selected comparison scalar
+- **`phase7OneStepModelPrediction_bounds_d20`**: the current radius-free one-step prediction lies in the explicit interval `0.00030553718304251501 < prediction < 0.00030553718304251502`
+- **`phase7OneStepModelPrediction_bounds_d21`**: the current radius-free one-step prediction is now sharpened further to the explicit interval `0.00030553718304251501169 < prediction < 0.00030553718304251501180`
 - **`phase7OneStepModelPrediction_rounds_to_0_0003055`**: the current radius-free one-step prediction rounds to `0.0003055` at seven decimal places
 - **`alphaPhaseObserverOneStepComparison_rounds_to_0_0003055`**: equivalently, the observer-indexed one-step comparison alias rounds to that same seven-decimal value
 - **`alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centered_comparison`**: equivalently, the one-step normalized observable itself is exactly that centered alpha-selected comparison scalar
@@ -76,11 +92,16 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`alpha_selected_centered_comparison_sub_codataGap_unique_by_arithmetic`**: if `k` satisfies `floor α mod 13 = k`, then `k` is exactly the selected observer channel and gives that same centered one-step gap comparison
 - **`phase7OneStepModelResidual_bounds_micro`**: in the separated regime, the one-step residual against the static CODATA gap lies in the explicit interval `0.000000921017 < residual < 0.000000947269`
 - **`alphaPhaseObserverOneStepResidual_bounds_micro`**: equivalently, the observer-indexed one-step residual alias satisfies that same explicit micro interval
+- **`phase7OneStepModelResidual_bounds_d20`**: in the separated regime, the one-step residual lies in the explicit interval `0.00000093830460995488 < residual < 0.00000093830460995615`
+- **`alphaPhaseObserverOneStepResidual_bounds_d20`**: equivalently, the observer-indexed one-step residual alias satisfies that same explicit interval
 - **`phase7OneStepModelResidual_abs_lt_one_millionth`**: in the separated regime, the absolute one-step residual against the static CODATA gap is bounded by `0.000001`
 - **`alphaPhaseObserverOneStepResidual_abs_lt_one_millionth`**: equivalently, the observer-indexed one-step residual alias satisfies that same absolute `10⁻⁶` bound
 - **`alphaCodata2022Gap_bounds_d13`**: the static UFRF-to-CODATA 2022 gap lies in the explicit interval `0.0003045988784 < gap < 0.0003045988785`
+- **`alphaCodata2022Gap_bounds_d20`**: the static UFRF-to-CODATA 2022 gap lies in the explicit interval `0.00030459887843255887 < gap < 0.00030459887843256013`
 - **`alphaCodata2022Gap_rounds_to_0_000304598878`**: that same static gap rounds to `0.000304598878` at the `10^-12` place
 - **`alphaPhaseObserverResidueCheckAbsError_bounds_micro`**: the script-aligned absolute error between the observer-indexed one-step comparison scalar and the static CODATA gap lies in the explicit interval `0.000000921017 < error < 0.000000947269`
+- **`alphaPhaseObserverResidueCheckAbsError_bounds_d20`**: the script-aligned absolute error lies in the explicit interval `0.00000093830460995488 < error < 0.00000093830460995615`
+- **`alphaCodata2022Gap_gt_three_hundred_projection_error`**: the static CODATA gap is more than `300` times larger than the observer-local projection error, so the small matched quantity is not the raw static gap itself
 - **`alphaPhaseObserverResidueCheckAbsError_lt_one_millionth`**: in particular, that same script-aligned absolute error is below the external script's `10⁻⁶` tolerance
 - **`alphaPhaseObserverResidueCheckAbsError_rounds_to_0_0000009`**: the same script-aligned absolute error rounds to `0.0000009` at seven decimal places
 - **`phase7OneStepModelResidual_abs_lt_one_thousandth`**: in the separated regime, the absolute one-step residual against the static CODATA gap is bounded by `0.001`
@@ -95,6 +116,7 @@ The coefficients {4, 1, 1} are the LOG grade duality factors:
 - **`cycle_prime_channels_hit_alphaPhaseObserver`**: each local cycle-prime channel `3, 5, 7, 11` also hits the selected observer label
 - **`cycle_prime_paths_cover_all_positions`**: the cycle-prime channels `3, 5, 7, 11` each traverse all 13 positions before return
 - **`cycle_prime_paths_close_after_thirteen`**: those cycle-prime channels close after one full 13-step traversal
+- **`alpha_running_three_layer_concurrency_package`**: one conservative theorem now packages the current three-layer reading together without collapsing the layers; semantically it is the running-side re-export of the lower `Recursion` theorem `prism_walk_and_terminal_handoff_at_scale`: the cycle-side `0 -> 1` seed step, the universal PRISM walk from `0` reaches every cycle position, `13` is still `0` in the pure cycle chart while the no-bottom-scale local `13 ↦ 3`, `14 ↦ 4` handoff persists at every indexed scale
 - **`terminal_block_phase_pattern_at_scale`**: in the paired `BreathingCycle` layer, the tail block at every scale is `REST, bridge, bridge, seed`
 - **`terminal_block_handoff_reindexes_at_scale`**: in the paired `BreathingCycle` layer, the full handoff `10,11,12,13,14` reindexes locally as `0,1,2,3,4`
 - **`fourteen_restarts_after_thirteen_at_scale`**: in the paired `BreathingCycle` layer, `13` is closure/seed and `14` is the first re-entry label at every scale
@@ -116,6 +138,10 @@ to one hard-coded symbol name.
 The repo now also proves directly that, for any such selected `k`, the centered
 one-step comparison formula and the explicit root/scalar formula coincide, both
 before and after subtracting the static CODATA gap.
+It also packages the safe recursion reading used in the running layer: there is
+no bottom scale, and the local terminal handoff `13 ↦ 3`, `14 ↦ 4` repeats at
+every whole-cycle translate. That is a scale-indexed repetition claim, not a
+single coinductive object containing all scales simultaneously.
 The correction and centered-deviation formulas now also have observer-indexed
 versions, so the comparison package is less tied to literal phase syntax.
 The observer-indexed centered and root/scalar presentations are now also
@@ -133,8 +159,16 @@ contour-invariant in the allowed regime. Lean now also proves the real-number
 seven-decimal rounding theorems for the one-step comparison scalar and the
 script-aligned absolute error.
 It now also sharpens the static CODATA comparison gap itself to a
-thirteen-decimal window, together with a `10^-12` rounding theorem for that
-same gap.
+twenty-decimal window; the exposed running prediction now reaches `d21`, while
+the residual/error package still reaches `d20`. Further residual/error
+tightening is therefore static-gap-limited rather than prediction-limited.
+It now also packages the exposed observer-indexed comparison/residual
+quantities on the same recurring-handoff channel as the selected observer, so
+the measurement-side formulas are explicitly tied back to the no-bottom-scale
+closure/restart layer.
+It now also lifts that bridge to the centered observable itself at arbitrary
+discrete step `n`, so the one-step comparison theorem is visibly a
+specialization of a broader observer-local measurement-side package.
 It now also proves arithmetic uniqueness in the narrow safe sense: any channel
 `k` satisfying `floor α mod 13 = k` is forced to be the selected observer and
 gives the same centered and root/scalar one-step gap comparison formulas.

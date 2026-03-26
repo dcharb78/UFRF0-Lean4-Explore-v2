@@ -7,7 +7,7 @@ The entire framework derives from one structure: `Trinity {-½, 0, +½}` with `s
 
 ## Foundations
 
-This repo contains **zero custom axioms**. The former `Axiomatics.lean` was deleted entirely (commit 48960f9). `#print axioms` on all key theorems returns only standard Lean foundations: `propext`, `Classical.choice`, `Quot.sound`. Verified in `AxiomAudit.lean` across 53 key theorems.
+This repo contains **zero custom axioms**. The former `Axiomatics.lean` was deleted entirely (commit 48960f9). `#print axioms` on all key theorems returns only standard Lean foundations: `propext`, `Classical.choice`, `Quot.sound`. Verified in `AxiomAudit.lean` across the tracked key theorems.
 
 ## The Chain
 
@@ -62,13 +62,21 @@ Trinity.lean: trinity.conservation
 │   │   ├── Addressing.lean: (ℤ, ZMod 13) coordinates
 │   │   │   phase_count, 12 ≡ -1 (mod 13). Proven.
 │   │   │
-│   │   └── Recursion.lean: no_first_step
-│   │       Scale = ℤ. Bridge→Seed nesting. Proven.
+│   │   └── Recursion.lean: no_first_step_and_terminal_handoff_at_scale
+│   │       Scale = ℤ. No bottom scale; bridge→seed nesting and terminal
+│   │       handoff persist. Proven.
 │   │       Also: bridge_to_seed_matches_terminal_chart
 │   │       (REST-anchored chart 10,11,12,13 ↦ 0,1,2,3 equals
 │   │       "REST + next-scale seed strip"). Proven.
 │   │       Also: bridge_to_seed_matches_terminal_chart_at_scale
 │   │       (the same handoff law at every 13-shifted terminal block). Proven.
+│   │       Also: no_first_step_and_terminal_handoff_at_scale
+│   │       (no bottom scale, and every 13-shifted terminal block still hands
+│   │       off from closure at 13 to re-entry at 14). Proven.
+│   │       Also: prism_walk_and_terminal_handoff_at_scale
+│   │       (the cycle-side seed walk 0→1 reaches every position, 13=0 in the
+│   │       pure cycle chart, and the local 13↦3 / 14↦4 handoff persists with
+│   │       no bottom scale). Proven.
 │   │
 │   └── Foundation.lean: trinity_range_is_one
 │       The span from -½ to +½ = 1. Proven.
@@ -87,8 +95,20 @@ Trinity.lean: trinity.conservation
 │           │   ⌊4π³ + π² + π⌋ = 137. Proven with π bounds.
 │           │   Also: alpha_polynomial_form, ufrf_matches_codata. Proven.
 │           │
-│           └── AllenBridge.lean: both_integer_parts_137
-│               Allen's 144-7 and UFRF's floor(4π³+π²+π) both = 137. Proven.
+│           ├── AllenBridge.lean: both_integer_parts_137
+│           │   Allen's 144-7 and UFRF's floor(4π³+π²+π) both = 137. Proven.
+│           │
+│           └── AlphaRunning.lean:
+│               alpha_selected_one_step_absolute_error_package_has_local_origin_and_recurring_handoff
+│               The current measurement-side endpoint packages local origin `0`,
+│               the arithmetic-selected observer, the normalized real `/ 28`
+│               one-step observable, the one-step residual against the static
+│               CODATA gap, the absolute-error identity, and the same recurring
+│               `13 ↦ 3`, `14 ↦ 4` handoff. Proven.
+│               Also: alpha_running_three_layer_concurrency_package
+│               (a running-side re-export of the lower cycle/recursion
+│               concurrency package, not the semantic origin of that
+│               structural theorem). Proven.
 │
 ├── KeplerTriangle.lean: kepler_pythagorean
 │   √φ from Kepler's Triangle. Proven.

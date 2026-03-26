@@ -47,7 +47,7 @@ Trinity {-½, 0, +½}     (Axiom 1)
 | # | Module | Role | Key Theorem |
 |---|--------|------|-------------|
 | 11 | Manifold | Torus T² = S¹ × S¹ + ZMod bridge | `torus_bin_spacing` |
-| 12 | Recursion | Infinite scale invariance | `no_first_step` |
+| 12 | Recursion | Infinite scale invariance and concurrent cycle handoff | `prism_walk_and_terminal_handoff_at_scale` |
 | 13 | DivisionAlgebras | 1, 2, 4, 8 dimensions | `division_algebra_dims` |
 | 14 | NumberBases | Bases 10, 12, 13 | `base13_is_full_cycle` |
 | 15 | FineStructure | α⁻¹ = 137.036 | `alpha_inv_floor_137` |

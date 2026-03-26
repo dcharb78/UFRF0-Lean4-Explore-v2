@@ -614,6 +614,318 @@ private theorem abs_cos_sub_taylor12_le {x : ℝ} (hx : |x| ≤ 1) :
     simpa [hre] using hcos_raw
   exact hcos.trans hbound'
 
+private theorem abs_cos_sub_taylor14_le {x : ℝ} (hx : |x| ≤ 1) :
+    |Real.cos x -
+        (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+          x ^ 12 / 479001600 - x ^ 14 / 87178291200)| ≤
+      |x| ^ 16 * (17 / ((Nat.factorial 16 : ℝ) * 16)) := by
+  have hx' : ‖((x : ℂ) * Complex.I)‖ ≤ 1 := by
+    simpa [Complex.norm_mul, Complex.norm_I, Real.norm_eq_abs, mul_comm] using hx
+  have hsum :
+      (∑ m ∈ Finset.range 16, ((((x : ℂ) * Complex.I) ^ m) / m.factorial : ℂ)) =
+        (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200) +
+          (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+              x ^ 13 / 6227020800 - x ^ 15 / 1307674368000) *
+            Complex.I := by
+    apply Complex.ext <;>
+      simp [Finset.sum_range_succ, Nat.factorial, pow_succ,
+        Complex.mul_re, Complex.mul_im] <;>
+      ring
+  have hbound := Complex.exp_bound (x := (x : ℂ) * Complex.I) hx' (n := 16) (by norm_num : 0 < 16)
+  rw [hsum] at hbound
+  have hbound' :
+      ‖Complex.exp ((x : ℂ) * Complex.I) -
+          ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                x ^ 12 / 479001600 - x ^ 14 / 87178291200) +
+            (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                x ^ 13 / 6227020800 - x ^ 15 / 1307674368000) *
+              Complex.I)‖ ≤
+        |x| ^ 16 * (17 / ((Nat.factorial 16 : ℝ) * 16)) := by
+    simpa [Complex.norm_mul, Complex.norm_I, Real.norm_eq_abs, div_eq_mul_inv,
+      mul_assoc, mul_left_comm, mul_comm] using hbound
+  have hre :
+      (Complex.exp ((x : ℂ) * Complex.I) -
+          ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                x ^ 12 / 479001600 - x ^ 14 / 87178291200) +
+            (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                x ^ 13 / 6227020800 - x ^ 15 / 1307674368000) *
+              Complex.I)).re =
+        Real.cos x -
+          (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200) := by
+    simp [Complex.exp_ofReal_mul_I, Complex.sub_re, ← Complex.ofReal_pow, Complex.ofReal_re,
+      Complex.ofReal_im, Complex.cos_ofReal_re]
+  have hcos_raw :
+      |(Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000) *
+                Complex.I)).re| ≤
+        ‖Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000) *
+                Complex.I)‖ :=
+    Complex.abs_re_le_norm _
+  have hcos :
+      |Real.cos x -
+          (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200)| ≤
+        ‖Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000) *
+                Complex.I)‖ := by
+    simpa [hre] using hcos_raw
+  exact hcos.trans hbound'
+
+private theorem abs_cos_sub_taylor16_le {x : ℝ} (hx : |x| ≤ 1) :
+    |Real.cos x -
+        (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+          x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000)| ≤
+      |x| ^ 18 * (19 / ((Nat.factorial 18 : ℝ) * 18)) := by
+  have hx' : ‖((x : ℂ) * Complex.I)‖ ≤ 1 := by
+    simpa [Complex.norm_mul, Complex.norm_I, Real.norm_eq_abs, mul_comm] using hx
+  have hsum :
+      (∑ m ∈ Finset.range 18, ((((x : ℂ) * Complex.I) ^ m) / m.factorial : ℂ)) =
+        (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000) +
+          (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+              x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000) *
+            Complex.I := by
+    apply Complex.ext <;>
+      simp [Finset.sum_range_succ, Nat.factorial, pow_succ,
+        Complex.mul_re, Complex.mul_im] <;>
+      ring
+  have hbound := Complex.exp_bound (x := (x : ℂ) * Complex.I) hx' (n := 18) (by norm_num : 0 < 18)
+  rw [hsum] at hbound
+  have hbound' :
+      ‖Complex.exp ((x : ℂ) * Complex.I) -
+          ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000) +
+            (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000) *
+              Complex.I)‖ ≤
+        |x| ^ 18 * (19 / ((Nat.factorial 18 : ℝ) * 18)) := by
+    simpa [Complex.norm_mul, Complex.norm_I, Real.norm_eq_abs, div_eq_mul_inv,
+      mul_assoc, mul_left_comm, mul_comm] using hbound
+  have hre :
+      (Complex.exp ((x : ℂ) * Complex.I) -
+          ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000) +
+            (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000) *
+              Complex.I)).re =
+        Real.cos x -
+          (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000) := by
+    simp [Complex.exp_ofReal_mul_I, Complex.sub_re, ← Complex.ofReal_pow, Complex.ofReal_re,
+      Complex.ofReal_im, Complex.cos_ofReal_re]
+  have hcos_raw :
+      |(Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000) *
+                Complex.I)).re| ≤
+        ‖Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000) *
+                Complex.I)‖ :=
+    Complex.abs_re_le_norm _
+  have hcos :
+      |Real.cos x -
+          (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000)| ≤
+        ‖Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000) *
+                Complex.I)‖ := by
+    simpa [hre] using hcos_raw
+  exact hcos.trans hbound'
+
+private theorem abs_cos_sub_taylor18_le {x : ℝ} (hx : |x| ≤ 1) :
+    |Real.cos x -
+        (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+          x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+          x ^ 18 / 6402373705728000)| ≤
+      |x| ^ 20 * (21 / ((Nat.factorial 20 : ℝ) * 20)) := by
+  have hx' : ‖((x : ℂ) * Complex.I)‖ ≤ 1 := by
+    simpa [Complex.norm_mul, Complex.norm_I, Real.norm_eq_abs, mul_comm] using hx
+  have hsum :
+      (∑ m ∈ Finset.range 20, ((((x : ℂ) * Complex.I) ^ m) / m.factorial : ℂ)) =
+        (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+            x ^ 18 / 6402373705728000) +
+          (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+              x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+              x ^ 19 / 121645100408832000) *
+            Complex.I := by
+    apply Complex.ext <;>
+      simp [Finset.sum_range_succ, Nat.factorial, pow_succ,
+        Complex.mul_re, Complex.mul_im] <;>
+      ring
+  have hbound := Complex.exp_bound (x := (x : ℂ) * Complex.I) hx' (n := 20) (by norm_num : 0 < 20)
+  rw [hsum] at hbound
+  have hbound' :
+      ‖Complex.exp ((x : ℂ) * Complex.I) -
+          ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                x ^ 18 / 6402373705728000) +
+            (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                x ^ 19 / 121645100408832000) *
+              Complex.I)‖ ≤
+        |x| ^ 20 * (21 / ((Nat.factorial 20 : ℝ) * 20)) := by
+    simpa [Complex.norm_mul, Complex.norm_I, Real.norm_eq_abs, div_eq_mul_inv,
+      mul_assoc, mul_left_comm, mul_comm] using hbound
+  have hre :
+      (Complex.exp ((x : ℂ) * Complex.I) -
+          ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                x ^ 18 / 6402373705728000) +
+            (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                x ^ 19 / 121645100408832000) *
+              Complex.I)).re =
+        Real.cos x -
+          (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+            x ^ 18 / 6402373705728000) := by
+    simp [Complex.exp_ofReal_mul_I, Complex.sub_re, ← Complex.ofReal_pow, Complex.ofReal_re,
+      Complex.ofReal_im, Complex.cos_ofReal_re]
+  have hcos_raw :
+      |(Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                  x ^ 18 / 6402373705728000) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                  x ^ 19 / 121645100408832000) *
+                Complex.I)).re| ≤
+        ‖Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                  x ^ 18 / 6402373705728000) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                  x ^ 19 / 121645100408832000) *
+                Complex.I)‖ :=
+    Complex.abs_re_le_norm _
+  have hcos :
+      |Real.cos x -
+          (1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+            x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+            x ^ 18 / 6402373705728000)| ≤
+        ‖Complex.exp ((x : ℂ) * Complex.I) -
+            ((1 - x ^ 2 / 2 + x ^ 4 / 24 - x ^ 6 / 720 + x ^ 8 / 40320 - x ^ 10 / 3628800 +
+                  x ^ 12 / 479001600 - x ^ 14 / 87178291200 + x ^ 16 / 20922789888000 -
+                  x ^ 18 / 6402373705728000) +
+              (x - x ^ 3 / 6 + x ^ 5 / 120 - x ^ 7 / 5040 + x ^ 9 / 362880 - x ^ 11 / 39916800 +
+                  x ^ 13 / 6227020800 - x ^ 15 / 1307674368000 + x ^ 17 / 355687428096000 -
+                  x ^ 19 / 121645100408832000) *
+                Complex.I)‖ := by
+    simpa [hre] using hcos_raw
+  exact hcos.trans hbound'
+
+set_option maxHeartbeats 2000000 in
+private theorem cos_pi_div_thirteen_bounds_tight :
+    (0.970941817426052027 : ℝ) < Real.cos (Real.pi / 13) ∧
+    Real.cos (Real.pi / 13) < (0.970941817426052028 : ℝ) := by
+  let poly12 : ℝ → ℝ := fun t =>
+    1 - t ^ 2 / 2 + t ^ 4 / 24 - t ^ 6 / 720 + t ^ 8 / 40320 - t ^ 10 / 3628800 +
+      t ^ 12 / 479001600
+  let remCoeff14 : ℝ := 15 / ((Nat.factorial 14 : ℝ) * 14)
+  have hpi1_nonneg : 0 ≤ Real.pi / 13 := by positivity
+  have hpi1_abs : |Real.pi / 13| ≤ 1 := by
+    rw [abs_of_nonneg hpi1_nonneg]
+    have hpi : Real.pi < 4 := Real.pi_lt_four
+    nlinarith
+  have hpi1_lo : (0.24166097335306101834 : ℝ) < Real.pi / 13 := by
+    have hpi : (3.14159265358979323846 : ℝ) < Real.pi := Real.pi_gt_d20
+    nlinarith
+  have hpi1_hi : Real.pi / 13 < (0.24166097335306101835 : ℝ) := by
+    have hpi : Real.pi < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+    nlinarith
+  have hpi1_2_lo : (0.24166097335306101834 : ℝ) ^ 2 ≤ (Real.pi / 13) ^ 2 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_2_hi : (Real.pi / 13) ^ 2 ≤ (0.24166097335306101835 : ℝ) ^ 2 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_4_lo : (0.24166097335306101834 : ℝ) ^ 4 ≤ (Real.pi / 13) ^ 4 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_4_hi : (Real.pi / 13) ^ 4 ≤ (0.24166097335306101835 : ℝ) ^ 4 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_6_lo : (0.24166097335306101834 : ℝ) ^ 6 ≤ (Real.pi / 13) ^ 6 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_6_hi : (Real.pi / 13) ^ 6 ≤ (0.24166097335306101835 : ℝ) ^ 6 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_8_lo : (0.24166097335306101834 : ℝ) ^ 8 ≤ (Real.pi / 13) ^ 8 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_8_hi : (Real.pi / 13) ^ 8 ≤ (0.24166097335306101835 : ℝ) ^ 8 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_10_lo : (0.24166097335306101834 : ℝ) ^ 10 ≤ (Real.pi / 13) ^ 10 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_10_hi : (Real.pi / 13) ^ 10 ≤ (0.24166097335306101835 : ℝ) ^ 10 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_12_lo : (0.24166097335306101834 : ℝ) ^ 12 ≤ (Real.pi / 13) ^ 12 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_12_hi : (Real.pi / 13) ^ 12 ≤ (0.24166097335306101835 : ℝ) ^ 12 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_14_hi : (Real.pi / 13) ^ 14 ≤ (0.24166097335306101835 : ℝ) ^ 14 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpoly1_lo : (0.97094181742605202718 : ℝ) < poly12 (Real.pi / 13) := by
+    dsimp [poly12]
+    nlinarith [hpi1_2_hi, hpi1_4_lo, hpi1_6_hi, hpi1_8_lo, hpi1_10_hi, hpi1_12_lo]
+  have hpoly1_hi : poly12 (Real.pi / 13) < (0.97094181742605202719 : ℝ) := by
+    dsimp [poly12]
+    nlinarith [hpi1_2_lo, hpi1_4_hi, hpi1_6_lo, hpi1_8_hi, hpi1_10_lo, hpi1_12_hi]
+  have hrem1 : (Real.pi / 13) ^ 14 * remCoeff14 < (0.00000000000000000003 : ℝ) := by
+    have htmp :
+        (Real.pi / 13) ^ 14 * remCoeff14 ≤
+          (0.24166097335306101835 : ℝ) ^ 14 * remCoeff14 := by
+      have hcoeff_nonneg : 0 ≤ remCoeff14 := by
+        dsimp [remCoeff14]
+        positivity
+      nlinarith [hpi1_14_hi, hcoeff_nonneg]
+    have hconst :
+        (0.24166097335306101835 : ℝ) ^ 14 * remCoeff14 <
+          (0.00000000000000000003 : ℝ) := by
+      dsimp [remCoeff14]
+      norm_num
+    exact lt_of_le_of_lt htmp hconst
+  have hcos1_err := abs_cos_sub_taylor12_le (x := Real.pi / 13) hpi1_abs
+  rcases
+      abs_sub_le_iff.mp
+        (by
+          simpa [poly12, remCoeff14, abs_of_nonneg hpi1_nonneg] using hcos1_err) with
+    ⟨hcos1_sub_upper, hcos1_sub_lower⟩
+  have hcos1_lower :
+      poly12 (Real.pi / 13) - (Real.pi / 13) ^ 14 * remCoeff14 ≤ Real.cos (Real.pi / 13) := by
+    dsimp [poly12, remCoeff14] at hcos1_sub_lower ⊢
+    apply (sub_le_iff_le_add').2
+    nlinarith [hcos1_sub_lower]
+  have hcos1_upper :
+      Real.cos (Real.pi / 13) ≤ poly12 (Real.pi / 13) + (Real.pi / 13) ^ 14 * remCoeff14 := by
+    dsimp [poly12, remCoeff14] at hcos1_sub_upper ⊢
+    exact (sub_le_iff_le_add').1 hcos1_sub_upper
+  constructor
+  · nlinarith [hpoly1_lo, hrem1, hcos1_lower]
+  · nlinarith [hpoly1_hi, hrem1, hcos1_upper]
+
+set_option maxHeartbeats 2000000 in
+private theorem cos_pi_div_thirteen_bounds_refined :
+    (0.970941817426052027 : ℝ) < Real.cos (Real.pi / 13) ∧
+    Real.cos (Real.pi / 13) < (0.970941817426052028 : ℝ) := by
+  exact cos_pi_div_thirteen_bounds_tight
+
 set_option maxHeartbeats 2000000 in
 theorem phase7OneStepModelPrediction_bounds_d13 :
     (0.00030553718304 : ℝ) < phase7OneStepModelPrediction ∧
@@ -808,6 +1120,492 @@ theorem phase7OneStepModelPrediction_bounds_d13 :
       norm_num
     exact lt_trans hdiv hconst
 
+set_option maxHeartbeats 2000000 in
+private theorem cos_three_pi_div_thirteen_bounds_tight :
+    (0.7485107481711010986 : ℝ) < Real.cos (3 * Real.pi / 13) ∧
+    Real.cos (3 * Real.pi / 13) < (0.7485107481711010997 : ℝ) := by
+  let poly16 : ℝ → ℝ := fun t =>
+    1 - t ^ 2 / 2 + t ^ 4 / 24 - t ^ 6 / 720 + t ^ 8 / 40320 - t ^ 10 / 3628800 +
+      t ^ 12 / 479001600 - t ^ 14 / 87178291200 + t ^ 16 / 20922789888000
+  let remCoeff18 : ℝ := 19 / ((Nat.factorial 18 : ℝ) * 18)
+  have hpi3_nonneg : 0 ≤ 3 * Real.pi / 13 := by positivity
+  have hpi3_abs : |3 * Real.pi / 13| ≤ 1 := by
+    rw [abs_of_nonneg hpi3_nonneg]
+    have hpi : Real.pi < 4 := Real.pi_lt_four
+    nlinarith
+  have hpi3_lo : (0.72498292005918305502 : ℝ) < 3 * Real.pi / 13 := by
+    have hpi : (3.14159265358979323846 : ℝ) < Real.pi := Real.pi_gt_d20
+    nlinarith
+  have hpi3_hi : 3 * Real.pi / 13 < (0.72498292005918305504 : ℝ) := by
+    have hpi : Real.pi < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+    nlinarith
+  have hpi3_2_lo : (0.72498292005918305502 : ℝ) ^ 2 ≤ (3 * Real.pi / 13) ^ 2 := by
+    nlinarith [hpi3_lo, hpi3_nonneg]
+  have hpi3_2_hi : (3 * Real.pi / 13) ^ 2 ≤ (0.72498292005918305504 : ℝ) ^ 2 := by
+    nlinarith [hpi3_hi, hpi3_nonneg]
+  have hpi3_4_lo : (0.72498292005918305502 : ℝ) ^ 4 ≤ (3 * Real.pi / 13) ^ 4 := by
+    nlinarith [hpi3_lo, hpi3_nonneg]
+  have hpi3_4_hi : (3 * Real.pi / 13) ^ 4 ≤ (0.72498292005918305504 : ℝ) ^ 4 := by
+    nlinarith [hpi3_hi, hpi3_nonneg]
+  have hpi3_6_lo : (0.72498292005918305502 : ℝ) ^ 6 ≤ (3 * Real.pi / 13) ^ 6 := by
+    nlinarith [hpi3_lo, hpi3_nonneg]
+  have hpi3_6_hi : (3 * Real.pi / 13) ^ 6 ≤ (0.72498292005918305504 : ℝ) ^ 6 := by
+    nlinarith [hpi3_hi, hpi3_nonneg]
+  have hpi3_8_lo : (0.72498292005918305502 : ℝ) ^ 8 ≤ (3 * Real.pi / 13) ^ 8 := by
+    nlinarith [hpi3_lo, hpi3_nonneg]
+  have hpi3_8_hi : (3 * Real.pi / 13) ^ 8 ≤ (0.72498292005918305504 : ℝ) ^ 8 := by
+    nlinarith [hpi3_hi, hpi3_nonneg]
+  have hpi3_10_lo : (0.72498292005918305502 : ℝ) ^ 10 ≤ (3 * Real.pi / 13) ^ 10 := by
+    nlinarith [hpi3_lo, hpi3_nonneg]
+  have hpi3_10_hi : (3 * Real.pi / 13) ^ 10 ≤ (0.72498292005918305504 : ℝ) ^ 10 := by
+    nlinarith [hpi3_hi, hpi3_nonneg]
+  have hpi3_12_lo : (0.72498292005918305502 : ℝ) ^ 12 ≤ (3 * Real.pi / 13) ^ 12 := by
+    nlinarith [hpi3_lo, hpi3_nonneg]
+  have hpi3_12_hi : (3 * Real.pi / 13) ^ 12 ≤ (0.72498292005918305504 : ℝ) ^ 12 := by
+    nlinarith [hpi3_hi, hpi3_nonneg]
+  have hpi3_14_lo : (0.72498292005918305502 : ℝ) ^ 14 ≤ (3 * Real.pi / 13) ^ 14 := by
+    nlinarith [hpi3_lo, hpi3_nonneg]
+  have hpi3_14_hi : (3 * Real.pi / 13) ^ 14 ≤ (0.72498292005918305504 : ℝ) ^ 14 := by
+    nlinarith [hpi3_hi, hpi3_nonneg]
+  have hpi3_16_lo : (0.72498292005918305502 : ℝ) ^ 16 ≤ (3 * Real.pi / 13) ^ 16 := by
+    nlinarith [hpi3_lo, hpi3_nonneg]
+  have hpi3_16_hi : (3 * Real.pi / 13) ^ 16 ≤ (0.72498292005918305504 : ℝ) ^ 16 := by
+    nlinarith [hpi3_hi, hpi3_nonneg]
+  have hpi3_18_hi : (3 * Real.pi / 13) ^ 18 ≤ (0.72498292005918305504 : ℝ) ^ 18 := by
+    nlinarith [hpi3_hi, hpi3_nonneg]
+  have hpoly3_lo : (0.74851074817110109910 : ℝ) < poly16 (3 * Real.pi / 13) := by
+    dsimp [poly16]
+    nlinarith [hpi3_2_hi, hpi3_4_lo, hpi3_6_hi, hpi3_8_lo, hpi3_10_hi, hpi3_12_lo,
+      hpi3_14_hi, hpi3_16_lo]
+  have hpoly3_hi : poly16 (3 * Real.pi / 13) < (0.74851074817110109912 : ℝ) := by
+    dsimp [poly16]
+    nlinarith [hpi3_2_lo, hpi3_4_hi, hpi3_6_lo, hpi3_8_hi, hpi3_10_lo, hpi3_12_hi,
+      hpi3_14_lo, hpi3_16_hi]
+  have hrem3 : (3 * Real.pi / 13) ^ 18 * remCoeff18 < (0.00000000000000000051 : ℝ) := by
+    have htmp :
+        (3 * Real.pi / 13) ^ 18 * remCoeff18 ≤
+          (0.72498292005918305504 : ℝ) ^ 18 * remCoeff18 := by
+      have hcoeff_nonneg : 0 ≤ remCoeff18 := by
+        dsimp [remCoeff18]
+        positivity
+      nlinarith [hpi3_18_hi, hcoeff_nonneg]
+    have hconst :
+        (0.72498292005918305504 : ℝ) ^ 18 * remCoeff18 <
+          (0.00000000000000000051 : ℝ) := by
+      dsimp [remCoeff18]
+      norm_num
+    exact lt_of_le_of_lt htmp hconst
+  have hcos3_err := abs_cos_sub_taylor16_le (x := 3 * Real.pi / 13) hpi3_abs
+  rcases
+      abs_sub_le_iff.mp
+        (by
+          simpa [poly16, remCoeff18, abs_of_nonneg hpi3_nonneg] using hcos3_err) with
+    ⟨hcos3_sub_upper, hcos3_sub_lower⟩
+  have hcos3_lower :
+      poly16 (3 * Real.pi / 13) - (3 * Real.pi / 13) ^ 18 * remCoeff18 ≤
+        Real.cos (3 * Real.pi / 13) := by
+    dsimp [poly16, remCoeff18] at hcos3_sub_lower ⊢
+    apply (sub_le_iff_le_add').2
+    nlinarith [hcos3_sub_lower]
+  have hcos3_upper :
+      Real.cos (3 * Real.pi / 13) ≤
+        poly16 (3 * Real.pi / 13) + (3 * Real.pi / 13) ^ 18 * remCoeff18 := by
+    dsimp [poly16, remCoeff18] at hcos3_sub_upper ⊢
+    exact (sub_le_iff_le_add').1 hcos3_sub_upper
+  have hcos3 :
+      (0.7485107481711010986 : ℝ) < Real.cos (3 * Real.pi / 13) ∧
+      Real.cos (3 * Real.pi / 13) < (0.7485107481711010997 : ℝ) := by
+    constructor
+    · nlinarith [hpoly3_lo, hrem3, hcos3_lower]
+    · nlinarith [hpoly3_hi, hrem3, hcos3_upper]
+  exact hcos3
+
+set_option maxHeartbeats 2000000 in
+private theorem cos_three_pi_div_thirteen_bounds_refined :
+    (0.7485107481711010986 : ℝ) < Real.cos (3 * Real.pi / 13) ∧
+    Real.cos (3 * Real.pi / 13) < (0.7485107481711010997 : ℝ) := by
+  exact cos_three_pi_div_thirteen_bounds_tight
+
+theorem phase7OneStepModelPrediction_bounds_d16 :
+    (0.0003055371830425 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < 0.0003055371830426 := by
+  have hcos1 := cos_pi_div_thirteen_bounds_tight
+  have hcos3 := cos_three_pi_div_thirteen_bounds_tight
+  rw [phase7OneStepModelPrediction_eq_cos_pi_div_thirteen_sub_cos_three_pi_div_thirteen]
+  rcases hcos1 with ⟨hcos1_lo, hcos1_hi⟩
+  rcases hcos3 with ⟨hcos3_lo, hcos3_hi⟩
+  constructor
+  · have hnum :
+        (0.9709418174260518 : ℝ) - 0.7485107481711012 <
+          Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) := by
+      nlinarith
+    have hdiv :
+        ((0.9709418174260518 : ℝ) - 0.7485107481711012) / 728 <
+          (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        (0.0003055371830425 : ℝ) <
+          ((0.9709418174260518 : ℝ) - 0.7485107481711012) / 728 := by
+      norm_num
+    exact lt_trans hconst hdiv
+  · have hnum :
+        Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) <
+          (0.9709418174260521 : ℝ) - 0.7485107481711005 := by
+      nlinarith
+    have hdiv :
+        (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 <
+          ((0.9709418174260521 : ℝ) - 0.7485107481711005) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        ((0.9709418174260521 : ℝ) - 0.7485107481711005) / 728 <
+          (0.0003055371830426 : ℝ) := by
+      norm_num
+    exact lt_trans hdiv hconst
+
+theorem phase7OneStepModelPrediction_bounds_d18 :
+    (0.000305537183042514 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.000305537183042516 : ℝ) := by
+  have hcos1 := cos_pi_div_thirteen_bounds_tight
+  have hcos3 := cos_three_pi_div_thirteen_bounds_tight
+  rw [phase7OneStepModelPrediction_eq_cos_pi_div_thirteen_sub_cos_three_pi_div_thirteen]
+  rcases hcos1 with ⟨hcos1_lo, hcos1_hi⟩
+  rcases hcos3 with ⟨hcos3_lo, hcos3_hi⟩
+  constructor
+  · have hnum :
+        (0.9709418174260518 : ℝ) - 0.7485107481711012 <
+          Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) := by
+      nlinarith
+    have hdiv :
+        ((0.9709418174260518 : ℝ) - 0.7485107481711012) / 728 <
+          (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        (0.000305537183042514 : ℝ) <
+          ((0.9709418174260518 : ℝ) - 0.7485107481711012) / 728 := by
+      norm_num
+    exact lt_trans hconst hdiv
+  · have hnum :
+        Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) <
+          (0.9709418174260521 : ℝ) - 0.7485107481711005 := by
+      nlinarith
+    have hdiv :
+        (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 <
+          ((0.9709418174260521 : ℝ) - 0.7485107481711005) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        ((0.9709418174260521 : ℝ) - 0.7485107481711005) / 728 <
+          (0.000305537183042516 : ℝ) := by
+      norm_num
+    exact lt_trans hdiv hconst
+
+theorem phase7OneStepModelPrediction_bounds_d19 :
+    (0.0003055371830425148 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.0003055371830425159 : ℝ) := by
+  have hcos1 := cos_pi_div_thirteen_bounds_tight
+  have hcos3 := cos_three_pi_div_thirteen_bounds_tight
+  rw [phase7OneStepModelPrediction_eq_cos_pi_div_thirteen_sub_cos_three_pi_div_thirteen]
+  rcases hcos1 with ⟨hcos1_lo, hcos1_hi⟩
+  rcases hcos3 with ⟨hcos3_lo, hcos3_hi⟩
+  constructor
+  · have hnum :
+        (0.970941817426052027 : ℝ) - 0.7485107481711012 <
+          Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) := by
+      nlinarith
+    have hdiv :
+        ((0.970941817426052027 : ℝ) - 0.7485107481711012) / 728 <
+          (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        (0.0003055371830425148 : ℝ) <
+          ((0.970941817426052027 : ℝ) - 0.7485107481711012) / 728 := by
+      norm_num
+    exact lt_trans hconst hdiv
+  · have hnum :
+        Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) <
+          (0.970941817426052028 : ℝ) - 0.7485107481711005 := by
+      nlinarith
+    have hdiv :
+        (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 <
+          ((0.970941817426052028 : ℝ) - 0.7485107481711005) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        ((0.970941817426052028 : ℝ) - 0.7485107481711005) / 728 <
+          (0.0003055371830425159 : ℝ) := by
+      norm_num
+    exact lt_trans hdiv hconst
+
+theorem phase7OneStepModelPrediction_bounds_d20 :
+    (0.00030553718304251501 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.00030553718304251502 : ℝ) := by
+  have hcos1 := cos_pi_div_thirteen_bounds_tight
+  have hcos3 := cos_three_pi_div_thirteen_bounds_tight
+  rw [phase7OneStepModelPrediction_eq_cos_pi_div_thirteen_sub_cos_three_pi_div_thirteen]
+  rcases hcos1 with ⟨hcos1_lo, hcos1_hi⟩
+  rcases hcos3 with ⟨hcos3_lo, hcos3_hi⟩
+  constructor
+  · have hnum :
+        (0.970941817426052027 : ℝ) - 0.7485107481711010997 <
+          Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) := by
+      nlinarith
+    have hdiv :
+        ((0.970941817426052027 : ℝ) - 0.7485107481711010997) / 728 <
+          (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        (0.00030553718304251501 : ℝ) <
+          ((0.970941817426052027 : ℝ) - 0.7485107481711010997) / 728 := by
+      norm_num
+    exact lt_trans hconst hdiv
+  · have hnum :
+        Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) <
+          (0.970941817426052028 : ℝ) - 0.7485107481711010986 := by
+      nlinarith
+    have hdiv :
+        (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 <
+          ((0.970941817426052028 : ℝ) - 0.7485107481711010986) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        ((0.970941817426052028 : ℝ) - 0.7485107481711010986) / 728 <
+          (0.00030553718304251502 : ℝ) := by
+      norm_num
+    exact lt_trans hdiv hconst
+
+set_option maxHeartbeats 2000000 in
+theorem phase7OneStepModelPrediction_bounds_d21 :
+    (0.00030553718304251501169 : ℝ) < phase7OneStepModelPrediction ∧
+    phase7OneStepModelPrediction < (0.00030553718304251501180 : ℝ) := by
+  let poly18 : ℝ → ℝ := fun t =>
+    1 - t ^ 2 / 2 + t ^ 4 / 24 - t ^ 6 / 720 + t ^ 8 / 40320 - t ^ 10 / 3628800 +
+      t ^ 12 / 479001600 - t ^ 14 / 87178291200 + t ^ 16 / 20922789888000 -
+      t ^ 18 / 6402373705728000
+  let poly18Diff : ℝ → ℝ := fun t =>
+    4 * t ^ 2 - 10 * t ^ 4 / 3 + 91 * t ^ 6 / 90 - 41 * t ^ 8 / 252 +
+      7381 * t ^ 10 / 453600 - 949 * t ^ 12 / 855360 +
+      597871 * t ^ 14 / 10897286400 - 134521 * t ^ 16 / 65383718400 +
+      532171 * t ^ 18 / 8794469376000
+  let remCoeff20 : ℝ := 21 / ((Nat.factorial 20 : ℝ) * 20)
+  have hpi1_nonneg : 0 ≤ Real.pi / 13 := by positivity
+  have hpi1_abs : |Real.pi / 13| ≤ 1 := by
+    rw [abs_of_nonneg hpi1_nonneg]
+    have hpi : Real.pi < 4 := Real.pi_lt_four
+    nlinarith
+  have hpi3_nonneg : 0 ≤ 3 * Real.pi / 13 := by positivity
+  have hpi3_abs : |3 * Real.pi / 13| ≤ 1 := by
+    rw [abs_of_nonneg hpi3_nonneg]
+    have hpi : Real.pi < 4 := Real.pi_lt_four
+    nlinarith
+  have hpi1_lo : (0.24166097335306101834 : ℝ) < Real.pi / 13 := by
+    have hpi : (3.14159265358979323846 : ℝ) < Real.pi := Real.pi_gt_d20
+    nlinarith
+  have hpi1_hi : Real.pi / 13 < (0.24166097335306101835 : ℝ) := by
+    have hpi : Real.pi < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+    nlinarith
+  have hpi3_hi : 3 * Real.pi / 13 < (0.72498292005918305504 : ℝ) := by
+    have hpi : Real.pi < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+    nlinarith
+  have hpi1_2_lo : (0.24166097335306101834 : ℝ) ^ 2 ≤ (Real.pi / 13) ^ 2 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_2_hi : (Real.pi / 13) ^ 2 ≤ (0.24166097335306101835 : ℝ) ^ 2 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_4_lo : (0.24166097335306101834 : ℝ) ^ 4 ≤ (Real.pi / 13) ^ 4 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_4_hi : (Real.pi / 13) ^ 4 ≤ (0.24166097335306101835 : ℝ) ^ 4 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_6_lo : (0.24166097335306101834 : ℝ) ^ 6 ≤ (Real.pi / 13) ^ 6 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_6_hi : (Real.pi / 13) ^ 6 ≤ (0.24166097335306101835 : ℝ) ^ 6 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_8_lo : (0.24166097335306101834 : ℝ) ^ 8 ≤ (Real.pi / 13) ^ 8 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_8_hi : (Real.pi / 13) ^ 8 ≤ (0.24166097335306101835 : ℝ) ^ 8 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_10_lo : (0.24166097335306101834 : ℝ) ^ 10 ≤ (Real.pi / 13) ^ 10 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_10_hi : (Real.pi / 13) ^ 10 ≤ (0.24166097335306101835 : ℝ) ^ 10 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_12_lo : (0.24166097335306101834 : ℝ) ^ 12 ≤ (Real.pi / 13) ^ 12 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_12_hi : (Real.pi / 13) ^ 12 ≤ (0.24166097335306101835 : ℝ) ^ 12 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_14_lo : (0.24166097335306101834 : ℝ) ^ 14 ≤ (Real.pi / 13) ^ 14 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_14_hi : (Real.pi / 13) ^ 14 ≤ (0.24166097335306101835 : ℝ) ^ 14 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_16_lo : (0.24166097335306101834 : ℝ) ^ 16 ≤ (Real.pi / 13) ^ 16 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_16_hi : (Real.pi / 13) ^ 16 ≤ (0.24166097335306101835 : ℝ) ^ 16 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_18_lo : (0.24166097335306101834 : ℝ) ^ 18 ≤ (Real.pi / 13) ^ 18 := by
+    nlinarith [hpi1_lo, hpi1_nonneg]
+  have hpi1_18_hi : (Real.pi / 13) ^ 18 ≤ (0.24166097335306101835 : ℝ) ^ 18 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hpi1_20_hi : (Real.pi / 13) ^ 20 ≤ (0.24166097335306101835 : ℝ) ^ 20 := by
+    nlinarith [hpi1_hi, hpi1_nonneg]
+  have hq_lo_base :
+      (0.222431069254950928515 : ℝ) <
+        4 * (0.24166097335306101834 : ℝ) ^ 2 -
+          10 * (0.24166097335306101835 : ℝ) ^ 4 / 3 +
+          91 * (0.24166097335306101834 : ℝ) ^ 6 / 90 -
+          41 * (0.24166097335306101835 : ℝ) ^ 8 / 252 +
+          7381 * (0.24166097335306101834 : ℝ) ^ 10 / 453600 -
+          949 * (0.24166097335306101835 : ℝ) ^ 12 / 855360 +
+          597871 * (0.24166097335306101834 : ℝ) ^ 14 / 10897286400 -
+          134521 * (0.24166097335306101835 : ℝ) ^ 16 / 65383718400 +
+          532171 * (0.24166097335306101834 : ℝ) ^ 18 / 8794469376000 := by
+    norm_num
+  have hq_lo : (0.222431069254950928515 : ℝ) < poly18Diff (Real.pi / 13) := by
+    have htmp :
+        4 * (0.24166097335306101834 : ℝ) ^ 2 -
+          10 * (0.24166097335306101835 : ℝ) ^ 4 / 3 +
+          91 * (0.24166097335306101834 : ℝ) ^ 6 / 90 -
+          41 * (0.24166097335306101835 : ℝ) ^ 8 / 252 +
+          7381 * (0.24166097335306101834 : ℝ) ^ 10 / 453600 -
+          949 * (0.24166097335306101835 : ℝ) ^ 12 / 855360 +
+          597871 * (0.24166097335306101834 : ℝ) ^ 14 / 10897286400 -
+          134521 * (0.24166097335306101835 : ℝ) ^ 16 / 65383718400 +
+          532171 * (0.24166097335306101834 : ℝ) ^ 18 / 8794469376000 ≤
+        poly18Diff (Real.pi / 13) := by
+      dsimp [poly18Diff]
+      nlinarith [hpi1_2_lo, hpi1_4_hi, hpi1_6_lo, hpi1_8_hi, hpi1_10_lo, hpi1_12_hi,
+        hpi1_14_lo, hpi1_16_hi, hpi1_18_lo]
+    exact lt_of_lt_of_le hq_lo_base htmp
+  have hq_hi_base :
+      4 * (0.24166097335306101835 : ℝ) ^ 2 -
+        10 * (0.24166097335306101834 : ℝ) ^ 4 / 3 +
+        91 * (0.24166097335306101835 : ℝ) ^ 6 / 90 -
+        41 * (0.24166097335306101834 : ℝ) ^ 8 / 252 +
+        7381 * (0.24166097335306101835 : ℝ) ^ 10 / 453600 -
+        949 * (0.24166097335306101834 : ℝ) ^ 12 / 855360 +
+        597871 * (0.24166097335306101835 : ℝ) ^ 14 / 10897286400 -
+        134521 * (0.24166097335306101834 : ℝ) ^ 16 / 65383718400 +
+        532171 * (0.24166097335306101835 : ℝ) ^ 18 / 8794469376000 <
+      (0.222431069254950928537 : ℝ) := by
+    norm_num
+  have hq_hi : poly18Diff (Real.pi / 13) < (0.222431069254950928537 : ℝ) := by
+    have htmp :
+        poly18Diff (Real.pi / 13) ≤
+          4 * (0.24166097335306101835 : ℝ) ^ 2 -
+            10 * (0.24166097335306101834 : ℝ) ^ 4 / 3 +
+            91 * (0.24166097335306101835 : ℝ) ^ 6 / 90 -
+            41 * (0.24166097335306101834 : ℝ) ^ 8 / 252 +
+            7381 * (0.24166097335306101835 : ℝ) ^ 10 / 453600 -
+            949 * (0.24166097335306101834 : ℝ) ^ 12 / 855360 +
+            597871 * (0.24166097335306101835 : ℝ) ^ 14 / 10897286400 -
+            134521 * (0.24166097335306101834 : ℝ) ^ 16 / 65383718400 +
+            532171 * (0.24166097335306101835 : ℝ) ^ 18 / 8794469376000 := by
+      dsimp [poly18Diff]
+      nlinarith [hpi1_2_hi, hpi1_4_lo, hpi1_6_hi, hpi1_8_lo, hpi1_10_hi, hpi1_12_lo,
+        hpi1_14_hi, hpi1_16_lo, hpi1_18_hi]
+    exact lt_of_le_of_lt htmp hq_hi_base
+  have hrem1 : (Real.pi / 13) ^ 20 * remCoeff20 < (0.000000000000000000000000000001 : ℝ) := by
+    have htmp :
+        (Real.pi / 13) ^ 20 * remCoeff20 ≤
+          (0.24166097335306101835 : ℝ) ^ 20 * remCoeff20 := by
+      have hcoeff_nonneg : 0 ≤ remCoeff20 := by
+        dsimp [remCoeff20]
+        positivity
+      nlinarith [hpi1_20_hi, hcoeff_nonneg]
+    have hconst :
+        (0.24166097335306101835 : ℝ) ^ 20 * remCoeff20 <
+          (0.000000000000000000000000000001 : ℝ) := by
+      dsimp [remCoeff20]
+      norm_num
+    exact lt_of_le_of_lt htmp hconst
+  have hrem3 : (3 * Real.pi / 13) ^ 20 * remCoeff20 < (0.0000000000000000000008 : ℝ) := by
+    have hpi3_le : 3 * Real.pi / 13 ≤ (0.72498292005918305504 : ℝ) := by
+      linarith [hpi3_hi]
+    have hpi3_20_hi : (3 * Real.pi / 13) ^ 20 ≤ (0.72498292005918305504 : ℝ) ^ 20 := by
+      exact pow_le_pow_left₀ hpi3_nonneg hpi3_le 20
+    have htmp :
+        (3 * Real.pi / 13) ^ 20 * remCoeff20 ≤
+          (0.72498292005918305504 : ℝ) ^ 20 * remCoeff20 := by
+      have hcoeff_nonneg : 0 ≤ remCoeff20 := by
+        dsimp [remCoeff20]
+        positivity
+      nlinarith [hpi3_20_hi, hcoeff_nonneg]
+    have hconst :
+        (0.72498292005918305504 : ℝ) ^ 20 * remCoeff20 <
+          (0.0000000000000000000008 : ℝ) := by
+      dsimp [remCoeff20]
+      norm_num
+    exact lt_of_le_of_lt htmp hconst
+  have hrem_total :
+      (Real.pi / 13) ^ 20 * remCoeff20 + (3 * Real.pi / 13) ^ 20 * remCoeff20 <
+        (0.000000000000000000001 : ℝ) := by
+    nlinarith [hrem1, hrem3]
+  have hcos1_err := abs_cos_sub_taylor18_le (x := Real.pi / 13) hpi1_abs
+  rcases
+      abs_sub_le_iff.mp
+        (by
+          simpa [poly18, remCoeff20, abs_of_nonneg hpi1_nonneg] using hcos1_err) with
+    ⟨hcos1_sub_upper, hcos1_sub_lower⟩
+  have hcos1_lower :
+      poly18 (Real.pi / 13) - (Real.pi / 13) ^ 20 * remCoeff20 ≤ Real.cos (Real.pi / 13) := by
+    dsimp [poly18, remCoeff20] at hcos1_sub_lower ⊢
+    apply (sub_le_iff_le_add').2
+    nlinarith [hcos1_sub_lower]
+  have hcos1_upper :
+      Real.cos (Real.pi / 13) ≤ poly18 (Real.pi / 13) + (Real.pi / 13) ^ 20 * remCoeff20 := by
+    dsimp [poly18, remCoeff20] at hcos1_sub_upper ⊢
+    exact (sub_le_iff_le_add').1 hcos1_sub_upper
+  have hcos3_err := abs_cos_sub_taylor18_le (x := 3 * Real.pi / 13) hpi3_abs
+  rcases
+      abs_sub_le_iff.mp
+        (by
+          simpa [poly18, remCoeff20, abs_of_nonneg hpi3_nonneg] using hcos3_err) with
+    ⟨hcos3_sub_upper, hcos3_sub_lower⟩
+  have hcos3_lower :
+      poly18 (3 * Real.pi / 13) - (3 * Real.pi / 13) ^ 20 * remCoeff20 ≤
+        Real.cos (3 * Real.pi / 13) := by
+    dsimp [poly18, remCoeff20] at hcos3_sub_lower ⊢
+    apply (sub_le_iff_le_add').2
+    nlinarith [hcos3_sub_lower]
+  have hcos3_upper :
+      Real.cos (3 * Real.pi / 13) ≤
+        poly18 (3 * Real.pi / 13) + (3 * Real.pi / 13) ^ 20 * remCoeff20 := by
+    dsimp [poly18, remCoeff20] at hcos3_sub_upper ⊢
+    exact (sub_le_iff_le_add').1 hcos3_sub_upper
+  have hnum_lower :
+      poly18Diff (Real.pi / 13) -
+          ((Real.pi / 13) ^ 20 * remCoeff20 + (3 * Real.pi / 13) ^ 20 * remCoeff20) ≤
+        Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) := by
+    dsimp [poly18Diff, poly18] at hcos1_lower hcos3_upper ⊢
+    nlinarith [hcos1_lower, hcos3_upper]
+  have hnum_upper :
+      Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) ≤
+        poly18Diff (Real.pi / 13) +
+          ((Real.pi / 13) ^ 20 * remCoeff20 + (3 * Real.pi / 13) ^ 20 * remCoeff20) := by
+    dsimp [poly18Diff, poly18] at hcos1_upper hcos3_lower ⊢
+    nlinarith [hcos1_upper, hcos3_lower]
+  rw [phase7OneStepModelPrediction_eq_cos_pi_div_thirteen_sub_cos_three_pi_div_thirteen]
+  constructor
+  · have hnum :
+        (0.222431069254950928515 : ℝ) - (0.000000000000000000001 : ℝ) <
+          Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) := by
+      nlinarith [hq_lo, hrem_total, hnum_lower]
+    have hdiv :
+        ((0.222431069254950928515 : ℝ) - (0.000000000000000000001 : ℝ)) / 728 <
+          (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        (0.00030553718304251501169 : ℝ) <
+          ((0.222431069254950928515 : ℝ) - (0.000000000000000000001 : ℝ)) / 728 := by
+      norm_num
+    exact lt_trans hconst hdiv
+  · have hnum :
+        Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13) <
+          (0.222431069254950928537 : ℝ) + (0.000000000000000000001 : ℝ) := by
+      nlinarith [hq_hi, hrem_total, hnum_upper]
+    have hdiv :
+        (Real.cos (Real.pi / 13) - Real.cos (3 * Real.pi / 13)) / 728 <
+          ((0.222431069254950928537 : ℝ) + (0.000000000000000000001 : ℝ)) / 728 := by
+      exact div_lt_div_of_pos_right hnum (show (0 : ℝ) < 728 by norm_num)
+    have hconst :
+        ((0.222431069254950928537 : ℝ) + (0.000000000000000000001 : ℝ)) / 728 <
+          (0.00030553718304251501180 : ℝ) := by
+      norm_num
+    exact lt_trans hdiv hconst
+
 theorem phase7OneStepModelPrediction_bounds_d12 :
     (0.0003055371830 : ℝ) < phase7OneStepModelPrediction ∧
     phase7OneStepModelPrediction < 0.0003055371832 := by
@@ -867,15 +1665,46 @@ theorem alphaCodata2022Gap_bounds_d6 :
 theorem alphaCodata2022Gap_bounds_d13 :
     (0.0003045988784 : ℝ) < alphaCodata2022Gap ∧
     alphaCodata2022Gap < 0.0003045988785 := by
-  rcases alpha_inv_bounds_d13 with ⟨hlo, hhi⟩
-  unfold alphaCodata2022Gap codata_alpha_inv
-  constructor <;> linarith
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d13
 
 theorem alphaCodata2022Gap_rounds_to_0_000304598878 :
     |alphaCodata2022Gap - 0.000304598878| < 0.0000000000005 := by
-  rcases alphaCodata2022Gap_bounds_d13 with ⟨hlo, hhi⟩
-  rw [abs_lt]
-  constructor <;> linarith
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_rounds_to_0_000304598878
+
+theorem alphaCodata2022Gap_bounds_d14 :
+    (0.00030459887843 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.00030459887844 := by
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d14
+
+theorem alphaCodata2022Gap_bounds_d15 :
+    (0.000304598878432 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.000304598878433 := by
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d15
+
+theorem alphaCodata2022Gap_bounds_d16 :
+    (0.0003045988784325 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.0003045988784326 := by
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d16
+
+theorem alphaCodata2022Gap_bounds_d17 :
+    (0.00030459887843255 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.00030459887843257 := by
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d17
+
+theorem alphaCodata2022Gap_bounds_d18 :
+    (0.000304598878432558 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.000304598878432561 := by
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d18
+
+theorem alphaCodata2022Gap_bounds_d19 :
+    (0.0003045988784325588 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.0003045988784325602 := by
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d19
+
+theorem alphaCodata2022Gap_bounds_d20 :
+    (0.00030459887843255887 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.00030459887843256013 := by
+  simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d20
 
 /--
 Exact residual between the one-step normalized legacy prediction wrapper and the
@@ -1043,6 +1872,76 @@ theorem phase7OneStepModelResidual_bounds_d13
   rcases alphaCodata2022Gap_bounds_d13 with ⟨hgap_lo, hgap_hi⟩
   constructor <;> linarith
 
+theorem phase7OneStepModelResidual_bounds_d14
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.00000093830460 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.00000093830462 := by
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  rcases phase7OneStepModelPrediction_bounds_d13 with ⟨hpred_lo, hpred_hi⟩
+  rcases alphaCodata2022Gap_bounds_d14 with ⟨hgap_lo, hgap_hi⟩
+  constructor <;> linarith
+
+theorem phase7OneStepModelResidual_bounds_d15
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.000000938304607 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.000000938304618 := by
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  rcases phase7OneStepModelPrediction_bounds_d13 with ⟨hpred_lo, hpred_hi⟩
+  rcases alphaCodata2022Gap_bounds_d15 with ⟨hgap_lo, hgap_hi⟩
+  constructor <;> linarith
+
+theorem phase7OneStepModelResidual_bounds_d16
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.0000009383046099 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.0000009383046101 := by
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  rcases phase7OneStepModelPrediction_bounds_d16 with ⟨hpred_lo, hpred_hi⟩
+  rcases alphaCodata2022Gap_bounds_d16 with ⟨hgap_lo, hgap_hi⟩
+  constructor <;> linarith
+
+theorem phase7OneStepModelResidual_bounds_d17
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.00000093830460994 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.00000093830460997 := by
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  rcases phase7OneStepModelPrediction_bounds_d18 with ⟨hpred_lo, hpred_hi⟩
+  rcases alphaCodata2022Gap_bounds_d17 with ⟨hgap_lo, hgap_hi⟩
+  constructor <;> linarith
+
+theorem phase7OneStepModelResidual_bounds_d18
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.000000938304609953 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.000000938304609958 := by
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  rcases phase7OneStepModelPrediction_bounds_d18 with ⟨hpred_lo, hpred_hi⟩
+  rcases alphaCodata2022Gap_bounds_d18 with ⟨hgap_lo, hgap_hi⟩
+  constructor <;> linarith
+
+theorem phase7OneStepModelResidual_bounds_d19
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.0000009383046099546 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.0000009383046099571 := by
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  rcases phase7OneStepModelPrediction_bounds_d19 with ⟨hpred_lo, hpred_hi⟩
+  rcases alphaCodata2022Gap_bounds_d19 with ⟨hgap_lo, hgap_hi⟩
+  constructor <;> linarith
+
+theorem phase7OneStepModelResidual_bounds_d20
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.00000093830460995488 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.00000093830460995615 := by
+  rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
+  rcases phase7OneStepModelPrediction_bounds_d20 with ⟨hpred_lo, hpred_hi⟩
+  rcases alphaCodata2022Gap_bounds_d20 with ⟨hgap_lo, hgap_hi⟩
+  constructor <;> linarith
+
 theorem alphaPhaseObserverOneStepResidual_bounds_micro
     {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
@@ -1066,6 +1965,62 @@ theorem alphaPhaseObserverOneStepResidual_bounds_d13
     alphaPhaseObserverOneStepResidual R < 0.0000009383047 := by
   simpa [alphaPhaseObserverOneStepResidual] using
     phase7OneStepModelResidual_bounds_d13 (R := R) hR hRlt
+
+theorem alphaPhaseObserverOneStepResidual_bounds_d14
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.00000093830460 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.00000093830462 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_bounds_d14 (R := R) hR hRlt
+
+theorem alphaPhaseObserverOneStepResidual_bounds_d15
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.000000938304607 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.000000938304618 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_bounds_d15 (R := R) hR hRlt
+
+theorem alphaPhaseObserverOneStepResidual_bounds_d16
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.0000009383046099 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.0000009383046101 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_bounds_d16 (R := R) hR hRlt
+
+theorem alphaPhaseObserverOneStepResidual_bounds_d17
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.00000093830460994 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.00000093830460997 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_bounds_d17 (R := R) hR hRlt
+
+theorem alphaPhaseObserverOneStepResidual_bounds_d18
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.000000938304609953 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.000000938304609958 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_bounds_d18 (R := R) hR hRlt
+
+theorem alphaPhaseObserverOneStepResidual_bounds_d19
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.0000009383046099546 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.0000009383046099571 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_bounds_d19 (R := R) hR hRlt
+
+theorem alphaPhaseObserverOneStepResidual_bounds_d20
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    (0.00000093830460995488 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.00000093830460995615 := by
+  simpa [alphaPhaseObserverOneStepResidual] using
+    phase7OneStepModelResidual_bounds_d20 (R := R) hR hRlt
 
 theorem phase7OneStepModelResidual_abs_lt_one_millionth
     {R : ℝ} (hR : 0 < R)
@@ -1093,6 +2048,17 @@ theorem alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
     alphaPhaseObserverOneStepResidual_eq_oneStepComparison_sub_codataGap
       (R := R) hR hRlt]
   simp [abs_sub_comm]
+
+theorem alphaPhaseObserverResidueCheckAbsError_eq_modelPrediction_sub_codataGap_abs
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
+    alphaPhaseObserverResidueCheckAbsError =
+      |phase7OneStepModelPrediction - alphaCodata2022Gap| := by
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt,
+    alphaPhaseObserverOneStepResidual,
+    phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap
+      (R := R) hR hRlt]
 
 theorem alphaPhaseObserverResidueCheckAbsError_bounds_micro :
     (0.000000921017 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
@@ -1153,6 +2119,152 @@ theorem alphaPhaseObserverResidueCheckAbsError_bounds_d13 :
   rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
       (R := R) hR hRlt, abs_of_pos hpos]
   exact ⟨hlo, hhi⟩
+
+theorem alphaPhaseObserverResidueCheckAbsError_bounds_d14 :
+    (0.00000093830460 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.00000093830462 := by
+  let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
+  have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
+    UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
+  have hR : 0 < R := by
+    dsimp [R]
+    positivity
+  have hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    dsimp [R]
+    linarith
+  rcases alphaPhaseObserverOneStepResidual_bounds_d14 (R := R) hR hRlt with
+    ⟨hlo, hhi⟩
+  have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
+    linarith
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt, abs_of_pos hpos]
+  exact ⟨hlo, hhi⟩
+
+theorem alphaPhaseObserverResidueCheckAbsError_bounds_d15 :
+    (0.000000938304607 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.000000938304618 := by
+  let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
+  have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
+    UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
+  have hR : 0 < R := by
+    dsimp [R]
+    positivity
+  have hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    dsimp [R]
+    linarith
+  rcases alphaPhaseObserverOneStepResidual_bounds_d15 (R := R) hR hRlt with
+    ⟨hlo, hhi⟩
+  have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
+    linarith
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt, abs_of_pos hpos]
+  exact ⟨hlo, hhi⟩
+
+theorem alphaPhaseObserverResidueCheckAbsError_bounds_d16 :
+    (0.0000009383046099 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.0000009383046101 := by
+  let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
+  have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
+    UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
+  have hR : 0 < R := by
+    dsimp [R]
+    positivity
+  have hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    dsimp [R]
+    linarith
+  rcases alphaPhaseObserverOneStepResidual_bounds_d16 (R := R) hR hRlt with
+    ⟨hlo, hhi⟩
+  have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
+    linarith
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt, abs_of_pos hpos]
+  exact ⟨hlo, hhi⟩
+
+theorem alphaPhaseObserverResidueCheckAbsError_bounds_d17 :
+    (0.00000093830460994 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.00000093830460997 := by
+  let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
+  have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
+    UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
+  have hR : 0 < R := by
+    dsimp [R]
+    positivity
+  have hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    dsimp [R]
+    linarith
+  rcases alphaPhaseObserverOneStepResidual_bounds_d17 (R := R) hR hRlt with
+    ⟨hlo, hhi⟩
+  have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
+    linarith
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt, abs_of_pos hpos]
+  exact ⟨hlo, hhi⟩
+
+theorem alphaPhaseObserverResidueCheckAbsError_bounds_d18 :
+    (0.000000938304609953 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.000000938304609958 := by
+  let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
+  have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
+    UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
+  have hR : 0 < R := by
+    dsimp [R]
+    positivity
+  have hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    dsimp [R]
+    linarith
+  rcases alphaPhaseObserverOneStepResidual_bounds_d18 (R := R) hR hRlt with
+    ⟨hlo, hhi⟩
+  have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
+    linarith
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt, abs_of_pos hpos]
+  exact ⟨hlo, hhi⟩
+
+theorem alphaPhaseObserverResidueCheckAbsError_bounds_d19 :
+    (0.0000009383046099546 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.0000009383046099571 := by
+  let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
+  have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
+    UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
+  have hR : 0 < R := by
+    dsimp [R]
+    positivity
+  have hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    dsimp [R]
+    linarith
+  rcases alphaPhaseObserverOneStepResidual_bounds_d19 (R := R) hR hRlt with
+    ⟨hlo, hhi⟩
+  have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
+    linarith
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt, abs_of_pos hpos]
+  exact ⟨hlo, hhi⟩
+
+theorem alphaPhaseObserverResidueCheckAbsError_bounds_d20 :
+    (0.00000093830460995488 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.00000093830460995615 := by
+  let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
+  have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
+    UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
+  have hR : 0 < R := by
+    dsimp [R]
+    positivity
+  have hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2) := by
+    dsimp [R]
+    linarith
+  rcases alphaPhaseObserverOneStepResidual_bounds_d20 (R := R) hR hRlt with
+    ⟨hlo, hhi⟩
+  have hpos : 0 < alphaPhaseObserverOneStepResidual R := by
+    linarith
+  rw [alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt, abs_of_pos hpos]
+  exact ⟨hlo, hhi⟩
+
+theorem alphaCodata2022Gap_gt_three_hundred_projection_error :
+    300 * alphaPhaseObserverResidueCheckAbsError < alphaCodata2022Gap := by
+  rcases alphaCodata2022Gap_bounds_d20 with ⟨hgap_lo, hgap_hi⟩
+  rcases alphaPhaseObserverResidueCheckAbsError_bounds_d20 with ⟨herr_lo, herr_hi⟩
+  linarith
 
 theorem alphaPhaseObserverResidueCheckAbsError_lt_one_millionth :
     alphaPhaseObserverResidueCheckAbsError < 0.000001 := by
@@ -1871,6 +2983,708 @@ theorem no_terminal_scale_for_alpha_running (s : Scale) :
   no_first_step s
 
 /--
+The running/projection layer inherits the same scale-indexed terminal handoff:
+for every whole-cycle translate, `13` is the local closure point and `14` is
+the immediate re-entry point, while the recursive descent itself has no bottom
+scale.
+
+This packages unbounded descent together with the local `13 ↦ 3`, `14 ↦ 4`
+handoff chart, but does not promote a stronger simultaneous-all-scales claim.
+-/
+theorem alpha_running_no_terminal_scale_and_handoff (s : Scale) (t : ℕ) :
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 :=
+  no_first_step_and_terminal_handoff_at_scale s t
+
+/--
+The alpha-selected observer channel reaches the recurring terminal handoff.
+
+This packages three facts adjacently:
+- alpha arithmetic selects the current observer channel;
+- that observer reaches closure and restart in fixed successor steps;
+- the closure/restart handoff persists at every indexed scale.
+
+It is an observer-local convenience theorem, not a stronger physical-selection
+or simultaneous-all-scales claim.
+-/
+theorem alpha_selected_observer_reaches_recurring_handoff
+    (s : Scale) (t : ℕ) :
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  rcases alphaPhaseObserver_enters_terminal_handoff_in_fixed_steps with
+    ⟨_, _, _, hclose, hrestart⟩
+  rcases alpha_running_no_terminal_scale_and_handoff s t with
+    ⟨hscale, h13, h14⟩
+  exact ⟨alphaPhaseObserver_selected_by_alpha_arithmetic, hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The alpha-selected observer is a contextual point on the universal PRISM orbit
+before the recurring closure/restart handoff.
+
+This packages a second exposed structural consequence adjacent to, but distinct
+from, the current one-step comparison/residual/error lane:
+- the universal PRISM walk from `0` reaches every cycle position;
+- the arithmetic-selected observer is specifically label `7` and is reached
+  after seven successor steps from the seed;
+- the closure point remains the contextual `13` / local `3` / cycle `0`
+  location;
+- five and six more observer steps land at the recurring closure/restart
+  handoff, which persists at every indexed scale with no bottom scale.
+
+It does not promote phase `7` into an absolute origin or collapse chart-
+relative facts into one absolute coordinate claim; it only places the selected
+observer inside the existing scale-indexed structural geometry.
+-/
+theorem alpha_selected_observer_sits_on_prism_orbit_before_recurring_handoff
+    (s : Scale) (t : ℕ) :
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserver = (7 : ZMod CycleLen) ∧
+    (∀ x : BreathingCycle.CyclePos,
+      ∃ n : ℕ, ((fun y : BreathingCycle.CyclePos => BreathingCycle.neg (BreathingCycle.comp y))^[n]) 0 = x) ∧
+    ((fun x : BreathingCycle.CyclePos => BreathingCycle.neg (BreathingCycle.comp x))^[7]) 0 =
+      (7 : BreathingCycle.CyclePos) ∧
+    BreathingCycle.labeledPosition 13 = BreathingCycle.seedPosition ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition 10)
+        (BreathingCycle.labeledPosition 13) = 3 ∧
+    ((13 : ℕ) : BreathingCycle.CyclePos) = 0 ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 ∧
+    BreathingCycle.sameStep (13 + BreathingCycle.cycle_len * t)
+      (14 + BreathingCycle.cycle_len * t) 0 1 := by
+  rcases prism_walk_and_terminal_handoff_at_scale s t with
+    ⟨_, hwalk, _, hscale, h13, h14, hsame⟩
+  rcases BreathingCycle.position_thirteen_has_contextual_coordinates with
+    ⟨hseed, hlocal13, hcycle13⟩
+  rcases alpha_selected_observer_reaches_recurring_handoff s t with
+    ⟨hsel, hclose, hrestart, _, _, _⟩
+  exact ⟨hsel, alphaPhaseObserver_eq_seven, hwalk,
+    alphaPhaseObserver_is_seven_steps_on_seed_orbit, hseed, hlocal13, hcycle13,
+    hclose, hrestart, hscale, h13, h14, hsame⟩
+
+/--
+The centered complex deviation itself has a local origin and sits on the same
+recurring handoff as the alpha-selected observer channel.
+
+This packages the bridge one layer earlier than the measured real observable:
+- the local chart is re-anchored so the current start point is `0`,
+- the observer channel is still the arithmetic-selected alpha observer,
+- the centered complex deviation is the explicit alpha-selected
+  root/scalar-residue quantity,
+- and that same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart handoff at every indexed scale.
+
+It does not promote a stronger measurement-correctness or physical-selection
+claim; it only places the already-proved centered complex quantity on that same
+recurring-handoff channel.
+-/
+theorem alpha_selected_centered_deviation_has_local_origin_and_recurring_handoff
+    (n : ℤ) {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaInvRunningModel n alphaPhaseObserver R -
+      ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R) =
+        ((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  have horigin :
+      BreathingCycle.localCoordinate
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 :=
+    (BreathingCycle.terminal_block_handoff_reindexes_at_scale t).1
+  have hdev :=
+    alphaPhaseObserverDeviationFromAverage_eq_alpha_selected_scalar_mul_residueCandidate
+      (n := n) (R := R) hR hRlt
+  rcases alpha_selected_observer_reaches_recurring_handoff s t with
+    ⟨hsel, hclose, hrestart, hscale, h13, h14⟩
+  exact ⟨horigin, hsel, hdev, hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The unnormalized real selected-observer correction has a local origin, is
+stable under allowed contour-radius changes, and sits on the same recurring
+handoff as the alpha-selected observer channel.
+
+This packages an earlier exposed observer-side quantity than the current `/ 28`
+measurement rule:
+- the local chart is re-anchored so the current start point is `0`,
+- the observer channel is still the arithmetic-selected alpha observer,
+- the real correction is both the real part of the centered running deviation
+  and the real part of the explicit alpha-selected root/scalar-residue
+  quantity,
+- that real correction is unchanged when the contour radius varies from `r` to
+  `R` in the admitted regime,
+- and the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart handoff at every indexed scale.
+
+It does not promote a stronger measurement-correctness, unique-normalization,
+or physical-selection claim; it only packages the current unnormalized
+observer-side real quantity on that same arithmetic-selected recurring-handoff
+channel.
+-/
+theorem alpha_selected_real_correction_has_local_origin_radius_invariance_and_recurring_handoff
+    (n : ℤ) {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverRealCorrection n R =
+      Complex.re
+        (alphaInvRunningModel n alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R)) ∧
+    alphaPhaseObserverRealCorrection n R =
+      Complex.re
+        (((n : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) ∧
+    alphaPhaseObserverRealCorrection n R = alphaPhaseObserverRealCorrection n r ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  have horigin :
+      BreathingCycle.localCoordinate
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 :=
+    (BreathingCycle.terminal_block_handoff_reindexes_at_scale t).1
+  have hR : 0 < R := lt_of_lt_of_le hr hrR
+  have hcenter :=
+    alphaPhaseObserverRealCorrection_eq_re_deviationFromAverage
+      (n := n) (R := R) hR hRlt
+  have hroot :=
+    alphaPhaseObserverRealCorrection_eq_re_alpha_selected_scalar_mul_residueCandidate
+      (n := n) (R := R) hR hRlt
+  have hinvar :
+      alphaPhaseObserverRealCorrection n R = alphaPhaseObserverRealCorrection n r :=
+    alphaPhaseObserverRealCorrection_eq_of_le_lt_half_infsep
+      (n := n) (r := r) (R := R) hr hrR hRlt
+  rcases alpha_selected_observer_reaches_recurring_handoff s t with
+    ⟨hsel, hclose, hrestart, hscale, h13, h14⟩
+  exact ⟨horigin, hsel, hcenter, hroot, hinvar, hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The centered observer-local observable now also packages the conserved-average
+story, allowed-radius stability, and the recurring handoff in one theorem.
+
+This is a broader observer/measurement-side consequence than the one-step
+CODATA bundle:
+- the local chart is re-anchored so the current start point is `0`,
+- the observer channel is still the arithmetic-selected alpha observer,
+- the all-root average of the running model still collapses back to the static
+  UFRF value,
+- the centered observable is the normalized real part of the selected
+  observer's deviation from that global average,
+- that centered observable is unchanged when the contour radius varies from `r`
+  to `R` in the admitted regime,
+- and the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart handoff at every indexed scale.
+
+It does not promote a stronger unique-normalization, measurement-correctness,
+or physical-selection claim; it only packages the current conserved-average
+observer-side story on that same arithmetic-selected recurring-handoff
+channel.
+-/
+theorem alpha_selected_centered_observable_global_average_package_has_local_origin_radius_invariance_and_recurring_handoff
+    (n : ℤ) {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R) = ufrf_alpha_inv ∧
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      Complex.re
+        (alphaInvRunningModel n alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R)) / 28 ∧
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      alphaPhaseObserverNormalizedRealCorrection n r ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  have horigin :
+      BreathingCycle.localCoordinate
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 :=
+    (BreathingCycle.terminal_block_handoff_reindexes_at_scale t).1
+  have hR : 0 < R := lt_of_lt_of_le hr hrR
+  have havg :=
+    avg_alphaInvRunningModel_allRoots_eq_static
+      (n := n) (R := R) hR hRlt
+  have hobs :=
+    alphaPhaseObserverNormalizedRealCorrection_eq_re_deviationFromAverage_div_twenty_eight
+      (n := n) (R := R) hR hRlt
+  have hinvar :
+      alphaPhaseObserverNormalizedRealCorrection n R =
+        alphaPhaseObserverNormalizedRealCorrection n r :=
+    alphaPhaseObserverNormalizedRealCorrection_eq_of_le_lt_half_infsep
+      (n := n) (r := r) (R := R) hr hrR hRlt
+  rcases alpha_selected_observer_reaches_recurring_handoff s t with
+    ⟨hsel, hclose, hrestart, hscale, h13, h14⟩
+  exact ⟨horigin, hsel, havg, hobs, hinvar, hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The exposed centered observable itself sits on the same recurring handoff as
+the alpha-selected observer channel.
+
+This is the current repo-supported arbitrary-step bridge from the centered
+measurement-side quantity back to the centerless recurring-handoff package:
+- the normalized real centered observable is written at the arithmetic-selected
+  observer channel,
+- the selected observer still reaches closure/restart in fixed successor steps,
+- and that same closure/restart handoff persists at every indexed scale.
+
+It does not add a stronger physical-selection or measurement-correctness claim;
+it only packages the already-proved centered observable on that same
+arithmetic-selected recurring-handoff channel.
+-/
+theorem alpha_selected_centered_observable_reaches_recurring_handoff
+    (n : ℤ) {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      Complex.re
+        (alphaInvRunningModel n alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R)) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  rcases alphaPhaseObserverNormalizedRealCorrection_is_alpha_selected_centered_comparison
+      (n := n) (R := R) hR hRlt with ⟨hsel, hobs⟩
+  rcases alpha_selected_observer_reaches_recurring_handoff s t with
+    ⟨_, hclose, hrestart, hscale, h13, h14⟩
+  exact ⟨hsel, hobs, hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The centered observer-local measurement package has a local origin and the same
+recurring handoff law.
+
+This packages the user-facing structural reading in one theorem:
+- the local chart is re-anchored so the current start point is `0`,
+- the observer channel is the arithmetic-selected alpha observer,
+- the measurement rule is the normalized real part of the centered observable,
+- and the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart handoff at every indexed scale.
+
+It does not promote a stronger claim that every possible measurement rule is
+equivalent, or that the current rule is uniquely physically correct. It only
+packages the current exposed rule on that same recurring-handoff channel.
+-/
+theorem alpha_selected_centered_observable_has_local_origin_and_recurring_handoff
+    (n : ℤ) {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      Complex.re
+        (alphaInvRunningModel n alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel n k R)) / 28 ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  have horigin :
+      BreathingCycle.localCoordinate
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 :=
+    (BreathingCycle.terminal_block_handoff_reindexes_at_scale t).1
+  have hmeas :=
+    alphaPhaseObserverNormalizedRealCorrection_eq_re_deviationFromAverage_div_twenty_eight
+      (n := n) (R := R) hR hRlt
+  rcases alpha_selected_observer_reaches_recurring_handoff s t with
+    ⟨hsel, hclose, hrestart, hscale, h13, h14⟩
+  exact ⟨horigin, hsel, hmeas, hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The centered observer-local measurement package has a local origin, is stable
+under allowed contour-radius changes, and still sits on the same recurring
+handoff law.
+
+This packages the measurement-side stability statement now supported by the
+repo:
+- the local chart is re-anchored so the current start point is `0`,
+- the observer channel is still the arithmetic-selected alpha observer,
+- the exposed centered observable is invariant under allowed radius changes,
+- and the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart handoff at every indexed scale.
+
+It does not promote a stronger claim that every measurement rule is equivalent
+or uniquely correct; it only packages the current exposed centered observable
+and its allowed-radius stability on that same recurring-handoff channel.
+-/
+theorem alpha_selected_centered_observable_has_local_origin_radius_invariance_and_recurring_handoff
+    (n : ℤ) {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      alphaPhaseObserverNormalizedRealCorrection n r ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  have horigin :
+      BreathingCycle.localCoordinate
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+          (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 :=
+    (BreathingCycle.terminal_block_handoff_reindexes_at_scale t).1
+  have hinvar :
+      alphaPhaseObserverNormalizedRealCorrection n R =
+        alphaPhaseObserverNormalizedRealCorrection n r :=
+    alphaPhaseObserverNormalizedRealCorrection_eq_of_le_lt_half_infsep
+      (n := n) (r := r) (R := R) hr hrR hRlt
+  rcases alpha_selected_observer_reaches_recurring_handoff s t with
+    ⟨hsel, hclose, hrestart, hscale, h13, h14⟩
+  exact ⟨horigin, hsel, hinvar, hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The exposed observer-indexed comparison package sits on the same recurring
+handoff as the alpha-selected channel.
+
+This is the current repo-supported bridge from the centerless recurring-handoff
+layer to the exposed measurement-side quantities:
+- the one-step comparison is the alpha-selected centered observable;
+- the one-step residual is that same centered quantity after subtracting the
+  static CODATA gap;
+- the selected observer still reaches closure/restart inside the recurring
+  handoff package at every indexed scale.
+
+It does not prove a stronger physical-selection or measurement-correctness
+claim; it only packages the current exposed comparison quantities on that same
+arithmetic-selected recurring-handoff channel.
+-/
+theorem alpha_selected_comparison_and_residual_reach_recurring_handoff
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  rcases alpha_selected_centered_observable_reaches_recurring_handoff
+      (n := 1) (R := R) hR hRlt s t with
+    ⟨hsel, hcmp0, hclose, hrestart, hscale, h13, h14⟩
+  have hcmp :
+      alphaPhaseObserverOneStepComparison =
+        Complex.re
+          (alphaInvRunningModel 1 alphaPhaseObserver R -
+            ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+          alphaPhaseObserverModelNormalization := by
+    calc
+      alphaPhaseObserverOneStepComparison = alphaPhaseObserverNormalizedRealCorrection 1 R := by
+        symm
+        exact alphaPhaseObserverNormalizedRealCorrection_one_eq_oneStepComparison
+          (R := R) hR hRlt
+      _ = Complex.re
+            (alphaInvRunningModel 1 alphaPhaseObserver R -
+              ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+            alphaPhaseObserverModelNormalization := hcmp0
+  rcases alphaPhaseObserverOneStepResidual_eq_alpha_selected_centered_comparison_sub_codataGap
+      (R := R) hR hRlt with ⟨_, hres⟩
+  exact ⟨hsel, hcmp, hres, hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The current one-step measurement package has a local origin and sits on the
+same recurring handoff as the alpha-selected observer channel.
+
+This is the smallest current one-step user-facing bundle in one theorem:
+- the local chart is re-anchored so the current start point is `0`,
+- the observer channel is still the arithmetic-selected alpha observer,
+- the exposed one-step measurement rule is the normalized real part of the
+  centered observable with explicit `/ 28` normalization,
+- the one-step comparison alias is exactly that same quantity,
+- the one-step residual alias is that same quantity minus the static CODATA
+  gap,
+- and the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart handoff at every indexed scale.
+
+It does not promote a stronger measurement-correctness or physical-selection
+claim; it only packages the current one-step observable aliases on that same
+arithmetic-selected recurring-handoff channel.
+-/
+theorem alpha_selected_one_step_measurement_package_has_local_origin_and_recurring_handoff
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 -
+        alphaCodata2022Gap ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  rcases alpha_selected_centered_observable_has_local_origin_and_recurring_handoff
+      (n := 1) (R := R) hR hRlt s t with
+    ⟨horigin, hsel, hmeas, hclose, hrestart, hscale, h13, h14⟩
+  have hcmp :
+      alphaPhaseObserverOneStepComparison =
+        Complex.re
+          (alphaInvRunningModel 1 alphaPhaseObserver R -
+            ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 := by
+    calc
+      alphaPhaseObserverOneStepComparison = alphaPhaseObserverNormalizedRealCorrection 1 R := by
+        symm
+        exact alphaPhaseObserverNormalizedRealCorrection_one_eq_oneStepComparison
+          (R := R) hR hRlt
+      _ =
+        Complex.re
+          (alphaInvRunningModel 1 alphaPhaseObserver R -
+            ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 := hmeas
+  have hres :
+      alphaPhaseObserverOneStepResidual R =
+        Complex.re
+          (alphaInvRunningModel 1 alphaPhaseObserver R -
+            ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 -
+          alphaCodata2022Gap := by
+    calc
+      alphaPhaseObserverOneStepResidual R =
+          alphaPhaseObserverOneStepComparison - alphaCodata2022Gap := by
+        exact alphaPhaseObserverOneStepResidual_eq_oneStepComparison_sub_codataGap
+          (R := R) hR hRlt
+      _ =
+          Complex.re
+            (alphaInvRunningModel 1 alphaPhaseObserver R -
+              ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 -
+            alphaCodata2022Gap := by
+          rw [hcmp]
+  exact ⟨horigin, hsel, hmeas, hcmp, hres, hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The current one-step measurement package has a local origin, is stable under
+allowed contour-radius changes, and sits on the same recurring handoff as the
+alpha-selected observer channel.
+
+This is the current one-step radius-stability bundle in one theorem:
+- the local chart is re-anchored so the current start point is `0`,
+- the observer channel is still the arithmetic-selected alpha observer,
+- the exposed one-step measurement rule is still the normalized real part of
+  the centered observable with explicit `/ 28` normalization,
+- that exposed one-step measurement is unchanged when the contour radius moves
+  from `r` to `R` in the admitted regime,
+- the one-step comparison alias is exactly that same quantity,
+- the one-step residual alias is that same quantity minus the static CODATA
+  gap and is likewise unchanged when the contour radius moves from `r` to `R`,
+- and the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart handoff at every indexed scale.
+
+It does not promote a stronger measurement-correctness or physical-selection
+claim; it only packages the current one-step observable aliases and their
+allowed-radius stability on that same arithmetic-selected recurring-handoff
+channel.
+-/
+theorem alpha_selected_one_step_measurement_package_has_local_origin_radius_invariance_and_recurring_handoff
+    {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      alphaPhaseObserverNormalizedRealCorrection 1 r ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 ∧
+    alphaPhaseObserverOneStepResidual R = alphaPhaseObserverOneStepResidual r ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 -
+        alphaCodata2022Gap ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  have hR : 0 < R := lt_of_lt_of_le hr hrR
+  rcases alpha_selected_one_step_measurement_package_has_local_origin_and_recurring_handoff
+      (R := R) hR hRlt s t with
+    ⟨horigin, hsel, hmeas, hcmp, hres, hclose, hrestart, hscale, h13, h14⟩
+  have hinvarMeas :
+      alphaPhaseObserverNormalizedRealCorrection 1 R =
+        alphaPhaseObserverNormalizedRealCorrection 1 r :=
+    alphaPhaseObserverNormalizedRealCorrection_eq_of_le_lt_half_infsep
+      (n := 1) (r := r) (R := R) hr hrR hRlt
+  have hinvarRes :
+      alphaPhaseObserverOneStepResidual R = alphaPhaseObserverOneStepResidual r :=
+    alphaPhaseObserverOneStepResidual_eq_of_le_lt_half_infsep
+      (r := r) (R := R) hr hrR hRlt
+  exact ⟨horigin, hsel, hinvarMeas, hmeas, hcmp, hinvarRes, hres,
+    hclose, hrestart, hscale, h13, h14⟩
+
+/--
+The current one-step absolute-error package has a local origin and sits on the
+same recurring handoff as the alpha-selected observer channel.
+
+This extends the current one-step user-facing package by adding the
+script-aligned absolute-error identity:
+- the local chart is re-anchored so the current start point is `0`,
+- the observer channel is still the arithmetic-selected alpha observer,
+- the exposed one-step measurement rule is still the normalized real part of
+  the centered observable with explicit `/ 28` normalization,
+- the one-step comparison alias is exactly that same quantity,
+- the one-step residual alias is that same quantity minus the static CODATA
+  gap,
+- the absolute error is exactly the absolute value of that one-step residual,
+- and the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart handoff at every indexed scale.
+
+It does not promote a stronger measurement-correctness or physical-selection
+claim; it only packages the current one-step observable and absolute-error
+aliases on that same arithmetic-selected recurring-handoff channel.
+-/
+theorem alpha_selected_one_step_absolute_error_package_has_local_origin_and_recurring_handoff
+    {R : ℝ} (hR : 0 < R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) / 28 -
+        alphaCodata2022Gap ∧
+    alphaPhaseObserverResidueCheckAbsError = |alphaPhaseObserverOneStepResidual R| ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  rcases alpha_selected_one_step_measurement_package_has_local_origin_and_recurring_handoff
+      (R := R) hR hRlt s t with
+    ⟨horigin, hsel, hmeas, hcmp, hres, hclose, hrestart, hscale, h13, h14⟩
+  have herr :
+      alphaPhaseObserverResidueCheckAbsError = |alphaPhaseObserverOneStepResidual R| :=
+    alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs
+      (R := R) hR hRlt
+  exact ⟨horigin, hsel, hmeas, hcmp, hres, herr, hclose, hrestart, hscale, h13, h14⟩
+
+/--
 For every prime `p`, the all-scale projection tower is coherent.
 
 This is the concurrency statement behind the local residue channel: every prime
@@ -1919,6 +3733,39 @@ This is the cycle-side seed statement that pairs with the tower-side
 theorem cycle_seed_zero_to_one :
     BreathingCycle.neg (BreathingCycle.comp 0) = (1 : BreathingCycle.CyclePos) :=
   BreathingCycle.prism_generates_from_zero
+
+/--
+The running/projection layer packages the nested start-and-handoff picture in
+one place.
+
+It keeps the claims separate but adjacent:
+- the `13`-adic tower is coherent across finite depths;
+- the exposed UFRF start pattern is `1` and then `13` subpositions;
+- the cycle-side seed move is the literal `0 -> 1` step;
+- there is no bottom scale;
+- every whole-cycle translate still closes at local `3` and re-enters at local
+  `4`.
+
+This is a bundled scale-indexed package, not a coinductive simultaneous-all-
+scales object.
+-/
+theorem alpha_running_coherent_start_and_handoff
+    (s : Scale) (t : ℕ) (x : ℤ_[13]) :
+    IsCoherent 13 (fun n => PadicInt.toZModPow n x) ∧
+    UFRF.Padic.ufrf_projection (1 : ℤ_[13]) = (1 : ZMod 13) ∧
+    Fintype.card (ZMod (13 ^ 2)) / Fintype.card (ZMod 13) = 13 ∧
+    BreathingCycle.neg (BreathingCycle.comp 0) = (1 : BreathingCycle.CyclePos) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  rcases ufrf_start_pattern with ⟨hstart, hbranch⟩
+  rcases alpha_running_no_terminal_scale_and_handoff s t with ⟨hscale, hclose, hreenter⟩
+  exact ⟨padic_is_coherent (p := 13) x, hstart, hbranch, cycle_seed_zero_to_one,
+    hscale, hclose, hreenter⟩
 
 private abbrev CyclePrime3VisitOrder : Prop :=
   (0 * 3 : ZMod 13) = 0 ∧ (1 * 3 : ZMod 13) = 3 ∧
@@ -2001,5 +3848,30 @@ geometry and then returns to the seed.
 theorem cycle_prime_paths_close_after_thirteen :
     CyclePrimePathsCloseAfterThirteen :=
   UFRF.StarPolygon.paths_all_close
+
+/--
+The current three-layer concurrency reading is mirrored here from `Recursion`.
+
+The structural package itself now lives lower in
+`prism_walk_and_terminal_handoff_at_scale`; this running-layer theorem keeps
+the same statement available next to the observer/measurement bridge cluster
+without promoting it into an observer-specific claim.
+-/
+theorem alpha_running_three_layer_concurrency_package
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.neg (BreathingCycle.comp 0) = (1 : BreathingCycle.CyclePos) ∧
+    (∀ x : BreathingCycle.CyclePos,
+      ∃ n : ℕ, ((fun y : BreathingCycle.CyclePos => BreathingCycle.neg (BreathingCycle.comp y))^[n]) 0 = x) ∧
+    ((13 : ℕ) : BreathingCycle.CyclePos) = 0 ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 ∧
+    BreathingCycle.sameStep (13 + BreathingCycle.cycle_len * t)
+      (14 + BreathingCycle.cycle_len * t) 0 1 :=
+  prism_walk_and_terminal_handoff_at_scale s t
 
 end UFRF.AlphaRunning

@@ -34,6 +34,7 @@ line Re(s) = 1/2.
 - `dimensional_completeness`: ✅ PROVEN (constructive definition)
 - `subscale_flip_at_half`: ✅ PROVEN
 - `no_first_step`: ✅ PROVEN (ℤ has no minimum)
+- `no_first_step_and_terminal_handoff_at_scale`: ✅ proved
 -/
 
 /-- Scale is indexed by integers — no absolute origin. -/
@@ -195,3 +196,71 @@ theorem bridge_to_seed_matches_terminal_chart_at_scale (s : ℕ) (k : Fin 3) :
       using BreathingCycle.localCoordinate_of_labeled_offset
         (10 + BreathingCycle.cycle_len * s) (k.val + 1)
   · exact bridge_to_seed k
+
+/--
+**There is no terminal scale, and every terminal block still hands off into re-entry.**
+
+This packages the two facts needed for the "the cycle never just stops" reading:
+- for any ambient scale there is always a lower scale;
+- at every whole-cycle translate, the terminal handoff block still locally
+  exposes `13 ↦ 3` and `14 ↦ 4`.
+
+So closure and restart persist at every scale rather than terminating in a
+single final chart.
+
+✅ PROVEN
+-/
+theorem no_first_step_and_terminal_handoff_at_scale (s : Scale) (t : ℕ) :
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  refine ⟨no_first_step s, ?_, ?_⟩
+  · exact (BreathingCycle.terminal_block_handoff_reindexes_at_scale t).2.2.2.1
+  · exact (BreathingCycle.terminal_block_handoff_reindexes_at_scale t).2.2.2.2
+
+/--
+**The cycle walk, local handoff chart, and unbounded scale descent fit together.**
+
+This packages the safe structural reading in one lower-layer theorem:
+- the cycle-side seed move is the literal `0 → 1` step;
+- the same PRISM walk from `0` reaches every cycle position;
+- `13` is `0` in the pure cycle chart;
+- there is no bottom scale;
+- every whole-cycle translate still exposes the local handoff `13 ↦ 3`,
+  `14 ↦ 4`, with the restart step matching `0 → 1`.
+
+This is still a scale-indexed cycle/recursion statement, not a simultaneous
+all-scales object and not an observer/projection claim.
+
+✅ PROVEN
+-/
+theorem prism_walk_and_terminal_handoff_at_scale (s : Scale) (t : ℕ) :
+    BreathingCycle.neg (BreathingCycle.comp 0) = (1 : BreathingCycle.CyclePos) ∧
+    (∀ x : BreathingCycle.CyclePos,
+      ∃ n : ℕ, ((fun y : BreathingCycle.CyclePos => BreathingCycle.neg (BreathingCycle.comp y))^[n]) 0 = x) ∧
+    ((13 : ℕ) : BreathingCycle.CyclePos) = 0 ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 ∧
+    BreathingCycle.sameStep (13 + BreathingCycle.cycle_len * t)
+      (14 + BreathingCycle.cycle_len * t) 0 1 := by
+  rcases no_first_step_and_terminal_handoff_at_scale s t with ⟨hscale, h13, h14⟩
+  have hhit :
+      ∀ x : BreathingCycle.CyclePos,
+        ∃ n : ℕ, ((fun y : BreathingCycle.CyclePos => BreathingCycle.neg (BreathingCycle.comp y))^[n]) 0 = x :=
+    fun x => BreathingCycle.prism_step_hits_every_position x
+  have hcycle : ((13 : ℕ) : BreathingCycle.CyclePos) = 0 :=
+    BreathingCycle.full_cycle_identity
+  have hstep :
+      BreathingCycle.sameStep (13 + BreathingCycle.cycle_len * t)
+        (14 + BreathingCycle.cycle_len * t) 0 1 :=
+    (BreathingCycle.fourteen_restarts_after_thirteen_at_scale t).2.2
+  exact ⟨BreathingCycle.prism_generates_from_zero, hhit, hcycle, hscale, h13, h14, hstep⟩

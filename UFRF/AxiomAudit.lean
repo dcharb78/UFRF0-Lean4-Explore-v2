@@ -20,6 +20,7 @@ import UFRF.GoldenAngle
 import UFRF.Projections
 import UFRF.Noether
 import UFRF.Calculus
+import UFRF.AlphaRunning
 
 import UFRF.Phenomena
 import UFRF.PRISMAlgebra
@@ -169,6 +170,8 @@ A theorem is **axiom-free** if it depends only on Lean core axioms.
 -- ═══ LAYER 22: Division Algebras ═══
 #print axioms visible_dimension_count
 #print axioms no_first_step
+#print axioms no_first_step_and_terminal_handoff_at_scale
+#print axioms prism_walk_and_terminal_handoff_at_scale
 #print axioms bridge_to_seed_matches_terminal_chart
 #print axioms bridge_to_seed_matches_terminal_chart_at_scale
 #print axioms property_lost_correspondence
@@ -194,3 +197,20 @@ A theorem is **axiom-free** if it depends only on Lean core axioms.
 
 -- ═══ LAYER 26: AngularEmbedding ↔ Foundation ═══
 #print axioms arc_quotient_is_trinity
+
+-- ═══ LAYER 27: AlphaRunning bridge packages ═══
+#print axioms UFRF.AlphaRunning.alpha_running_no_terminal_scale_and_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_observer_reaches_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_observer_sits_on_prism_orbit_before_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_centered_deviation_has_local_origin_and_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_real_correction_has_local_origin_radius_invariance_and_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_centered_observable_global_average_package_has_local_origin_radius_invariance_and_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_centered_observable_reaches_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_centered_observable_has_local_origin_and_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_centered_observable_has_local_origin_radius_invariance_and_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_comparison_and_residual_reach_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_one_step_measurement_package_has_local_origin_and_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_one_step_measurement_package_has_local_origin_radius_invariance_and_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_selected_one_step_absolute_error_package_has_local_origin_and_recurring_handoff
+#print axioms UFRF.AlphaRunning.alpha_running_coherent_start_and_handoff
+#print axioms UFRF.AlphaRunning.alpha_running_three_layer_concurrency_package

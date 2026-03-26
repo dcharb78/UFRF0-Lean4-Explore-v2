@@ -54,7 +54,10 @@ Chain: `simplex3_face_count` (C(4,3)=4) → `log3_geometric_factor_is_four` → 
 **`UFRF/InverseLimit.lean`** — `padic_is_inverse_limit`: both directions of projection law via Mathlib's PadicInt API.
 
 ### Step 6b: The Scale Handoff (3 min)
-**`UFRF/Recursion.lean`** — `bridge_to_seed` gives the modular next-scale handoff, `bridge_to_seed_matches_terminal_chart` ties it directly to the chart `10,11,12,13 ↦ 0,1,2,3`, and `bridge_to_seed_matches_terminal_chart_at_scale` shows the same handoff law survives every `13·s` relabeling.
+**`UFRF/Recursion.lean`** — `bridge_to_seed` gives the modular next-scale handoff, `bridge_to_seed_matches_terminal_chart` ties it directly to the chart `10,11,12,13 ↦ 0,1,2,3`, `bridge_to_seed_matches_terminal_chart_at_scale` shows the same handoff law survives every `13·s` relabeling, `no_first_step_and_terminal_handoff_at_scale` packages the honest “never just ends” reading, and `prism_walk_and_terminal_handoff_at_scale` is now the canonical lower-layer package for the seed walk `0 -> 1`, full PRISM traversal, `13 = 0`, and the recurring local `13 ↦ 3`, `14 ↦ 4` handoff.
+
+### Step 6c: The Measurement Bridge (3 min)
+**`UFRF/AlphaRunning.lean`** — audit the current observer-to-measurement bridge cluster from `alpha_selected_observer_sits_on_prism_orbit_before_recurring_handoff` through `alpha_selected_one_step_absolute_error_package_has_local_origin_and_recurring_handoff`. The front end is the observer-placement theorem tying the arithmetic-selected phase `7` to the universal PRISM orbit and the chart-relative `13 / 3 / 0` closure point; the measurement-side endpoint is the local-origin `0`, arithmetic-selected observer, normalized real `/ 28` one-step rule, one-step comparison, one-step residual, absolute-error identity, and the same recurring `13 ↦ 3`, `14 ↦ 4` handoff. For the reviewer-facing theorem inventory and interpretation fence, use [`docs/proofs/26_AlphaRunning.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/proofs/26_AlphaRunning.md).
 
 ### Step 7: The Residue Slice (5 min)
 **`UFRF/ResidueDefinition.lean`** → **`UFRF/CircleIntegralBreathing.lean`**

@@ -35,9 +35,9 @@ The integer part 137 encodes the breathing cycle's critical phase markers:
 
 ## Status
 - `ufrf_alpha_inv`, `codata2018_alpha_inv`, `codata_alpha_inv`: ✅ definitions
-- `alpha_inv_floor_137`, `alpha_inv_bounds_d13`: ✅ proved with π bounds
+- `alpha_inv_floor_137`, `alpha_inv_bounds_d20`: ✅ proved with π bounds
 - `alpha_inv_rounds_to_137_036303775878`: ✅ proved
-- `ufrf_matches_codata`, `ufrf_matches_codata2018`: ✅ proved
+- `ufrf_matches_codata`, `ufrf_codata2022_gap_bounds_d20`, `ufrf_matches_codata2018`: ✅ proved
 -/
 
 noncomputable section
@@ -295,6 +295,300 @@ theorem alpha_inv_rounds_to_137_036303775878 :
   constructor <;> linarith
 
 /--
+Fourteen-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_bounds_d13` using the same 20-decimal bounds on `π`.
+-/
+theorem alpha_inv_bounds_d14 :
+    (137.03630377587843 : ℝ) < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.03630377587844 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.14159265358979323846 : ℝ) < π := Real.pi_gt_d20
+  have pi_hi : π < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.03630377587843 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.03630377587843 : ℝ) < poly π
+    have hmono : poly (3.14159265358979323846 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.03630377587843 : ℝ) < poly (3.14159265358979323846 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.03630377587844 : ℝ) := by
+    change poly π < (137.03630377587844 : ℝ)
+    have hmono : poly π < poly (3.14159265358979323847 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.14159265358979323847 : ℝ) < (137.03630377587844 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
+Fifteen-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_bounds_d14` using the same 20-decimal bounds on `π`.
+-/
+theorem alpha_inv_bounds_d15 :
+    (137.036303775878432 : ℝ) < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.036303775878433 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.14159265358979323846 : ℝ) < π := Real.pi_gt_d20
+  have pi_hi : π < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.036303775878432 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.036303775878432 : ℝ) < poly π
+    have hmono : poly (3.14159265358979323846 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.036303775878432 : ℝ) < poly (3.14159265358979323846 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.036303775878433 : ℝ) := by
+    change poly π < (137.036303775878433 : ℝ)
+    have hmono : poly π < poly (3.14159265358979323847 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.14159265358979323847 : ℝ) < (137.036303775878433 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
+Sixteen-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_bounds_d15` using the same 20-decimal bounds on `π`.
+-/
+theorem alpha_inv_bounds_d16 :
+    (137.0363037758784325 : ℝ) < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.0363037758784326 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.14159265358979323846 : ℝ) < π := Real.pi_gt_d20
+  have pi_hi : π < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.0363037758784325 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.0363037758784325 : ℝ) < poly π
+    have hmono : poly (3.14159265358979323846 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.0363037758784325 : ℝ) < poly (3.14159265358979323846 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.0363037758784326 : ℝ) := by
+    change poly π < (137.0363037758784326 : ℝ)
+    have hmono : poly π < poly (3.14159265358979323847 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.14159265358979323847 : ℝ) < (137.0363037758784326 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
+Seventeen-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_bounds_d16` using the same 20-decimal bounds on `π`.
+-/
+theorem alpha_inv_bounds_d17 :
+    (137.03630377587843255 : ℝ) < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.03630377587843257 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.14159265358979323846 : ℝ) < π := Real.pi_gt_d20
+  have pi_hi : π < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.03630377587843255 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.03630377587843255 : ℝ) < poly π
+    have hmono : poly (3.14159265358979323846 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.03630377587843255 : ℝ) < poly (3.14159265358979323846 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.03630377587843257 : ℝ) := by
+    change poly π < (137.03630377587843257 : ℝ)
+    have hmono : poly π < poly (3.14159265358979323847 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.14159265358979323847 : ℝ) < (137.03630377587843257 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
+Eighteen-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_bounds_d17` using the same 20-decimal bounds on `π`.
+-/
+theorem alpha_inv_bounds_d18 :
+    (137.036303775878432558 : ℝ) < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.036303775878432561 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.14159265358979323846 : ℝ) < π := Real.pi_gt_d20
+  have pi_hi : π < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.036303775878432558 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.036303775878432558 : ℝ) < poly π
+    have hmono : poly (3.14159265358979323846 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.036303775878432558 : ℝ) < poly (3.14159265358979323846 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.036303775878432561 : ℝ) := by
+    change poly π < (137.036303775878432561 : ℝ)
+    have hmono : poly π < poly (3.14159265358979323847 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.14159265358979323847 : ℝ) < (137.036303775878432561 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
+Nineteen-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_bounds_d18` using the same 20-decimal bounds on `π`.
+-/
+theorem alpha_inv_bounds_d19 :
+    (137.0363037758784325588 : ℝ) < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.0363037758784325602 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.14159265358979323846 : ℝ) < π := Real.pi_gt_d20
+  have pi_hi : π < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.0363037758784325588 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.0363037758784325588 : ℝ) < poly π
+    have hmono : poly (3.14159265358979323846 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.0363037758784325588 : ℝ) < poly (3.14159265358979323846 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.0363037758784325602 : ℝ) := by
+    change poly π < (137.0363037758784325602 : ℝ)
+    have hmono : poly π < poly (3.14159265358979323847 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.14159265358979323847 : ℝ) < (137.0363037758784325602 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
+Twenty-decimal bracketing for the UFRF inverse fine-structure value.
+
+This sharpens `alpha_inv_bounds_d19` using the same 20-decimal bounds on `π`.
+-/
+theorem alpha_inv_bounds_d20 :
+    (137.03630377587843255887 : ℝ) < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.03630377587843256013 := by
+  let poly (x : ℝ) := 4 * x ^ 3 + x ^ 2 + x
+  have mono : StrictMonoOn poly (Set.Ici 0) := by
+    intro a ha b hb hab
+    simp at ha hb
+    have hsq : a ^ 2 < b ^ 2 := by nlinarith
+    have hcube : a ^ 3 < b ^ 3 := by nlinarith
+    dsimp [poly]
+    nlinarith
+  have pi_lo : (3.14159265358979323846 : ℝ) < π := Real.pi_gt_d20
+  have pi_hi : π < (3.14159265358979323847 : ℝ) := Real.pi_lt_d20
+  have h_nonneg_pi : 0 ≤ π := le_of_lt (lt_trans (by norm_num) pi_lo)
+  have lo :
+      (137.03630377587843255887 : ℝ) < 4 * π ^ 3 + π ^ 2 + π := by
+    change (137.03630377587843255887 : ℝ) < poly π
+    have hmono : poly (3.14159265358979323846 : ℝ) < poly π :=
+      mono (by norm_num) h_nonneg_pi pi_lo
+    have hlo : (137.03630377587843255887 : ℝ) < poly (3.14159265358979323846 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hlo hmono
+  have hi :
+      4 * π ^ 3 + π ^ 2 + π < (137.03630377587843256013 : ℝ) := by
+    change poly π < (137.03630377587843256013 : ℝ)
+    have hmono : poly π < poly (3.14159265358979323847 : ℝ) :=
+      mono h_nonneg_pi (by norm_num) pi_hi
+    have hhi : poly (3.14159265358979323847 : ℝ) < (137.03630377587843256013 : ℝ) := by
+      dsimp [poly]
+      norm_num
+    exact lt_trans hmono hhi
+  unfold ufrf_alpha_inv
+  dsimp [ufrf_tensor_structure]
+  simp
+  exact ⟨lo, hi⟩
+
+/--
 **Phase Markers 1, 3, 7**
 
 The digits of 137 correspond to breathing cycle checkpoints:
@@ -309,8 +603,7 @@ These sum to 11, which is the first Bridge position.
 theorem phase_marker_sum : 1 + 3 + 7 = 11 := by norm_num
 
 /--
-137 is prime. The fine structure constant's integer part
-is itself a "void space" — a position unreachable by composites.
+137 is prime in the standard natural-number sense.
 
 ✅ PROVEN
 -/
@@ -342,18 +635,117 @@ Value: `137.035999177(21)`.
 def codata_alpha_inv : ℝ := 137.035999177
 
 /--
+The static UFRF-to-CODATA 2022 gap lies in the explicit interval
+`0.0003045988784 < gap < 0.0003045988785`.
+-/
+theorem ufrf_codata2022_gap_bounds_d13 :
+    (0.0003045988784 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.0003045988785 := by
+  rcases alpha_inv_bounds_d13 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
+  constructor <;> linarith
+
+/--
+The static UFRF-to-CODATA 2022 gap rounds to `0.000304598878`
+at the `10^-12` place.
+-/
+theorem ufrf_codata2022_gap_rounds_to_0_000304598878 :
+    |(ufrf_alpha_inv - codata_alpha_inv) - 0.000304598878| < 0.0000000000005 := by
+  rcases ufrf_codata2022_gap_bounds_d13 with ⟨hlo, hhi⟩
+  rw [abs_lt]
+  constructor <;> linarith
+
+/--
+The static UFRF-to-CODATA 2022 gap lies in the explicit interval
+`0.00030459887843 < gap < 0.00030459887844`.
+-/
+theorem ufrf_codata2022_gap_bounds_d14 :
+    (0.00030459887843 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.00030459887844 := by
+  rcases alpha_inv_bounds_d14 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
+  constructor <;> linarith
+
+/--
+The static UFRF-to-CODATA 2022 gap lies in the explicit interval
+`0.000304598878432 < gap < 0.000304598878433`.
+-/
+theorem ufrf_codata2022_gap_bounds_d15 :
+    (0.000304598878432 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.000304598878433 := by
+  rcases alpha_inv_bounds_d15 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
+  constructor <;> linarith
+
+/--
+The static UFRF-to-CODATA 2022 gap lies in the explicit interval
+`0.0003045988784325 < gap < 0.0003045988784326`.
+-/
+theorem ufrf_codata2022_gap_bounds_d16 :
+    (0.0003045988784325 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.0003045988784326 := by
+  rcases alpha_inv_bounds_d16 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
+  constructor <;> linarith
+
+/--
+The static UFRF-to-CODATA 2022 gap lies in the explicit interval
+`0.00030459887843255 < gap < 0.00030459887843257`.
+-/
+theorem ufrf_codata2022_gap_bounds_d17 :
+    (0.00030459887843255 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.00030459887843257 := by
+  rcases alpha_inv_bounds_d17 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
+  constructor <;> linarith
+
+/--
+The static UFRF-to-CODATA 2022 gap lies in the explicit interval
+`0.000304598878432558 < gap < 0.000304598878432561`.
+-/
+theorem ufrf_codata2022_gap_bounds_d18 :
+    (0.000304598878432558 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.000304598878432561 := by
+  rcases alpha_inv_bounds_d18 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
+  constructor <;> linarith
+
+/--
+The static UFRF-to-CODATA 2022 gap lies in the explicit interval
+`0.0003045988784325588 < gap < 0.0003045988784325602`.
+-/
+theorem ufrf_codata2022_gap_bounds_d19 :
+    (0.0003045988784325588 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.0003045988784325602 := by
+  rcases alpha_inv_bounds_d19 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
+  constructor <;> linarith
+
+/--
+The static UFRF-to-CODATA 2022 gap lies in the explicit interval
+`0.00030459887843255887 < gap < 0.00030459887843256013`.
+-/
+theorem ufrf_codata2022_gap_bounds_d20 :
+    (0.00030459887843255887 : ℝ) < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.00030459887843256013 := by
+  rcases alpha_inv_bounds_d20 with ⟨hlo, hhi⟩
+  unfold codata_alpha_inv
+  constructor <;> linarith
+
+/--
 **Theorem: Prediction Accuracy**
 The UFRF derived value ($4\pi^3 + \pi^2 + \pi$) matches the CODATA empirical value
-to within 0.05.
+to within `3.1 × 10⁻⁴`.
 
 This is not a definition, but a falsifiable prediction of the theory.
 -/
 theorem ufrf_matches_codata : 
     |ufrf_alpha_inv - codata_alpha_inv| < 0.00031 := by
-  rcases alpha_inv_bounds_d9 with ⟨hlo, hhi⟩
-  unfold codata_alpha_inv
-  rw [abs_lt]
-  constructor <;> linarith
+  rcases ufrf_codata2022_gap_bounds_d13 with ⟨hlo, hhi⟩
+  have hpos : 0 < ufrf_alpha_inv - codata_alpha_inv := by
+    linarith
+  rw [abs_of_pos hpos]
+  linarith
 
 /--
 Against the CODATA 2018 value, the current UFRF static candidate differs by

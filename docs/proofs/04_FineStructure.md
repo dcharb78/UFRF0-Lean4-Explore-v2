@@ -51,10 +51,9 @@ theorem ufrf_matches_codata :
 ```
 
 **Proof Strategy**:
-1. Use Mathlib's `20`-decimal π bounds.
-2. Prove `137.036303775 < ufrf_alpha_inv < 137.036303776`.
-3. Compare that interval directly to the CODATA 2022 value.
-4. Apply `abs_lt`.
+1. Prove the explicit static CODATA gap window below.
+2. Note that the gap is positive.
+3. Rewrite the absolute value with `abs_of_pos`.
 
 **Significance**: The UFRF prediction differs from CODATA 2022 by less than `3.1 × 10⁻⁴`. This is a **falsifiable prediction**, not a fit.
 
@@ -130,6 +129,221 @@ theorem alpha_inv_rounds_to_137_036303775878 :
 
 ---
 
+### **Theorem: Fourteen-Decimal Prediction Window**
+```lean
+theorem alpha_inv_bounds_d14 :
+    137.03630377587843 < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.03630377587844
+```
+
+**Proof Strategy**:
+1. Reuse the same monotone polynomial `poly(x) = 4x³ + x² + x`.
+2. Reuse Mathlib's `20`-decimal π bounds.
+3. Check the tighter endpoint inequalities with `norm_num`.
+
+**Significance**: This sharpens the static UFRF prediction to an explicit
+fourteen-decimal interval.
+
+---
+
+### **Theorem: Fifteen-Decimal Prediction Window**
+```lean
+theorem alpha_inv_bounds_d15 :
+    137.036303775878432 < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.036303775878433
+```
+
+**Proof Strategy**:
+1. Reuse the same monotone polynomial `poly(x) = 4x³ + x² + x`.
+2. Reuse Mathlib's `20`-decimal π bounds.
+3. Check the tighter endpoint inequalities with `norm_num`.
+
+**Significance**: This sharpens the static UFRF prediction to an explicit
+fifteen-decimal interval.
+
+---
+
+### **Theorem: Sixteen-Decimal Prediction Window**
+```lean
+theorem alpha_inv_bounds_d16 :
+    137.0363037758784325 < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.0363037758784326
+```
+
+**Proof Strategy**:
+1. Reuse the same monotone polynomial `poly(x) = 4x³ + x² + x`.
+2. Reuse Mathlib's `20`-decimal π bounds.
+3. Check the tighter endpoint inequalities with `norm_num`.
+
+**Significance**: This sharpens the static UFRF prediction to an explicit
+sixteen-decimal interval.
+
+---
+
+### **Theorem: Seventeen-Decimal Prediction Window**
+```lean
+theorem alpha_inv_bounds_d17 :
+    137.03630377587843255 < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.03630377587843257
+```
+
+**Proof Strategy**:
+1. Reuse the same monotone polynomial `poly(x) = 4x³ + x² + x`.
+2. Reuse Mathlib's `20`-decimal π bounds.
+3. Check the tighter endpoint inequalities with `norm_num`.
+
+**Significance**: This sharpens the static UFRF prediction to an explicit
+seventeen-decimal interval.
+
+---
+
+### **Theorem: Eighteen-Decimal Prediction Window**
+```lean
+theorem alpha_inv_bounds_d18 :
+    137.036303775878432558 < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.036303775878432561
+```
+
+**Proof Strategy**:
+1. Reuse the same monotone polynomial `poly(x) = 4x³ + x² + x`.
+2. Reuse Mathlib's `20`-decimal π bounds.
+3. Check the tighter endpoint inequalities with `norm_num`.
+
+**Significance**: This sharpens the static UFRF prediction to an explicit
+eighteen-decimal interval.
+
+---
+
+### **Theorem: Nineteen-Decimal Prediction Window**
+```lean
+theorem alpha_inv_bounds_d19 :
+    137.0363037758784325588 < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.0363037758784325602
+```
+
+**Proof Strategy**:
+1. Reuse the same monotone polynomial `poly(x) = 4x³ + x² + x`.
+2. Reuse Mathlib's `20`-decimal π bounds.
+3. Check the tighter endpoint inequalities with `norm_num`.
+
+**Significance**: This sharpens the static UFRF prediction to an explicit
+nineteen-decimal interval.
+
+---
+
+### **Theorem: Twenty-Decimal Prediction Window**
+```lean
+theorem alpha_inv_bounds_d20 :
+    137.03630377587843255887 < ufrf_alpha_inv ∧
+    ufrf_alpha_inv < 137.03630377587843256013
+```
+
+**Proof Strategy**:
+1. Reuse the same monotone polynomial `poly(x) = 4x³ + x² + x`.
+2. Reuse Mathlib's `20`-decimal π bounds.
+3. Check the tighter endpoint inequalities with `norm_num`.
+
+**Significance**: This sharpens the static UFRF prediction to an explicit
+twenty-decimal interval.
+
+---
+
+### **Theorem: Thirteen-Decimal CODATA 2022 Gap**
+```lean
+theorem ufrf_codata2022_gap_bounds_d13 :
+    0.0003045988784 < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.0003045988785
+```
+
+**Significance**: This promotes the static UFRF-to-CODATA 2022 gap to an
+explicit thirteen-decimal interval.
+
+---
+
+### **Theorem: Fourteen-Decimal CODATA 2022 Gap**
+```lean
+theorem ufrf_codata2022_gap_bounds_d14 :
+    0.00030459887843 < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.00030459887844
+```
+
+**Significance**: This sharpens the static UFRF-to-CODATA 2022 gap to an
+explicit fourteen-decimal interval.
+
+---
+
+### **Theorem: Fifteen-Decimal CODATA 2022 Gap**
+```lean
+theorem ufrf_codata2022_gap_bounds_d15 :
+    0.000304598878432 < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.000304598878433
+```
+
+**Significance**: This sharpens the static UFRF-to-CODATA 2022 gap to an
+explicit fifteen-decimal interval.
+
+---
+
+### **Theorem: Sixteen-Decimal CODATA 2022 Gap**
+```lean
+theorem ufrf_codata2022_gap_bounds_d16 :
+    0.0003045988784325 < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.0003045988784326
+```
+
+**Significance**: This sharpens the static UFRF-to-CODATA 2022 gap to an
+explicit sixteen-decimal interval.
+
+---
+
+### **Theorem: Seventeen-Decimal CODATA 2022 Gap**
+```lean
+theorem ufrf_codata2022_gap_bounds_d17 :
+    0.00030459887843255 < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.00030459887843257
+```
+
+**Significance**: This sharpens the static UFRF-to-CODATA 2022 gap to an
+explicit seventeen-decimal interval.
+
+---
+
+### **Theorem: Eighteen-Decimal CODATA 2022 Gap**
+```lean
+theorem ufrf_codata2022_gap_bounds_d18 :
+    0.000304598878432558 < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.000304598878432561
+```
+
+**Significance**: This sharpens the static UFRF-to-CODATA 2022 gap to an
+explicit eighteen-decimal interval.
+
+---
+
+### **Theorem: Nineteen-Decimal CODATA 2022 Gap**
+```lean
+theorem ufrf_codata2022_gap_bounds_d19 :
+    0.0003045988784325588 < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.0003045988784325602
+```
+
+**Significance**: This sharpens the static UFRF-to-CODATA 2022 gap to an
+explicit nineteen-decimal interval.
+
+---
+
+### **Theorem: Twenty-Decimal CODATA 2022 Gap**
+```lean
+theorem ufrf_codata2022_gap_bounds_d20 :
+    0.00030459887843255887 < ufrf_alpha_inv - codata_alpha_inv ∧
+    ufrf_alpha_inv - codata_alpha_inv < 0.00030459887843256013
+```
+
+**Significance**: This sharpens the static UFRF-to-CODATA 2022 gap to an
+explicit twenty-decimal interval.
+
+---
+
 ### **Theorem: Alpha Polynomial Form**
 ```lean
 theorem alpha_polynomial_form :
@@ -164,7 +378,8 @@ theorem one_three_seven_is_prime :
 ```
 **Proof**: `norm_num`
 
-**Significance**: The fine structure constant's integer part is itself a "void space"—unreachable by composites.
+**Significance**: This records that `137` is prime in the standard
+natural-number sense.
 
 ---
 

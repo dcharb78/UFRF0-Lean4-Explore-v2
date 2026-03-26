@@ -135,6 +135,26 @@ The point of this module is narrow:
   the current radius-free one-step prediction lies in the tighter explicit
   interval
   `0.00030553718304 < prediction < 0.00030553718305`.
+- `phase7OneStepModelPrediction_bounds_d16`:
+  the same radius-free one-step prediction is now also pinned to the sharper
+  explicit interval
+  `0.0003055371830425 < prediction < 0.0003055371830426`.
+- `phase7OneStepModelPrediction_bounds_d18`:
+  the same radius-free one-step prediction is now also pinned to the still
+  sharper explicit interval
+  `0.000305537183042514 < prediction < 0.000305537183042516`.
+- `phase7OneStepModelPrediction_bounds_d19`:
+  the same radius-free one-step prediction is now also pinned to the still
+  sharper explicit interval
+  `0.0003055371830425148 < prediction < 0.0003055371830425159`.
+- `phase7OneStepModelPrediction_bounds_d20`:
+  the same radius-free one-step prediction is now also pinned to the still
+  sharper explicit interval
+  `0.00030553718304251501 < prediction < 0.00030553718304251502`.
+- `phase7OneStepModelPrediction_bounds_d21`:
+  the same radius-free one-step prediction is now also pinned to the sharper
+  explicit interval
+  `0.00030553718304251501169 < prediction < 0.00030553718304251501180`.
 - `phase7OneStepModelPrediction_bounds_d12`:
   equivalently, the same prediction also satisfies the weaker explicit
   `10^-12`-scale interval
@@ -209,6 +229,34 @@ The point of this module is narrow:
   in the separated regime, the same one-step residual is also pinned to the
   tighter explicit interval
   `0.0000009383045 < residual < 0.0000009383047`.
+- `phase7OneStepModelResidual_bounds_d14`:
+  in the separated regime, the same one-step residual is also pinned to the
+  tighter explicit interval
+  `0.00000093830460 < residual < 0.00000093830462`.
+- `phase7OneStepModelResidual_bounds_d15`:
+  in the separated regime, the same one-step residual is also pinned to the
+  tighter explicit interval
+  `0.000000938304607 < residual < 0.000000938304618`.
+- `phase7OneStepModelResidual_bounds_d16`:
+  in the separated regime, the same one-step residual is also pinned to the
+  sharper explicit interval
+  `0.0000009383046099 < residual < 0.0000009383046101`.
+- `phase7OneStepModelResidual_bounds_d17`:
+  in the separated regime, the same one-step residual is also pinned to the
+  sharper explicit interval
+  `0.00000093830460994 < residual < 0.00000093830460997`.
+- `phase7OneStepModelResidual_bounds_d18`:
+  in the separated regime, the same one-step residual is also pinned to the
+  sharper explicit interval
+  `0.000000938304609953 < residual < 0.000000938304609958`.
+- `phase7OneStepModelResidual_bounds_d19`:
+  in the separated regime, the same one-step residual is also pinned to the
+  sharper explicit interval
+  `0.0000009383046099546 < residual < 0.0000009383046099571`.
+- `phase7OneStepModelResidual_bounds_d20`:
+  in the separated regime, the same one-step residual is also pinned to the
+  sharper explicit interval
+  `0.00000093830460995488 < residual < 0.00000093830460995615`.
 - `phase7OneStepModelResidual_bounds_d12`:
   equivalently, the same residual also satisfies the weaker
   `10^-12`-scale interval
@@ -220,6 +268,34 @@ The point of this module is narrow:
   equivalently, the observer-indexed one-step residual alias satisfies that
   same tighter explicit interval
   `0.0000009383045 < residual < 0.0000009383047`.
+- `alphaPhaseObserverOneStepResidual_bounds_d14`:
+  equivalently, the observer-indexed one-step residual alias also satisfies the
+  tighter explicit interval
+  `0.00000093830460 < residual < 0.00000093830462`.
+- `alphaPhaseObserverOneStepResidual_bounds_d15`:
+  equivalently, the observer-indexed one-step residual alias also satisfies the
+  tighter explicit interval
+  `0.000000938304607 < residual < 0.000000938304618`.
+- `alphaPhaseObserverOneStepResidual_bounds_d16`:
+  equivalently, the observer-indexed one-step residual alias also satisfies the
+  sharper explicit interval
+  `0.0000009383046099 < residual < 0.0000009383046101`.
+- `alphaPhaseObserverOneStepResidual_bounds_d17`:
+  equivalently, the observer-indexed one-step residual alias also satisfies the
+  sharper explicit interval
+  `0.00000093830460994 < residual < 0.00000093830460997`.
+- `alphaPhaseObserverOneStepResidual_bounds_d18`:
+  equivalently, the observer-indexed one-step residual alias also satisfies the
+  sharper explicit interval
+  `0.000000938304609953 < residual < 0.000000938304609958`.
+- `alphaPhaseObserverOneStepResidual_bounds_d19`:
+  equivalently, the observer-indexed one-step residual alias also satisfies the
+  sharper explicit interval
+  `0.0000009383046099546 < residual < 0.0000009383046099571`.
+- `alphaPhaseObserverOneStepResidual_bounds_d20`:
+  equivalently, the observer-indexed one-step residual alias also satisfies the
+  sharper explicit interval
+  `0.00000093830460995488 < residual < 0.00000093830460995615`.
 - `alphaPhaseObserverOneStepResidual_bounds_d12`:
   equivalently, the observer-indexed one-step residual alias also satisfies the
   weaker `10^-12`-scale interval
@@ -233,6 +309,10 @@ The point of this module is narrow:
 - `alphaPhaseObserverResidueCheckAbsError_eq_oneStepResidual_abs`:
   in the separated regime, that script-aligned absolute error is exactly the
   absolute value of the observer-indexed one-step residual alias.
+- `alphaPhaseObserverResidueCheckAbsError_eq_modelPrediction_sub_codataGap_abs`:
+  in the separated regime, that same script-aligned absolute error is exactly
+  the absolute projected difference `|phase7OneStepModelPrediction -
+  alphaCodata2022Gap|`.
 - `alphaPhaseObserverResidueCheckAbsError_bounds_micro`:
   the script-aligned absolute error lies in the explicit micro interval
   `0.000000921017 < error < 0.000000947269`.
@@ -240,6 +320,38 @@ The point of this module is narrow:
   the same script-aligned absolute error is also pinned to the tighter
   explicit interval
   `0.0000009383045 < error < 0.0000009383047`.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d14`:
+  the same script-aligned absolute error is also pinned to the tighter
+  explicit interval
+  `0.00000093830460 < error < 0.00000093830462`.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d15`:
+  the same script-aligned absolute error is also pinned to the tighter
+  explicit interval
+  `0.000000938304607 < error < 0.000000938304618`.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d16`:
+  the same script-aligned absolute error is also pinned to the sharper
+  explicit interval
+  `0.0000009383046099 < error < 0.0000009383046101`.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d17`:
+  the same script-aligned absolute error is also pinned to the sharper
+  explicit interval
+  `0.00000093830460994 < error < 0.00000093830460997`.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d18`:
+  the same script-aligned absolute error is also pinned to the sharper
+  explicit interval
+  `0.000000938304609953 < error < 0.000000938304609958`.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d19`:
+  the same script-aligned absolute error is also pinned to the sharper
+  explicit interval
+  `0.0000009383046099546 < error < 0.0000009383046099571`.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d20`:
+  the same script-aligned absolute error is also pinned to the sharper
+  explicit interval
+  `0.00000093830460995488 < error < 0.00000093830460995615`.
+- `alphaCodata2022Gap_gt_three_hundred_projection_error`:
+  the static CODATA gap is more than `300` times larger than the
+  script-aligned observer-local projection error, so the small matched
+  quantity is not the raw static gap itself.
 - `alphaPhaseObserverResidueCheckAbsError_bounds_d12`:
   equivalently, the same error also satisfies the weaker `10^-12`-scale
   interval
@@ -253,6 +365,27 @@ The point of this module is narrow:
 - `alphaCodata2022Gap_bounds_d13`:
   the static UFRF-to-CODATA 2022 gap lies in the explicit interval
   `0.0003045988784 < gap < 0.0003045988785`.
+- `alphaCodata2022Gap_bounds_d14`:
+  the static UFRF-to-CODATA 2022 gap lies in the explicit interval
+  `0.00030459887843 < gap < 0.00030459887844`.
+- `alphaCodata2022Gap_bounds_d15`:
+  the static UFRF-to-CODATA 2022 gap lies in the explicit interval
+  `0.000304598878432 < gap < 0.000304598878433`.
+- `alphaCodata2022Gap_bounds_d16`:
+  the static UFRF-to-CODATA 2022 gap lies in the sharper explicit interval
+  `0.0003045988784325 < gap < 0.0003045988784326`.
+- `alphaCodata2022Gap_bounds_d17`:
+  the static UFRF-to-CODATA 2022 gap lies in the sharper explicit interval
+  `0.00030459887843255 < gap < 0.00030459887843257`.
+- `alphaCodata2022Gap_bounds_d18`:
+  the static UFRF-to-CODATA 2022 gap lies in the sharper explicit interval
+  `0.000304598878432558 < gap < 0.000304598878432561`.
+- `alphaCodata2022Gap_bounds_d19`:
+  the static UFRF-to-CODATA 2022 gap lies in the sharper explicit interval
+  `0.0003045988784325588 < gap < 0.0003045988784325602`.
+- `alphaCodata2022Gap_bounds_d20`:
+  the static UFRF-to-CODATA 2022 gap lies in the sharper explicit interval
+  `0.00030459887843255887 < gap < 0.00030459887843256013`.
 - `alphaCodata2022Gap_rounds_to_0_000304598878`:
   equivalently, that same static gap rounds to `0.000304598878` at the
   `10^-12` place.
@@ -292,6 +425,122 @@ The point of this module is narrow:
   same allowed regime.
 - `no_terminal_scale_for_alpha_running`:
   there is no terminal scale for the running/projection picture.
+- `alpha_running_no_terminal_scale_and_handoff`:
+  the running/projection layer also packages unbounded scale descent together
+  with the local terminal handoff law `13 ↦ 3`, `14 ↦ 4` at every whole-cycle
+  translate; this is a scale-indexed repetition theorem, not a coinductive
+  all-scales-at-once object.
+- `alpha_selected_observer_reaches_recurring_handoff`:
+  the alpha-selected observer channel is the arithmetic-selected label, reaches
+  closure and restart in fixed successor steps, and sits inside the same
+  recurring `13 ↦ 3`, `14 ↦ 4` handoff package at every indexed scale; this is
+  an observer-local bridge theorem, not a stronger physical-selection claim.
+- `alpha_selected_observer_sits_on_prism_orbit_before_recurring_handoff`:
+  a second exposed structural consequence is now packaged without touching the
+  current measurement lane: the universal PRISM walk from `0` reaches every
+  cycle position, the arithmetic-selected observer is specifically label `7`
+  and is reached after seven successor steps, the closure point is still the
+  contextual `13` / local `3` / cycle `0` location, and five/six more observer
+  steps land at the same recurring `13 ↦ 3`, `14 ↦ 4` handoff at every indexed
+  scale. This is still an observer-local structural theorem, not an absolute-
+  origin or stronger physical-selection claim.
+- `alpha_selected_centered_deviation_has_local_origin_and_recurring_handoff`:
+  one layer earlier than the measured real observable, the centered complex
+  deviation itself now also sits on that same structural package in one
+  theorem: the current local start point reindexes to `0`, the observer
+  channel is still the arithmetic-selected alpha observer, that centered
+  complex deviation is the explicit alpha-selected root/scalar-residue
+  quantity, and the same observer still sits inside the recurring
+  `13 ↦ 3`, `14 ↦ 4` closure/restart package at every indexed scale. This is
+  still a packaging theorem, not a stronger measurement-correctness claim.
+- `alpha_selected_real_correction_has_local_origin_radius_invariance_and_recurring_handoff`:
+  one layer earlier than the current `/ 28` comparison rule, the unnormalized
+  real selected-observer correction itself now also sits on that same
+  structural package in one theorem: the current local start point reindexes
+  to `0`, the observer channel is still the arithmetic-selected alpha
+  observer, the real correction is both the real part of the centered running
+  deviation and the real part of the explicit alpha-selected
+  root/scalar-residue quantity, that real correction is stable under allowed
+  contour-radius changes, and the same observer still sits inside the
+  recurring `13 ↦ 3`, `14 ↦ 4` closure/restart package at every indexed scale.
+  This is still a packaging theorem, not a stronger measurement-correctness or
+  unique-normalization claim.
+- `alpha_selected_centered_observable_global_average_package_has_local_origin_radius_invariance_and_recurring_handoff`:
+  the centered observer-local observable now also packages the conserved-average
+  story in one theorem: the current local start point reindexes to `0`, the
+  observer channel is still the arithmetic-selected alpha observer, the
+  all-root average of the running model still collapses back to the static
+  UFRF value, the centered observable is the normalized real part of the
+  selected observer's deviation from that global average, that centered
+  observable is stable under allowed contour-radius changes, and the same
+  observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart package at every indexed scale. This is still a packaging
+  theorem, not a stronger unique-normalization or physical-selection claim.
+- `alpha_selected_centered_observable_reaches_recurring_handoff`:
+  more generally, the exposed normalized real centered observable itself, at
+  any discrete running step `n`, is attached to that same arithmetic-selected
+  recurring-handoff channel: it is written at the selected observer and that
+  same observer still reaches the recurring `13 ↦ 3`, `14 ↦ 4` closure/restart
+  package at every indexed scale. This is still a packaging theorem, not a
+  stronger measurement-correctness claim.
+- `alpha_selected_centered_observable_has_local_origin_and_recurring_handoff`:
+  the centered-observable package now makes the measurement-side chart explicit
+  in one theorem: the current local start point reindexes to `0`, the observer
+  channel is still the arithmetic-selected alpha observer, the measurement rule
+  is still the normalized real part of the centered observable with model
+  normalization `28`, and that same observer still sits inside the recurring
+  `13 ↦ 3`, `14 ↦ 4` closure/restart package at every indexed scale. This is
+  still a packaging theorem, not a stronger claim that every chart or
+  measurement rule is equivalent.
+- `alpha_selected_centered_observable_has_local_origin_radius_invariance_and_recurring_handoff`:
+  the same centered-observable package now also carries its allowed-radius
+  stability: within the admitted contour regime, the exposed measurement is
+  unchanged when the contour radius varies from `r` to `R`, while the local
+  chart still starts at `0` and the selected observer still sits on the same
+  recurring `13 ↦ 3`, `14 ↦ 4` closure/restart package. This is still a
+  packaging theorem, not a stronger claim that arbitrary measurement rules are
+  equivalent.
+- `alpha_selected_comparison_and_residual_reach_recurring_handoff`:
+  the exposed observer-indexed one-step comparison and one-step residual are
+  both attached to that same arithmetic-selected recurring-handoff channel:
+  the comparison is the selected centered observable, the residual is that
+  same quantity minus the static CODATA gap, and the selected observer still
+  reaches closure/restart inside the recurring `13 ↦ 3`, `14 ↦ 4` package at
+  every indexed scale. This is still a packaging theorem, not a stronger
+  measurement-correctness claim.
+- `alpha_selected_one_step_measurement_package_has_local_origin_and_recurring_handoff`:
+  this is the smallest current one-step user-facing bundle in one theorem: the
+  current local start point reindexes to `0`, the observer channel is still
+  the arithmetic-selected alpha observer, the exposed one-step measurement
+  rule is still the normalized real part of the centered observable with
+  explicit `/ 28` normalization, the one-step comparison alias is exactly that
+  same quantity, the one-step residual alias is that same quantity minus the
+  static CODATA gap, and the same observer still sits inside the recurring
+  `13 ↦ 3`, `14 ↦ 4` closure/restart package at every indexed scale. This is
+  still a packaging theorem, not a stronger measurement-correctness claim.
+- `alpha_selected_one_step_measurement_package_has_local_origin_radius_invariance_and_recurring_handoff`:
+  the same one-step user-facing bundle now also carries its allowed-radius
+  stability in one theorem: the current local start point still reindexes to
+  `0`, the observer channel is still the arithmetic-selected alpha observer,
+  the exposed one-step measurement is unchanged when the contour radius varies
+  from `r` to `R` in the admitted regime, the one-step comparison alias is
+  still the explicit `/ 28` centered-observable quantity, the one-step
+  residual alias is still that same quantity minus the static CODATA gap and
+  is likewise unchanged when the contour radius varies from `r` to `R`, and
+  the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart package at every indexed scale. This is still a packaging
+  theorem, not a stronger measurement-correctness claim.
+- `alpha_selected_one_step_absolute_error_package_has_local_origin_and_recurring_handoff`:
+  this extends the current one-step user-facing bundle by adding the
+  script-aligned absolute-error identity in one theorem: the current local
+  start point still reindexes to `0`, the observer channel is still the
+  arithmetic-selected alpha observer, the exposed one-step measurement rule is
+  still the explicit `/ 28` centered-observable quantity, the one-step
+  residual alias is still that same quantity minus the static CODATA gap, the
+  absolute error is exactly the absolute value of that one-step residual, and
+  the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart package at every indexed scale. This is still a packaging
+  theorem, not a stronger measurement-correctness claim.
 - `prime_tower_is_coherent`:
   every prime tower is coherent across all finite depths.
 - `prime_start_pattern`:
@@ -302,6 +551,13 @@ The point of this module is narrow:
   start pattern.
 - `cycle_seed_zero_to_one`:
   the smallest breathing step is the literal cycle move `0 -> 1`.
+- `alpha_running_coherent_start_and_handoff`:
+  this bundles the safe nested reading in one theorem: the `13`-tower is
+  coherent across finite depths, the exposed UFRF start pattern is `1` then
+  `13`, the cycle-side seed move is `0 -> 1`, there is no bottom scale, and
+  every whole-cycle translate still closes at local `3` and re-enters at
+  local `4`; this is still a packaged scale-indexed theorem, not a single
+  simultaneous-all-scales object.
 - `alphaPhaseObserver_is_seven_steps_on_seed_orbit`:
   the selected observer label is reached from the seed by seven universal
   successor steps, so label `7` is a contextual point on the shared
@@ -345,6 +601,17 @@ The point of this module is narrow:
   visit order on the breathing cycle.
 - `cycle_prime_paths_close_after_thirteen`:
   those same cycle-prime paths close after 13 steps.
+- `alpha_running_three_layer_concurrency_package`:
+  the current safe three-layer reading is now also packaged in one theorem.
+  Semantically this is now a running-side re-export of
+  `Recursion.prism_walk_and_terminal_handoff_at_scale`:
+  the cycle-side seed move is the literal `0 -> 1` step, the same PRISM walk
+  from `0` reaches every cycle position, `13` is still `0` in the pure cycle
+  chart while every whole-cycle translate still exposes the local handoff
+  `13 ↦ 3`, `14 ↦ 4`, and there is still no bottom scale. This is still a
+  packaged concurrency theorem for the cycle/recursion layer, not a claim that
+  the projection tower, local cycle chart, and analytic observer package are
+  one undifferentiated all-scales-at-once object.
 
 ## Interpretation
 
@@ -370,8 +637,9 @@ The safe interpretation is:
 - the full contour family still sums to zero, so the correction is properly
   understood as an observer-local projection of a globally conserved residue
   package, not as a new global constant,
-- on the algebraic side, the safe bridge is only that zero-sum conservation is
-  preserved under the native projection laws there as well,
+- on the algebraic side, the safe bridge is only that Lean separately proves
+  projection-tower coherence/start-pattern facts and local cycle-prime
+  visit-order facts there as well,
 - no theorem here identifies complex residues with p-adic projections, and no
   theorem here identifies CRT with the analytic partial-fraction package,
 - the selected observer channel is the current candidate local comparison
@@ -417,6 +685,9 @@ The safe interpretation is:
 - the current comparison scalar is also no longer described only informally:
   Lean now packages it as the normalized real part of the observer-local
   running deviation after subtracting the global breathing-root average,
+- Lean now also packages that centered observable itself, before any one-step
+  specialization, on the same recurring-handoff channel as the selected
+  observer across all discrete running steps `n`,
 - that observer-indexed centered presentation is now also tied directly to the
   observer-indexed root/scalar presentation before any one-step or gap
   specialization, so the two current candidate packages are visibly the same
@@ -435,10 +706,13 @@ The safe interpretation is:
   absolute bound `|residual| < 0.000001`,
 - Lean now also proves a tighter `Complex.exp`-driven Taylor-remainder window
   for the actual one-step prediction itself:
-  `0.00030553718304 < prediction < 0.00030553718305`,
-- that sharper prediction theorem propagates through the static CODATA gap to a
-  corresponding tighter residual/error window
-  `0.0000009383045 < residual,error < 0.0000009383047`,
+  `0.0003055371830425 < prediction < 0.0003055371830426`,
+- Lean now also sharpens that same prediction package again, now to the
+  `d20` interval
+  `0.00030553718304251501 < prediction < 0.00030553718304251502`,
+- that sharper prediction theorem now also propagates through the static
+  CODATA gap to a matching `d20` residual/error window
+  `0.00000093830460995488 < residual,error < 0.00000093830460995615`,
 - the earlier coarse `0.001` residual bound is still present as a simpler
   fallback estimate,
 - the same compared quantity is now also unique in the arithmetic sense:
@@ -454,6 +728,10 @@ The safe interpretation is:
 - the same residual also has a direct alpha-selected root/scalar formula, so
   both the observer-indexed residue picture and the centered-comparison picture
   now land on the same compared quantity,
+- Lean now also packages those exposed observer-indexed comparison/residual
+  quantities on the same recurring-handoff channel as the selected observer,
+  so the measurement-side formulas are no longer disconnected from the
+  no-bottom-scale / closure-and-restart package,
 - the concurrency statement is now split cleanly into two layers:
   every prime starts the same `1` then `p` projection pattern through a
   coherent all-scale tower, and independently the local cycle-prime channels
@@ -480,13 +758,44 @@ window `0.000000921017 < error < 0.000000947269`.
 The sharper theorem `alphaPhaseObserverResidueCheckAbsError_bounds_d13` now
 also pins the same error to the tighter interval
 `0.0000009383045 < error < 0.0000009383047`.
+The still tighter theorem `alphaPhaseObserverResidueCheckAbsError_bounds_d14`
+now pins the same error to
+`0.00000093830460 < error < 0.00000093830462`.
+The current d20 theorem `alphaPhaseObserverResidueCheckAbsError_bounds_d20`
+now pins the same error to
+`0.00000093830460995488 < error < 0.00000093830460995615`.
 It also now proves seven-decimal rounding theorems for both the current
 one-step comparison scalar and the script-aligned absolute error.
 Separately, the static CODATA comparison gap itself is now pinned to
-`0.0003045988784 < gap < 0.0003045988785`, with a corresponding
-`10^-12` rounding theorem.
+`0.00030459887843255887 < gap < 0.00030459887843256013`.
+Lean now also makes the scale split explicit:
+`alphaPhaseObserverResidueCheckAbsError =
+|phase7OneStepModelPrediction - alphaCodata2022Gap|`,
+and the static gap is more than `300` times larger than that observer-local
+projection error.
 
 What Lean still does not prove is the script's floating-point printout itself.
+
+## Current Local Conclusion
+
+- Within the current `AlphaRunning` model layer, the one-step
+  observer/measurement bridge is now locally concluded in the narrow
+  repo-supported sense: Lean packages the current one-step measurement story
+  end to end, from the local origin `0` and the arithmetic-selected observer
+  through the centered complex deviation, the normalized real `/ 28`
+  measurement rule, the one-step comparison alias, the one-step residual
+  alias, the script-aligned absolute-error identity, the allowed-radius
+  invariance package, and the recurring `13 ↦ 3`, `14 ↦ 4` handoff.
+- Further work on this exact bridge lane is now mostly convenience packaging
+  rather than a missing theorem-level bridge.
+- What is not concluded here is any stronger physical-selection claim, any
+  proof that the current `/ 28` normalization rule is uniquely correct, any
+  simultaneous all-scales object, or the external script's floating-point
+  printout itself.
+- The next meaningful pivot is either breadth, namely a second exposed
+  observer/measurement-side consequence from the same structural mechanism, or
+  sharper prediction-side control beyond the current `3π/13` Taylor route if
+  the goal is more decimals.
 
 ## Open
 
@@ -503,7 +812,11 @@ What Lean still does not prove is the script's floating-point printout itself.
 - Lean now also proves seven-decimal rounding theorems for the exposed
   one-step comparison scalar and the script-aligned absolute error.
 - Lean now also sharpens the static CODATA comparison gap to a
-  thirteen-decimal window and a `10^-12` rounding theorem.
+  twenty-decimal window.
+- Lean now sharpens the exposed one-step prediction package to `d21` by
+  bounding the shared `π/13` prediction polynomial directly through the
+  current `Complex.exp`-based Taylor route, while the exposed residual/error
+  package still reaches `d20`.
 - What Lean still does not prove is the external script's floating-point output
   itself, or any stronger projection-law / physical-selection claim.
 - The current `4 × 7` normalization is present only as an explicit model choice.
@@ -515,6 +828,8 @@ What Lean still does not prove is the script's floating-point printout itself.
   `UFRF/FineStructure.lean`, while `UFRF/AlphaRunning.lean` now packages the
   derived comparison gap `alphaCodata2022Gap` and its one-step comparison
   theorems.
-- If the next proof-heavy branch is pursued, the natural target is tighter
-  transcendental control beyond the current `Complex.exp`-based `d13` window,
-  rather than more contour infrastructure.
+- If the next proof-heavy branch is pursued, the natural target is now the
+  static-gap bottleneck beyond the current surface: the exposed running
+  prediction package now reaches `d21`, but the static alpha/CODATA-gap
+  control and the exposed residual/error package still reach `d20`, so
+  further residual/error tightening will need a sharper static ingredient.

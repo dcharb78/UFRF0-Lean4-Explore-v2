@@ -49,25 +49,14 @@ theorem not_both (p : CyclePos) :
 
 ---
 
-### **Expansion Count**
+### **Phase Split Definitions**
 ```lean
-theorem expansion_count :
-    (Finset.univ.filter (λ p => p.val < 6)).card = 6
+def CyclePos.isExpansion (p : CyclePos) : Prop := p.val < 6
+def CyclePos.isContraction (p : CyclePos) : Prop := p.val ≥ 6
 ```
-**Proof**: `rfl` (definitional).
-
-**Significance**: Exactly 6 positions in the expansion half.
-
----
-
-### **Contraction Count**
-```lean
-theorem contraction_count :
-    (Finset.univ.filter (λ p => p.val ≥ 6)).card = 7
-```
-**Proof**: `rfl`
-
-**Significance**: Exactly 7 positions in the contraction half. The asymmetry (6 vs 7) reflects the bridge/seed transition.
+The current Lean surface does not expose separate `expansion_count` or
+`contraction_count` theorems. Instead, the 6/7 split is represented by these
+predicates together with `expansion_or_contraction` and `not_both`.
 
 ---
 
@@ -94,6 +83,27 @@ theorem fourteen_restarts_after_thirteen :
 **Significance**: `13` is the closure/seed label of the current cycle, while
 `14` is the first re-entry label of the restarted cycle. This separates closure
 from restart instead of treating them as the same chart position.
+
+---
+
+### **Contextual Coordinates of 13**
+```lean
+theorem position_thirteen_has_contextual_coordinates :
+    labeledPosition 13 = seedPosition ∧
+    localCoordinate (labeledPosition 10) (labeledPosition 13) = 3 ∧
+    (13 : CyclePos) = 0
+```
+**Proof**: combine the seed-label fact, the REST-anchored local reindexing, and
+the `ZMod 13` cycle identity.
+
+**Significance**: the same cyclic location is being read through different
+charts:
+- `13` is seed in the human-facing label chart,
+- `13 ↦ 3` in the local chart anchored at `10`,
+- `13 = 0` in the pure cycle chart.
+
+These are coordinate-system views of one closure/restart location, not
+competing claims.
 
 ---
 
