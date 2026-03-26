@@ -22,6 +22,16 @@
 - Use `./scripts/verify.sh` as the default validation after Lean or module-graph edits.
 - Use `./scripts/certify.sh` for stronger handoff validation when changes affect core semantics, prime logic, or cross-module proof wiring.
 - `./scripts/verify.sh` already runs `scripts/sync_modules.py`, so prefer it over calling `lake build` alone.
+- `./scripts/verify.sh` is not read-only: it may rewrite the generated import file `UFRF.lean` if module imports or the preserved docstring drift.
+- Use `./scripts/clean_handoff.sh` after a checkpoint commit, or whenever you need to prove the repo is both validated and still worktree-clean. Pass `--certify` when the stronger semantic path is required.
+
+## Git Hygiene
+
+- At session start, always run `git status --short` before editing. Treat an unexpected dirty tree as a workflow event that must be classified before more proof work begins.
+- If the tree is dirty, separate the changes into one of three cases: current-task work to continue, unrelated user work to leave alone, or generated drift that should be reconciled immediately.
+- Do not start a new theorem lane, packaging pass, or doc pass from an unexplained dirty tree.
+- Before switching topics or claiming a clean handoff, checkpoint validated current-task changes into a commit and then run `./scripts/clean_handoff.sh` or `./scripts/clean_handoff.sh --certify`.
+- If the user explicitly wants to keep the repo dirty, say so plainly in the handoff instead of implying a clean checkpoint.
 
 ## Editing Guidance
 
@@ -48,6 +58,7 @@ Use a small fixed roster instead of inventing new agent roles each session.
 - `Validation Sentinel`
   After Lean edits, run `./scripts/verify.sh`.
   For core semantic or cross-module changes, also run `./scripts/certify.sh` and `git diff --check`.
+  When the user asks for a clean validated tree or the work is being checkpointed, finish with `./scripts/clean_handoff.sh` or `./scripts/clean_handoff.sh --certify`.
   Default output: only failures, regressions, or missing coverage.
 
 ## Suggested Use Pattern
@@ -55,4 +66,5 @@ Use a small fixed roster instead of inventing new agent roles each session.
 - Start `Plan Guardian` and `Mathlib Scout` before proof-heavy work.
 - Run `Invariant Auditor` before promoting new docs or semantic framing.
 - Run `Validation Sentinel` after edits and before handoff.
+- If validation passes and the task diff is coherent, checkpoint it instead of leaving a validated dirty tree behind.
 - Keep subagents read-only unless the task explicitly calls for parallel code edits.

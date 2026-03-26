@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 # Change to the root of the project
 cd "$(dirname "$0")/.."

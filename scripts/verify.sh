@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 # Change to the root of the project
 cd "$(dirname "$0")/.."
 
 echo "Running sync_modules.py to prevent drift..."
+echo "Note: this may rewrite UFRF.lean if generated imports or the preserved docstring drift."
 python3 scripts/sync_modules.py
 
 echo "Building UFRF..."
