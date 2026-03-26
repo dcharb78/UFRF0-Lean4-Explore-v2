@@ -276,7 +276,7 @@ The point of this module is narrow:
 - `phase7OneStepModelResidual_bounds_d26`:
   in the separated regime, the same one-step residual is now also pinned to
   the sharper explicit interval
-  `0.00000093830460995580930976 < residual < 0.00000093830460995580932235`.
+  `0.00000093830460995580931173 < residual < 0.00000093830460995580931192`.
 - `phase7OneStepModelResidual_bounds_d12`:
   equivalently, the same residual also satisfies the weaker
   `10^-12`-scale interval
@@ -327,7 +327,7 @@ The point of this module is narrow:
 - `alphaPhaseObserverOneStepResidual_bounds_d26`:
   equivalently, the observer-indexed one-step residual alias also satisfies the
   sharper explicit interval
-  `0.00000093830460995580930976 < residual < 0.00000093830460995580932235`.
+  `0.00000093830460995580931173 < residual < 0.00000093830460995580931192`.
 - `alphaPhaseObserverOneStepResidual_bounds_d12`:
   equivalently, the observer-indexed one-step residual alias also satisfies the
   weaker `10^-12`-scale interval
@@ -391,7 +391,7 @@ The point of this module is narrow:
 - `alphaPhaseObserverResidueCheckAbsError_bounds_d26`:
   the same script-aligned absolute error is now also pinned to the sharper
   explicit interval
-  `0.00000093830460995580930976 < error < 0.00000093830460995580932235`.
+  `0.00000093830460995580931173 < error < 0.00000093830460995580931192`.
 - `alphaCodata2022Gap_gt_three_hundred_projection_error`:
   the static CODATA gap is more than `300` times larger than the
   script-aligned observer-local projection error, so the small matched
@@ -441,7 +441,7 @@ The point of this module is narrow:
 - `alphaCodata2022Gap_bounds_d26`:
   the derived `AlphaRunning` gap alias now also lies in the sharper explicit
   interval
-  `0.00030459887843255920238418 < gap < 0.00030459887843255920239676`.
+  `0.00030459887843255920239461 < gap < 0.00030459887843255920239475`.
 - `alphaCodata2022Gap_rounds_to_0_000304598878`:
   equivalently, that same static gap rounds to `0.000304598878` at the
   `10^-12` place.
@@ -768,11 +768,11 @@ The safe interpretation is:
   `0.000305537183042515011706524 < prediction < 0.000305537183042515011706528`,
 - the stronger local `π` control on the static side now sharpens the
   CODATA-gap ingredient further to a `d26` interval
-  `0.00030459887843255920238418 < gap < 0.00030459887843255920239676`,
+  `0.00030459887843255920239461 < gap < 0.00030459887843255920239475`,
 - within `AlphaRunning`, the derived gap alias and the exposed
   residual/error window now reach `d26`:
-  `0.00030459887843255920238418 < gap < 0.00030459887843255920239676` and
-  `0.00000093830460995580930976 < residual,error < 0.00000093830460995580932235`,
+  `0.00030459887843255920239461 < gap < 0.00030459887843255920239475` and
+  `0.00000093830460995580931173 < residual,error < 0.00000093830460995580931192`,
 - the earlier coarse `0.001` residual bound is still present as a simpler
   fallback estimate,
 - the same compared quantity is now also unique in the arithmetic sense:
@@ -824,11 +824,11 @@ now pins the same error to
 The current `AlphaRunning` d26 theorem
 `alphaPhaseObserverResidueCheckAbsError_bounds_d26`
 now pins the same error to
-`0.00000093830460995580930976 < error < 0.00000093830460995580932235`.
+`0.00000093830460995580931173 < error < 0.00000093830460995580931192`.
 It also now proves seven-decimal rounding theorems for both the current
 one-step comparison scalar and the script-aligned absolute error.
 Separately, the derived `AlphaRunning` gap alias is now pinned to
-`0.00030459887843255920238418 < gap < 0.00030459887843255920239676`,
+`0.00030459887843255920239461 < gap < 0.00030459887843255920239475`,
 while the stronger static-side control remains in `UFRF/FineStructure.lean`.
 Lean now also makes the scale split explicit:
 `alphaPhaseObserverResidueCheckAbsError =

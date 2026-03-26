@@ -1868,8 +1868,8 @@ theorem alphaCodata2022Gap_bounds_d25 :
   simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d25
 
 theorem alphaCodata2022Gap_bounds_d26 :
-    (0.00030459887843255920238418 : ℝ) < alphaCodata2022Gap ∧
-    alphaCodata2022Gap < 0.00030459887843255920239676 := by
+    (0.00030459887843255920239461 : ℝ) < alphaCodata2022Gap ∧
+    alphaCodata2022Gap < 0.00030459887843255920239475 := by
   simpa [alphaCodata2022Gap] using ufrf_codata2022_gap_bounds_d26
 
 /--
@@ -2131,8 +2131,8 @@ theorem phase7OneStepModelResidual_bounds_d25
 theorem phase7OneStepModelResidual_bounds_d26
     {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
-    (0.00000093830460995580930976 : ℝ) < phase7OneStepModelResidual R ∧
-    phase7OneStepModelResidual R < 0.00000093830460995580932235 := by
+    (0.00000093830460995580931173 : ℝ) < phase7OneStepModelResidual R ∧
+    phase7OneStepModelResidual R < 0.00000093830460995580931192 := by
   rw [phase7OneStepModelResidual_eq_modelPrediction_sub_codataGap (R := R) hR hRlt]
   rcases phase7OneStepModelPrediction_bounds_d27 with ⟨hpred_lo, hpred_hi⟩
   rcases alphaCodata2022Gap_bounds_d26 with ⟨hgap_lo, hgap_hi⟩
@@ -2237,8 +2237,8 @@ theorem alphaPhaseObserverOneStepResidual_bounds_d25
 theorem alphaPhaseObserverOneStepResidual_bounds_d26
     {R : ℝ} (hR : 0 < R)
     (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2)) :
-    (0.00000093830460995580930976 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
-    alphaPhaseObserverOneStepResidual R < 0.00000093830460995580932235 := by
+    (0.00000093830460995580931173 : ℝ) < alphaPhaseObserverOneStepResidual R ∧
+    alphaPhaseObserverOneStepResidual R < 0.00000093830460995580931192 := by
   simpa [alphaPhaseObserverOneStepResidual] using
     phase7OneStepModelResidual_bounds_d26 (R := R) hR hRlt
 
@@ -2521,8 +2521,8 @@ theorem alphaPhaseObserverResidueCheckAbsError_bounds_d25 :
   exact ⟨hlo, hhi⟩
 
 theorem alphaPhaseObserverResidueCheckAbsError_bounds_d26 :
-    (0.00000093830460995580930976 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
-    alphaPhaseObserverResidueCheckAbsError < 0.00000093830460995580932235 := by
+    (0.00000093830460995580931173 : ℝ) < alphaPhaseObserverResidueCheckAbsError ∧
+    alphaPhaseObserverResidueCheckAbsError < 0.00000093830460995580931192 := by
   let R : ℝ := ((Set.range breathingRoot : Set ℂ).infsep / 4)
   have hInfsepPos : 0 < (Set.range breathingRoot : Set ℂ).infsep :=
     UFRF.CircleIntegralBreathing.breathingRootSet_infsep_pos
