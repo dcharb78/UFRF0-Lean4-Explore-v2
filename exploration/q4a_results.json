@@ -1,0 +1,175 @@
+{
+  "step1_top20_streaks": [
+    {
+      "n": 77671,
+      "max_streak": 16,
+      "bit_length": 17
+    },
+    {
+      "n": 65535,
+      "max_streak": 15,
+      "bit_length": 16
+    },
+    {
+      "n": 32767,
+      "max_streak": 14,
+      "bit_length": 15
+    },
+    {
+      "n": 43689,
+      "max_streak": 14,
+      "bit_length": 16
+    },
+    {
+      "n": 69039,
+      "max_streak": 14,
+      "bit_length": 17
+    },
+    {
+      "n": 98303,
+      "max_streak": 14,
+      "bit_length": 17
+    },
+    {
+      "n": 16383,
+      "max_streak": 13,
+      "bit_length": 14
+    },
+    {
+      "n": 49151,
+      "max_streak": 13,
+      "bit_length": 16
+    },
+    {
+      "n": 68187,
+      "max_streak": 13,
+      "bit_length": 17
+    },
+    {
+      "n": 76711,
+      "max_streak": 13,
+      "bit_length": 17
+    },
+    {
+      "n": 81919,
+      "max_streak": 13,
+      "bit_length": 17
+    },
+    {
+      "n": 87379,
+      "max_streak": 13,
+      "bit_length": 17
+    },
+    {
+      "n": 4255,
+      "max_streak": 12,
+      "bit_length": 13
+    },
+    {
+      "n": 5673,
+      "max_streak": 12,
+      "bit_length": 13
+    },
+    {
+      "n": 6383,
+      "max_streak": 12,
+      "bit_length": 13
+    },
+    {
+      "n": 6471,
+      "max_streak": 12,
+      "bit_length": 13
+    },
+    {
+      "n": 8191,
+      "max_streak": 12,
+      "bit_length": 13
+    },
+    {
+      "n": 8511,
+      "max_streak": 12,
+      "bit_length": 14
+    },
+    {
+      "n": 9575,
+      "max_streak": 12,
+      "bit_length": 14
+    },
+    {
+      "n": 9707,
+      "max_streak": 12,
+      "bit_length": 14
+    }
+  ],
+  "global_max_streak": 16,
+  "global_max_streak_n": 77671,
+  "step3_long_streak_phase": {
+    "threshold": 10,
+    "count": 516,
+    "pct_contraction_169": 48.06,
+    "pct_contraction_2197": 52.33,
+    "pct_both_contraction": 26.55
+  },
+  "step4_n77671": {
+    "max_streak": 16,
+    "streak_start_step": 4,
+    "forward_stopping_time": 83,
+    "mod_13": 9,
+    "mod_169": 100,
+    "mod_2197": 776,
+    "mod_104": 87,
+    "mod_208": 87,
+    "phase_13": "contraction",
+    "phase_169": "contraction",
+    "phase_2197": "expansion",
+    "post_streak_v2": 2
+  },
+  "step5_histogram_summary": {
+    "0": {
+      "count": 50000,
+      "pct_contr_169": 49.68
+    },
+    "5": {
+      "count": 26277,
+      "pct_contr_169": 49.7
+    },
+    "8": {
+      "count": 1517,
+      "pct_contr_169": 47.2
+    },
+    "10": {
+      "count": 516,
+      "pct_contr_169": 48.06
+    },
+    "12": {
+      "count": 160,
+      "pct_contr_169": 45.0
+    },
+    "14": {
+      "count": 6,
+      "pct_contr_169": 100.0
+    },
+    "16": {
+      "count": 1,
+      "pct_contr_169": 100.0
+    }
+  },
+  "step6_breathing_score": {
+    "min": -1.5,
+    "max": 1.4167046,
+    "mean": -0.0445789,
+    "stdev": 0.52533735,
+    "theoretical_bound": 0.0416477,
+    "pearson_r_bs_fwd": 0.007583,
+    "pearson_r_bs_streak": 0.006177,
+    "q1_mean_fwd": 37.7982,
+    "q4_mean_fwd": 38.0478,
+    "q1_mean_streak": 4.136,
+    "q4_mean_streak": 4.1595
+  },
+  "synthesis": {
+    "verdict": "NO \u2014 coarse-scale phase is uniformly distributed for long-streak numbers.",
+    "pct_contr_169_streak_ge10": 48.06,
+    "pct_contr_2197_streak_ge10": 52.33
+  }
+}

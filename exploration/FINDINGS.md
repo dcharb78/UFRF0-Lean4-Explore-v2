@@ -306,6 +306,115 @@ The correct framing is:
 
 ---
 
+---
+
+## Question 4A: Multi-Scale Bad Streak Analysis
+
+**Answer: NO. Coarse-scale phase is uniformly distributed for long-streak numbers.
+The multi-scale concurrent compensation hypothesis is refuted.**
+
+### Background
+
+The k=3 modular bound says max bad streak = 4 in ZMod(104). But n=77671 has a
+streak of 16 in actual integers. This is NOT a contradiction — n=77671 has 17 bits,
+so it lives at native resolution k≈17, where the bound is k+1=18. Streak 16 < 18:
+consistent.
+
+The hypothesis: when a number has a long bad streak at fine scale, it should be in
+CONTRACTION at coarser scales (mod 169, mod 2197) — the scales "compensate".
+
+### Step 1: Top Streaks (odd n ≤ 100,000)
+
+| n | streak | bits |
+|---|--------|------|
+| 77671 | 16 | 17 |
+| 65535 | 15 | 16 |
+| 32767 | 14 | 15 |
+| 43689 | 14 | 16 |
+| 69039 | 14 | 17 |
+
+Pattern: the longest-streak numbers are predominantly near powers of 2 (2^k − 1).
+This is structurally expected: if n ≈ 2^k, then 3n+1 ≈ 3·2^k, which has v₂ = 1.
+
+### Step 2: Multi-scale positions for top-streak numbers
+
+n=77671: phase_13=contraction, phase_169=contraction, phase_2197=**expansion**.
+n=65535: phase_13=expansion, phase_169=contraction, phase_2197=contraction.
+n=32767: contraction at ALL three scales.
+
+No consistent pattern: the top-streak numbers fall on both sides of each scale's
+midpoint without systematic clustering.
+
+### Step 3: Coarse-scale phase for streak ≥ 10 (516 numbers)
+
+| Scale | % in contraction | Baseline |
+|-------|-----------------|---------|
+| Scale-2 (mod 169) | 48.1% | ~50% |
+| Scale-3 (mod 2197) | 52.3% | ~50% |
+| Both contraction | 26.6% | ~25% |
+
+**Essentially 50/50.** Long-streak numbers are uniformly distributed across
+contraction/expansion phases at coarser scales. No compensation effect.
+
+### Step 4: n=77671 in detail
+
+- mod 13: 9, mod 169: 100, mod 2197: 776 (mod 104: 87, mod 208: 87)
+- Streak of 16 runs from step 4 to step 19
+- After the streak: v₂ = 2, 2, 2 — mild recovery, not a large-v₂ payoff
+- Total forward stopping time: 83 steps
+
+The streak is structurally caused by n ≈ 2^17/√2 — n's binary structure, not its
+multi-scale phase.
+
+### Step 5: 2D histogram — streak length vs scale-2 phase
+
+| Streak | %_contraction (mod 169) |
+|--------|------------------------|
+| 0–9 | 45–51% (≈ uniform) |
+| 10–13 | 42–67% (small samples) |
+| 14–16 | 100% (n=6, n=1) — sample too small |
+
+The 100% contraction at streak≥14 is based on 6 numbers. Not statistically
+significant.
+
+### Step 6: Breathing Score
+
+The breathing score `s₁/13 + s₂/169 + s₃/2197` (where sᵢ = n%13^i − half-range)
+measures net multi-scale phase:
+
+| Metric | Value |
+|--------|-------|
+| Min | −1.500 |
+| Max | +1.417 |
+| Mean | −0.045 |
+| Stdev | 0.525 |
+| r(score, forward_length) | 0.0076 |
+| r(score, max_streak) | 0.0062 |
+
+The breathing score is bounded by ±1.5 (=sum of ±0.5 across 3 scales), as expected.
+But it is **essentially uncorrelated** with both forward trajectory length and bad
+streak length. Bottom-25% vs top-25% breathing score: mean fwd_len 37.80 vs 38.05
+— a difference of 0.25 steps, negligible.
+
+### Synthesis
+
+The concurrent-scale compensation hypothesis is **FALSE**:
+
+1. Coarse-scale phase is uniformly distributed for long-streak numbers (≈50% at all thresholds).
+2. The breathing score, despite being a bounded function on a compact domain, has
+   r≈0.007 with forward length — no predictive power.
+3. Long bad streaks are caused by n's binary structure (proximity to 2^k), not by
+   multi-scale phase alignment.
+4. The observed streak lengths satisfy streak < k+1 where k≈bit_length(n): the
+   UFRF bound is correct, but it comes from the native resolution, not from
+   coarse-scale compensation.
+
+**The multi-scale concurrent structure does not create a compensation mechanism.**
+The v₂ accumulation argument remains the only viable path, but the unsafe residue
+gap still blocks it.
+
+---
+
 ## Dead Ends Closed
 
 - ✗ Adding 3-adic precision to the modulus (Q1)
@@ -314,6 +423,8 @@ The correct framing is:
 - ✗ Cover time as a convergence bound via group theory (Q4)
 - ✗ Trinity mod-3 class as a convergence predictor (Q4)
 - ✗ Pythagorean comma (log(n)) as a convergence predictor (Q4)
+- ✗ Multi-scale coarse-scale compensation for fine-scale bad streaks (Q4A)
+- ✗ Breathing score as a convergence or streak predictor (Q4A)
 
 ## Open Paths
 
