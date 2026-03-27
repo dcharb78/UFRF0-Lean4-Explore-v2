@@ -1,0 +1,907 @@
+{
+  "3": {
+    "k": 3,
+    "modulus": 104,
+    "unsafe_residues": [
+      {
+        "r": 5,
+        "mod13": 5,
+        "coset": "B",
+        "modular_v2": 4,
+        "min_actual_v2": 3,
+        "discrepancy": 1
+      },
+      {
+        "r": 13,
+        "mod13": 0,
+        "coset": "0",
+        "modular_v2": 3,
+        "min_actual_v2": 3,
+        "discrepancy": 0
+      },
+      {
+        "r": 21,
+        "mod13": 8,
+        "coset": "D",
+        "modular_v2": 6,
+        "min_actual_v2": 3,
+        "discrepancy": 3
+      },
+      {
+        "r": 29,
+        "mod13": 3,
+        "coset": "A",
+        "modular_v2": 3,
+        "min_actual_v2": 3,
+        "discrepancy": 0
+      },
+      {
+        "r": 37,
+        "mod13": 11,
+        "coset": "D",
+        "modular_v2": 4,
+        "min_actual_v2": 3,
+        "discrepancy": 1
+      },
+      {
+        "r": 45,
+        "mod13": 6,
+        "coset": "B",
+        "modular_v2": 3,
+        "min_actual_v2": 3,
+        "discrepancy": 0
+      },
+      {
+        "r": 53,
+        "mod13": 1,
+        "coset": "A",
+        "modular_v2": 5,
+        "min_actual_v2": 3,
+        "discrepancy": 2
+      },
+      {
+        "r": 61,
+        "mod13": 9,
+        "coset": "A",
+        "modular_v2": 3,
+        "min_actual_v2": 3,
+        "discrepancy": 0
+      },
+      {
+        "r": 69,
+        "mod13": 4,
+        "coset": "C",
+        "modular_v2": 4,
+        "min_actual_v2": 3,
+        "discrepancy": 1
+      },
+      {
+        "r": 77,
+        "mod13": 12,
+        "coset": "C",
+        "modular_v2": 3,
+        "min_actual_v2": 3,
+        "discrepancy": 0
+      },
+      {
+        "r": 85,
+        "mod13": 7,
+        "coset": "D",
+        "modular_v2": 8,
+        "min_actual_v2": 3,
+        "discrepancy": 5
+      },
+      {
+        "r": 93,
+        "mod13": 2,
+        "coset": "B",
+        "modular_v2": 3,
+        "min_actual_v2": 3,
+        "discrepancy": 0
+      },
+      {
+        "r": 101,
+        "mod13": 10,
+        "coset": "C",
+        "modular_v2": 4,
+        "min_actual_v2": 3,
+        "discrepancy": 1
+      }
+    ],
+    "coset_aggregation": {
+      "A": {
+        "residues": [
+          29,
+          53,
+          61
+        ],
+        "discrepancies": [
+          0,
+          2,
+          0
+        ],
+        "max_disc": 2,
+        "sum_disc": 2
+      },
+      "B": {
+        "residues": [
+          5,
+          45,
+          93
+        ],
+        "discrepancies": [
+          1,
+          0,
+          0
+        ],
+        "max_disc": 1,
+        "sum_disc": 1
+      },
+      "C": {
+        "residues": [
+          69,
+          77,
+          101
+        ],
+        "discrepancies": [
+          1,
+          0,
+          1
+        ],
+        "max_disc": 1,
+        "sum_disc": 2
+      },
+      "D": {
+        "residues": [
+          21,
+          37,
+          85
+        ],
+        "discrepancies": [
+          3,
+          1,
+          5
+        ],
+        "max_disc": 5,
+        "sum_disc": 9
+      },
+      "0": {
+        "residues": [
+          13
+        ],
+        "discrepancies": [
+          0
+        ],
+        "max_disc": 0,
+        "sum_disc": 0
+      }
+    },
+    "worst_coset": "D",
+    "worst_max": 5,
+    "worst_sum": 9
+  },
+  "4": {
+    "k": 4,
+    "modulus": 208,
+    "unsafe_residues": [
+      {
+        "r": 5,
+        "mod13": 5,
+        "coset": "B",
+        "modular_v2": 4,
+        "min_actual_v2": 4,
+        "discrepancy": 0
+      },
+      {
+        "r": 21,
+        "mod13": 8,
+        "coset": "D",
+        "modular_v2": 6,
+        "min_actual_v2": 4,
+        "discrepancy": 2
+      },
+      {
+        "r": 37,
+        "mod13": 11,
+        "coset": "D",
+        "modular_v2": 4,
+        "min_actual_v2": 4,
+        "discrepancy": 0
+      },
+      {
+        "r": 53,
+        "mod13": 1,
+        "coset": "A",
+        "modular_v2": 5,
+        "min_actual_v2": 4,
+        "discrepancy": 1
+      },
+      {
+        "r": 69,
+        "mod13": 4,
+        "coset": "C",
+        "modular_v2": 4,
+        "min_actual_v2": 4,
+        "discrepancy": 0
+      },
+      {
+        "r": 85,
+        "mod13": 7,
+        "coset": "D",
+        "modular_v2": 8,
+        "min_actual_v2": 4,
+        "discrepancy": 4
+      },
+      {
+        "r": 101,
+        "mod13": 10,
+        "coset": "C",
+        "modular_v2": 4,
+        "min_actual_v2": 4,
+        "discrepancy": 0
+      },
+      {
+        "r": 117,
+        "mod13": 0,
+        "coset": "0",
+        "modular_v2": 5,
+        "min_actual_v2": 4,
+        "discrepancy": 1
+      },
+      {
+        "r": 133,
+        "mod13": 3,
+        "coset": "A",
+        "modular_v2": 4,
+        "min_actual_v2": 4,
+        "discrepancy": 0
+      },
+      {
+        "r": 149,
+        "mod13": 6,
+        "coset": "B",
+        "modular_v2": 6,
+        "min_actual_v2": 4,
+        "discrepancy": 2
+      },
+      {
+        "r": 165,
+        "mod13": 9,
+        "coset": "A",
+        "modular_v2": 4,
+        "min_actual_v2": 4,
+        "discrepancy": 0
+      },
+      {
+        "r": 181,
+        "mod13": 12,
+        "coset": "C",
+        "modular_v2": 5,
+        "min_actual_v2": 4,
+        "discrepancy": 1
+      },
+      {
+        "r": 197,
+        "mod13": 2,
+        "coset": "B",
+        "modular_v2": 4,
+        "min_actual_v2": 4,
+        "discrepancy": 0
+      }
+    ],
+    "coset_aggregation": {
+      "A": {
+        "residues": [
+          53,
+          133,
+          165
+        ],
+        "discrepancies": [
+          1,
+          0,
+          0
+        ],
+        "max_disc": 1,
+        "sum_disc": 1
+      },
+      "B": {
+        "residues": [
+          5,
+          149,
+          197
+        ],
+        "discrepancies": [
+          0,
+          2,
+          0
+        ],
+        "max_disc": 2,
+        "sum_disc": 2
+      },
+      "C": {
+        "residues": [
+          69,
+          101,
+          181
+        ],
+        "discrepancies": [
+          0,
+          0,
+          1
+        ],
+        "max_disc": 1,
+        "sum_disc": 1
+      },
+      "D": {
+        "residues": [
+          21,
+          37,
+          85
+        ],
+        "discrepancies": [
+          2,
+          0,
+          4
+        ],
+        "max_disc": 4,
+        "sum_disc": 6
+      },
+      "0": {
+        "residues": [
+          117
+        ],
+        "discrepancies": [
+          1
+        ],
+        "max_disc": 1,
+        "sum_disc": 1
+      }
+    },
+    "worst_coset": "D",
+    "worst_max": 4,
+    "worst_sum": 6
+  },
+  "5": {
+    "k": 5,
+    "modulus": 416,
+    "unsafe_residues": [
+      {
+        "r": 21,
+        "mod13": 8,
+        "coset": "D",
+        "modular_v2": 6,
+        "min_actual_v2": 5,
+        "discrepancy": 1
+      },
+      {
+        "r": 53,
+        "mod13": 1,
+        "coset": "A",
+        "modular_v2": 5,
+        "min_actual_v2": 5,
+        "discrepancy": 0
+      },
+      {
+        "r": 85,
+        "mod13": 7,
+        "coset": "D",
+        "modular_v2": 8,
+        "min_actual_v2": 5,
+        "discrepancy": 3
+      },
+      {
+        "r": 117,
+        "mod13": 0,
+        "coset": "0",
+        "modular_v2": 5,
+        "min_actual_v2": 5,
+        "discrepancy": 0
+      },
+      {
+        "r": 149,
+        "mod13": 6,
+        "coset": "B",
+        "modular_v2": 6,
+        "min_actual_v2": 5,
+        "discrepancy": 1
+      },
+      {
+        "r": 181,
+        "mod13": 12,
+        "coset": "C",
+        "modular_v2": 5,
+        "min_actual_v2": 5,
+        "discrepancy": 0
+      },
+      {
+        "r": 213,
+        "mod13": 5,
+        "coset": "B",
+        "modular_v2": 7,
+        "min_actual_v2": 5,
+        "discrepancy": 2
+      },
+      {
+        "r": 245,
+        "mod13": 11,
+        "coset": "D",
+        "modular_v2": 5,
+        "min_actual_v2": 5,
+        "discrepancy": 0
+      },
+      {
+        "r": 277,
+        "mod13": 4,
+        "coset": "C",
+        "modular_v2": 6,
+        "min_actual_v2": 5,
+        "discrepancy": 1
+      },
+      {
+        "r": 309,
+        "mod13": 10,
+        "coset": "C",
+        "modular_v2": 5,
+        "min_actual_v2": 5,
+        "discrepancy": 0
+      },
+      {
+        "r": 341,
+        "mod13": 3,
+        "coset": "A",
+        "modular_v2": 10,
+        "min_actual_v2": 5,
+        "discrepancy": 5
+      },
+      {
+        "r": 373,
+        "mod13": 9,
+        "coset": "A",
+        "modular_v2": 5,
+        "min_actual_v2": 5,
+        "discrepancy": 0
+      },
+      {
+        "r": 405,
+        "mod13": 2,
+        "coset": "B",
+        "modular_v2": 6,
+        "min_actual_v2": 5,
+        "discrepancy": 1
+      }
+    ],
+    "coset_aggregation": {
+      "A": {
+        "residues": [
+          53,
+          341,
+          373
+        ],
+        "discrepancies": [
+          0,
+          5,
+          0
+        ],
+        "max_disc": 5,
+        "sum_disc": 5
+      },
+      "B": {
+        "residues": [
+          149,
+          213,
+          405
+        ],
+        "discrepancies": [
+          1,
+          2,
+          1
+        ],
+        "max_disc": 2,
+        "sum_disc": 4
+      },
+      "C": {
+        "residues": [
+          181,
+          277,
+          309
+        ],
+        "discrepancies": [
+          0,
+          1,
+          0
+        ],
+        "max_disc": 1,
+        "sum_disc": 1
+      },
+      "D": {
+        "residues": [
+          21,
+          85,
+          245
+        ],
+        "discrepancies": [
+          1,
+          3,
+          0
+        ],
+        "max_disc": 3,
+        "sum_disc": 4
+      },
+      "0": {
+        "residues": [
+          117
+        ],
+        "discrepancies": [
+          0
+        ],
+        "max_disc": 0,
+        "sum_disc": 0
+      }
+    },
+    "worst_coset": "A",
+    "worst_max": 5,
+    "worst_sum": 5
+  },
+  "6": {
+    "k": 6,
+    "modulus": 832,
+    "unsafe_residues": [
+      {
+        "r": 21,
+        "mod13": 8,
+        "coset": "D",
+        "modular_v2": 6,
+        "min_actual_v2": 6,
+        "discrepancy": 0
+      },
+      {
+        "r": 85,
+        "mod13": 7,
+        "coset": "D",
+        "modular_v2": 8,
+        "min_actual_v2": 6,
+        "discrepancy": 2
+      },
+      {
+        "r": 149,
+        "mod13": 6,
+        "coset": "B",
+        "modular_v2": 6,
+        "min_actual_v2": 6,
+        "discrepancy": 0
+      },
+      {
+        "r": 213,
+        "mod13": 5,
+        "coset": "B",
+        "modular_v2": 7,
+        "min_actual_v2": 6,
+        "discrepancy": 1
+      },
+      {
+        "r": 277,
+        "mod13": 4,
+        "coset": "C",
+        "modular_v2": 6,
+        "min_actual_v2": 6,
+        "discrepancy": 0
+      },
+      {
+        "r": 341,
+        "mod13": 3,
+        "coset": "A",
+        "modular_v2": 10,
+        "min_actual_v2": 6,
+        "discrepancy": 4
+      },
+      {
+        "r": 405,
+        "mod13": 2,
+        "coset": "B",
+        "modular_v2": 6,
+        "min_actual_v2": 6,
+        "discrepancy": 0
+      },
+      {
+        "r": 469,
+        "mod13": 1,
+        "coset": "A",
+        "modular_v2": 7,
+        "min_actual_v2": 6,
+        "discrepancy": 1
+      },
+      {
+        "r": 533,
+        "mod13": 0,
+        "coset": "0",
+        "modular_v2": 6,
+        "min_actual_v2": 6,
+        "discrepancy": 0
+      },
+      {
+        "r": 597,
+        "mod13": 12,
+        "coset": "C",
+        "modular_v2": 8,
+        "min_actual_v2": 6,
+        "discrepancy": 2
+      },
+      {
+        "r": 661,
+        "mod13": 11,
+        "coset": "D",
+        "modular_v2": 6,
+        "min_actual_v2": 6,
+        "discrepancy": 0
+      },
+      {
+        "r": 725,
+        "mod13": 10,
+        "coset": "C",
+        "modular_v2": 7,
+        "min_actual_v2": 6,
+        "discrepancy": 1
+      },
+      {
+        "r": 789,
+        "mod13": 9,
+        "coset": "A",
+        "modular_v2": 6,
+        "min_actual_v2": 6,
+        "discrepancy": 0
+      }
+    ],
+    "coset_aggregation": {
+      "A": {
+        "residues": [
+          341,
+          469,
+          789
+        ],
+        "discrepancies": [
+          4,
+          1,
+          0
+        ],
+        "max_disc": 4,
+        "sum_disc": 5
+      },
+      "B": {
+        "residues": [
+          149,
+          213,
+          405
+        ],
+        "discrepancies": [
+          0,
+          1,
+          0
+        ],
+        "max_disc": 1,
+        "sum_disc": 1
+      },
+      "C": {
+        "residues": [
+          277,
+          597,
+          725
+        ],
+        "discrepancies": [
+          0,
+          2,
+          1
+        ],
+        "max_disc": 2,
+        "sum_disc": 3
+      },
+      "D": {
+        "residues": [
+          21,
+          85,
+          661
+        ],
+        "discrepancies": [
+          0,
+          2,
+          0
+        ],
+        "max_disc": 2,
+        "sum_disc": 2
+      },
+      "0": {
+        "residues": [
+          533
+        ],
+        "discrepancies": [
+          0
+        ],
+        "max_disc": 0,
+        "sum_disc": 0
+      }
+    },
+    "worst_coset": "A",
+    "worst_max": 4,
+    "worst_sum": 5
+  },
+  "7": {
+    "k": 7,
+    "modulus": 1664,
+    "unsafe_residues": [
+      {
+        "r": 85,
+        "mod13": 7,
+        "coset": "D",
+        "modular_v2": 8,
+        "min_actual_v2": 7,
+        "discrepancy": 1
+      },
+      {
+        "r": 213,
+        "mod13": 5,
+        "coset": "B",
+        "modular_v2": 7,
+        "min_actual_v2": 7,
+        "discrepancy": 0
+      },
+      {
+        "r": 341,
+        "mod13": 3,
+        "coset": "A",
+        "modular_v2": 10,
+        "min_actual_v2": 7,
+        "discrepancy": 3
+      },
+      {
+        "r": 469,
+        "mod13": 1,
+        "coset": "A",
+        "modular_v2": 7,
+        "min_actual_v2": 7,
+        "discrepancy": 0
+      },
+      {
+        "r": 597,
+        "mod13": 12,
+        "coset": "C",
+        "modular_v2": 8,
+        "min_actual_v2": 7,
+        "discrepancy": 1
+      },
+      {
+        "r": 725,
+        "mod13": 10,
+        "coset": "C",
+        "modular_v2": 7,
+        "min_actual_v2": 7,
+        "discrepancy": 0
+      },
+      {
+        "r": 853,
+        "mod13": 8,
+        "coset": "D",
+        "modular_v2": 9,
+        "min_actual_v2": 7,
+        "discrepancy": 2
+      },
+      {
+        "r": 981,
+        "mod13": 6,
+        "coset": "B",
+        "modular_v2": 7,
+        "min_actual_v2": 7,
+        "discrepancy": 0
+      },
+      {
+        "r": 1109,
+        "mod13": 4,
+        "coset": "C",
+        "modular_v2": 8,
+        "min_actual_v2": 7,
+        "discrepancy": 1
+      },
+      {
+        "r": 1237,
+        "mod13": 2,
+        "coset": "B",
+        "modular_v2": 7,
+        "min_actual_v2": 7,
+        "discrepancy": 0
+      },
+      {
+        "r": 1365,
+        "mod13": 0,
+        "coset": "0",
+        "modular_v2": 12,
+        "min_actual_v2": 7,
+        "discrepancy": 5
+      },
+      {
+        "r": 1493,
+        "mod13": 11,
+        "coset": "D",
+        "modular_v2": 7,
+        "min_actual_v2": 7,
+        "discrepancy": 0
+      },
+      {
+        "r": 1621,
+        "mod13": 9,
+        "coset": "A",
+        "modular_v2": 8,
+        "min_actual_v2": 7,
+        "discrepancy": 1
+      }
+    ],
+    "coset_aggregation": {
+      "A": {
+        "residues": [
+          341,
+          469,
+          1621
+        ],
+        "discrepancies": [
+          3,
+          0,
+          1
+        ],
+        "max_disc": 3,
+        "sum_disc": 4
+      },
+      "B": {
+        "residues": [
+          213,
+          981,
+          1237
+        ],
+        "discrepancies": [
+          0,
+          0,
+          0
+        ],
+        "max_disc": 0,
+        "sum_disc": 0
+      },
+      "C": {
+        "residues": [
+          597,
+          725,
+          1109
+        ],
+        "discrepancies": [
+          1,
+          0,
+          1
+        ],
+        "max_disc": 1,
+        "sum_disc": 2
+      },
+      "D": {
+        "residues": [
+          85,
+          853,
+          1493
+        ],
+        "discrepancies": [
+          1,
+          2,
+          0
+        ],
+        "max_disc": 2,
+        "sum_disc": 3
+      },
+      "0": {
+        "residues": [
+          1365
+        ],
+        "discrepancies": [
+          5
+        ],
+        "max_disc": 5,
+        "sum_disc": 5
+      }
+    },
+    "worst_coset": "0",
+    "worst_max": 5,
+    "worst_sum": 5
+  }
+}
