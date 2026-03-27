@@ -1,7 +1,7 @@
 # UFRF Derivation Chain
 
 **Every node is a proven theorem. Every arrow is a verified import.**
-**Zero sorry. Zero custom axioms. 590+ proven entities. 41 modules.**
+**Zero sorry. Zero custom axioms. 600+ proven entities. 43 modules.**
 
 The entire framework derives from one structure: `Trinity {-½, 0, +½}` with `sum = 0`.
 
@@ -102,9 +102,17 @@ Trinity.lean: trinity.conservation
 │   │   ord(2) = 12 = K(3). Full connectivity of Syracuse graph on ZMod 13. Proven.
 │   │   primitive_root_order_is_kissing: 12 = kissing_number_3d. Proven.
 │   │
-│   └── CollatzStructure.lean: collatz_coeff_order_is_trinity
-│       ord₁₃(3) = 3. Four cosets of size 3. 12/3 = C(4,3) = simplex faces. Proven.
-│       all_constants_from_three: all structural constants from generator a=3. Proven.
+│   ├── CollatzStructure.lean: collatz_coeff_order_is_trinity
+│   │   ord₁₃(3) = 3. Four cosets of size 3. 12/3 = C(4,3) = simplex faces. Proven.
+│   │   all_constants_from_three: all structural constants from generator a=3. Proven.
+│   │
+│   └── CollatzNoCycles.lean: no_power_coincidence ⭐
+│       2^a ≠ 3^b for b > 0. Log₂(3) is irrational (integer version).
+│       Proof: 3 prime, 3∤2 → 3∤2^a; but 2^a=3^b → 3∣2^a. Contradiction. Proven.
+│       two_three_coprime: gcd(2,3) = 1. Proven.
+│       cycle_exact_balance_impossible: ¬(2^S = 3^L) for L > 0. Proven.
+│       cycle_step_power_bound: 3^L < 4^L for L > 0. Proven.
+│       {3,5,7,9,11,13}_not_in_cycle: no cycle within 20 steps (native_decide). Proven.
 │
 ├── Simplex.lean: simplex3_face_count
 │   │   C(4,3) = 4. Tetrahedron has 4 faces. Proven.

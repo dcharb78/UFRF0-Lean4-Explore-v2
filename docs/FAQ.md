@@ -168,6 +168,34 @@ The 2-adic structure (not the 13-adic) is doing the heavy lifting. The 13-cycle 
 graph connectivity (via primitive root 2 mod 13) but the convergence rate is determined
 by the 2-adic precision k.
 
+### "Can UFRF rule out non-trivial Collatz cycles?"
+
+Partially. `CollatzNoCycles.lean` (Phase 4) proves:
+
+| Claim | Theorem |
+|---|---|
+| gcd(2, 3) = 1 | `two_three_coprime` |
+| 2^a ≠ 3^b for b > 0 | `no_power_coincidence` |
+| ¬(2^S = 3^L) for L > 0 | `cycle_exact_balance_impossible` |
+| 3^L < 4^L for L > 0 | `cycle_step_power_bound` |
+| 3, 5, 7, 9, 11, 13 don't cycle in ≤ 20 steps | `*_not_in_cycle` (native_decide) |
+
+The exact power balance needed to close a cycle without the +1 terms is impossible by
+coprimality. For the full argument (including the +1 corrections), Eliahou (1993) proved
+any cycle has L > 17 million; this is not formalized in the repo.
+
+### "Do the contraction certificates transfer from modular to actual integers?"
+
+Not directly. Phase 4 analysis (analysis/collatz_unsafe_residues.py) finds:
+- Exactly 13 "unsafe residues" at each level k: those with v₂(3r+1) ≥ k
+- At these residues, modular v₂ can overcount actual v₂ by up to 5 (at k=3, r=85)
+- The k=3 certificate margin (150 millibits) is far smaller than the max discrepancy (5 bits)
+- **Result: The certificate does NOT transfer directly to all integers**
+
+However, the fraction of unsafe residues is 13/(13·2^(k-1)) = 1/2^(k-3) → 0 geometrically.
+A compactness argument on the solenoid may close this gap. See `CollatzInevitability.lean`
+for the precise formulation of what remains to be proven.
+
 ---
 
 ## On Axioms and Foundations
