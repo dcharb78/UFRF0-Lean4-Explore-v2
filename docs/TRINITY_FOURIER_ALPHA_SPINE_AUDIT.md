@@ -161,6 +161,9 @@ These are not planning hypotheses. They are already part of the current Lean sur
 - There is no single capstone theorem yet that packages the exact Trinity -> Fourier -> alpha lane end to end.
 - The current `/28` normalization is explicit, but it is not yet proved to be the uniquely forced normalization.
 - The current physical-selection reading remains fenced; the repo does not yet prove that the current comparison observable is the uniquely correct physical-selection quantity.
+- The `KissingEigen` `E×B` language currently functions as a companion
+  geometric/interpretive lane, not as a theorem-level bridge into the current
+  Fourier phase-shift or alpha-selection package.
 - The old broad derivation map should not be read as saying every import edge is already a theorem-level semantic derivation. Some arrows are still best read as disciplined conceptual adjacency.
 
 ## Exact Missing Bridge Targets

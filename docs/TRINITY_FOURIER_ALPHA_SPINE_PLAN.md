@@ -191,6 +191,9 @@ This phase should not:
 The following are explicitly secondary until the spine is stronger:
 
 - `d28+` alpha tightening
+- `KissingEigen` / `E×B` / dual-Trinity interpretation work unless a direct
+  theorem bridge into the current AlphaRunning normalization/selection lane is
+  found
 - generic residue infrastructure
 - wider physical-selection rhetoric
 - broad external validation packaging
