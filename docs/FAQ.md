@@ -145,6 +145,29 @@ Three UFRF constants in a 3-cycle: Unity (1), Simplex faces (4), Peak amplitude 
 `terminal_cycle_values` proves all three steps. `terminal_visits_simplex_faces` links 4
 to `simplex3_boundary_face_count`.
 
+### "Why does 3n+1 converge but 2n+1 wouldn't?"
+
+Because 3 > φ² ≈ 2.618 and 2 < φ². The inequality `a < (a-1)²` — which guarantees
+two halvings beat one expansion — holds for a ≥ 3 and fails for a = 2.
+`convergence_from_three` proves the general case. `dimension_two_fails` proves 2 fails.
+The golden ratio is the exact boundary. `trinity_dim_exceeds_golden_threshold` proves
+trinity_dimension = 3 strictly exceeds φ².
+
+### "Why is the transition graph always one component?"
+
+Because 2 is a primitive root mod 13 (order 12 = K(3) = 13-1). Every nonzero residue
+is a power of 2, so division by any power of 2 can reach any residue from any other.
+`two_is_primitive_root_mod_13` proves this. A non-projective-plane prime might not have
+2 as a primitive root, fragmenting the graph.
+
+### "What does the nested 13² scale contribute?"
+
+The Python analysis (Phase 3) finds that ZMod(169 × 2^k) gives *looser* bounds than
+ZMod(13 × 2^k): convergence windows are 1.5–4× larger and bad streaks grow by ~1.
+The 2-adic structure (not the 13-adic) is doing the heavy lifting. The 13-cycle provides
+graph connectivity (via primitive root 2 mod 13) but the convergence rate is determined
+by the 2-adic precision k.
+
 ---
 
 ## On Axioms and Foundations

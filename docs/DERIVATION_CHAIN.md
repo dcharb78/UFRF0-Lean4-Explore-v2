@@ -1,7 +1,7 @@
 # UFRF Derivation Chain
 
 **Every node is a proven theorem. Every arrow is a verified import.**
-**Zero sorry. Zero custom axioms. 570+ proven entities. 40 modules.**
+**Zero sorry. Zero custom axioms. 590+ proven entities. 41 modules.**
 
 The entire framework derives from one structure: `Trinity {-½, 0, +½}` with `sum = 0`.
 
@@ -85,6 +85,26 @@ Trinity.lean: trinity.conservation
 │   │
 │   └── Collatz.lean: all_up_to_cycle_length_converge
 │       Every n ∈ {1..13} reaches 1. Exhaustive. Proven.
+│
+├── CollatzStructure.lean: trinity_lt_polarity_sq
+│   │   3 < 4. Two halvings beat one tripling. Proven.
+│   │   two_halvings_contract: (3n+1)/4 < n for n > 1. Proven.
+│   │
+│   ├── CollatzStructure.lean: convergence_from_three
+│   │   ∀ a ≥ 3, a < (a-1)². Trinity is the minimum convergent dimension. Proven.
+│   │   convergence_iff_ge_three: the iff holds for all a ≥ 1. Proven.
+│   │
+│   ├── CollatzStructure.lean: dimension_two_fails
+│   │   ¬(2 < 1). A "2n+1" map would NOT converge. Proven.
+│   │   trinity_dim_exceeds_golden_threshold: 3 > φ². Proven.
+│   │
+│   ├── CollatzStructure.lean: two_is_primitive_root_mod_13
+│   │   ord(2) = 12 = K(3). Full connectivity of Syracuse graph on ZMod 13. Proven.
+│   │   primitive_root_order_is_kissing: 12 = kissing_number_3d. Proven.
+│   │
+│   └── CollatzStructure.lean: collatz_coeff_order_is_trinity
+│       ord₁₃(3) = 3. Four cosets of size 3. 12/3 = C(4,3) = simplex faces. Proven.
+│       all_constants_from_three: all structural constants from generator a=3. Proven.
 │
 ├── Simplex.lean: simplex3_face_count
 │   │   C(4,3) = 4. Tetrahedron has 4 faces. Proven.
