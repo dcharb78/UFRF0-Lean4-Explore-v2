@@ -1,0 +1,42 @@
+{
+  "k=3": {
+    "modulus": 1352,
+    "odd_count": 676,
+    "components": 1,
+    "cycles": 1,
+    "max_bad_streak": 9,
+    "convergence_window": 41
+  },
+  "k=4": {
+    "modulus": 2704,
+    "odd_count": 1352,
+    "components": 1,
+    "cycles": 1,
+    "max_bad_streak": 10,
+    "convergence_window": 54
+  },
+  "k=5": {
+    "modulus": 5408,
+    "odd_count": 2704,
+    "components": 1,
+    "cycles": 1,
+    "max_bad_streak": 11,
+    "convergence_window": 64
+  },
+  "k=6": {
+    "modulus": 10816,
+    "odd_count": 5408,
+    "components": 1,
+    "cycles": 1,
+    "max_bad_streak": 12,
+    "convergence_window": 67
+  },
+  "k=7": {
+    "modulus": 21632,
+    "odd_count": 10816,
+    "components": 1,
+    "cycles": 1,
+    "max_bad_streak": 13,
+    "convergence_window": 78
+  }
+}
