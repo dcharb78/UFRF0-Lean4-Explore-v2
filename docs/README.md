@@ -8,6 +8,7 @@ This directory contains reviewer-facing documentation for the current Lean 4 for
 - [`docs/DERIVATION_CHAIN.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/DERIVATION_CHAIN.md): dependency-oriented theorem map.
 - [`docs/FAQ.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/FAQ.md): reviewer objections, theorem references, and the residue proof/interpretation fence.
 - [`docs/RESIDUE_INTEGRATION_PLAN.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/RESIDUE_INTEGRATION_PLAN.md): phased plan for the complex-analysis / residue expansion.
+- [`docs/TRINITY_FOURIER_ALPHA_SPINE_PLAN.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/TRINITY_FOURIER_ALPHA_SPINE_PLAN.md): current planning note for the next theorem-spine phase from Trinity through the alpha lane.
 
 ## Proof Notes
 
