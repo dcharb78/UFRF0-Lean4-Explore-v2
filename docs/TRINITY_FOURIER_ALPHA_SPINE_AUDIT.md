@@ -183,8 +183,20 @@ Reason:
 
 Target shape:
 
-- a characterization theorem in `UFRF/AlphaRunning.lean` showing that the
-  current observer/observable/normalization lane is determined, or tightly
+- first entry target:
+  one small local theorem in `UFRF/AlphaRunning.lean` showing that the current
+  normalization inherits the simplex boundary factor together with the
+  arithmetic-selected observer label, rather than appearing only as a raw
+  `/ 28`
+- preferred theorem shape:
+  `alphaPhaseObserverModelNormalization_inherits_simplex_boundary_and_selected_label`
+- intended statement shape:
+  `(Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧`
+  `alphaPhaseObserverModelNormalization =`
+  `(simplex3_boundary_face_count : ℝ) * (alphaPhaseObserver.val : ℝ)`
+- after that, if still needed, one characterization theorem in
+  `UFRF/AlphaRunning.lean` showing that the current
+  observer/observable/normalization lane is determined, or tightly
   constrained, by a small explicit property bundle already present in the repo
 
 Candidate ingredients:
@@ -200,6 +212,9 @@ Reason:
 
 - this is the main remaining gap between a coherent model lane and a more
   mathematically forced lane
+- the local normalization-inheritance theorem is the smallest honest move
+  because it partially forces the current measurement rule without promoting
+  it into a unique physical-selection theorem
 
 ### C. A Conservative Theorem About What Is Still Open
 

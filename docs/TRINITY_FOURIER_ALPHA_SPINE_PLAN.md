@@ -119,6 +119,29 @@ Success gate:
 Goal:
 attack the normalization and selection gap directly.
 
+Current recommended entry target:
+
+- first add one small local theorem in `UFRF/AlphaRunning.lean` showing that
+  the current model normalization is not only `/ 28`, but inherits the simplex
+  boundary factor together with the arithmetic-selected observer label
+- preferred theorem shape:
+  `alphaPhaseObserverModelNormalization_inherits_simplex_boundary_and_selected_label`
+- intended statement shape:
+  `(Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧`
+  `alphaPhaseObserverModelNormalization =`
+  `(simplex3_boundary_face_count : ℝ) * (alphaPhaseObserver.val : ℝ)`
+- this is a partial forcing theorem, not a uniqueness theorem:
+  it structurally explains the current `/ 28` rule without claiming that no
+  other normalization could ever be considered
+
+Preferred sequencing:
+
+- prove the normalization-inheritance theorem first
+- then add at most one narrow corollary rewriting the current normalized
+  observable or one-step comparison through that inherited factor
+- only after that decide whether a broader characterization package is still
+  needed
+
 Preferred target shape:
 
 - a characterization theorem in `UFRF/AlphaRunning.lean` showing that the
@@ -136,6 +159,8 @@ Preferred ingredients:
 
 Acceptable outcomes:
 
+- first acceptable outcome: a local normalization-inheritance theorem that
+  makes the current `/ 28` rule structurally inherited from existing factors
 - strongest outcome: uniqueness or necessity theorem for the current observable
 - fallback outcome: a partial characterization theorem with an explicit note
   that unique normalization is still open
