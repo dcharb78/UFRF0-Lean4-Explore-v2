@@ -4206,6 +4206,86 @@ theorem alpha_running_coherent_start_and_handoff
   exact ⟨padic_is_coherent (p := 13) x, hstart, hbranch, cycle_seed_zero_to_one,
     hscale, hclose, hreenter⟩
 
+/--
+The start-pattern / seed-orbit lane and the current inherited-normalized
+one-step lane meet in one conservative structural junction theorem.
+
+This keeps the claims separate but adjacent:
+- the `13`-adic UFRF start pattern is still `1` and then `13` subpositions,
+- the cycle-side seed move is still the literal `0 -> 1` step,
+- the selected observer is still label `7`, reached after seven successor
+  steps from that shared seed orbit,
+- the current one-step measurement lane still uses the inherited
+  simplex-boundary-times-selected-label normalization, is radius-stable in the
+  admitted regime, and sits on the same recurring `13 ↦ 3`, `14 ↦ 4` handoff.
+
+It does not claim that the start pattern by itself forces the analytic
+measurement formula, or that the current measurement lane is uniquely
+physically correct. It only packages the already-proved structural junction
+between these two sides of the current repo-supported story.
+-/
+theorem alpha_selected_start_pattern_seed_orbit_and_inherited_measurement_junction
+    {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    UFRF.Padic.ufrf_projection (1 : ℤ_[13]) = (1 : ZMod 13) ∧
+    Fintype.card (ZMod (13 ^ 2)) / Fintype.card (ZMod 13) = 13 ∧
+    BreathingCycle.neg (BreathingCycle.comp 0) = (1 : BreathingCycle.CyclePos) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserver = (7 : ZMod CycleLen) ∧
+    ((fun x : BreathingCycle.CyclePos => BreathingCycle.neg (BreathingCycle.comp x))^[7]) 0 =
+      (7 : BreathingCycle.CyclePos) ∧
+    alphaPhaseObserverModelNormalization =
+      (simplex3_boundary_face_count : ℝ) * (alphaPhaseObserver.val : ℝ) ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      alphaPhaseObserverNormalizedRealCorrection 1 r ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverOneStepResidual R = alphaPhaseObserverOneStepResidual r ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 ∧
+    BreathingCycle.sameStep (13 + BreathingCycle.cycle_len * t)
+      (14 + BreathingCycle.cycle_len * t) 0 1 := by
+  rcases ufrf_start_pattern with ⟨hstart, hbranch⟩
+  have hseed := cycle_seed_zero_to_one
+  rcases alpha_selected_observer_sits_on_prism_orbit_before_recurring_handoff s t with
+    ⟨_, hseven, _, hsevenOrbit, _, _, _, hclose, hrestart, hscale, h13, h14, hsame⟩
+  rcases alpha_selected_one_step_measurement_characterization_has_inherited_normalization_radius_invariance_and_recurring_handoff
+      (r := r) (R := R) hr hrR hRlt s t with
+    ⟨horigin, hsel, hnorm, hinvarMeas, hmeas, hroot, hcmp, hinvarRes, hres,
+      _, _, _, _, _⟩
+  exact ⟨hstart, hbranch, hseed, horigin, hsel, hseven, hsevenOrbit, hnorm,
+    hinvarMeas, hmeas, hroot, hcmp, hinvarRes, hres, hclose, hrestart, hscale,
+    h13, h14, hsame⟩
+
 private abbrev CyclePrime3VisitOrder : Prop :=
   (0 * 3 : ZMod 13) = 0 ∧ (1 * 3 : ZMod 13) = 3 ∧
     (2 * 3 : ZMod 13) = 6 ∧ (3 * 3 : ZMod 13) = 9 ∧

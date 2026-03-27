@@ -155,6 +155,9 @@ What it does not give:
 - The current exposed numeric package is already aligned at `d27`.
 - The current one-step measurement lane now also has a conservative
   inherited-normalization characterization package in `AlphaRunning`.
+- The start-pattern / seed-orbit lane now also has a conservative structural
+  junction package back into the inherited-normalized one-step lane in
+  `AlphaRunning`.
 
 These are not planning hypotheses. They are already part of the current Lean surface.
 
@@ -178,6 +181,8 @@ Target shape:
 
 - one theorem or one narrow theorem family that explicitly packages
   Trinity/cycle/Fourier/arithmetic-selection/current-alpha-lane together
+- build above the now-existing start-pattern / seed-orbit / inherited-
+  measurement junction package rather than re-proving that local bridge again
 
 Reason:
 

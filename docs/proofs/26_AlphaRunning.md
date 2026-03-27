@@ -654,6 +654,17 @@ The point of this module is narrow:
   every whole-cycle translate still closes at local `3` and re-enters at
   local `4`; this is still a packaged scale-indexed theorem, not a single
   simultaneous-all-scales object.
+- `alpha_selected_start_pattern_seed_orbit_and_inherited_measurement_junction`:
+  this is the conservative junction package tying the start-pattern /
+  seed-orbit lane back into the current inherited-normalized one-step lane:
+  the UFRF start pattern is still `1` then `13`, the seed move is still
+  `0 -> 1`, the selected observer is still the seven-step point on that shared
+  orbit, the one-step centered/root-scalar/comparison/residual formulas still
+  sit on the inherited simplex-boundary-times-selected-label normalization,
+  and the same channel still lands in the recurring `13 ↦ 3`, `14 ↦ 4`
+  handoff package. This is still a structural adjacency theorem, not a claim
+  that the start pattern itself forces the analytic measurement formula or
+  uniquely fixes the physical reading.
 - `alphaPhaseObserver_is_seven_steps_on_seed_orbit`:
   the selected observer label is reached from the seed by seven universal
   successor steps, so label `7` is a contextual point on the shared

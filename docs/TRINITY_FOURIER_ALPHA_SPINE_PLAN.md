@@ -131,16 +131,25 @@ Current Phase 2 foothold:
 - this packages the inherited normalization directly into the current
   radius-stable one-step centered/root-scalar/residual lane on the recurring
   handoff channel
+- one conservative structural junction theorem now also exists in
+  `UFRF/AlphaRunning.lean`:
+  `alpha_selected_start_pattern_seed_orbit_and_inherited_measurement_junction`
+- this ties the UFRF `1 -> 13` start pattern, the literal cycle seed move
+  `0 -> 1`, the selected seven-step observer orbit, the inherited
+  normalization, and the recurring `13 ↦ 3`, `14 ↦ 4` handoff into one exact
+  package without claiming that the start pattern forces the analytic
+  measurement lane
 - this is a partial forcing theorem, not a uniqueness theorem:
   it structurally explains the current `/ 28` rule without claiming that no
   other normalization could ever be considered
 
 Preferred sequencing:
 
-- decide whether any further characterization beyond the new conservative
-  package is actually needed
-- if not, pivot to a narrower structural junction theorem that ties the
-  start-pattern / seed-orbit lane back into the current observer package
+- decide whether a separate capstone theorem above the new conservative
+  characterization and junction packages is actually needed
+- if so, keep it narrow and package-level: explicitly connect the current
+  start-pattern / seed-orbit junction, Fourier phase-shift lane, and selected
+  observer package without turning adjacency into causation
 
 Preferred target shape:
 
@@ -164,6 +173,9 @@ Acceptable outcomes:
 - strongest outcome: uniqueness or necessity theorem for the current observable
 - fallback outcome: a partial characterization theorem with an explicit note
   that unique normalization is still open
+- second fallback outcome: stop with the current characterization plus
+  structural junction package and treat the remaining gap as documentation and
+  capstone packaging, not as missing local semantics
 
 Failure condition:
 
