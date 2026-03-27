@@ -180,11 +180,140 @@ The tree's structure is governed by gcd(2,3)=1 at every level.
 
 ---
 
+---
+
+## Question 4: Harmonic Structure, Cover Time, and Inverse Tree Synthesis
+
+**Answer: Cover time is near-random, not a convergence bound. Mod-3 classes are
+indistinguishable in forward length. The 3-divisibility barrier is exactly 1 step thin.**
+
+### Part A: Cover Time on Forward Trajectory
+
+For all odd n in [3, 9999], recording the number of odd Syracuse steps until all
+12 nonzero residues mod 13 have been visited:
+
+| Metric | Value |
+|--------|-------|
+| Max cover_time | 78 |
+| Mean cover_time | 33.68 |
+| Theoretical random-walk cover (12·H₁₂) | 37.24 |
+| Fraction achieving full cover | 40.2% |
+| Mean steps after cover (to reach 1) | 16.05 |
+
+**The Collatz cover time (33.68) is BELOW the random-walk theory (37.24).** Trajectories
+explore mod-13 residues slightly faster than a random walk on a 12-element group, consistent
+with the known primitive-root structure (2 is a primitive root mod 13).
+
+Only 40.2% of trajectories achieve full cover — most reach 1 before visiting all 12 classes.
+Cover time is bounded (max 78), but is NOT a useful upper bound on forward_length: the ratio
+forward_length / cover_time has max 4.29 and mean 1.50, making it only a 23%-tight lower bound.
+
+### Part B: Comma Accumulation Curves
+
+The "comma" at step t: `comma(t) = t·1585 − cumulative_v₂·1000` (integer millibits).
+This measures the running excess of expansion over contraction (positive = net expansion so far).
+
+| Metric | Value |
+|--------|-------|
+| Mean max_comma | 868 mb |
+| Max max_comma | 9870 mb (n=9663) |
+| Min max_comma | −10830 mb |
+| log(n) vs max_comma Pearson r | −0.069 |
+| Fraction starting with comma > 0 | 50.0% |
+
+**The comma is essentially uncorrelated with log(n)** (r = −0.069). This means the
+Pythagorean comma is not a useful predictor of convergence speed for a given n. The comma
+accumulation is driven by the specific v₂ sequence, not the magnitude of n.
+
+The n=341 case is notable: max_comma = −6830 mb (negative from step 1). This means (3·341+1)
+= 1024 = 2^10 — a large power of 2 that immediately contracts far below the expansion rate.
+
+### Part C: Depth vs Forward Trajectory Length
+
+Using forward stopping times for all odd n ≤ 9,999:
+
+| Metric | Value |
+|--------|-------|
+| Mean forward_length | 30.67 |
+| Max forward_length | 96 |
+| log(n) vs forward_length Pearson r | 0.198 |
+
+Comparing HIGH-DISC residues mod 104 {85, 21, 53} vs LOW-DISC {13, 29, 45, 61, 77, 93}:
+
+| Class | Mean forward_length |
+|-------|---------------------|
+| HIGH-DISC | 26.56 |
+| LOW-DISC | 25.61 |
+
+**Difference is only ~1 step** — confirming Q2's finding that high-discrepancy residues
+do not cause harder trajectories. Per-n inverse tree depths are not directly available
+from q2_results.json (aggregate only), but the aggregate BFS result (depth ≤ 96 suffices)
+matches the forward stopping time maximum exactly.
+
+### Part D: The 3-Divisibility Barrier
+
+Forward stopping times by mod-3 class, all odd n in [3, 9999]:
+
+| Class | Count | Mean fwd_length | Std |
+|-------|-------|-----------------|-----|
+| 0 (mult of 3) | 1667 | 30.39 | 18.17 |
+| 1 | 1666 | 30.79 | 18.21 |
+| 2 (Trinity +1/2) | 1666 | 30.85 | 18.00 |
+
+**No class converges faster than any other** — all three mod-3 classes have essentially
+identical forward lengths (within 0.5 steps). The Trinity mapping {-1/2, 0, +1/2} → {2, 0, 1}
+mod 3 does NOT predict convergence speed.
+
+The barrier thickness for class 0: **exactly 1 step** (confirmed for all 1667 odd multiples
+of 3 up to 9999). Since 3n+1 ≡ 1 (mod 3), the very first forward step always escapes the
+barrier. The barrier is real but thin — multiples of 3 cannot be reached by odd predecessors
+(Lean-proven), but they escape in one step.
+
+### Lean Theorem: multiples_of_3_are_leaves (PROVEN)
+
+The 3-divisibility barrier theorem was formalized and verified in
+`UFRF/CollatzNoCycles.lean` (Section 4, line 158):
+
+```lean
+theorem multiples_of_3_are_leaves (n m v : ℕ) (h3 : 3 ∣ n) :
+    3 * m + 1 ≠ n * 2 ^ v := by
+  intro heq
+  have hdvd : 3 ∣ n * 2 ^ v := h3.mul_right _
+  rw [← heq] at hdvd
+  obtain ⟨k, hk⟩ := hdvd
+  omega
+```
+
+Build result: `✔ [3273/3273] Built UFRF.CollatzNoCycles (5.3s)` on branch `collatz-explore`.
+
+### Synthesis
+
+The synthesis hypothesis was: if cover_time bounds forward_length, and inverse tree depth
+bounds cover_time, then convergence follows by group theory alone.
+
+**Result: The hypothesis is FALSE.** Cover time is not a tight bound (max ratio 4.29).
+The correct framing is:
+
+1. Forward length is empirically bounded (max 96 for n ≤ 10,000) but with no tight
+   cover_time relationship.
+2. The near-random residue distribution (r = −0.069 for log(n) vs max_comma) means
+   convergence is driven by v₂ accumulation, not by visiting residues.
+3. The mod-3 class structure (Trinity) does not predict convergence — all classes converge
+   identically.
+4. The cleanest structural theorem remains: **multiples of 3 are leaves** in the inverse
+   tree — a divisibility barrier that is both Lean-proven and computationally confirmed
+   (barrier thickness = 1, algebraically guaranteed).
+
+---
+
 ## Dead Ends Closed
 
 - ✗ Adding 3-adic precision to the modulus (Q1)
 - ✗ Coset structure of (Z/13Z)* as the algebraic culprit (Q3)
 - ✗ High-discrepancy residues as tree bottlenecks (Q2)
+- ✗ Cover time as a convergence bound via group theory (Q4)
+- ✗ Trinity mod-3 class as a convergence predictor (Q4)
+- ✗ Pythagorean comma (log(n)) as a convergence predictor (Q4)
 
 ## Open Paths
 
@@ -201,3 +330,8 @@ The tree's structure is governed by gcd(2,3)=1 at every level.
    If both facts can be made rigorous simultaneously, convergence follows.
    The gap: "density → 1" is computational for n ≤ 10,000; the contraction certificates
    have the unsafe residue gap. Neither is complete without the other.
+
+4. **Bad streak scope clarification**: The Lean theorem `max_bad_streak_k3` proves no
+   5 consecutive v₂=1 steps in ZMod(104). For actual integers ≤ 100,000, max streak
+   is 16 (n=77671). The formal certificate covers only the modular domain — extending
+   to actual integers requires the unsafe residue gap to be closed.

@@ -1,0 +1,236 @@
+{
+  "part_A": {
+    "max_cover_time": 78,
+    "mean_cover_time": 33.6759,
+    "median_cover_time": 33.0,
+    "fraction_achieving_cover": 0.40248,
+    "mean_steps_after_cover": 16.0532,
+    "theoretical_random_walk_cover": 37.2385,
+    "top_10_by_cover_time": [
+      {
+        "n": 9897,
+        "cover_time": 78,
+        "total_steps": 89
+      },
+      {
+        "n": 3711,
+        "cover_time": 77,
+        "total_steps": 88
+      },
+      {
+        "n": 7423,
+        "cover_time": 77,
+        "total_steps": 88
+      },
+      {
+        "n": 5567,
+        "cover_time": 76,
+        "total_steps": 87
+      },
+      {
+        "n": 8351,
+        "cover_time": 75,
+        "total_steps": 86
+      },
+      {
+        "n": 6591,
+        "cover_time": 70,
+        "total_steps": 90
+      },
+      {
+        "n": 9887,
+        "cover_time": 69,
+        "total_steps": 89
+      },
+      {
+        "n": 4233,
+        "cover_time": 62,
+        "total_steps": 74
+      },
+      {
+        "n": 8467,
+        "cover_time": 62,
+        "total_steps": 74
+      },
+      {
+        "n": 3175,
+        "cover_time": 61,
+        "total_steps": 73
+      }
+    ],
+    "cover_time_distribution": {
+      "1-10": 0,
+      "11-20": 118,
+      "21-30": 640,
+      "31-50": 1184,
+      "51-100": 70,
+      ">100": 0
+    }
+  },
+  "part_B": {
+    "max_comma_stats": {
+      "mean": 868.15,
+      "max": 9870,
+      "min": -10830,
+      "median": 755
+    },
+    "log_n_correlation": -0.068841,
+    "fraction_starting_positive_comma": 0.5001,
+    "sample_curves": [
+      {
+        "n": 7,
+        "max_comma": 1170,
+        "step_first_negative": 4,
+        "total_steps": 6
+      },
+      {
+        "n": 27,
+        "max_comma": 6720,
+        "step_first_negative": 37,
+        "total_steps": 42
+      },
+      {
+        "n": 97,
+        "max_comma": 4890,
+        "step_first_negative": 1,
+        "total_steps": 44
+      },
+      {
+        "n": 127,
+        "max_comma": 3510,
+        "step_first_negative": 9,
+        "total_steps": 16
+      },
+      {
+        "n": 255,
+        "max_comma": 4095,
+        "step_first_negative": 8,
+        "total_steps": 16
+      },
+      {
+        "n": 341,
+        "max_comma": -6830,
+        "step_first_negative": 1,
+        "total_steps": 2
+      },
+      {
+        "n": 511,
+        "max_comma": 4680,
+        "step_first_negative": 11,
+        "total_steps": 21
+      },
+      {
+        "n": 703,
+        "max_comma": 6890,
+        "step_first_negative": 51,
+        "total_steps": 63
+      },
+      {
+        "n": 871,
+        "max_comma": 6190,
+        "step_first_negative": 22,
+        "total_steps": 66
+      },
+      {
+        "n": 1023,
+        "max_comma": 5265,
+        "step_first_negative": 11,
+        "total_steps": 21
+      },
+      {
+        "n": 2047,
+        "max_comma": 7700,
+        "step_first_negative": 36,
+        "total_steps": 57
+      },
+      {
+        "n": 4095,
+        "max_comma": 6700,
+        "step_first_negative": 32,
+        "total_steps": 57
+      },
+      {
+        "n": 6171,
+        "max_comma": 5720,
+        "step_first_negative": 36,
+        "total_steps": 97
+      },
+      {
+        "n": 7919,
+        "max_comma": 3095,
+        "step_first_negative": 13,
+        "total_steps": 25
+      },
+      {
+        "n": 8191,
+        "max_comma": 8115,
+        "step_first_negative": 27,
+        "total_steps": 57
+      },
+      {
+        "n": 9001,
+        "max_comma": 1925,
+        "step_first_negative": 1,
+        "total_steps": 50
+      },
+      {
+        "n": 9663,
+        "max_comma": 9870,
+        "step_first_negative": 34,
+        "total_steps": 67
+      },
+      {
+        "n": 9999,
+        "max_comma": 1755,
+        "step_first_negative": 4,
+        "total_steps": 31
+      },
+      {
+        "n": 6553,
+        "max_comma": 170,
+        "step_first_negative": 1,
+        "total_steps": 49
+      }
+    ]
+  },
+  "part_C": {
+    "forward_length_high_disc_mean": 26.5556,
+    "forward_length_low_disc_mean": 25.6083,
+    "log_n_forward_length_correlation": 0.198146,
+    "forward_length_stats": {
+      "mean": 30.6733,
+      "max": 96,
+      "min": 1
+    }
+  },
+  "part_D": {
+    "mod3_class_stats": {
+      "0": {
+        "count": 1667,
+        "mean_fwd": 30.3863,
+        "std_fwd": 18.1673
+      },
+      "1": {
+        "count": 1666,
+        "mean_fwd": 30.7857,
+        "std_fwd": 18.206
+      },
+      "2": {
+        "count": 1666,
+        "mean_fwd": 30.8481,
+        "std_fwd": 18.0042
+      }
+    },
+    "mean_barrier_thickness": 1
+  },
+  "synthesis": {
+    "ratio_fwd_len_over_cover_time": {
+      "mean": 1.4992,
+      "median": 1.3333,
+      "max": 4.2941,
+      "min": 0.9444,
+      "count": 2012
+    },
+    "conclusion": "cover_time is NOT a tight upper bound on forward_length (max ratio 4.294), but is a useful diagnostic for residue exploration uniformity."
+  }
+}

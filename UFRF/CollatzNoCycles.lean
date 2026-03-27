@@ -142,4 +142,25 @@ theorem cycle_step_power_bound (L : ℕ) (hL : L > 0) : 3 ^ L < 4 ^ L := by
   · norm_num
   · omega
 
+/-! ## Section 4: The 3-Divisibility Barrier in the Inverse Tree -/
+
+/-- If 3 divides n, then n has no odd Collatz predecessor.
+    Proof: an odd predecessor m satisfies 3m+1 = n·2^v for some v ≥ 1.
+    But 3 ∤ (3m+1) since 3m+1 ≡ 1 (mod 3), while 3 ∣ n·2^v since 3 ∣ n.
+    Contradiction.
+
+    In the inverse Collatz tree rooted at 1, every multiple of 3 is a leaf
+    (reachable only via even predecessors 2n, 4n, ..., never via an odd step).
+    The Collatz coefficient 3 creates a divisibility barrier that prevents
+    multiples of 3 from being reached by odd predecessors.
+
+    ✅ PROVEN -/
+theorem multiples_of_3_are_leaves (n m v : ℕ) (h3 : 3 ∣ n) :
+    3 * m + 1 ≠ n * 2 ^ v := by
+  intro heq
+  have hdvd : 3 ∣ n * 2 ^ v := h3.mul_right _
+  rw [← heq] at hdvd
+  obtain ⟨k, hk⟩ := hdvd
+  omega
+
 end UFRF.CollatzNoCycles
