@@ -611,6 +611,21 @@ The point of this module is narrow:
   the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
   closure/restart package at every indexed scale. This is still a packaging
   theorem, not a stronger measurement-correctness claim.
+- `alpha_selected_one_step_measurement_characterization_has_inherited_normalization_radius_invariance_and_recurring_handoff`:
+  the current one-step lane is now packaged one step more tightly, still
+  without overclaiming: the local chart reindexes to `0`, the observer
+  channel is still the arithmetic-selected alpha observer, the current model
+  normalization is explicitly inherited as simplex-boundary-factor times the
+  selected observer label, the one-step normalized observable is still stable
+  under allowed radius changes, that same observable is both the centered
+  comparison quantity and the explicit alpha-selected root/scalar quantity,
+  the observer-indexed one-step comparison alias is the centered comparison
+  quantity, the observer-indexed residual is that same centered quantity minus
+  the static CODATA gap and is likewise radius-invariant, and the same
+  observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart package at every indexed scale. This is still a
+  conservative characterization package, not a proof of unique normalization
+  or a stronger physical-selection claim.
 - `alpha_selected_one_step_absolute_error_package_has_local_origin_and_recurring_handoff`:
   this extends the current one-step user-facing bundle by adding the
   script-aligned absolute-error identity in one theorem: the current local

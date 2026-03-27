@@ -125,16 +125,22 @@ Current Phase 2 foothold:
   `alphaPhaseObserverModelNormalization_inherits_simplex_boundary_and_selected_label`
 - it proves that the current model normalization is not only `/ 28`, but also
   the simplex boundary factor times the arithmetic-selected observer label
+- one conservative characterization package now also exists in
+  `UFRF/AlphaRunning.lean`:
+  `alpha_selected_one_step_measurement_characterization_has_inherited_normalization_radius_invariance_and_recurring_handoff`
+- this packages the inherited normalization directly into the current
+  radius-stable one-step centered/root-scalar/residual lane on the recurring
+  handoff channel
 - this is a partial forcing theorem, not a uniqueness theorem:
   it structurally explains the current `/ 28` rule without claiming that no
   other normalization could ever be considered
 
 Preferred sequencing:
 
-- optionally add at most one narrow corollary rewriting the current normalized
-  observable or one-step comparison through that inherited factor
-- only after that decide whether a broader characterization package is still
-  needed
+- decide whether any further characterization beyond the new conservative
+  package is actually needed
+- if not, pivot to a narrower structural junction theorem that ties the
+  start-pattern / seed-orbit lane back into the current observer package
 
 Preferred target shape:
 

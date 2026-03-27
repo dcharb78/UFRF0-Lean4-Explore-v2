@@ -153,6 +153,8 @@ What it does not give:
 - The current one-step prediction is already written as the alpha-selected root/scalar formula.
 - The normalized one-step observable and the comparison-minus-gap form already transport to any arithmetic-selected `k`.
 - The current exposed numeric package is already aligned at `d27`.
+- The current one-step measurement lane now also has a conservative
+  inherited-normalization characterization package in `AlphaRunning`.
 
 These are not planning hypotheses. They are already part of the current Lean surface.
 
@@ -191,6 +193,8 @@ Target shape:
 - this local theorem now shows that the current normalization inherits the
   simplex boundary factor together with the arithmetic-selected observer label,
   rather than appearing only as a raw `/ 28`
+- one conservative characterization package also now exists:
+  `alpha_selected_one_step_measurement_characterization_has_inherited_normalization_radius_invariance_and_recurring_handoff`
 - after that, if still needed, one characterization theorem in
   `UFRF/AlphaRunning.lean` showing that the current
   observer/observable/normalization lane is determined, or tightly

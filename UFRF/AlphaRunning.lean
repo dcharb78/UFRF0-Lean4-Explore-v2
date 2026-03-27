@@ -3980,6 +3980,89 @@ theorem alpha_selected_one_step_measurement_package_has_local_origin_radius_inva
     hclose, hrestart, hscale, h13, h14⟩
 
 /--
+The current one-step measurement lane now has a conservative characterization
+through the inherited normalization package.
+
+This strengthens the current repo-supported one-step bundle without promoting
+unique normalization or a stronger physical-selection claim:
+- the local chart is re-anchored so the current start point is `0`,
+- the observer channel is still the arithmetic-selected alpha observer,
+- the current model normalization is now explicitly inherited from the simplex
+  boundary factor together with that selected observer label,
+- the one-step normalized observable is stable under allowed contour-radius
+  changes,
+- that same one-step observable is both the centered comparison quantity and
+  the explicit alpha-selected root/scalar quantity,
+- the observer-indexed one-step comparison alias is the centered comparison
+  quantity,
+- the observer-indexed one-step residual is that same centered comparison
+  quantity minus the static CODATA gap and is likewise radius-invariant,
+- and the same observer still sits inside the recurring `13 ↦ 3`, `14 ↦ 4`
+  closure/restart handoff at every indexed scale.
+
+It does not claim that the present normalization is uniquely forced among all
+possible modeling choices; it only packages the current lane more tightly in
+the inherited-normalization terms now proved in Lean.
+-/
+theorem alpha_selected_one_step_measurement_characterization_has_inherited_normalization_radius_invariance_and_recurring_handoff
+    {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverModelNormalization =
+      (simplex3_boundary_face_count : ℝ) * (alphaPhaseObserver.val : ℝ) ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      alphaPhaseObserverNormalizedRealCorrection 1 r ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverOneStepResidual R = alphaPhaseObserverOneStepResidual r ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 := by
+  have hR : 0 < R := lt_of_lt_of_le hr hrR
+  rcases alpha_selected_one_step_measurement_package_has_local_origin_radius_invariance_and_recurring_handoff
+      (r := r) (R := R) hr hrR hRlt s t with
+    ⟨horigin, hsel, hinvarMeas, _, _, hinvarRes, _, hclose, hrestart, hscale, h13, h14⟩
+  rcases alphaPhaseObserverModelNormalization_inherits_simplex_boundary_and_selected_label with
+    ⟨_, hnorm⟩
+  rcases alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_centered_comparison
+      (R := R) hR hRlt with ⟨_, hmeas⟩
+  rcases alphaPhaseObserverNormalizedRealCorrection_one_eq_alpha_selected_root_scalar
+      (R := R) hR hRlt with ⟨_, hroot⟩
+  rcases alpha_selected_comparison_and_residual_reach_recurring_handoff
+      (R := R) hR hRlt s t with
+    ⟨_, hcmp, hres, _, _, _, _, _⟩
+  exact ⟨horigin, hsel, hnorm, hinvarMeas, hmeas, hroot, hcmp, hinvarRes, hres,
+    hclose, hrestart, hscale, h13, h14⟩
+
+/--
 The current one-step absolute-error package has a local origin and sits on the
 same recurring handoff as the alpha-selected observer channel.
 
