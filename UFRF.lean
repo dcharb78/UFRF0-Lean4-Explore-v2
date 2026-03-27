@@ -9,6 +9,7 @@ import UFRF.AxiomAudit
 import UFRF.BreathingCycle
 import UFRF.Calculus
 import UFRF.Collatz
+import UFRF.CollatzStructure
 import UFRF.CollatzWindow
 import UFRF.Constants
 import UFRF.DivisionAlgebras
@@ -74,7 +75,8 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | Noether | Gauge groups, conservation | `total_gauge_bosons` |
 | Calculus | Differentiation, scale descent | `ftc_scale_roundtrip` |
 | **Collatz** | **Breathing interpretation of 3n+1** | **`shared_generator`, `terminal_cycle_length`** |
-| **CollatzWindow** | **Machine-verified convergence windows** | **`convergence_window_k3`, `convergence_window_k4`** |
+| **CollatzStructure** | **φ threshold, primitive root, convergence inequality** | **`trinity_lt_polarity_sq`, `convergence_from_three`** |
+| **CollatzWindow** | **Machine-verified bad-streak bounds** | **`max_bad_streak_k3`, `max_bad_streak_k4`** |
 | Phenomena | Physical constants at phases | `alpha_inv_decomposition` |
 | PRISMAlgebra | Primitive roots, scale projection | `two_pow_12_is_one` |
 | KernelProof | Single proof certificate | (collects all key results) |
