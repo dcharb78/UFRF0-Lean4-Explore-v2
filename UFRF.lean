@@ -8,6 +8,8 @@ import UFRF.AngularEmbedding
 import UFRF.AxiomAudit
 import UFRF.BreathingCycle
 import UFRF.Calculus
+import UFRF.Collatz
+import UFRF.CollatzWindow
 import UFRF.Constants
 import UFRF.DivisionAlgebras
 import UFRF.FibonacciKissing
@@ -71,6 +73,8 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | Projections | Manifold collapse operators | `three_projections_span` |
 | Noether | Gauge groups, conservation | `total_gauge_bosons` |
 | Calculus | Differentiation, scale descent | `ftc_scale_roundtrip` |
+| **Collatz** | **Breathing interpretation of 3n+1** | **`shared_generator`, `terminal_cycle_length`** |
+| **CollatzWindow** | **Machine-verified convergence windows** | **`convergence_window_k3`, `convergence_window_k4`** |
 | Phenomena | Physical constants at phases | `alpha_inv_decomposition` |
 | PRISMAlgebra | Primitive roots, scale projection | `two_pow_12_is_one` |
 | KernelProof | Single proof certificate | (collects all key results) |
