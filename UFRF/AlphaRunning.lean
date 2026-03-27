@@ -4286,6 +4286,109 @@ theorem alpha_selected_start_pattern_seed_orbit_and_inherited_measurement_juncti
     hinvarMeas, hmeas, hroot, hcmp, hinvarRes, hres, hclose, hrestart, hscale,
     h13, h14, hsame⟩
 
+/--
+The imported Fourier phase-shift bridge and the current start-pattern /
+selected-observer junction meet in one conservative capstone package.
+
+This keeps three already-proved surfaces adjacent:
+- the running lane still uses the imported phase-shift identity
+  `standardModePhaseShift = breathingCharacter 1 - 1`,
+- the public one-step prediction wrapper is still the same alpha-selected
+  root/scalar quantity and the same alpha-selected centered-comparison
+  quantity,
+- the UFRF `1 -> 13` start pattern, the seed orbit, the inherited
+  normalization, and the recurring `13 ↦ 3`, `14 ↦ 4` handoff still remain
+  packaged on that same current observer lane.
+
+It does not claim that the start pattern derives the Fourier phase shift, that
+the p-adic start pattern by itself forces the analytic lane, or that the
+current measurement/selection lane is uniquely physically correct. It only
+re-exports the exact bridge surfaces Lean already proves today.
+-/
+theorem alpha_selected_start_pattern_seed_orbit_and_fourier_phase_shift_junction
+    {r R : ℝ} (hr : 0 < r) (hrR : r ≤ R)
+    (hRlt : R < ((Set.range breathingRoot : Set ℂ).infsep / 2))
+    (s : Scale) (t : ℕ) :
+    standardModePhaseShift = breathingCharacter 1 - 1 ∧
+    phase7OneStepModelPrediction =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * (breathingCharacter 1 - 1))) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
+        alphaPhaseObserverModelNormalization ∧
+    phase7OneStepModelPrediction =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization ∧
+    UFRF.Padic.ufrf_projection (1 : ℤ_[13]) = (1 : ZMod 13) ∧
+    Fintype.card (ZMod (13 ^ 2)) / Fintype.card (ZMod 13) = 13 ∧
+    BreathingCycle.neg (BreathingCycle.comp 0) = (1 : BreathingCycle.CyclePos) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t)) = 0 ∧
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserver = (7 : ZMod CycleLen) ∧
+    ((fun x : BreathingCycle.CyclePos => BreathingCycle.neg (BreathingCycle.comp x))^[7]) 0 =
+      (7 : BreathingCycle.CyclePos) ∧
+    alphaPhaseObserverModelNormalization =
+      (simplex3_boundary_face_count : ℝ) * (alphaPhaseObserver.val : ℝ) ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      alphaPhaseObserverNormalizedRealCorrection 1 r ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverNormalizedRealCorrection 1 R =
+      Complex.re
+        (((1 : ℂ) * ((midpointWeight : ℂ) * standardModePhaseShift)) *
+          UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverOneStepComparison =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization ∧
+    alphaPhaseObserverOneStepResidual R = alphaPhaseObserverOneStepResidual r ∧
+    alphaPhaseObserverOneStepResidual R =
+      Complex.re
+        (alphaInvRunningModel 1 alphaPhaseObserver R -
+          ((13 : ℂ)⁻¹) * (∑ k : ZMod CycleLen, alphaInvRunningModel 1 k R)) /
+        alphaPhaseObserverModelNormalization - alphaCodata2022Gap ∧
+    alphaPhaseObserver + 5 = (12 : ZMod CycleLen) ∧
+    alphaPhaseObserver + 6 = (0 : ZMod CycleLen) ∧
+    (∃ s' : Scale, s' < s) ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (13 + BreathingCycle.cycle_len * t)) = 3 ∧
+    BreathingCycle.localCoordinate
+        (BreathingCycle.labeledPosition (10 + BreathingCycle.cycle_len * t))
+        (BreathingCycle.labeledPosition (14 + BreathingCycle.cycle_len * t)) = 4 ∧
+    BreathingCycle.sameStep (13 + BreathingCycle.cycle_len * t)
+      (14 + BreathingCycle.cycle_len * t) 0 1 := by
+  have hR : 0 < R := lt_of_lt_of_le hr hrR
+  have hphase := standardModePhaseShift_eq_breathingCharacter_one_sub_one
+  rcases phase7OneStepModelPrediction_is_alpha_selected_root_scalar with
+    ⟨_, hpredRoot⟩
+  have hpredRootFourier :
+      phase7OneStepModelPrediction =
+        Complex.re
+          (((1 : ℂ) * ((midpointWeight : ℂ) * (breathingCharacter 1 - 1))) *
+            UFRF.ResidueDefinition.residueCandidateAt alphaPhaseObserver) /
+          alphaPhaseObserverModelNormalization := by
+    simpa [standardModePhaseShift_eq_breathingCharacter_one_sub_one] using hpredRoot
+  rcases phase7OneStepModelPrediction_eq_alpha_selected_centered_comparison
+      (R := R) hR hRlt with
+    ⟨_, hpredCmp⟩
+  rcases alpha_selected_start_pattern_seed_orbit_and_inherited_measurement_junction
+      (r := r) (R := R) hr hrR hRlt s t with
+    ⟨hstart, hbranch, hseed, horigin, hsel, hseven, hsevenOrbit, hnorm,
+      hinvarMeas, hmeas, hroot, hcmp, hinvarRes, hres, hclose, hrestart,
+      hscale, h13, h14, hsame⟩
+  exact ⟨hphase, hpredRootFourier, hpredCmp, hstart, hbranch, hseed, horigin, hsel,
+    hseven, hsevenOrbit, hnorm, hinvarMeas, hmeas, hroot, hcmp, hinvarRes,
+    hres, hclose, hrestart, hscale, h13, h14, hsame⟩
+
 private abbrev CyclePrime3VisitOrder : Prop :=
   (0 * 3 : ZMod 13) = 0 ∧ (1 * 3 : ZMod 13) = 3 ∧
     (2 * 3 : ZMod 13) = 6 ∧ (3 * 3 : ZMod 13) = 9 ∧

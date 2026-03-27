@@ -158,12 +158,16 @@ What it does not give:
 - The start-pattern / seed-orbit lane now also has a conservative structural
   junction package back into the inherited-normalized one-step lane in
   `AlphaRunning`.
+- The current public prediction wrapper now also meets that junction through
+  an explicit Fourier-exposed capstone theorem in `AlphaRunning`.
 
 These are not planning hypotheses. They are already part of the current Lean surface.
 
 ## Conceptual Links That Are Not Yet Fully Forced
 
-- There is no single capstone theorem yet that packages the exact Trinity -> Fourier -> alpha lane end to end.
+- There is still no single theorem yet that packages the exact
+  Trinity -> Fourier -> alpha lane end to end across modules, even though the
+  AlphaRunning-side Fourier/start-pattern capstone package now exists.
 - The current `/28` normalization is explicit, but it is not yet proved to be the uniquely forced normalization.
 - The current physical-selection reading remains fenced; the repo does not yet prove that the current comparison observable is the uniquely correct physical-selection quantity.
 - The `KissingEigen` `E×B` language currently functions as a companion

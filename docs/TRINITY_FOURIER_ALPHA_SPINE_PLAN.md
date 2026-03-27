@@ -139,17 +139,24 @@ Current Phase 2 foothold:
   normalization, and the recurring `13 ↦ 3`, `14 ↦ 4` handoff into one exact
   package without claiming that the start pattern forces the analytic
   measurement lane
+- one narrow Fourier-exposed capstone theorem now also exists in
+  `UFRF/AlphaRunning.lean`:
+  `alpha_selected_start_pattern_seed_orbit_and_fourier_phase_shift_junction`
+- this adds the imported phase-shift identity
+  `standardModePhaseShift = breathingCharacter 1 - 1` and the public
+  `phase7OneStepModelPrediction` carrier formulas on top of the current
+  start-pattern / seed-orbit junction without turning that adjacency into
+  causation
 - this is a partial forcing theorem, not a uniqueness theorem:
   it structurally explains the current `/ 28` rule without claiming that no
   other normalization could ever be considered
 
 Preferred sequencing:
 
-- decide whether a separate capstone theorem above the new conservative
-  characterization and junction packages is actually needed
-- if so, keep it narrow and package-level: explicitly connect the current
-  start-pattern / seed-orbit junction, Fourier phase-shift lane, and selected
-  observer package without turning adjacency into causation
+- treat the AlphaRunning-side capstone as present
+- next, decide whether the remaining gap is best attacked in Lean as a higher
+  Trinity/cycle/Fourier/alpha re-export theorem, or in docs as a tighter
+  reviewer-facing derivation map that does not outrun the theorem surface
 
 Preferred target shape:
 
@@ -175,7 +182,7 @@ Acceptable outcomes:
   that unique normalization is still open
 - second fallback outcome: stop with the current characterization plus
   structural junction package and treat the remaining gap as documentation and
-  capstone packaging, not as missing local semantics
+  cross-module packaging, not as missing local semantics
 
 Failure condition:
 

@@ -665,6 +665,15 @@ The point of this module is narrow:
   handoff package. This is still a structural adjacency theorem, not a claim
   that the start pattern itself forces the analytic measurement formula or
   uniquely fixes the physical reading.
+- `alpha_selected_start_pattern_seed_orbit_and_fourier_phase_shift_junction`:
+  this is the next capstone package above that structural junction: it keeps
+  the imported Fourier phase-shift identity `standardModePhaseShift =
+  breathingCharacter 1 - 1`, the public `phase7OneStepModelPrediction`
+  root/scalar and centered-comparison formulas, and the current
+  start-pattern / seed-orbit / inherited-normalized handoff package on one
+  theorem surface. This is still a re-export package, not a claim that the
+  start pattern derives the Fourier phase shift or that the current observer
+  lane is uniquely physically correct.
 - `alphaPhaseObserver_is_seven_steps_on_seed_orbit`:
   the selected observer label is reached from the seed by seven universal
   successor steps, so label `7` is a contextual point on the shared
