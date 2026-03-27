@@ -1,0 +1,93 @@
+{
+  "3": {
+    "k": 3,
+    "mod_k": 104,
+    "mod_kp1": 208,
+    "max_streak_k": 4,
+    "max_streak_kp1": 5,
+    "num_max_residues": 3,
+    "num_strong_clean_splits": 1,
+    "num_with_extender": 1,
+    "max_grows_by_one": true,
+    "inductive_step_holds": true,
+    "status": "PASS"
+  },
+  "4": {
+    "k": 4,
+    "mod_k": 208,
+    "mod_kp1": 416,
+    "max_streak_k": 5,
+    "max_streak_kp1": 6,
+    "num_max_residues": 3,
+    "num_strong_clean_splits": 1,
+    "num_with_extender": 1,
+    "max_grows_by_one": true,
+    "inductive_step_holds": true,
+    "status": "PASS"
+  },
+  "5": {
+    "k": 5,
+    "mod_k": 416,
+    "mod_kp1": 832,
+    "max_streak_k": 6,
+    "max_streak_kp1": 7,
+    "num_max_residues": 3,
+    "num_strong_clean_splits": 1,
+    "num_with_extender": 1,
+    "max_grows_by_one": true,
+    "inductive_step_holds": true,
+    "status": "PASS"
+  },
+  "6": {
+    "k": 6,
+    "mod_k": 832,
+    "mod_kp1": 1664,
+    "max_streak_k": 7,
+    "max_streak_kp1": 8,
+    "num_max_residues": 3,
+    "num_strong_clean_splits": 1,
+    "num_with_extender": 1,
+    "max_grows_by_one": true,
+    "inductive_step_holds": true,
+    "status": "PASS"
+  },
+  "7": {
+    "k": 7,
+    "mod_k": 1664,
+    "mod_kp1": 3328,
+    "max_streak_k": 8,
+    "max_streak_kp1": 9,
+    "num_max_residues": 3,
+    "num_strong_clean_splits": 1,
+    "num_with_extender": 1,
+    "max_grows_by_one": true,
+    "inductive_step_holds": true,
+    "status": "PASS"
+  },
+  "8": {
+    "k": 8,
+    "mod_k": 3328,
+    "mod_kp1": 6656,
+    "max_streak_k": 9,
+    "max_streak_kp1": 10,
+    "num_max_residues": 3,
+    "num_strong_clean_splits": 1,
+    "num_with_extender": 1,
+    "max_grows_by_one": true,
+    "inductive_step_holds": true,
+    "status": "PASS"
+  },
+  "9": {
+    "k": 9,
+    "mod_k": 6656,
+    "mod_kp1": 13312,
+    "max_streak_k": 10,
+    "max_streak_kp1": 11,
+    "num_max_residues": 3,
+    "num_strong_clean_splits": 1,
+    "num_with_extender": 1,
+    "max_grows_by_one": true,
+    "inductive_step_holds": true,
+    "status": "PASS"
+  }
+}
