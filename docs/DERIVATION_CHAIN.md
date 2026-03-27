@@ -1,7 +1,7 @@
 # UFRF Derivation Chain
 
 **Every node is a proven theorem. Every arrow is a verified import.**
-**Zero sorry. Zero custom axioms. 536+ proven entities. 39 modules.**
+**Zero sorry. Zero custom axioms. 570+ proven entities. 40 modules.**
 
 The entire framework derives from one structure: `Trinity {-½, 0, +½}` with `sum = 0`.
 
@@ -57,6 +57,34 @@ Trinity.lean: trinity.conservation
 │   │
 │   └── Foundation.lean: trinity_range_is_one
 │       The span from -½ to +½ = 1. Proven.
+│
+├── Collatz.lean: shared_generator ⭐
+│   │   The Collatz map 3n+1 / n÷2 decomposes into Trinity primitives.
+│   │   3n+1 = trinity_dimension × n + trinity_range.
+│   │   n÷2 = strip polarity (trinity_dimension − 1 poles).
+│   │
+│   ├── Collatz.lean: odd_step_coefficient_is_trinity_dimension
+│   │   3 = trinity_dimension. Same a=3 from uniqueness_of_three. Proven.
+│   │
+│   ├── Collatz.lean: odd_step_addend_is_trinity_range
+│   │   1 = |½ − (−½)|. The addend IS the Trinity range. Proven.
+│   │
+│   ├── Collatz.lean: terminal_cycle_length
+│   │   │   {1→4→2→1} has period 3 (= Trinity cardinality). Proven.
+│   │   │
+│   │   └── Collatz.lean: terminal_visits_simplex_faces
+│   │       collatz_step 1 = 4 = C(4,3). Terminal hits simplex faces. Proven.
+│   │
+│   ├── Collatz.lean: thirteen_reaches_one
+│   │   collatz_iter 9 13 = 1. Cycle length breathes to unity. Proven.
+│   │   thirteen_steps_is_interior_positions: 9 = 3². Proven.
+│   │
+│   ├── Collatz.lean: expansion_forces_contraction
+│   │   3n+1 is always even → contraction follows expansion. Proven.
+│   │   syracuse_is_breath: Syracuse = one full breath. Proven.
+│   │
+│   └── Collatz.lean: all_up_to_cycle_length_converge
+│       Every n ∈ {1..13} reaches 1. Exhaustive. Proven.
 │
 ├── Simplex.lean: simplex3_face_count
 │   │   C(4,3) = 4. Tetrahedron has 4 faces. Proven.

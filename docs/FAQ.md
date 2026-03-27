@@ -111,6 +111,42 @@ Same minimality selecting the Trinity. `uniqueness_of_three` proves `is_balanced
 
 ---
 
+## On the Collatz Conjecture
+
+### "What does UFRF say about 3n+1?"
+
+The Collatz map decomposes into UFRF primitives. The odd step `3n+1` is literally
+`trinity_dimension × n + unity`. The even step `n/2` strips polarity (the derived
+factor 2).
+
+| Collatz Element | UFRF Source | Theorem |
+|---|---|---|
+| Coefficient 3 | Unique balanced projective order | `odd_step_coefficient_is_trinity_dimension` |
+| Addend 1 | Trinity range \|½ - (-½)\| | `odd_step_addend_is_trinity_range` |
+| Divisor 2 | Trinity poles (3−1) | `even_step_divisor_is_pole_count` |
+| Terminal cycle length 3 | Trinity cardinality | `terminal_cycle_length` |
+| Terminal value 4 | C(4,3) simplex faces | `terminal_visits_simplex_faces` |
+| 13 reaches 1 in 9 steps | 9 = 3² interior positions | `thirteen_steps_is_interior_positions` |
+
+Master theorem: `shared_generator` — the Collatz coefficient and the 13-cycle share
+the same algebraic origin (a=3).
+
+### "Does UFRF prove the Collatz conjecture?"
+
+No. The module proves the *structure* of the map is derivable from Trinity, and verifies
+convergence exhaustively for n=1..13. Universal convergence remains open. The honest claim:
+UFRF explains *why* the operations have the form 3n+1 and n/2 — they are breathing
+(expansion/contraction). Whether all integers breathe down to unity is computationally
+irreducible in exactly the same sense as prime generation.
+
+### "The terminal cycle {1,4,2} — coincidence?"
+
+Three UFRF constants in a 3-cycle: Unity (1), Simplex faces (4), Peak amplitude (2).
+`terminal_cycle_values` proves all three steps. `terminal_visits_simplex_faces` links 4
+to `simplex3_boundary_face_count`.
+
+---
+
 ## On Axioms and Foundations
 
 ### "Any axioms or hidden assumptions?"
