@@ -9,6 +9,7 @@ This directory contains reviewer-facing documentation for the current Lean 4 for
 - [`docs/FAQ.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/FAQ.md): reviewer objections, theorem references, and the residue proof/interpretation fence.
 - [`docs/RESIDUE_INTEGRATION_PLAN.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/RESIDUE_INTEGRATION_PLAN.md): phased plan for the complex-analysis / residue expansion.
 - [`docs/TRINITY_FOURIER_ALPHA_SPINE_PLAN.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/TRINITY_FOURIER_ALPHA_SPINE_PLAN.md): current planning note for the next theorem-spine phase from Trinity through the alpha lane.
+- [`docs/TRINITY_FOURIER_ALPHA_SPINE_AUDIT.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/TRINITY_FOURIER_ALPHA_SPINE_AUDIT.md): exact theorem-carrying audit of the current Trinity -> Fourier -> alpha lane, including the load-bearing spine and the remaining missing bridges.
 
 ## Proof Notes
 

@@ -104,6 +104,10 @@ Required output:
 - one list of exact missing bridge theorems
 - one note distinguishing theorem claims from interpretation language
 
+Current branch artifact:
+
+- [`docs/TRINITY_FOURIER_ALPHA_SPINE_AUDIT.md`](/Users/dcharb/Documents/UFRF-Lean-V2/docs/TRINITY_FOURIER_ALPHA_SPINE_AUDIT.md)
+
 Success gate:
 
 - we can point to a short exact chain from Trinity to the current alpha package
