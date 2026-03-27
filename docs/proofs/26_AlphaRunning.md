@@ -67,12 +67,21 @@ The point of this module is narrow:
 - `alphaPhaseObserverModelNormalization_eq_twenty_eight`:
   the current model normalization is explicitly `4 × 7 = 28`, packaging the
   simplex boundary factor `4` with the selected phase label `7`.
+- `alphaPhaseObserverModelNormalization_inherits_simplex_boundary_and_selected_label`:
+  equivalently, that same current normalization is now also packaged through
+  the arithmetic-selected observer itself: the normalization is the simplex
+  boundary factor times the selected observer label, so the current `/ 28`
+  rule is structurally inherited rather than appearing only as a raw scalar.
 - `alphaPhaseObserverNormalizedRealCorrection_eq_re_phase7_scalar_mul_residueCandidate`:
   the normalized real comparison observable is the real selected-observer correction
   divided by that explicit model normalization.
 - `alphaPhaseObserverNormalizedRealCorrection_eq_realCorrection_div_twenty_eight`:
   equivalently, the current normalized observable is just the real selected-observer
   correction divided by `28`.
+- `alphaPhaseObserverNormalizedRealCorrection_eq_realCorrection_div_inherited_normalization`:
+  equivalently again, the same normalized observable is the real
+  selected-observer correction divided by the inherited simplex-boundary-times-
+  selected-label factor.
 - `alphaPhaseObserverCorrection_eq_alpha_selected_scalar_mul_residueCandidate`:
   the selected observer correction is also packaged directly through
   `alphaPhaseObserver`, not only through a literal legacy wrapper label.

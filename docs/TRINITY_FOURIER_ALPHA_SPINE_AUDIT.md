@@ -183,17 +183,11 @@ Reason:
 
 Target shape:
 
-- first entry target:
-  one small local theorem in `UFRF/AlphaRunning.lean` showing that the current
-  normalization inherits the simplex boundary factor together with the
-  arithmetic-selected observer label, rather than appearing only as a raw
-  `/ 28`
-- preferred theorem shape:
+- implemented first entry target:
   `alphaPhaseObserverModelNormalization_inherits_simplex_boundary_and_selected_label`
-- intended statement shape:
-  `(Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧`
-  `alphaPhaseObserverModelNormalization =`
-  `(simplex3_boundary_face_count : ℝ) * (alphaPhaseObserver.val : ℝ)`
+- this local theorem now shows that the current normalization inherits the
+  simplex boundary factor together with the arithmetic-selected observer label,
+  rather than appearing only as a raw `/ 28`
 - after that, if still needed, one characterization theorem in
   `UFRF/AlphaRunning.lean` showing that the current
   observer/observable/normalization lane is determined, or tightly

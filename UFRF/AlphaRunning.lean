@@ -354,10 +354,43 @@ theorem alphaPhaseObserverModelNormalization_eq_twenty_eight :
   norm_num [simplex3_face_count]
 
 /--
+The current model normalization inherits the simplex boundary factor together
+with the arithmetic-selected observer label.
+
+This is a structural inheritance theorem for the present `/ 28` rule, not a
+uniqueness theorem about all possible normalizations.
+-/
+theorem alphaPhaseObserverModelNormalization_inherits_simplex_boundary_and_selected_label :
+    (Int.floor ufrf_alpha_inv : ZMod CycleLen) = alphaPhaseObserver ∧
+    alphaPhaseObserverModelNormalization =
+      (simplex3_boundary_face_count : ℝ) * (alphaPhaseObserver.val : ℝ) := by
+  refine ⟨alphaPhaseObserver_selected_by_alpha_arithmetic, ?_⟩
+  have hval : alphaPhaseObserver.val = 7 := by
+    rw [alphaPhaseObserver_eq_seven]
+    have h7lt : (7 : ℕ) < CycleLen := by
+      norm_num [CycleLen, UFRF.CircleIntegralBreathing.CycleLen,
+        UFRF.ComplexBreathing.CycleLen, FourierCycleLen,
+        BreathingCycle.cycle_len, UFRF.Foundation.derived_cycle_length,
+        UFRF.Foundation.trinity_dimension, UFRF.Structure13.projective_order]
+    exact ZMod.val_natCast_of_lt h7lt
+  rw [alphaPhaseObserverModelNormalization, hval]
+  norm_num
+
+/--
 Normalized real-valued selected-observer correction used for model comparison.
 -/
 def alphaPhaseObserverNormalizedRealCorrection (n : ℤ) (R : ℝ) : ℝ :=
   alphaPhaseObserverRealCorrection n R / alphaPhaseObserverModelNormalization
+
+theorem alphaPhaseObserverNormalizedRealCorrection_eq_realCorrection_div_inherited_normalization
+    (n : ℤ) (R : ℝ) :
+    alphaPhaseObserverNormalizedRealCorrection n R =
+      alphaPhaseObserverRealCorrection n R /
+        ((simplex3_boundary_face_count : ℝ) * (alphaPhaseObserver.val : ℝ)) := by
+  rw [alphaPhaseObserverNormalizedRealCorrection]
+  rcases alphaPhaseObserverModelNormalization_inherits_simplex_boundary_and_selected_label with
+    ⟨_, hnorm⟩
+  rw [hnorm]
 
 /--
 Fixed one-step model prediction, expressed without a radius parameter.
