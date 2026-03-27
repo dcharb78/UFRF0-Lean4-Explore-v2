@@ -277,6 +277,10 @@ The point of this module is narrow:
   in the separated regime, the same one-step residual is now also pinned to
   the sharper explicit interval
   `0.00000093830460995580931173 < residual < 0.00000093830460995580931192`.
+- `phase7OneStepModelResidual_bounds_d27`:
+  in the separated regime, the same one-step residual is now also pinned to
+  the sharper explicit interval
+  `0.000000938304609955809311781 < residual < 0.000000938304609955809311912`.
 - `phase7OneStepModelResidual_bounds_d12`:
   equivalently, the same residual also satisfies the weaker
   `10^-12`-scale interval
@@ -328,6 +332,10 @@ The point of this module is narrow:
   equivalently, the observer-indexed one-step residual alias also satisfies the
   sharper explicit interval
   `0.00000093830460995580931173 < residual < 0.00000093830460995580931192`.
+- `alphaPhaseObserverOneStepResidual_bounds_d27`:
+  equivalently, the observer-indexed one-step residual alias also satisfies the
+  sharper explicit interval
+  `0.000000938304609955809311781 < residual < 0.000000938304609955809311912`.
 - `alphaPhaseObserverOneStepResidual_bounds_d12`:
   equivalently, the observer-indexed one-step residual alias also satisfies the
   weaker `10^-12`-scale interval
@@ -392,6 +400,10 @@ The point of this module is narrow:
   the same script-aligned absolute error is now also pinned to the sharper
   explicit interval
   `0.00000093830460995580931173 < error < 0.00000093830460995580931192`.
+- `alphaPhaseObserverResidueCheckAbsError_bounds_d27`:
+  the same script-aligned absolute error is now also pinned to the sharper
+  explicit interval
+  `0.000000938304609955809311781 < error < 0.000000938304609955809311912`.
 - `alphaCodata2022Gap_gt_three_hundred_projection_error`:
   the static CODATA gap is more than `300` times larger than the
   script-aligned observer-local projection error, so the small matched
@@ -442,6 +454,10 @@ The point of this module is narrow:
   the derived `AlphaRunning` gap alias now also lies in the sharper explicit
   interval
   `0.00030459887843255920239461 < gap < 0.00030459887843255920239475`.
+- `alphaCodata2022Gap_bounds_d27`:
+  the derived `AlphaRunning` gap alias now also lies in the sharper explicit
+  interval
+  `0.000304598878432559202394616 < gap < 0.000304598878432559202394743`.
 - `alphaCodata2022Gap_rounds_to_0_000304598878`:
   equivalently, that same static gap rounds to `0.000304598878` at the
   `10^-12` place.
@@ -821,14 +837,14 @@ also pins the same error to the tighter interval
 The still tighter theorem `alphaPhaseObserverResidueCheckAbsError_bounds_d14`
 now pins the same error to
 `0.00000093830460 < error < 0.00000093830462`.
-The current `AlphaRunning` d26 theorem
-`alphaPhaseObserverResidueCheckAbsError_bounds_d26`
+The current `AlphaRunning` d27 theorem
+`alphaPhaseObserverResidueCheckAbsError_bounds_d27`
 now pins the same error to
-`0.00000093830460995580931173 < error < 0.00000093830460995580931192`.
+`0.000000938304609955809311781 < error < 0.000000938304609955809311912`.
 It also now proves seven-decimal rounding theorems for both the current
 one-step comparison scalar and the script-aligned absolute error.
 Separately, the derived `AlphaRunning` gap alias is now pinned to
-`0.00030459887843255920239461 < gap < 0.00030459887843255920239475`,
+`0.000304598878432559202394616 < gap < 0.000304598878432559202394743`,
 while the stronger static-side control remains in `UFRF/FineStructure.lean`.
 Lean now also makes the scale split explicit:
 `alphaPhaseObserverResidueCheckAbsError =
@@ -868,18 +884,18 @@ What Lean still does not prove is the script's floating-point printout itself.
 - Lean now proves an explicit micro residual window and an absolute
   `0.000001` bound on the one-step residual.
 - Lean now also proves a tighter one-step prediction window; the exposed
-  residual/error windows now reach `d26` on the current static-gap lane.
+  residual/error windows now reach `d27` on the current static-gap lane.
 - Lean now also proves the real-number `10⁻⁶` pass condition checked by the
   external script.
 - Lean now also proves seven-decimal rounding theorems for the exposed
   one-step comparison scalar and the script-aligned absolute error.
 - Lean now also packages the derived `AlphaRunning` CODATA gap alias through a
-  `d26` window, matching the stronger static-side control in
+  `d27` window, matching the stronger static-side control in
   `UFRF/FineStructure.lean`.
 - Lean now sharpens the exposed one-step prediction package to `d27` by
   bounding the shared `π/13` prediction polynomial directly through the
   current order-20 `Complex.exp`-based Taylor route, while the exposed
-  residual/error package now reaches `d26`.
+  residual/error package now also reaches `d27`.
 - What Lean still does not prove is the external script's floating-point output
   itself, or any stronger projection-law / physical-selection claim.
 - The current `4 × 7` normalization is present only as an explicit model choice.
@@ -893,5 +909,5 @@ What Lean still does not prove is the script's floating-point printout itself.
   theorems.
 - If the next proof-heavy branch is pursued for further exposed tightening,
   the natural target is now stronger static alpha/CODATA-gap control beyond
-  `d26`: the exposed `AlphaRunning` prediction surface now reaches `d27`,
-  while the exposed gap/residual/error surface now reaches `d26`.
+  `d27`: the exposed `AlphaRunning` prediction surface and the exposed
+  gap/residual/error surface now both reach `d27`.
