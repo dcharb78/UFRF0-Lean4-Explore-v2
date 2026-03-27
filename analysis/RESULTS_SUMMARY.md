@@ -69,14 +69,18 @@ This matches the theoretical expectation: for random odd n, P(v2(3n+1) = j) = 1/
 
 ### Convergence Windows
 
-| k | Convergence window W | Worst drift at W |
-|---|---------------------|------------------|
-| 3 | 10                  | -0.150           |
-| 4 | 22                  | -0.131           |
-| 5 | 26                  | -0.791           |
-| 6 | 42                  | -0.432           |
-| 7 | >50                 | +1.248 at W=50   |
-| 8 | >50                 | +4.248 at W=50   |
+| k | Convergence window W | Max bad streak |
+|---|---------------------|----------------|
+| 3 | 10                  | 4              |
+| 4 | 22                  | 5              |
+| 5 | 26                  | 6              |
+| 6 | 42                  | 7              |
+| 7 | **52**              | 8              |
+| 8 | **54**              | 9              |
+| 9 | **59**              | 10             |
+| 10| **78**              | 11             |
+
+**All k values from 3 to 10 have finite convergence windows.** The window growth is sub-quadratic in k, strengthening the case for a uniform bound argument.
 
 For k <= 6: a finite window W exists such that any W consecutive Syracuse steps have guaranteed negative cumulative drift. The worst-case drift pattern:
 - Rises during bad streaks (each v2=1 step adds +0.585 to drift)

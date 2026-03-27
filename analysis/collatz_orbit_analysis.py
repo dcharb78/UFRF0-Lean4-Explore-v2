@@ -210,7 +210,7 @@ def part2_joint_analysis():
 
     all_results = {}
 
-    for k_exp in range(3, 9):
+    for k_exp in range(3, 11):
         modulus, transitions = build_transition_graph(k_exp)
         num_odd = len(transitions)
 
@@ -354,11 +354,11 @@ def part3_bad_streak_analysis():
     print("=" * 72)
 
     # Determine max window per k
-    max_windows = {3: 50, 4: 50, 5: 50, 6: 50, 7: 50, 8: 50}
+    max_windows = {3: 50, 4: 50, 5: 50, 6: 50, 7: 200, 8: 200, 9: 200, 10: 200}
 
     all_results = {}
 
-    for k_exp in range(3, 9):
+    for k_exp in range(3, 11):
         modulus, transitions = build_transition_graph(k_exp)
         max_w = max_windows[k_exp]
 
