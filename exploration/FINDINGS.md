@@ -415,6 +415,150 @@ gap still blocks it.
 
 ---
 
+---
+
+## Question 5: Self-Similar Tower Structure
+
+**Primary finding: k=13 (meta_pos=0) has NO convergence window. The DP diverges at the meta-cycle completion. W(k) slope changes at k=7 (meta-flip). Base-13 digits have no predictive power.**
+
+### Part A: W(k) Extended to k=15
+
+Full table (integer millibit DP, max_window=500):
+
+| k | modulus | max_streak | W(k) | W/k | meta_pos |
+|---|---------|-----------|------|-----|----------|
+| 3 | 104 | 4 | 10 | 3.33 | 3 |
+| 4 | 208 | 5 | 22 | 5.50 | 4 |
+| 5 | 416 | 6 | 26 | 5.20 | 5 |
+| 6 | 832 | 7 | 42 | 7.00 | 6 |
+| 7 | 1664 | 8 | 52 | 7.43 | 7 |
+| 8 | 3328 | 9 | 54 | 6.75 | 8 |
+| 9 | 6656 | 10 | 59 | 6.56 | 9 |
+| 10 | 13312 | 11 | 78 | 7.80 | 10 |
+| 11 | 26624 | 12 | 84 | 7.64 | 11 |
+| 12 | 53248 | 13 | 80 | 6.67 | 12 |
+| **13** | **106496** | **14** | **NONE** | **—** | **0** |
+| 14 | 212992 | 15 | 90 | 6.43 | 1 |
+| 15 | 425984 | 16 | 108 | 7.20 | 2 |
+
+**k=13 (meta_pos=0) has no convergence window up to W=500.** The max_drift grows linearly (≈+3850 per 10 steps) with no sign of turning negative. k=14 and k=15 bounce back to normal convergence.
+
+This is a structural discontinuity at the meta-cycle completion point. The ZMod(13 × 2^13) transition graph contains a path (or near-cycle) where the contraction certificates never fire. The meta-position 0 (the "source/return" phase of the 13-cycle) is where the DP breaks.
+
+### W(k) slope change at k=7 (the meta-flip)
+
+Linear fit: W(k) ≈ 7.66k − 7.62
+
+| Phase | k range | W(k) slope |
+|-------|---------|-----------|
+| Before meta-flip | k=3..7 | 10.5 |
+| After meta-flip | k=8..13 | 6.5 |
+| Second meta-cycle | k=14+ | 18.0 (2 pts) |
+
+The slope decreases by 4.0 at k=7 — the predicted meta-flip. Mean W/k before k=7: 5.26; after k=7: 7.06.
+
+### Part B/C: Base-13 Digit Combinations
+
+2×2 table (d₀ phase, d₁ phase) vs mean bad streak (odd n ≤ 100,000):
+
+| (d₀,d₁) | mean_streak | max_streak | mean_fwd |
+|---------|------------|------------|----------|
+| (E,E) | 4.1475 | 13 | 37.95 |
+| (E,C) | 4.1473 | 15 | 38.04 |
+| (C,E) | 4.1446 | 14 | 38.06 |
+| (C,C) | 4.1504 | 16 | 37.88 |
+
+**Max delta: 0.0058** — completely flat. Base-13 digit combinations have zero predictive power for bad streaks or convergence speed. The recursive digit structure is NOT the signal.
+
+### Part D: W(k) Sequence Meta-Analysis
+
+W(k) sequence: [10, 22, 26, 42, 52, 54, 59, 78, 84, 80, -, 90, 108]
+
+W(k) mod 13: [10, 9, 0, 3, 0, 2, 7, 0, 6, 2, -, 12, 4]
+
+Three values of W(k) are ≡ 0 (mod 13): at k=5 (W=26), k=7 (W=52), k=10 (W=78). Spacing: 2, 3. No clean period-13 pattern.
+
+### Part E: Fibonacci Primes in the Tower
+
+| F_idx | p | p mod 13 | fwd_len | max_streak |
+|-------|---|---------|--------|------------|
+| 5 | 5 | 5 | 1 | 0 |
+| 7 | 13 | **0** | 2 | 0 |
+| 11 | 89 | 11 | 9 | 1 |
+| 13 | 233 | **12** | 29 | 5 |
+| 17 | 1597 | 11 | 43 | 5 |
+| 23 | 28657 | 5 | 34 | 7 |
+| 29 | 514229 | 1 | 32 | 2 |
+
+F(13)=233 has high forward_length (29) and max_streak=5. Its index 13 is the same k where W(k)=None. F(7)=13 maps to p mod 13=0 (source/return) — same as meta_pos of k=13. The alignment is suggestive but the sample is too small for a statistical claim.
+
+### Part F: Self-Similar Check
+
+W(k) grouped by meta_pos (k mod 13): each meta_pos has at most one data point (we only computed k=3..15, covering each meta_pos once). No repetition yet to test period-13 in W(k). Only by extending to k=16..26 would the second meta-cycle be visible.
+
+---
+
+## Question 6: Log-Mod Recursive Structure
+
+**Primary findings: Cumulative log correction is bounded ([-15, +12]). v₂ ≡ 1 (mod 3) dominance creates weak resonance between 2^S and 3^L. End states are uniformly distributed across all 36 (S mod 12, L mod 3) states — no preferred trajectory end.**
+
+### Part A: (S mod 12, L mod 3) End States
+
+For all odd n in [3, 999]: all 36 states are visited, approximately uniformly. No fixed end state. Most common state for any given n₀ mod 13: at most 10.5% — essentially 1/36 = 2.8% in expectation for random. Most are 7.9–10.5%, so slightly non-uniform but far from deterministic.
+
+The convergence resonance condition 2^S ≡ n₀·3^L (mod 13) generates no clustering — the trajectories explore all (S mod 12, L mod 3) pairs.
+
+### Part B: S(t) mod 13 Walk
+
+| Metric | Value |
+|--------|-------|
+| Fraction reaching S≡0 (mod 13) | 81.8% |
+| Mean steps to S≡0 | 10.72 |
+| Max steps to S≡0 | 39 |
+| Mean v₂ when S≡0 | 2.027 |
+| Mean v₂ when S≢0 | 1.978 |
+
+**v₂ is slightly higher (by 0.049) when S≡0 (mod 13)** — a weak resonance between the cumulative halving count and the next step's yield. When the halvings complete a full "breathing cycle" (S ≡ 0 mod 13), the trajectory tends to halve more. Signal is statistically present but small.
+
+### Part C: 36-State Path Structure
+
+All 36 states (S mod 12, L mod 3) are visited. Dominant transition: (0,0)→(1,1) at 51.4%, driven by v₂=1 dominance. End states approximately uniform — no "attractor" state in this 36-element space.
+
+### Part D: Log Correction — **Cumulative Bound Found**
+
+Log correction per step = actual v₂ − modular v₂(mod 104, k=3):
+
+| Correction | Fraction |
+|-----------|---------|
+| 0 | 87.8% |
+| ±1 | 7.7% |
+| ≥±2 | 4.5% |
+| Max positive | +12 |
+| Max negative | −5 |
+
+Mean correction: −0.0087 (slight systematic overcounting, as expected from unsafe residues).
+
+**Cumulative correction over full trajectories: min=−15, max=+12.**
+No trajectory (odd n ≤ 9999) has |cumulative_correction| > 20.
+
+This is structurally significant: the modular certificates overshoot by at most 15 v₂-units total. However, 15 v₂-units = 15,000 millibits, while the certificate margin at k=3 is only 150 millibits. The cumulative correction is bounded but larger than the margin — **this does not close the gap at k=3**, but at higher k (where margins are larger), the constraint may be satisfiable.
+
+### Part E: v₂ mod 3 Resonance
+
+| v₂ mod 3 | Observed | Theoretical | Ratio |
+|---------|---------|------------|------|
+| 0 | 0.1357 | 0.1429 | 0.950 |
+| 1 | 0.5954 | 0.5714 | 1.042 |
+| 2 | 0.2689 | 0.2857 | 0.941 |
+
+v₂ ≡ 1 (mod 3) is slightly overrepresented (5.4%). The theoretical prediction (1/7, 4/7, 2/7 from geometric distribution) holds to ~4% accuracy.
+
+S mod 3 ↔ L mod 3 coupling: P(S≡L mod 3) = 0.342 vs expected 1/3 = 0.333. **Only 1.027× random — essentially no coupling.** The 2^S ↔ 3^L resonance hypothesis is NOT confirmed: S mod 3 tracks L mod 3 only marginally better than random.
+
+**The v₂ ≡ 1 (mod 3) dominance is real (0.595 vs theory 0.571), but it doesn't create measurable resonance in (S mod 3, L mod 3). The coupling is too weak to exploit.**
+
+---
+
 ## Dead Ends Closed
 
 - ✗ Adding 3-adic precision to the modulus (Q1)
@@ -425,6 +569,9 @@ gap still blocks it.
 - ✗ Pythagorean comma (log(n)) as a convergence predictor (Q4)
 - ✗ Multi-scale coarse-scale compensation for fine-scale bad streaks (Q4A)
 - ✗ Breathing score as a convergence or streak predictor (Q4A)
+- ✗ Base-13 digit combinations (d₀,d₁) as streak predictors (Q5)
+- ✗ Period-13 structure in W(k) sequence (Q5 — only one cycle computed)
+- ✗ 2^S ↔ 3^L resonance via v₂ mod 3 (Q6 — coupling only 1.027×)
 
 ## Open Paths
 
@@ -446,3 +593,17 @@ gap still blocks it.
    5 consecutive v₂=1 steps in ZMod(104). For actual integers ≤ 100,000, max streak
    is 16 (n=77671). The formal certificate covers only the modular domain — extending
    to actual integers requires the unsafe residue gap to be closed.
+
+5. **k=13 structural discontinuity (Q5)**: The convergence window DP diverges at k=13
+   (meta_pos=0, the meta-cycle completion). k=14 and k=15 bounce back. This is the
+   clearest evidence yet that the tower has structure at k=13. Understanding WHY the
+   DP fails at this level could reveal the algebraic obstruction. One approach: find the
+   specific path or near-cycle in ZMod(13×2^13) that prevents certificates from firing,
+   and characterize it arithmetically.
+
+6. **Cumulative log correction is bounded (Q6)**: For n ≤ 9999, the cumulative
+   correction (actual v₂ − modular v₂, summed over trajectory) lies in [−15, +12].
+   At higher k, the certificate margin grows (W(15)=108, margin=2820 millibits) while
+   the correction per unsafe step is bounded by the discrepancy. If the cumulative
+   correction scales sublinearly with trajectory length, high-k certificates might
+   survive the correction. This requires verifying the correction bound at k=14, 15.
