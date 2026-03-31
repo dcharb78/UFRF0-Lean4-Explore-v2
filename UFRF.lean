@@ -37,6 +37,7 @@ import UFRF.Projections
 import UFRF.QUART
 import UFRF.Recursion
 import UFRF.ResidueDefinition
+import UFRF.ScaleTower
 import UFRF.Simplex
 import UFRF.StarPolygon
 import UFRF.Structure13
@@ -95,4 +96,5 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | **KissingHierarchy** | **All Allen numbers from Trinity** | **`allen_numbers_are_theorems`** |
 | **FibonacciKissing** | **F(7)=13, twin primes, NN params** | **`fibonacci_kissing_bridge`** |
 | **FibonacciPrimeChain** | **Scale tower: 7→13→233** | **`axiom_at_checkpoint`** |
+| **ScaleTower** | **Harmonic phases, gap=4, observer** | **`harmonic_scale_tower`** |
 -/
