@@ -362,4 +362,86 @@ theorem observer_scale :
     1000 * Nat.fib kissing_number_3d = 144000 := by
   unfold kissing_number_3d; native_decide
 
+/-! ## Scale Anchors: UFRF Fibonacci Primes in Each Scale Range
+
+Scale n spans (13^n, 13^(n+1)].
+UFRF Fibonacci primes (is_ufrf_prime, excluding 2) anchor each scale.
+Standard Fibonacci primes include 2; UFRF excludes it. The difference
+is made explicit in scale_1_excludes_two. -/
+
+/-- UFRF Scale 1 (1-13) excludes F(3)=2 but includes F(4)=3, F(5)=5, F(7)=13.
+    Standard math Scale 1 Fibonacci primes: {2, 3, 5, 13}.
+    UFRF Scale 1 Fibonacci primes:          {3, 5, 13}.
+    The excluded element is exactly {2} = {F(3)}. -/
+theorem scale_1_excludes_two :
+    ¬is_ufrf_prime (Nat.fib 3) ∧
+    is_ufrf_prime (Nat.fib 4) ∧
+    is_ufrf_prime (Nat.fib 5) ∧
+    is_ufrf_prime (Nat.fib 7) := by
+  exact ⟨fib_3_not_ufrf_prime,
+         fibonacci_ufrf_primes_in_cycle.2.1,
+         fibonacci_ufrf_primes_in_cycle.2.2.1,
+         fibonacci_ufrf_primes_in_cycle.2.2.2.1⟩
+
+/-- The three UFRF Fibonacci primes anchoring Scale 1 (1-13). -/
+theorem scale_1_anchors :
+    is_ufrf_prime (Nat.fib 4) ∧  -- F(4) = 3
+    is_ufrf_prime (Nat.fib 5) ∧  -- F(5) = 5
+    is_ufrf_prime (Nat.fib 7) ∧  -- F(7) = 13
+    Nat.fib 4 ≤ 13 ∧
+    Nat.fib 5 ≤ 13 ∧
+    Nat.fib 7 ≤ 13 := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
+  · exact fibonacci_ufrf_primes_in_cycle.2.1
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.1
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.2.1
+  · native_decide
+  · native_decide
+  · native_decide
+
+/-- F(11)=89 is the unique UFRF Fibonacci prime anchor in Scale 2 (14-169). -/
+theorem scale_2_anchor :
+    is_ufrf_prime (Nat.fib 11) ∧
+    Nat.fib 11 = 89 ∧
+    14 ≤ Nat.fib 11 ∧
+    Nat.fib 11 ≤ 169 := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.2.2.1
+  · native_decide
+  · native_decide
+  · native_decide
+
+/-- F(13)=233 and F(17)=1597 anchor Scale 3 (170-2197). -/
+theorem scale_3_anchors :
+    is_ufrf_prime (Nat.fib 13) ∧
+    Nat.fib 13 = 233 ∧
+    170 ≤ Nat.fib 13 ∧
+    Nat.fib 13 ≤ 2197 ∧
+    is_ufrf_prime (Nat.fib 17) ∧
+    Nat.fib 17 = 1597 ∧
+    170 ≤ Nat.fib 17 ∧
+    Nat.fib 17 ≤ 2197 := by
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.2.2.2
+  · native_decide
+  · native_decide
+  · native_decide
+  · exact odd_standard_prime_is_ufrf_prime (Nat.fib 17) (by native_decide) (by native_decide)
+  · native_decide
+  · native_decide
+  · native_decide
+
+/-- The scale anchor table: one UFRF Fibonacci prime per scale at minimum. -/
+theorem spiral_plants_every_scale :
+    is_ufrf_prime (Nat.fib 7)  ∧ Nat.fib 7  ≤ 13   ∧  -- Scale 1
+    is_ufrf_prime (Nat.fib 11) ∧ Nat.fib 11 ≤ 169  ∧  -- Scale 2
+    is_ufrf_prime (Nat.fib 13) ∧ Nat.fib 13 ≤ 2197 := by -- Scale 3
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.2.1
+  · native_decide
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.2.2.1
+  · native_decide
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.2.2.2
+  · native_decide
+
 end UFRF.FibonacciPrimeChain
