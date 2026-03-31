@@ -431,7 +431,9 @@ theorem scale_3_anchors :
   · native_decide
   · native_decide
 
-/-- The scale anchor table: one UFRF Fibonacci prime per scale at minimum. -/
+/-- The scale anchor table: one UFRF Fibonacci prime per scale at minimum
+    (Scales 1–3 only; see spiral_plants_scales_1_2_3_5 for the extended version
+    through Scale 5, and scale_4_candidates_not_prime for the Scale 4 gap). -/
 theorem spiral_plants_every_scale :
     is_ufrf_prime (Nat.fib 7)  ∧ Nat.fib 7  ≤ 13   ∧  -- Scale 1
     is_ufrf_prime (Nat.fib 11) ∧ Nat.fib 11 ≤ 169  ∧  -- Scale 2
@@ -443,5 +445,146 @@ theorem spiral_plants_every_scale :
   · native_decide
   · exact fibonacci_ufrf_primes_in_cycle.2.2.2.2.2
   · native_decide
+
+/-! ## Scale 4 Gap: No Fibonacci Prime Anchor
+
+Scale 4 spans (13³, 13⁴] = (2197, 28561].
+The Fibonacci numbers in this range are F(18)=2584 through F(22)=17711.
+None of them are prime. The last Fibonacci prime below Scale 4 is
+F(17)=1597 (Scale 3). The first Fibonacci prime above Scale 4 is
+F(23)=28657 (Scale 5). The Fibonacci spiral does not visit every
+scale in the 13-tower — this is a structural fact, not an error. -/
+
+/-- **Scale 4 (2198–28561) contains no Fibonacci prime anchor.**
+    The Fibonacci numbers in range — F(18) through F(22) — are all composite.
+    This is a structural fact: the Fibonacci spiral does not visit every scale
+    in the 13-tower. Uses Nat.Prime (not is_ufrf_prime) because the stronger
+    claim holds: these values are not even standard primes.
+
+    ✅ PROVEN -/
+theorem scale_4_candidates_not_prime :
+    ¬Nat.Prime (Nat.fib 18) ∧
+    ¬Nat.Prime (Nat.fib 19) ∧
+    ¬Nat.Prime (Nat.fib 20) ∧
+    ¬Nat.Prime (Nat.fib 21) ∧
+    ¬Nat.Prime (Nat.fib 22) := by
+  norm_num [show Nat.fib 18 = 2584 from by native_decide,
+            show Nat.fib 19 = 4181 from by native_decide,
+            show Nat.fib 20 = 6765 from by native_decide,
+            show Nat.fib 21 = 10946 from by native_decide,
+            show Nat.fib 22 = 17711 from by native_decide]
+
+/-- **The Scale 4 gap is complete**: the last Fibonacci prime before Scale 4
+    is F(17)=1597 (in Scale 3), and the first after is F(23)=28657 (in Scale 5).
+    Together with scale_4_candidates_not_prime, this proves no Fibonacci prime
+    falls in Scale 4.
+
+    ✅ PROVEN -/
+theorem scale_4_boundaries :
+    Nat.fib 17 < 2198 ∧ 28561 < Nat.fib 23 := by
+  norm_num [show Nat.fib 17 = 1597 from by native_decide,
+            show Nat.fib 23 = 28657 from by native_decide]
+
+/-! ## Scale 5: The Observer's Scale
+
+M = 144,000 = F(12) × 10³ = K(3)² × 10³.
+The human observer scale sits in Scale 5 (28562–371293).
+F(23) = 28657 is the UFRF Fibonacci prime anchoring Scale 5.
+Scale boundaries are powers of 13: Scale 5 = (13⁴, 13⁵]. -/
+
+/-- **F(23)=28657 is the UFRF Fibonacci prime anchor in Scale 5 (28562–371293).**
+    Uses is_ufrf_prime (not Nat.Prime) because this is a UFRF structural claim.
+    28657 is an odd standard prime, hence UFRF-prime.
+
+    ✅ PROVEN -/
+theorem scale_5_anchor :
+    is_ufrf_prime (Nat.fib 23) ∧
+    Nat.fib 23 = 28657 ∧
+    13^4 < Nat.fib 23 ∧
+    Nat.fib 23 ≤ 13^5 := by
+  have hfib : Nat.fib 23 = 28657 := by native_decide
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [hfib]; exact odd_standard_prime_is_ufrf_prime 28657 (by norm_num) (by norm_num)
+  · exact hfib
+  · rw [hfib]; norm_num
+  · rw [hfib]; norm_num
+
+/-- **M=144,000 sits in Scale 5 (28562–371293).**
+    M = F(12) × 10³ = K(3)² × 10³. The observer lives in Scale 5,
+    defined by 13⁴ < 144000 ≤ 13⁵. This is NOT proven from is_ufrf_prime —
+    it is a pure arithmetic placement of M within the 13-tower.
+
+    ✅ PROVEN -/
+theorem observer_in_scale_5 :
+    13^4 < 144000 ∧ 144000 ≤ 13^5 := by norm_num
+
+/-- **The observer M=144,000 and the Fibonacci prime anchor F(23)=28657
+    both sit in Scale 5.** The phase alignment of the observer is within
+    a scale whose anchor is F(23). 23 is prime, F(23) is prime — the
+    spiral passes through the prime lattice at the observer's own scale.
+
+    ✅ PROVEN -/
+theorem observer_shares_scale_with_fib_prime :
+    13^4 < 144000 ∧ 144000 ≤ 13^5 ∧
+    13^4 < Nat.fib 23 ∧ Nat.fib 23 ≤ 13^5 := by
+  norm_num [show Nat.fib 23 = 28657 from by native_decide]
+
+/-! ## Tower Junction: Concurrent Scale Identity
+
+At each tower level, the completion value IS the seed of the next
+concurrent scale. SL13 of Scale n = SL0 of Scale n+1. Both run
+forever at their own level — this is concurrency, not sequence. -/
+
+/-- **Tower junction captures the SL13=Meta-SL0 simultaneity.**
+    At each tower level, the completion value seeds the next concurrent
+    scale via Fibonacci evaluation. Both junction points (13 and 233) are
+    prime, confirming they are valid tonic centers for their respective
+    breathing cycles.
+
+    Uses Nat.Prime (not is_ufrf_prime) for junction primality because the
+    junction structure is about valid cycle lengths, not UFRF spiral access.
+
+    ✅ PROVEN -/
+theorem tower_junction_concurrent :
+    tower 1 7 = 13 ∧                       -- Scale 1 completes at 13
+    tower 2 7 = 233 ∧                      -- Scale 2 cycle length
+    Nat.fib (tower 1 7) = tower 2 7 ∧      -- 13 seeds 233
+    Nat.Prime (tower 1 7) ∧                -- junction 1 is prime
+    Nat.Prime (tower 2 7) := by            -- junction 2 is prime
+  simp [tower]; native_decide
+
+/-! ## Summary: Scale Anchors Through the Observer (Honest About Gaps)
+
+Scales 1, 2, 3, and 5 each have at least one UFRF Fibonacci prime anchor.
+Scale 4 (2198–28561) has none — proven in scale_4_candidates_not_prime.
+The summary skips Scale 4 honestly: the Fibonacci spiral does not visit
+every scale in the 13-tower. -/
+
+/-- **UFRF Fibonacci prime anchors through the observer's scale.**
+    Scales 1, 2, 3, and 5 each have at least one is_ufrf_prime Fibonacci anchor.
+    Scale 4 (2198–28561) is explicitly empty of Fibonacci prime anchors
+    (see scale_4_candidates_not_prime and scale_4_boundaries).
+    This summary is honest about the gap — not every scale is anchored.
+
+    The observer at M=144,000 lives in Scale 5 alongside F(23)=28657.
+
+    ✅ PROVEN -/
+theorem spiral_plants_scales_1_2_3_5 :
+    is_ufrf_prime (Nat.fib 7)  ∧ Nat.fib 7  ≤ 13    ∧  -- Scale 1
+    is_ufrf_prime (Nat.fib 11) ∧ Nat.fib 11 ≤ 169   ∧  -- Scale 2
+    is_ufrf_prime (Nat.fib 13) ∧ Nat.fib 13 ≤ 2197  ∧  -- Scale 3
+    -- Scale 4 (2198–28561): no Fibonacci prime anchor (proven separately)
+    is_ufrf_prime (Nat.fib 23) ∧ 13^4 < Nat.fib 23 ∧ Nat.fib 23 ≤ 13^5 := by -- Scale 5
+  have hfib23 : Nat.fib 23 = 28657 := by native_decide
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.2.1
+  · native_decide
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.2.2.1
+  · native_decide
+  · exact fibonacci_ufrf_primes_in_cycle.2.2.2.2.2
+  · native_decide
+  · rw [hfib23]; exact odd_standard_prime_is_ufrf_prime 28657 (by norm_num) (by norm_num)
+  · rw [hfib23]; norm_num
+  · rw [hfib23]; norm_num
 
 end UFRF.FibonacciPrimeChain
