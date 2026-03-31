@@ -44,12 +44,27 @@ UFRF-Allen/
 │   ├── KissingHierarchy.lean    # Every Allen number from K(2), K(3), C(4,3)
 │   ├── FibonacciKissing.lean    # F(7)=13 bridge, twin primes, NN params
 │   ├── FibonacciPrimeChain.lean # Scale tower: 7→13→233, axiom at checkpoint
+│   ├── ScaleTower.lean          # Harmonic phases, prime gap=4, observer ⭐⭐
 │   └── PhaseSpaceCartography.lean # Phase space analysis
 │
 ├── docs/
 │   └── ALLEN_EMBEDDING.md       # Complete proof inventory
 └── archive/
 ```
+
+## The Synthesis: `harmonic_scale_tower`
+
+The most synthesizing result in the repo. One machine-verified theorem connecting:
+
+- **Six UFRF primes = six harmonic intervals** (1=unison, 3=minor 3rd, 5=perfect 4th, 7=perfect 5th, 11=minor 7th, 13=octave)
+- **Complement pairs**: (5,7) = K(2)±1, (11,13) = K(3)±1
+- **Hinge generates cycle**: F(7) = 13 (the flip produces the cycle length)
+- **Prime gap = structural overhead = Scale 4 void**: 7→11 gap of 4 = trinity_dimension + closure_cost = Scale 4 has no Fibonacci prime anchor
+- **Observer placement**: M=144,000 in Scale 5 (first return step after the meta-flip)
+
+The Scale 4 gap is the most structurally significant finding: the Fibonacci spiral skips Scale 4, and this gap = 4 = 3+1 mirrors position 4 being the non-prime checkpoint in the cycle. The Trinity pattern (3 generates, 3+1 cannot self-anchor) recurs at every level — value, cycle, tower — concurrently, not sequentially. Proven in `self_similar_gap_at_four`.
+
+See [DERIVATION_CHAIN.md](docs/DERIVATION_CHAIN.md) for the full proof dependency graph.
 
 ## The Derivation Chain
 
@@ -82,6 +97,13 @@ UFRF-Allen/
     ├── U(1)×SU(2)×SU(3) ──── Gauge Groups (12 bosons = Base 12)
     │         │
     ├── K(3)+1 = 13 ─────────── Kissing Number (sphere packing → cycle)
+    │         │               │
+    │         │               └── F(7)=13, F(13)=233 ── Fibonacci Prime Chain
+    │         │                   │
+    │         │                   ├── Scale anchors: {3,5,13} → 89 → {233,1597} → [gap] → 28657
+    │         │                   ├── Scale 4 void = prime gap 7→11 = structural overhead = 4
+    │         │                   ├── Observer M=144,000 in Scale 5 (first return step)
+    │         │                   └── harmonic_scale_tower ⭐⭐ (ScaleTower.lean)
     │         │
     ├── {13/p} star polygons ── Star Polygons (prime visit orders)
     │         │
@@ -99,10 +121,10 @@ UFRF-Allen/
 
 | Category | Count |
 |----------|-------|
-| Proven theorems + definitions | **540+** |
-| Allen/Fibonacci theorems (new) | **140+** |
+| Proven theorems + definitions | **560+** |
+| Allen/Fibonacci theorems (new) | **160+** |
 | Cross-module verification examples | **107** (KernelProof, 28 layers) |
-| Modules | **40** (33 core + 7 Allen) |
+| Modules | **44** (33 core + 8 Allen + 3 Fibonacci/Scale) |
 | `sorry` statements | **0** |
 | Custom `axiom` declarations | **0** |
 

@@ -1,7 +1,7 @@
 # UFRF Derivation Chain
 
 **Every node is a proven theorem. Every arrow is a verified import.**
-**Zero sorry. Zero custom axioms. 536+ proven entities. 43 modules.**
+**Zero sorry. Zero custom axioms. 560+ proven entities. 44 modules.**
 
 The entire framework derives from one structure: `Trinity {-½, 0, +½}` with `sum = 0`.
 
@@ -124,9 +124,25 @@ Trinity.lean: trinity.conservation
 │   │   nn_heads=13, nn_dmodel=390, nn_batch=260 from kissing. Proven.
 │   │
 │   └── FibonacciPrimeChain.lean: axiom_at_checkpoint ⭐
-│       F(4)=3, is_ufrf_prime 3, ¬is_ufrf_prime 4. Proven.
-│       Also: spiral_primes (UFRF-prime at UFRF-prime indices). Proven.
-│       tower: 7→13→233 escalation. tower_primes: all prime. Proven.
+│       │   F(4)=3, is_ufrf_prime 3, ¬is_ufrf_prime 4. Proven.
+│       │   Also: spiral_primes (UFRF-prime at UFRF-prime indices). Proven.
+│       │   tower: 7→13→233 escalation. tower_primes: all prime. Proven.
+│       │   scale_1_excludes_two: F(3)=2 excluded from UFRF primality. Proven.
+│       │   scale_4_candidates_not_prime: Scale 4 gap (no Fibonacci prime). Proven.
+│       │   scale_5_anchor: F(23)=28657 anchors Scale 5. Proven.
+│       │   observer_in_scale_5: M=144,000 in Scale 5. Proven.
+│       │   self_similar_gap_at_four: gap at 4 at every level. Proven.
+│       │
+│       └── ScaleTower.lean: harmonic_scale_tower ⭐⭐
+│           THE SYNTHESIS THEOREM. Connects:
+│           - Six UFRF primes = six harmonic intervals (unison → octave)
+│           - Complement pairs: (5,7) = K(2)±1, (11,13) = K(3)±1
+│           - Hinge: F(7)=13 (the flip generates the cycle)
+│           - Prime gap 7→11 = 4 = structural_overhead = Scale 4 void
+│           - Observer at M=144,000 in Scale 5 (first return step)
+│           Also: leading_tone_resolves_to_new_tonic (octave fold). Proven.
+│           Also: scale_tower_mirrors_cycle_phases (Expand/Hinge/Return). Proven.
+│           10 theorems, zero sorry. Proven.
 │
 ├── Noether.lean: total_gauge_bosons
 │   │   1 + 3 + 8 = 12. Proven.
