@@ -431,10 +431,11 @@ theorem scale_3_anchors :
   · native_decide
   · native_decide
 
-/-- The scale anchor table: one UFRF Fibonacci prime per scale at minimum
-    (Scales 1–3 only; see spiral_plants_scales_1_2_3_5 for the extended version
-    through Scale 5, and scale_4_candidates_not_prime for the Scale 4 gap). -/
-theorem spiral_plants_every_scale :
+/-- **UFRF Fibonacci prime anchors for Scales 1–3 only.**
+    Covers Scales 1–3 only. See spiral_plants_scales_1_2_3_5 for the
+    full result through the observer scale (Scale 5). Scale 4 gap is
+    proven separately in scale_4_candidates_not_prime. -/
+theorem spiral_plants_scales_1_2_3 :
     is_ufrf_prime (Nat.fib 7)  ∧ Nat.fib 7  ≤ 13   ∧  -- Scale 1
     is_ufrf_prime (Nat.fib 11) ∧ Nat.fib 11 ≤ 169  ∧  -- Scale 2
     is_ufrf_prime (Nat.fib 13) ∧ Nat.fib 13 ≤ 2197 := by -- Scale 3
