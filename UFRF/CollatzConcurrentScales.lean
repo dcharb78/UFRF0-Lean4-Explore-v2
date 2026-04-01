@@ -307,6 +307,30 @@ theorem contracting_at_6 : ∃ (W S : ℕ),
   ⟨42, 67, contraction_k6, by norm_num⟩
 
 open UFRF.CollatzSolenoid in
+/-- k=7 certificate. -/
+theorem contracting_at_7 : ∃ (W S : ℕ),
+    (∀ r : Fin 832, v2Sum 1664 W (2 * r.val + 1) ≥ S) ∧ 1000 * S > W * 1585 :=
+  ⟨52, 83, contraction_k7, by norm_num⟩
+
+open UFRF.CollatzSolenoid in
+/-- k=8 certificate. -/
+theorem contracting_at_8 : ∃ (W S : ℕ),
+    (∀ r : Fin 1664, v2Sum 3328 W (2 * r.val + 1) ≥ S) ∧ 1000 * S > W * 1585 :=
+  ⟨54, 87, contraction_k8, by norm_num⟩
+
+open UFRF.CollatzSolenoid in
+/-- k=9 certificate. -/
+theorem contracting_at_9 : ∃ (W S : ℕ),
+    (∀ r : Fin 3328, v2Sum 6656 W (2 * r.val + 1) ≥ S) ∧ 1000 * S > W * 1585 :=
+  ⟨59, 95, contraction_k9, by norm_num⟩
+
+open UFRF.CollatzSolenoid in
+/-- k=10 certificate. -/
+theorem contracting_at_10 : ∃ (W S : ℕ),
+    (∀ r : Fin 6656, v2Sum 13312 W (2 * r.val + 1) ≥ S) ∧ 1000 * S > W * 1585 :=
+  ⟨78, 125, contraction_k10, by norm_num⟩
+
+open UFRF.CollatzSolenoid in
 /-- **General W(k) Contraction Theorem**
     At every tower scale k ≥ 3, there exist W, S such that:
     (1) every odd residue mod 13·2^k has v₂ sum ≥ S over W steps, and

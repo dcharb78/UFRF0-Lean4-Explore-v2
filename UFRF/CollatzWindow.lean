@@ -158,6 +158,98 @@ theorem max_bad_streak_k6 :
         v2Fuel 64 (3 * n₆ + 1) = 1 ∧
         v2Fuel 64 (3 * n₇ + 1) = 1) := by native_decide
 
+/-! ## Section 3d: Bad-Streak Bound at k=7 (Modulus 1664) -/
+
+/-- In the Syracuse graph on ZMod 1664, no 9 consecutive steps have v₂=1.
+    (Max bad streak = 8 = k+1 for k=7.) ✅ PROVEN -/
+theorem max_bad_streak_k7 :
+    ∀ r : Fin 832,
+      let n₀ := 2 * r.val + 1
+      let n₁ := syracuseMod 1664 n₀
+      let n₂ := syracuseMod 1664 n₁
+      let n₃ := syracuseMod 1664 n₂
+      let n₄ := syracuseMod 1664 n₃
+      let n₅ := syracuseMod 1664 n₄
+      let n₆ := syracuseMod 1664 n₅
+      let n₇ := syracuseMod 1664 n₆
+      let n₈ := syracuseMod 1664 n₇
+      ¬(v2Fuel 64 (3 * n₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₂ + 1) = 1 ∧ v2Fuel 64 (3 * n₃ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₄ + 1) = 1 ∧ v2Fuel 64 (3 * n₅ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₆ + 1) = 1 ∧ v2Fuel 64 (3 * n₇ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₈ + 1) = 1) := by native_decide
+
+/-! ## Section 3e: Bad-Streak Bound at k=8 (Modulus 3328) -/
+
+/-- In the Syracuse graph on ZMod 3328, no 10 consecutive steps have v₂=1.
+    (Max bad streak = 9 = k+1 for k=8.) ✅ PROVEN -/
+theorem max_bad_streak_k8 :
+    ∀ r : Fin 1664,
+      let n₀ := 2 * r.val + 1
+      let n₁ := syracuseMod 3328 n₀
+      let n₂ := syracuseMod 3328 n₁
+      let n₃ := syracuseMod 3328 n₂
+      let n₄ := syracuseMod 3328 n₃
+      let n₅ := syracuseMod 3328 n₄
+      let n₆ := syracuseMod 3328 n₅
+      let n₇ := syracuseMod 3328 n₆
+      let n₈ := syracuseMod 3328 n₇
+      let n₉ := syracuseMod 3328 n₈
+      ¬(v2Fuel 64 (3 * n₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₂ + 1) = 1 ∧ v2Fuel 64 (3 * n₃ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₄ + 1) = 1 ∧ v2Fuel 64 (3 * n₅ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₆ + 1) = 1 ∧ v2Fuel 64 (3 * n₇ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₈ + 1) = 1 ∧ v2Fuel 64 (3 * n₉ + 1) = 1) := by native_decide
+
+/-! ## Section 3f: Bad-Streak Bound at k=9 (Modulus 6656) -/
+
+/-- In the Syracuse graph on ZMod 6656, no 11 consecutive steps have v₂=1.
+    (Max bad streak = 10 = k+1 for k=9.) ✅ PROVEN -/
+theorem max_bad_streak_k9 :
+    ∀ r : Fin 3328,
+      let n₀ := 2 * r.val + 1
+      let n₁ := syracuseMod 6656 n₀
+      let n₂ := syracuseMod 6656 n₁
+      let n₃ := syracuseMod 6656 n₂
+      let n₄ := syracuseMod 6656 n₃
+      let n₅ := syracuseMod 6656 n₄
+      let n₆ := syracuseMod 6656 n₅
+      let n₇ := syracuseMod 6656 n₆
+      let n₈ := syracuseMod 6656 n₇
+      let n₉ := syracuseMod 6656 n₈
+      let n₁₀ := syracuseMod 6656 n₉
+      ¬(v2Fuel 64 (3 * n₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₂ + 1) = 1 ∧ v2Fuel 64 (3 * n₃ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₄ + 1) = 1 ∧ v2Fuel 64 (3 * n₅ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₆ + 1) = 1 ∧ v2Fuel 64 (3 * n₇ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₈ + 1) = 1 ∧ v2Fuel 64 (3 * n₉ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₁₀ + 1) = 1) := by native_decide
+
+/-! ## Section 3g: Bad-Streak Bound at k=10 (Modulus 13312) -/
+
+/-- In the Syracuse graph on ZMod 13312, no 12 consecutive steps have v₂=1.
+    (Max bad streak = 11 = k+1 for k=10.) ✅ PROVEN -/
+theorem max_bad_streak_k10 :
+    ∀ r : Fin 6656,
+      let n₀ := 2 * r.val + 1
+      let n₁ := syracuseMod 13312 n₀
+      let n₂ := syracuseMod 13312 n₁
+      let n₃ := syracuseMod 13312 n₂
+      let n₄ := syracuseMod 13312 n₃
+      let n₅ := syracuseMod 13312 n₄
+      let n₆ := syracuseMod 13312 n₅
+      let n₇ := syracuseMod 13312 n₆
+      let n₈ := syracuseMod 13312 n₇
+      let n₉ := syracuseMod 13312 n₈
+      let n₁₀ := syracuseMod 13312 n₉
+      let n₁₁ := syracuseMod 13312 n₁₀
+      ¬(v2Fuel 64 (3 * n₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₂ + 1) = 1 ∧ v2Fuel 64 (3 * n₃ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₄ + 1) = 1 ∧ v2Fuel 64 (3 * n₅ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₆ + 1) = 1 ∧ v2Fuel 64 (3 * n₇ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₈ + 1) = 1 ∧ v2Fuel 64 (3 * n₉ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₁₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁₁ + 1) = 1) := by native_decide
+
 /-! ## Section 4: The Pattern (Bad Streak = k+1)
 
 The two theorems above are instances of the general pattern discovered computationally:

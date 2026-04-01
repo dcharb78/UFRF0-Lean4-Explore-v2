@@ -189,4 +189,36 @@ theorem contraction_k6 :
 
 theorem contraction_k6_consequence : 1000 * 67 > 42 * 1585 := by norm_num
 
+/-- Contraction Certificate at k=7 (Modulus 1664, W=52, min_sum ≥ 83)
+    1000·83 = 83000 > 82420 = 52·1585 ✓  ✅ PROVEN -/
+theorem contraction_k7 :
+    ∀ r : Fin 832,
+      v2Sum 1664 52 (2 * r.val + 1) ≥ 83 := by native_decide
+
+theorem contraction_k7_consequence : 1000 * 83 > 52 * 1585 := by norm_num
+
+/-- Contraction Certificate at k=8 (Modulus 3328, W=54, min_sum ≥ 87)
+    1000·87 = 87000 > 85590 = 54·1585 ✓  ✅ PROVEN -/
+theorem contraction_k8 :
+    ∀ r : Fin 1664,
+      v2Sum 3328 54 (2 * r.val + 1) ≥ 87 := by native_decide
+
+theorem contraction_k8_consequence : 1000 * 87 > 54 * 1585 := by norm_num
+
+/-- Contraction Certificate at k=9 (Modulus 6656, W=59, min_sum ≥ 95)
+    1000·95 = 95000 > 93515 = 59·1585 ✓  ✅ PROVEN -/
+theorem contraction_k9 :
+    ∀ r : Fin 3328,
+      v2Sum 6656 59 (2 * r.val + 1) ≥ 95 := by native_decide
+
+theorem contraction_k9_consequence : 1000 * 95 > 59 * 1585 := by norm_num
+
+/-- Contraction Certificate at k=10 (Modulus 13312, W=78, min_sum ≥ 125)
+    1000·125 = 125000 > 123630 = 78·1585 ✓  ✅ PROVEN -/
+theorem contraction_k10 :
+    ∀ r : Fin 6656,
+      v2Sum 13312 78 (2 * r.val + 1) ≥ 125 := by native_decide
+
+theorem contraction_k10_consequence : 1000 * 125 > 78 * 1585 := by norm_num
+
 end UFRF.CollatzSolenoid
