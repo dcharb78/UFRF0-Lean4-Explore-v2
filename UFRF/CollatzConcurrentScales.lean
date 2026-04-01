@@ -248,21 +248,89 @@ theorem integer_resolves_at_native_scale (n : ℕ) (hn : Odd n) :
   · positivity
   · exact Nat.lt_two_pow_self
 
+/-! ## Section 7: The Contraction Power Bound -/
+
+set_option exponentiation.threshold 2000 in
+/-- The integer encoding of log₂3 < 1.585: verifies 3^1000 < 2^1585.
+    This is the foundation for converting contraction certificates into
+    actual size bounds on Collatz orbits. -/
+lemma three_pow_1000_lt : (3 : ℕ) ^ 1000 < 2 ^ 1585 := by norm_num
+
+/-- **Contraction Power Bound**
+    If the modular certificate data satisfies 1000·S > W·1585 (negative drift),
+    then 3^W < 2^S (size actually shrinks over W steps).
+
+    Proof: raise both sides to the 1000th power:
+      (3^W)^1000 = (3^1000)^W < (2^1585)^W = 2^(1585W) ≤ 2^(1000S) = (2^S)^1000
+    The first inequality uses 3^1000 < 2^1585; the last step uses 1585W < 1000S. -/
+lemma contraction_pow_bound (W S : ℕ) (h : 1000 * S > W * 1585) : (3 : ℕ) ^ W < 2 ^ S := by
+  have h3 := three_pow_1000_lt
+  rcases Nat.eq_zero_or_pos W with rfl | hW
+  · -- W=0: 3^0 = 1 < 2^S (S ≥ 1 since 1000*S > 0)
+    simp only [pow_zero]
+    calc (1 : ℕ) < 2 ^ 1 := by norm_num
+      _ ≤ 2 ^ S := Nat.pow_le_pow_right (by norm_num) (by omega)
+  · by_contra hle
+    push_neg at hle
+    have h_lo : (2 ^ S) ^ 1000 ≤ (3 ^ W) ^ 1000 := Nat.pow_le_pow_left hle 1000
+    have h_hi : (3 ^ W) ^ 1000 < (2 ^ S) ^ 1000 :=
+      calc (3 ^ W) ^ 1000
+          = (3 ^ 1000) ^ W   := by ring
+        _ < (2 ^ 1585) ^ W   := Nat.pow_lt_pow_left h3 hW.ne'
+        _ = 2 ^ (1585 * W)   := by ring
+        _ ≤ 2 ^ (1000 * S)   := Nat.pow_le_pow_right (by norm_num) (by omega)
+        _ = (2 ^ S) ^ 1000   := by ring
+    linarith
+
+open UFRF.CollatzSolenoid in
+/-- k=3 certificate in the ContractionAt form. -/
+theorem contracting_at_3 : ∃ (W S : ℕ),
+    (∀ r : Fin 52, v2Sum 104 W (2 * r.val + 1) ≥ S) ∧ 1000 * S > W * 1585 :=
+  ⟨10, 16, contraction_k3, by norm_num⟩
+
+open UFRF.CollatzSolenoid in
+/-- k=4 certificate. -/
+theorem contracting_at_4 : ∃ (W S : ℕ),
+    (∀ r : Fin 104, v2Sum 208 W (2 * r.val + 1) ≥ S) ∧ 1000 * S > W * 1585 :=
+  ⟨22, 35, contraction_k4, by norm_num⟩
+
+open UFRF.CollatzSolenoid in
+/-- **General W(k) Contraction Theorem**
+    At every tower scale k ≥ 3, there exist W, S such that:
+    (1) every odd residue mod 13·2^k has v₂ sum ≥ S over W steps, and
+    (2) 1000·S > W·1585 (negative log₂ drift — combined with contraction_pow_bound,
+        gives 3^W < 2^S, i.e., actual size decrease).
+
+    Python data for W(k) = {3:10, 4:22, 5:26, 6:42, 7:52, 8:54, 9:59, 10:78}.
+    Key open condition: W(k) < 13·2^k (window fits in one period).
+    This would follow from: max bad streak ≤ k+1 + bounded recovery time.
+    OPEN: the main proof obligation for Collatz convergence. -/
+theorem contraction_at_all_scales (k : ℕ) (hk : 3 ≤ k) :
+    ∃ (W S : ℕ),
+      (∀ r : Fin (13 * 2 ^ (k - 1)),
+        v2Sum (13 * 2 ^ k) W (2 * r.val + 1) ≥ S) ∧
+      1000 * S > W * 1585 := by
+  sorry
+
 /-- **Collatz convergence from concurrent scale structure**
 
-    The proof chain:
-    1. Every n resolves at its native scale       [integer_resolves_at_native_scale]
-    2. At that scale the contraction cert applies  [CollatzSolenoid.contraction_k3 etc.]
-    3. Scales are mutually compatible             [CollatzSolenoid.tower_compat_k3_k4 etc.]
-    4. Therefore every trajectory contracts
+    The complete proof chain (open obligations marked ⬜):
 
-    OPEN OBLIGATIONS:
-    (a) General contraction certificate for all k (W(k) theorem, data in CollatzWindow)
-    (b) Composing certificates across all steps (solenoid inverse limit argument)
-    (c) W(k)/modulus → 0 sub-linear growth bound (the analytic heart)
+    ✅ 1. Every odd n resolves at its native scale k = v₂(3n+1):
+          ¬ 2^(k+1) ∣ 3n+1         [integer_resolves_at_native_scale]
+    ✅ 2. Negative drift is equivalent to size decrease:
+          1000·S > W·1585 → 3^W < 2^S   [contraction_pow_bound]
+    ⬜ 3. For all scales k ≥ 3, a W(k) contraction certificate exists:
+          ∀ k ≥ 3, ∃ W S, (bound over odd residues) ∧ (negative drift)
+                          [contraction_at_all_scales — main open obligation]
+    ⬜ 4. The modular orbit at scale k = v₂(3n+1) correctly reflects the actual
+          Collatz orbit of n (safe residues → v₂ is exact).
+    ⬜ 5. After W steps the orbit shrinks: n' < n (compose 2,3,4 over W steps).
+    ⬜ 6. Geometric decrease → termination by well-foundedness.
 
-    The structural foundation — Trinity, 13-cycle, concurrent splitting,
-    tower compatibility — is complete. This theorem is the remaining summit. -/
+    Open obligations (3)–(6) reduce to:
+    - Proving the general W(k) exists for ALL k (the analytic heart)
+    - Connecting the modular safe-orbit to actual integer arithmetic -/
 theorem collatz_convergence_from_concurrent_scales (n : ℕ) (hn : Odd n) :
     ∃ t : ℕ, (Nat.rec n (fun _ m => if m % 2 = 0 then m / 2 else 3 * m + 1) t) = 1 := by
   sorry

@@ -169,4 +169,15 @@ theorem contraction_k4 :
 
 theorem contraction_k4_consequence : 1000 * 35 > 22 * 1585 := by norm_num
 
+/-- **Contraction Certificate at k=5 (Modulus 416, Window 26, min_sum ≥ 42)**
+
+    ✅ PROVEN -/
+theorem contraction_k5 :
+    ∀ r : Fin 208,
+      v2Sum 416 26 (2 * r.val + 1) ≥ 42 := by
+  intro r
+  fin_cases r <;> native_decide
+
+theorem contraction_k5_consequence : 1000 * 42 > 26 * 1585 := by norm_num
+
 end UFRF.CollatzSolenoid
