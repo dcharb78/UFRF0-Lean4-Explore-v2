@@ -180,4 +180,13 @@ theorem contraction_k5 :
 
 theorem contraction_k5_consequence : 1000 * 42 > 26 * 1585 := by norm_num
 
+/-- **Contraction Certificate at k=6 (Modulus 832, Window 42, min_sum ≥ 67)**
+
+    ✅ PROVEN -/
+theorem contraction_k6 :
+    ∀ r : Fin 416,
+      v2Sum 832 42 (2 * r.val + 1) ≥ 67 := by native_decide
+
+theorem contraction_k6_consequence : 1000 * 67 > 42 * 1585 := by norm_num
+
 end UFRF.CollatzSolenoid

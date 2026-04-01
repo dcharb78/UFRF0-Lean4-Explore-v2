@@ -108,6 +108,56 @@ theorem max_bad_streak_k4 :
   intro r
   fin_cases r <;> native_decide
 
+/-! ## Section 3b: Bad-Streak Bound at k=5 (Modulus 416) -/
+
+/-- In the Syracuse transition graph on ZMod 416,
+    no 7 consecutive steps can all have v₂ = 1.
+    (Max bad streak = 6 = k+1 for k=5.)
+
+    ✅ PROVEN -/
+theorem max_bad_streak_k5 :
+    ∀ r : Fin 208,
+      let n₀ := 2 * r.val + 1
+      let n₁ := syracuseMod 416 n₀
+      let n₂ := syracuseMod 416 n₁
+      let n₃ := syracuseMod 416 n₂
+      let n₄ := syracuseMod 416 n₃
+      let n₅ := syracuseMod 416 n₄
+      let n₆ := syracuseMod 416 n₅
+      ¬(v2Fuel 64 (3 * n₀ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₂ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₃ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₄ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₅ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₆ + 1) = 1) := by native_decide
+
+/-! ## Section 3c: Bad-Streak Bound at k=6 (Modulus 832) -/
+
+/-- In the Syracuse transition graph on ZMod 832,
+    no 8 consecutive steps can all have v₂ = 1.
+    (Max bad streak = 7 = k+1 for k=6.)
+
+    ✅ PROVEN -/
+theorem max_bad_streak_k6 :
+    ∀ r : Fin 416,
+      let n₀ := 2 * r.val + 1
+      let n₁ := syracuseMod 832 n₀
+      let n₂ := syracuseMod 832 n₁
+      let n₃ := syracuseMod 832 n₂
+      let n₄ := syracuseMod 832 n₃
+      let n₅ := syracuseMod 832 n₄
+      let n₆ := syracuseMod 832 n₅
+      let n₇ := syracuseMod 832 n₆
+      ¬(v2Fuel 64 (3 * n₀ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₂ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₃ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₄ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₅ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₆ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₇ + 1) = 1) := by native_decide
+
 /-! ## Section 4: The Pattern (Bad Streak = k+1)
 
 The two theorems above are instances of the general pattern discovered computationally:

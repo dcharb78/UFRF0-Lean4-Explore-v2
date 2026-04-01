@@ -295,6 +295,18 @@ theorem contracting_at_4 : ∃ (W S : ℕ),
   ⟨22, 35, contraction_k4, by norm_num⟩
 
 open UFRF.CollatzSolenoid in
+/-- k=5 certificate. -/
+theorem contracting_at_5 : ∃ (W S : ℕ),
+    (∀ r : Fin 208, v2Sum 416 W (2 * r.val + 1) ≥ S) ∧ 1000 * S > W * 1585 :=
+  ⟨26, 42, contraction_k5, by norm_num⟩
+
+open UFRF.CollatzSolenoid in
+/-- k=6 certificate. -/
+theorem contracting_at_6 : ∃ (W S : ℕ),
+    (∀ r : Fin 416, v2Sum 832 W (2 * r.val + 1) ≥ S) ∧ 1000 * S > W * 1585 :=
+  ⟨42, 67, contraction_k6, by norm_num⟩
+
+open UFRF.CollatzSolenoid in
 /-- **General W(k) Contraction Theorem**
     At every tower scale k ≥ 3, there exist W, S such that:
     (1) every odd residue mod 13·2^k has v₂ sum ≥ S over W steps, and
@@ -334,5 +346,138 @@ theorem contraction_at_all_scales (k : ℕ) (hk : 3 ≤ k) :
 theorem collatz_convergence_from_concurrent_scales (n : ℕ) (hn : Odd n) :
     ∃ t : ℕ, (Nat.rec n (fun _ m => if m % 2 = 0 then m / 2 else 3 * m + 1) t) = 1 := by
   sorry
+
+/-! ## Section 8: Algebraic Bad-Streak Bound (Lemma A)
+
+**Why `unsafe_splits` would be wrong here**:
+`unsafe_splits` tracks 2^k | 3r+1 (tower-level divisibility at a single node).
+Bad streaks track v₂=1 at CONSECUTIVE orbit steps — different 2-adic invariant.
+These are orthogonal concepts; `unsafe_splits` doesn't help with streak bounds.
+
+**The structural result** (Lemma A):
+If m = 13·2^k, then a bad streak of ≥ k consecutive steps starting from r forces
+2^k | r+1 (i.e., r ≡ -1 mod 2^k). This reduces checking max-streak ≤ k+1 to
+verifying at most 13 specific candidates — feasible by native_decide for each k.
+-/
+
+/-- Iterated Syracuse step: apply `syracuseMod m` exactly `i` times starting from `r`. -/
+def iterSyracuse (m : ℕ) : ℕ → ℕ → ℕ
+  | 0, r => r
+  | i + 1, r => syracuseMod m (iterSyracuse m i r)
+
+/-- `iterSyracuse m i (syracuseMod m r) = iterSyracuse m (i+1) r`. -/
+lemma iterSyracuse_succ (m i r : ℕ) :
+    iterSyracuse m i (syracuseMod m r) = iterSyracuse m (i + 1) r := by
+  induction i with
+  | zero => rfl
+  | succ i ih => exact congrArg (syracuseMod m) ih
+
+/-- v2Fuel (f+1) (n+1) unfolds to the if-then-else branch. -/
+private lemma v2Fuel_succ_succ (f n : ℕ) :
+    v2Fuel (f + 1) (n + 1) =
+      if (n + 1) % 2 = 0 then 1 + v2Fuel f ((n + 1) / 2) else 0 := rfl
+
+/-- v2Fuel 64 n = 1 implies n ≡ 2 (mod 4), i.e. n = 2·(odd). -/
+private lemma v2Fuel_one_mod4 {n : ℕ} (hv : v2Fuel 64 n = 1) : n % 4 = 2 := by
+  cases n with
+  | zero => simp [v2Fuel] at hv
+  | succ n =>
+    have hv64 : v2Fuel 64 (n + 1) = v2Fuel (63 + 1) (n + 1) := rfl
+    rw [hv64, v2Fuel_succ_succ] at hv
+    by_cases hev : (n + 1) % 2 = 0
+    · rw [if_pos hev] at hv
+      -- hv : 1 + v2Fuel 63 ((n+1)/2) = 1, so v2Fuel 63 ((n+1)/2) = 0
+      have hv63 : v2Fuel 63 ((n + 1) / 2) = 0 := by omega
+      cases h2 : ((n + 1) / 2) with
+      | zero => omega
+      | succ k =>
+        have hv63' : v2Fuel 63 (k + 1) = v2Fuel (62 + 1) (k + 1) := rfl
+        rw [h2, hv63', v2Fuel_succ_succ] at hv63
+        by_cases hev2 : (k + 1) % 2 = 0
+        · rw [if_pos hev2] at hv63; omega
+        · rw [if_neg hev2] at hv63  -- hv63 : 0 = 0 ✓
+          -- (k+1)%2≠0 → (k+1)%2=1; h2 : (n+1)/2=k+1; hev : (n+1)%2=0 → (n+1)%4=2
+          omega
+    · rw [if_neg hev] at hv; omega
+
+/-- When v2Fuel 64 (3r+1) = 1, `syracuseMod m r = (3r+1)/2 % m`. -/
+private lemma syracuseMod_v2_one {m r : ℕ} (hv : v2Fuel 64 (3 * r + 1) = 1) :
+    syracuseMod m r = (3 * r + 1) / 2 % m := by
+  simp [syracuseMod, hv]
+
+/-- If `a ∣ m` then `n % m % a = n % a`. -/
+private lemma mod_dvd_mod (n : ℕ) {a m : ℕ} (h : a ∣ m) : n % m % a = n % a :=
+  Nat.mod_mod_of_dvd n h
+
+/-- **Lemma A** (Bad-Streak → 2-Adic Constraint):
+    If the Syracuse orbit from r (mod m) has L consecutive bad steps (all v₂=1),
+    and 2^L ∣ m, then 2^L ∣ r+1 (equivalently: r ≡ -1 mod 2^L).
+
+    The proof goes by induction on L:
+    - Base (L=0): trivial.
+    - Step: by IH, r₁ = syracuseMod m r satisfies 2^L ∣ r₁+1.
+      From v₂(3r+1)=1: (3r+1)/2+1 = (3r+3)/2, so 2^(L+1) ∣ 3(r+1).
+      Since gcd(3, 2^(L+1))=1: 2^(L+1) ∣ r+1.
+
+    This reduces "does any residue mod 13·2^k have streak ≥ k+1?" to checking
+    only residues with 2^k ∣ r+1 — at most 13 candidates. -/
+theorem streak_requires_dvd (m L : ℕ) (hm : 2 ^ L ∣ m) :
+    ∀ r : ℕ, r % 2 = 1 →
+      (∀ i < L, v2Fuel 64 (3 * iterSyracuse m i r + 1) = 1) →
+      2 ^ L ∣ r + 1 := by
+  induction L with
+  | zero => intro r _ _; simp
+  | succ L ih =>
+    intro r hr_odd hstreak
+    have hm_L : 2 ^ L ∣ m := dvd_trans (Nat.pow_dvd_pow 2 (Nat.le_succ L)) hm
+    have hv0 : v2Fuel 64 (3 * r + 1) = 1 := hstreak 0 (Nat.zero_lt_succ L)
+    -- Tail: the L steps from r₁ = syracuseMod m r
+    have tail_streak : ∀ i < L, v2Fuel 64 (3 * iterSyracuse m i (syracuseMod m r) + 1) = 1 :=
+      fun i hi => by rw [iterSyracuse_succ]; exact hstreak (i + 1) (Nat.succ_lt_succ hi)
+    -- r₁ is odd: since v₂(3r+1)=1, we have 3r+1≡2 mod 4, so (3r+1)/2 is odd
+    have h2m : 2 ∣ m := dvd_trans (dvd_pow_self 2 (Nat.succ_ne_zero L)) hm
+    have r1_odd : (syracuseMod m r) % 2 = 1 := by
+      rw [syracuseMod_v2_one hv0, mod_dvd_mod _ h2m]
+      have := v2Fuel_one_mod4 hv0; omega
+    -- IH: 2^L ∣ (syracuseMod m r) + 1
+    have ih_res : 2 ^ L ∣ (syracuseMod m r) + 1 := ih hm_L _ r1_odd tail_streak
+    -- Deduce 2^L ∣ (3r+1)/2 + 1 (mod reduction preserves residue mod 2^L)
+    have hdvd_half : 2 ^ L ∣ (3 * r + 1) / 2 + 1 := by
+      rw [Nat.dvd_iff_mod_eq_zero] at ih_res ⊢
+      rw [syracuseMod_v2_one hv0] at ih_res
+      have hred : (3 * r + 1) / 2 % m % 2 ^ L = (3 * r + 1) / 2 % 2 ^ L :=
+        mod_dvd_mod _ hm_L
+      -- Bridge: (X%m+1)%2^L = (X+1)%2^L, using hred to equate X%m≡X (mod 2^L)
+      have hkey : ((3 * r + 1) / 2 % m + 1) % 2 ^ L = ((3 * r + 1) / 2 + 1) % 2 ^ L := by
+        have h1 := Nat.add_mod ((3 * r + 1) / 2 % m) 1 (2 ^ L)
+        have h2 := Nat.add_mod ((3 * r + 1) / 2) 1 (2 ^ L)
+        rw [h1, hred, ← h2]
+      linarith
+    -- 2^(L+1) ∣ 3(r+1): write 3r+1=2h, then 3(r+1)=2(h+1), and 2^L∣h+1
+    have hdvd2 : 2 ∣ 3 * r + 1 := by have := v2Fuel_one_mod4 hv0; omega
+    obtain ⟨h, hh⟩ := hdvd2
+    have heq_half : (3 * r + 1) / 2 = h := by omega
+    obtain ⟨c, hc⟩ := hdvd_half
+    rw [heq_half] at hc
+    have hdvd_3r1 : 2 ^ (L + 1) ∣ 3 * (r + 1) := by
+      refine ⟨c, ?_⟩
+      calc 3 * (r + 1) = (3 * r + 1) + 2 := by ring
+        _ = 2 * h + 2                     := by linarith
+        _ = 2 * (h + 1)                   := by ring
+        _ = 2 * (2 ^ L * c)               := by rw [← hc]
+        _ = 2 ^ (L + 1) * c               := by ring
+    -- Coprimality: gcd(2^(L+1), 3) = 1 → 2^(L+1) ∣ r+1
+    have hcop : Nat.Coprime (2 ^ (L + 1)) 3 :=
+      Nat.Coprime.pow_left (L + 1) (by decide)
+    exact hcop.dvd_of_dvd_mul_right (by rw [mul_comm]; exact hdvd_3r1)
+
+/-- Corollary: in ZMod(13·2^k), any bad streak of length ≥ k must start from
+    a residue with 2^k ∣ r+1, i.e., r ∈ {2^k-1, 2·2^k-1, …, 13·2^k-1}.
+    At most 13 candidates to check by native_decide for each specific k. -/
+theorem streak_reduces_to_13_candidates (k : ℕ) (r : ℕ)
+    (hr_lt : r < 13 * 2 ^ k) (hr_odd : r % 2 = 1)
+    (hstreak : ∀ i < k, v2Fuel 64 (3 * iterSyracuse (13 * 2 ^ k) i r + 1) = 1) :
+    2 ^ k ∣ r + 1 :=
+  streak_requires_dvd (13 * 2 ^ k) k (dvd_mul_left (2 ^ k) 13) r hr_odd hstreak
 
 end UFRF.ConcurrentScales
