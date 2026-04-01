@@ -9,6 +9,7 @@ import UFRF.AxiomAudit
 import UFRF.BreathingCycle
 import UFRF.Calculus
 import UFRF.Collatz
+import UFRF.CollatzConcurrentScales
 import UFRF.CollatzInevitability
 import UFRF.CollatzNoCycles
 import UFRF.CollatzSolenoid
@@ -80,6 +81,7 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | **Collatz** | **Breathing interpretation of 3n+1** | **`shared_generator`, `terminal_cycle_length`** |
 | **CollatzInevitability** | **Structural argument map (documentation)** | **(maps all Collatz theorems to conjecture)** |
 | **CollatzNoCycles** | **Power coprimality + cycle impossibility** | **`no_power_coincidence`, `two_three_coprime`** |
+| **CollatzConcurrentScales** | **Unsafe residue splitting + concurrent resolution** | **`unsafe_splits`, `concurrent_resolution`** |
 | **CollatzSolenoid** | **Tower compatibility + contraction certificate** | **`tower_compat_k3_k4`, `contraction_k3`** |
 | **CollatzStructure** | **φ threshold, primitive root, convergence inequality** | **`trinity_lt_polarity_sq`, `convergence_from_three`** |
 | **CollatzWindow** | **Machine-verified bad-streak bounds** | **`max_bad_streak_k3`, `max_bad_streak_k4`** |
