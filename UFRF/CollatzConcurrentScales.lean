@@ -331,6 +331,26 @@ theorem contracting_at_10 : ∃ (W S : ℕ),
   ⟨78, 125, contraction_k10, by norm_num⟩
 
 open UFRF.CollatzSolenoid in
+/-- **Contraction at scales 3..10**: `contraction_at_all_scales` is proved
+    for k ∈ {3,...,10} by dispatching to the pre-verified certificates.
+
+    ✅ PROVEN (k=3..10) -/
+theorem contraction_at_scales_3_to_10 (k : ℕ) (hk3 : 3 ≤ k) (hk10 : k ≤ 10) :
+    ∃ (W S : ℕ),
+      (∀ r : Fin (13 * 2 ^ (k - 1)),
+        v2Sum (13 * 2 ^ k) W (2 * r.val + 1) ≥ S) ∧
+      1000 * S > W * 1585 := by
+  interval_cases k
+  · exact contracting_at_3
+  · exact contracting_at_4
+  · exact contracting_at_5
+  · exact contracting_at_6
+  · exact contracting_at_7
+  · exact contracting_at_8
+  · exact contracting_at_9
+  · exact contracting_at_10
+
+open UFRF.CollatzSolenoid in
 /-- **General W(k) Contraction Theorem**
     At every tower scale k ≥ 3, there exist W, S such that:
     (1) every odd residue mod 13·2^k has v₂ sum ≥ S over W steps, and
@@ -339,14 +359,17 @@ open UFRF.CollatzSolenoid in
 
     Python data for W(k) = {3:10, 4:22, 5:26, 6:42, 7:52, 8:54, 9:59, 10:78}.
     Key open condition: W(k) < 13·2^k (window fits in one period).
-    This would follow from: max bad streak ≤ k+1 + bounded recovery time.
-    OPEN: the main proof obligation for Collatz convergence. -/
+    PROVEN for k=3..10 via `contraction_at_scales_3_to_10`.
+    OPEN for k > 10: requires period-6 induction on W(k). -/
 theorem contraction_at_all_scales (k : ℕ) (hk : 3 ≤ k) :
     ∃ (W S : ℕ),
       (∀ r : Fin (13 * 2 ^ (k - 1)),
         v2Sum (13 * 2 ^ k) W (2 * r.val + 1) ≥ S) ∧
       1000 * S > W * 1585 := by
-  sorry
+  by_cases hk10 : k ≤ 10
+  · exact contraction_at_scales_3_to_10 k hk hk10
+  · -- k > 10: requires period-6 induction on W(k) (open frontier).
+    sorry
 
 /-- **Collatz convergence from concurrent scale structure**
 
@@ -499,9 +522,51 @@ theorem streak_requires_dvd (m L : ℕ) (hm : 2 ^ L ∣ m) :
     a residue with 2^k ∣ r+1, i.e., r ∈ {2^k-1, 2·2^k-1, …, 13·2^k-1}.
     At most 13 candidates to check by native_decide for each specific k. -/
 theorem streak_reduces_to_13_candidates (k : ℕ) (r : ℕ)
-    (hr_lt : r < 13 * 2 ^ k) (hr_odd : r % 2 = 1)
+    (_hr_lt : r < 13 * 2 ^ k) (hr_odd : r % 2 = 1)
     (hstreak : ∀ i < k, v2Fuel 64 (3 * iterSyracuse (13 * 2 ^ k) i r + 1) = 1) :
     2 ^ k ∣ r + 1 :=
   streak_requires_dvd (13 * 2 ^ k) k (dvd_mul_left (2 ^ k) 13) r hr_odd hstreak
+
+/-! ## Section 9: Max-Streak Bound via iterSyracuse (k=3..10)
+
+Contraction for k=3..10 is handled by `contraction_at_scales_3_to_10` (Section 7).
+This section adds the complementary `max_bad_streak` results in `iterSyracuse` form,
+connecting the computational certificates to the algebraic Lemma A infrastructure.
+
+### Open frontiers
+
+1. `contraction_at_all_scales` for k > 10: requires algebraic proof that
+   max_bad_streak(13·2^k) ≤ k+1 for ALL k (3-adic orbit analysis of the 13 families
+   r = t·2^k−1, t=1..13; only t∈{4,8,10} achieve streak k+1, none reaches k+2)
+   plus a period-6 induction on W(k).
+
+2. `collatz_convergence_from_concurrent_scales`: connecting modular safe-orbits
+   to actual integer arithmetic (open).
+-/
+
+/-- **Max bad streak via iterSyracuse** (k=3..10):
+    At modulus 13·2^k, no k+2 consecutive bad steps exist.
+    Verified by native_decide for each k ∈ {3,...,10}.
+
+    Key: Lemma A (`streak_requires_dvd`) algebraically reduces this to checking
+    13 families r = t·2^k−1 (t=1..13). Of these, only t∈{4,8,10} reach k+1 steps;
+    none reaches k+2. This is the tight structural bound.
+
+    ✅ PROVEN (k=3..10) -/
+theorem max_bad_streak_iterated (k : ℕ) (hk3 : 3 ≤ k) (hk10 : k ≤ 10) :
+    ∀ r : Fin (13 * 2 ^ (k - 1)),
+      ¬ (∀ j : Fin (k + 2),
+          v2Fuel 64 (3 * iterSyracuse (13 * 2 ^ k) j.val (2 * r.val + 1) + 1) = 1) := by
+  interval_cases k <;> native_decide
+
+/-- **Streak bound implies finite candidates**: combining `streak_reduces_to_13_candidates`
+    with `max_bad_streak_iterated` gives: for k ∈ {3,...,10}, the ONLY odd residues
+    that can achieve a streak of EXACTLY k+1 are among the 13 families r = t·2^k−1. -/
+theorem max_streak_families_k3_10 (k : ℕ) (_hk3 : 3 ≤ k) (_hk10 : k ≤ 10) (r : ℕ)
+    (hr_lt : r < 13 * 2 ^ k) (hr_odd : r % 2 = 1)
+    (hstreak : ∀ i < k + 1, v2Fuel 64 (3 * iterSyracuse (13 * 2 ^ k) i r + 1) = 1) :
+    2 ^ k ∣ r + 1 :=
+  streak_reduces_to_13_candidates k r hr_lt hr_odd
+    (fun i hi => hstreak i (by omega))
 
 end UFRF.ConcurrentScales
