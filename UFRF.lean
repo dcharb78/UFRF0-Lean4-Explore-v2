@@ -8,6 +8,7 @@ import UFRF.AngularEmbedding
 import UFRF.AxiomAudit
 import UFRF.BreathingCycle
 import UFRF.Calculus
+import UFRF.CarryAutomaton
 import UFRF.Collatz
 import UFRF.CollatzConcurrentScales
 import UFRF.CollatzInevitability
