@@ -250,12 +250,71 @@ theorem max_bad_streak_k10 :
         v2Fuel 64 (3 * n₈ + 1) = 1 ∧ v2Fuel 64 (3 * n₉ + 1) = 1 ∧
         v2Fuel 64 (3 * n₁₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁₁ + 1) = 1) := by native_decide
 
+/-! ## Section 3h: Bad-Streak Bound at k=11 (Modulus 26624) -/
+
+/-- In the Syracuse graph on ZMod 26624, no 13 consecutive steps have v₂=1.
+    (Max bad streak = 12 = k+1 for k=11.) ✅ PROVEN -/
+theorem max_bad_streak_k11 :
+    ∀ r : Fin 13312,
+      let n₀ := 2 * r.val + 1
+      let n₁ := syracuseMod 26624 n₀
+      let n₂ := syracuseMod 26624 n₁
+      let n₃ := syracuseMod 26624 n₂
+      let n₄ := syracuseMod 26624 n₃
+      let n₅ := syracuseMod 26624 n₄
+      let n₆ := syracuseMod 26624 n₅
+      let n₇ := syracuseMod 26624 n₆
+      let n₈ := syracuseMod 26624 n₇
+      let n₉ := syracuseMod 26624 n₈
+      let n₁₀ := syracuseMod 26624 n₉
+      let n₁₁ := syracuseMod 26624 n₁₀
+      let n₁₂ := syracuseMod 26624 n₁₁
+      ¬(v2Fuel 64 (3 * n₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₂ + 1) = 1 ∧ v2Fuel 64 (3 * n₃ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₄ + 1) = 1 ∧ v2Fuel 64 (3 * n₅ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₆ + 1) = 1 ∧ v2Fuel 64 (3 * n₇ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₈ + 1) = 1 ∧ v2Fuel 64 (3 * n₉ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₁₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₁₂ + 1) = 1) := by native_decide
+
+/-! ## Section 3i: Bad-Streak Bound at k=12 (Modulus 53248) -/
+
+/-- In the Syracuse graph on ZMod 53248, no 14 consecutive steps have v₂=1.
+    (Max bad streak = 13 = k+1 for k=12.) ✅ PROVEN -/
+theorem max_bad_streak_k12 :
+    ∀ r : Fin 26624,
+      let n₀ := 2 * r.val + 1
+      let n₁ := syracuseMod 53248 n₀
+      let n₂ := syracuseMod 53248 n₁
+      let n₃ := syracuseMod 53248 n₂
+      let n₄ := syracuseMod 53248 n₃
+      let n₅ := syracuseMod 53248 n₄
+      let n₆ := syracuseMod 53248 n₅
+      let n₇ := syracuseMod 53248 n₆
+      let n₈ := syracuseMod 53248 n₇
+      let n₉ := syracuseMod 53248 n₈
+      let n₁₀ := syracuseMod 53248 n₉
+      let n₁₁ := syracuseMod 53248 n₁₀
+      let n₁₂ := syracuseMod 53248 n₁₁
+      let n₁₃ := syracuseMod 53248 n₁₂
+      ¬(v2Fuel 64 (3 * n₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₂ + 1) = 1 ∧ v2Fuel 64 (3 * n₃ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₄ + 1) = 1 ∧ v2Fuel 64 (3 * n₅ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₆ + 1) = 1 ∧ v2Fuel 64 (3 * n₇ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₈ + 1) = 1 ∧ v2Fuel 64 (3 * n₉ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₁₀ + 1) = 1 ∧ v2Fuel 64 (3 * n₁₁ + 1) = 1 ∧
+        v2Fuel 64 (3 * n₁₂ + 1) = 1 ∧ v2Fuel 64 (3 * n₁₃ + 1) = 1) := by native_decide
+
 /-! ## Section 4: The Pattern (Bad Streak = k+1)
 
-The two theorems above are instances of the general pattern discovered computationally:
+The theorems above are instances of the general pattern discovered computationally:
   max_bad_streak(13 × 2^k) = k + 1
 
-for k = 3, 4, 5, 6, 7, 8, 9, 10 (all verified by Python, k=3 and k=4 verified in Lean).
+for k = 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 (all verified in Lean by native_decide).
+
+Note: for k=13 this pattern BREAKS — r=8191 has a period-14 orbit at modulus 13·2^13
+with avg v₂ ≈ 1.143 < log₂(3), preventing any contraction certificate. See Section 10
+of CollatzConcurrentScales.lean for the algebraic obstruction analysis.
 
 This linear growth of bad streaks, combined with the existence of convergence windows,
 is the computational foundation for the Collatz approach via UFRF breathing structure. -/
