@@ -977,6 +977,20 @@ theorem orbit_shrinks_from_formula (W n : ℕ) (hn : n % 2 = 1)
 /-- The correction term is always nonneg (trivially, since it's a Nat). -/
 lemma correctionTerm_nonneg (W n : ℕ) : 0 ≤ correctionTerm W n := Nat.zero_le _
 
+/-! ### The Ratchet Property
+
+The v₂ surplus (S_W - W) is monotone non-decreasing (proven as `v2SumExact_ge_W`).
+At each step, the surplus increases by (v₂ - 1) ≥ 0. It NEVER decreases.
+At v₂ = 1: surplus stays flat. At v₂ ≥ 2: surplus STRICTLY increases.
+
+This is the "mezzanine floor counter" — it only goes UP.
+Once it exceeds 0.585·W → contraction (by `orbit_shrinks_from_v2_surplus`).
+
+The Collatz conjecture reduces to: for every orbit, the mezzanine
+eventually reaches the contraction threshold. The descent property
+(max trailing 1s decreases at each Mersenne bounce) ensures the
+mezzanine keeps climbing. -/
+
 -- The Spectral Composition Theorem is below (after correctionTerm_bound).
 
 /-! ### §5.10 The Correction Term Bound (Conservation Analysis)
