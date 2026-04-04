@@ -206,3 +206,43 @@ The 50/50 split guarantees 50% v₂≥2 steps among residue classes.
 The exponential dominance of 101 over 111 ensures orbits prefer contraction.
 
 The proof is CLOSE. The infrastructure is COMPLETE. The gap is PRECISE.
+
+## Appendix: The Ratchet Attempt (Strategy 1 Deep Dive)
+
+### What We Found
+
+Surplus/W ALWAYS exceeds log₂3 at contraction for all odd n ≤ 100000 (100%).
+Minimum margin: +0.000403 at n=4591 (S=65, W=41, S/W=1.5854 vs 1.5850).
+
+### The Integrality Insight
+
+S_W ∈ ℕ and threshold = W·log₂3 ∈ ℝ\ℚ. Since log₂3 is irrational:
+S_W > W·log₂3 ↔ S_W ≥ ⌈W·log₂3⌉. The integrality gap is always > 0.
+
+### Why The Ratchet ALMOST Proves It
+
+1. Surplus is non-decreasing (PROVED)
+2. Surplus increases at every v₂≥2 step (PROVED)
+3. v₂≥2 occurs infinitely often (PROVED: every streak is finite)
+4. Average surplus growth per step: 1 > 0.585 = log₂3 - 1
+
+### Why It Doesn't Quite Close
+
+Worst-case cycle: L bad steps + 1 good step with v₂=2 (minimum).
+Surplus += 1, W += L+1. Ratio = 1/(L+1).
+If L can grow unboundedly: ratio → 0 (insufficient).
+
+The data shows: subsequent streaks are mostly 1-2 (not unbounded).
+But PROVING they're bounded IS the Collatz conjecture.
+
+### The Precise Remaining Gap
+
+The ratchet proves surplus → ∞. The threshold = 0.585W also → ∞.
+The question: does surplus grow FASTER than 0.585W?
+
+This requires: the DENSITY of v₂≥2 steps (among all steps) exceeds some
+threshold, OR the v₂ values at good steps are large enough on average.
+
+Both are true empirically (good steps ≈ 42% with average v₂ ≈ 3.2).
+Both are predicted by the carry automaton's mixing (spectral gap 1/2).
+Neither has been proved for EVERY orbit.
