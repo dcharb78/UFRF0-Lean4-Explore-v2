@@ -1110,6 +1110,81 @@ theorem orbit_shrinks_from_v2_surplus (W n : ℕ) (hn : n % 2 = 1)
     syracuseExact^[W] n < n :=
   orbit_shrinks_from_formula W n hn hW (by omega) (by omega)
 
+/-! ### The Two-Voice Reduction
+
+**The exact orbit formula reveals two competing voices:**
+
+  `2^S · q = 3^W · n + ε`
+
+- **Damping voice** (the -1 pole): the v₂ surplus `S - W·log₂(3)`.
+  When positive, `2^S > 3^W` and the multiplicative factor contracts.
+  This is the **perfect 4th** (each v₂ ≥ 2 step contracts by ≥ 4/3).
+
+- **Excitation voice** (the +1 pole): the correction term ε from the `+1` in `3n+1`.
+  Bounded by `ε · 2^W ≤ (3^W - 2^W) · 2^S` (correctionTerm_bound).
+  This is the **perfect 5th's residual** — the tiny excess of 3/2 over an octave.
+
+Together they make the **octave**: one bit of information processed per step on average.
+The Pythagorean comma (~0.15 bits total integrated) is the bounded correction.
+
+`surplus_implies_threshold` shows: when the surplus condition holds AND `n` is large
+enough that the correction is negligible, contraction follows. The n-bound is:
+
+  `3^W · (2^S + n · 2^W) < 2^(W+S) · (1 + n)`
+
+For `S ≥ 2W` (the average case), this simplifies to roughly `(3/2)^W < n + 1`,
+which holds when `W ≤ log_{3/2}(n) ≈ 1.71 · log₂(n)`.
+
+The sorry reduces to: for every odd `n > 1`, find `W` satisfying BOTH the surplus
+condition AND this n-bound — a single race between damping and excitation. -/
+
+/-- **The Two-Voice Reduction**: surplus + n-bound implies contraction.
+
+    Replaces the raw threshold condition `ε + 3^W·n < 2^S·n` from
+    `orbit_shrinks_from_v2_surplus` with an explicit n-bound derived from
+    `correctionTerm_bound`. The bound is subtraction-free:
+
+    `3^W · (2^S + n · 2^W) < 2^(W+S) · (1 + n)`
+
+    **Proof**: The correction bound gives `ε·2^W ≤ (3^W - 2^W)·2^S`.
+    The n-bound ensures `(3^W - 2^W)·2^S < (2^S - 3^W)·n·2^W`.
+    Chaining: `ε < (2^S - 3^W)·n`, hence `ε + 3^W·n < 2^S·n`. ∎
+
+    ✅ PROVEN -/
+theorem surplus_implies_threshold (W n : ℕ) (hn : n % 2 = 1)
+    (hW : 0 < W) (hn1 : 1 < n)
+    -- Voice 1 (damping): v₂ surplus exceeds log₂(3) threshold
+    (hv2 : 1000 * v2SumExact W n > W * 1585)
+    -- Voice 2 (excitation bound): n large enough that correction is negligible
+    (hn_bound : 3 ^ W * (2 ^ v2SumExact W n + n * 2 ^ W) <
+                2 ^ (W + v2SumExact W n) * (1 + n)) :
+    syracuseExact^[W] n < n := by
+  set S := v2SumExact W n
+  have h3lt : 3 ^ W < 2 ^ S := contraction_pow_bound W S hv2
+  have hctb := correctionTerm_bound W n hn
+  have h3ge2 : 2 ^ W ≤ 3 ^ W := Nat.pow_le_pow_left (by norm_num) W
+  have hpow : 2 ^ (W + S) = 2 ^ W * 2 ^ S := pow_add 2 W S
+  apply orbit_shrinks_from_formula W n hn hW (by omega)
+  -- Goal: 3 ^ W * n + correctionTerm W n < 2 ^ S * n
+  -- Proof by contradiction: multiply by 2^W, chain hctb with hn_bound
+  by_contra h_ge
+  push_neg at h_ge
+  -- h_ge : 2 ^ S * n ≤ 3 ^ W * n + correctionTerm W n
+  have h1 : 2 ^ S * n * 2 ^ W ≤ (3 ^ W * n + correctionTerm W n) * 2 ^ W :=
+    Nat.mul_le_mul_right _ h_ge
+  have h2 : (3 ^ W * n + correctionTerm W n) * 2 ^ W < 2 ^ S * n * 2 ^ W := by
+    calc (3 ^ W * n + correctionTerm W n) * 2 ^ W
+        = 3 ^ W * n * 2 ^ W + correctionTerm W n * 2 ^ W := by ring
+      _ ≤ 3 ^ W * n * 2 ^ W + (3 ^ W - 2 ^ W) * 2 ^ S :=
+          Nat.add_le_add_left hctb _
+      _ < 2 ^ S * n * 2 ^ W := by
+          -- Need: 3^W * n * 2^W + (3^W - 2^W) * 2^S < 2^S * n * 2^W
+          -- From hn_bound: 3^W * (2^S + n * 2^W) < 2^(W+S) * (1 + n)
+          -- Lift to ℤ to handle (3^W - 2^W) subtraction cleanly
+          zify [h3ge2] at *
+          nlinarith [hpow]
+  omega
+
 /-! ### Solenoid Coherence: Why the Bridge Fails
 
 **The original `solenoid_coherence_W_steps` was FALSE as stated.**
