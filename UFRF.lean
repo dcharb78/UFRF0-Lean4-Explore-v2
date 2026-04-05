@@ -15,6 +15,7 @@ import UFRF.CollatzInevitability
 import UFRF.CollatzNoCycles
 import UFRF.CollatzSolenoid
 import UFRF.CollatzStructure
+import UFRF.CollatzTransducer
 import UFRF.CollatzWindow
 import UFRF.Constants
 import UFRF.DivisionAlgebras
