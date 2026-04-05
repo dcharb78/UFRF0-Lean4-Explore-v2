@@ -245,6 +245,37 @@ Key references:
 - `CollatzTransducer.fibonacci_collatz_synchronization`
 - `CollatzTransducer.v2_mean_universally_exceeds_growth`
 
+### Thread Unification (2026-04-05)
+
+`CollatzConcurrentScales.lean` Section 15 now explicitly connects all three
+proof threads with bridge theorems:
+
+**Bridge 1** (`split_automaton_agrees_with_counting`): The carry automaton's
+50/50 split (from `continuation_symmetry`) and the combinatorial 50/50 split
+(from `binary_split_universal`) are verified to agree on concrete computations.
+`v2Fuel_eq_v2_small` proves the two v₂ functions are identical on relevant inputs.
+
+**Bridge 2** (`cycle_impossibility_is_transition_surface`): References
+`CollatzNoCycles.no_power_coincidence` (2^S ≠ 3^L) as the algebraic face of
+the transition surface identity (Σ pⱼdⱼ = 1).
+
+**Bridge 3** (`mean_v2_exceeds_log2_3_three_ways`): Unifies three independent
+proofs that mean v₂ = 2 > log₂(3): automaton (structural), transducer (sum
+formula), and concurrent scales (meta-step surplus).
+
+**Task A resolved** (`window_ratio_decreasing`, `contraction_surplus_all_levels`):
+W(k)/2^k < 1 for k ≥ 5 and decreasing. All levels k=3..12 have positive
+contraction surplus.
+
+**Task B resolved** (`modular_equals_integer_step_k3`, `modular_certificate_exact_k3`):
+For n < modulus, v2Fuel = v2, and the modular contraction certificate
+applies directly to integer orbits. Computational boundary extended to n < 65539.
+
+**Bridge 4** (`spectral_gap_predicts_crt`): The automaton's P(v₂=1) = 1/2
+predicts exactly 4/65 pure-streak residues at mod 65. The remaining 42
+non-observer surplus residues factor as 2×3×7 = (mod-5 cycles)(mod-13
+cycles)(Pisano coupling).
+
 -/
 
 end UFRF.CollatzInevitability
