@@ -1024,6 +1024,45 @@ lemma correctionTerm_eq_sum (W n : ℕ) :
     rw [h_sum, ← Finset.mul_sum, show W - 0 = W from by omega]
     ring
 
+/-- **Geometric series identity** (the Pythagorean comma):
+    `∑_{i<W} 3^(W-1-i) · 2^i = 3^W - 2^W`
+
+    This is the worst-case correction: when every v₂ = 1, the v₂ sum at step i
+    equals i, and the correction sum becomes this geometric series.
+    The ratio `(3^W - 2^W) / 3^W = 1 - (2/3)^W` is always < 1.
+
+    In music theory: W perfect fifths (3/2) overshoot W-1 octaves by exactly
+    `3^W - 2^W` (in 2^W units). This is the Pythagorean comma. -/
+lemma geom_sum_three_two (W : ℕ) :
+    (Finset.range W).sum (fun i => 3 ^ (W - 1 - i) * 2 ^ i) = 3 ^ W - 2 ^ W := by
+  induction W with
+  | zero => decide
+  | succ W ih =>
+    rw [Finset.sum_range_succ, show W + 1 - 1 - W = 0 from by omega, pow_zero, one_mul,
+        show W + 1 - 1 = W from by omega]
+    -- Σ_{i<W} 3^(W-i) * 2^i + 2^W = 3^(W+1) - 2^(W+1)
+    -- = Σ_{i<W} 3 * (3^(W-1-i) * 2^i) + 2^W
+    have h_factor : (Finset.range W).sum (fun i => 3 ^ (W - i) * 2 ^ i)
+        = 3 * (Finset.range W).sum (fun i => 3 ^ (W - 1 - i) * 2 ^ i) := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro i hi
+      have hi_bound : i < W := Finset.mem_range.mp hi
+      rw [show W - i = (W - 1 - i) + 1 from by omega, pow_succ]
+      ring
+    rw [h_factor, ih]
+    -- 3 * (3^W - 2^W) + 2^W = 3^(W+1) - 2^(W+1)
+    -- 3^(W+1) - 3·2^W + 2^W = 3^(W+1) - 2·2^W = 3^(W+1) - 2^(W+1)
+    rw [pow_succ 3, pow_succ 2]
+    have h3ge2 : 2 ^ W ≤ 3 ^ W := Nat.pow_le_pow_left (by norm_num) W
+    omega
+
+/-! **Correction bound via geometric series**: the correction term is bounded
+by the worst-case geometric series (all v₂ = 1):
+`correctionTerm W n ≤ (3^W - 2^W) · 2^(v2SumExact W n - W)`.
+This follows from `correctionTerm_eq_sum` + `v2SumExact i n ≥ i`.
+See `correctionTerm_bound` below for the formal proof. -/
+
 /-! ### §5.9 Conditional Contraction from the Exact Orbit Formula
 
 The `exact_orbit_formula` gives `2^S · q = 3^W · n + ε`. When `3^W · n + ε < 2^S · n`,
