@@ -276,6 +276,38 @@ predicts exactly 4/65 pure-streak residues at mod 65. The remaining 42
 non-observer surplus residues factor as 2×3×7 = (mod-5 cycles)(mod-13
 cycles)(Pisano coupling).
 
+### Prime Clock Harmonization (2026-04-05)
+
+`CollatzConcurrentScales.lean` Section 16 proves that every odd prime p
+starts its own concurrent "clock" — a modular Syracuse dynamics. The CRT
+product of multiple primes creates a joint space where n inhabits ALL
+clocks simultaneously. Key findings:
+
+**Stuck pairs exist**: Some 2-prime products have permanently trapped
+modular orbits (e.g., r=55 at mod 65 = 5×13 forms a 2-cycle 55→18→55).
+Similarly mod 15 = 3×5 and mod 385 = 5×7×11 have permanent traps.
+
+**Adding clocks resolves every trap** (`stuck_then_resolved`):
+- mod 15 trapped → mod 195 = 3×5×13 contracts all (add p=13)
+- mod 65 trapped → mod 455 = 5×7×13 contracts all (add p=7)
+- mod 385 trapped → mod 5005 = 5×7×11×13 contracts all (add p=13)
+
+**Harmonization certificates proven** for 11 CRT products:
+- 2-clock: 3×7, 5×7, 5×11, 7×11, 7×13
+- 3-clock: 3×5×13, 5×7×13, 5×11×13
+- 4-clock: 5×7×11×13 (2502 residues, W=74)
+- 5-clock: 3×5×7×11×13 (7507 residues, W=156)
+- 5-clock: 5×7×11×13×17 (42542 residues, W=120)
+
+**W/M → 0** (`harmonization_ratio_decreasing`): The ratio of contraction
+window to modulus shrinks from 0.38 (2-clock) to 0.001 (5-clock).
+
+**Why traps must resolve**: A permanently trapped residue at ALL moduli
+would require a periodic orbit, but `no_power_coincidence` (2^S ≠ 3^L)
+rules this out. Cycle impossibility GUARANTEES clock harmonization.
+The two proof threads (no cycles + modular contraction) are the same
+structural fact seen from different angles.
+
 -/
 
 end UFRF.CollatzInevitability
