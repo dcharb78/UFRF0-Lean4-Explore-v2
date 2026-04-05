@@ -937,6 +937,52 @@ lemma v2SumExact_ge_W (W n : ℕ) (hn : n % 2 = 1) : W ≤ v2SumExact W n := by
     have h2 : W ≤ v2SumExact W (syracuseExact n) := ih (syracuseExact n) (syracuseExact_odd hn)
     omega
 
+/-! ### §5.8b Orbit Splitting Lemmas
+
+The v₂ sum and correction term both split cleanly when we decompose an orbit
+into prefix + suffix. These are the structural lemmas that enable the
+three-piece correction bound (expansion / middle / tail). -/
+
+/-- The v₂ sum splits additively over orbit concatenation:
+    `v2SumExact (a+b) n = v2SumExact a n + v2SumExact b (syr^a n)` -/
+lemma v2SumExact_split (a b n : ℕ) :
+    v2SumExact (a + b) n = v2SumExact a n + v2SumExact b (syracuseExact^[a] n) := by
+  induction a generalizing n with
+  | zero => simp [v2SumExact]
+  | succ a ih =>
+    -- syr^[a+1] n = syr^[a] (syr n)
+    have h_iter : syracuseExact^[a + 1] n = syracuseExact^[a] (syracuseExact n) :=
+      congr_fun (Function.iterate_succ syracuseExact a) n
+    rw [show a + 1 + b = (a + b) + 1 from by omega]
+    simp only [v2SumExact]
+    rw [ih (syracuseExact n), h_iter]
+    omega
+
+/-- The correction term splits multiplicatively over orbit concatenation:
+    `ε(a+b, n) = 3^b · ε(a, n) + 2^S(a) · ε(b, syr^a n)`
+
+    Each "+1 kick" from the first `a` steps gets amplified by `3^b` (the remaining
+    multiplications), while kicks from the last `b` steps get shifted by `2^S(a)`
+    (the accumulated divisions from the prefix).
+
+    This is the **two-voice decomposition at the orbit level**: the excitation
+    from the prefix and suffix combine additively after appropriate scaling.
+
+    ✅ PROVEN -/
+lemma correctionTerm_split (a b n : ℕ) :
+    correctionTerm (a + b) n =
+      3 ^ b * correctionTerm a n +
+      2 ^ v2SumExact a n * correctionTerm b (syracuseExact^[a] n) := by
+  induction a generalizing n with
+  | zero => simp [correctionTerm, v2SumExact]
+  | succ a ih =>
+    have h_iter : syracuseExact^[a + 1] n = syracuseExact^[a] (syracuseExact n) :=
+      congr_fun (Function.iterate_succ syracuseExact a) n
+    rw [show a + 1 + b = (a + b) + 1 from by omega]
+    simp only [correctionTerm, v2SumExact]
+    rw [ih (syracuseExact n), h_iter, pow_add]
+    ring
+
 /-! ### §5.9 Conditional Contraction from the Exact Orbit Formula
 
 The `exact_orbit_formula` gives `2^S · q = 3^W · n + ε`. When `3^W · n + ε < 2^S · n`,
