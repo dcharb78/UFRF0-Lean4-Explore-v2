@@ -1057,6 +1057,66 @@ lemma geom_sum_three_two (W : ℕ) :
     have h3ge2 : 2 ^ W ≤ 3 ^ W := Nat.pow_le_pow_left (by norm_num) W
     omega
 
+/-- Each correction summand `f(i) = 3^(W-1-i) · 2^(v2SumExact i n)`.
+    Consecutive summands satisfy: `3 · f(i+1) = 2^v₂_i · f(i)`
+
+    This is the **perfect fifth ratio**: each Syracuse step transforms the
+    correction contribution by factor `2^v₂/3`. When v₂=1 (factor 2/3), the
+    correction shrinks — this is the spectral gap. When v₂≥2 (factor ≥4/3),
+    it grows. The v₂ surplus ensures net shrinkage over W steps. -/
+lemma correction_summand_ratio (W n i : ℕ) (hi : i + 1 < W) :
+    3 * (3 ^ (W - 1 - (i + 1)) * 2 ^ v2SumExact (i + 1) n) =
+      2 ^ v2 (3 * syracuseExact^[i] n + 1) *
+      (3 ^ (W - 1 - i) * 2 ^ v2SumExact i n) := by
+  -- Split v2SumExact (i+1) at position i: v2Sum(i+1) = v2Sum(i) + v₂(syr^i n)
+  rw [show i + 1 = i + 1 from rfl, v2SumExact_split i 1]
+  simp only [v2SumExact]
+  rw [show W - 1 - i = (W - 1 - (i + 1)) + 1 from by omega, pow_succ, pow_add]
+  ring
+
+/-- **v₂=1 streak decay**: during a streak of v₂=1 steps, each correction
+    summand is exactly 2/3 of the previous. Over k consecutive v₂=1 steps
+    starting at position i:
+
+    `3^k · summand(i+k) = 2^k · summand(i)`
+
+    This is the **spectral gap compounding**: each v₂=1 step shrinks the
+    correction contribution by the carry automaton's spectral gap 2/3.
+    The expansion phase (orbit above n) consists of v₂=1 streaks that
+    geometrically damp the correction — this is why the empirical
+    total correction is bounded by ~0.16 bits. -/
+lemma correction_summand_v2_one_streak (W n i k : ℕ) (hik : i + k < W)
+    (hv2_all : ∀ j, j < k → v2 (3 * syracuseExact^[i + j] n + 1) = 1) :
+    3 ^ k * (3 ^ (W - 1 - (i + k)) * 2 ^ v2SumExact (i + k) n) =
+      2 ^ k * (3 ^ (W - 1 - i) * 2 ^ v2SumExact i n) := by
+  induction k with
+  | zero => simp
+  | succ k ihk =>
+    -- v₂ at step i+k = 1
+    have hv2k := hv2_all k (by omega)
+    -- Apply the ratio lemma at position i+k
+    have hratio := correction_summand_ratio W n (i + k) (by omega)
+    rw [hv2k, pow_one] at hratio
+    -- hratio: 3 * summand(i+k+1) = 2 * summand(i+k)
+    -- IH: 3^k * summand(i+k) = 2^k * summand(i)
+    have hih := ihk (by omega) (fun j hj => hv2_all j (by omega))
+    rw [show i + (k + 1) = i + k + 1 from by omega]
+    rw [pow_succ, pow_succ]
+    -- 3 * 3^k * s(i+k+1) = 2 * 2^k * s(i)
+    -- From hratio: 3 * s(i+k+1) = 2 * s(i+k)
+    -- From IH: 3^k * s(i+k) = 2^k * s(i)
+    -- Chain: 3 * 3^k * s(i+k+1) = 3^k * (3 * s(i+k+1)) = 3^k * (2 * s(i+k))
+    --       = 2 * (3^k * s(i+k)) = 2 * 2^k * s(i)
+    -- hratio: 3 * s(i+k+1) = 2 * s(i+k)
+    -- hih: 3^k * s(i+k) = 2^k * s(i)
+    -- Goal: 3^k * 3 * s(i+k+1) = 2^k * 2 * s(i)
+    calc 3 ^ k * 3 * (3 ^ (W - 1 - (i + k + 1)) * 2 ^ v2SumExact (i + k + 1) n)
+        = 3 ^ k * (3 * (3 ^ (W - 1 - (i + k + 1)) * 2 ^ v2SumExact (i + k + 1) n)) := by ring
+      _ = 3 ^ k * (2 * (3 ^ (W - 1 - (i + k)) * 2 ^ v2SumExact (i + k) n)) := by rw [hratio]
+      _ = 2 * (3 ^ k * (3 ^ (W - 1 - (i + k)) * 2 ^ v2SumExact (i + k) n)) := by ring
+      _ = 2 * (2 ^ k * (3 ^ (W - 1 - i) * 2 ^ v2SumExact i n)) := by rw [hih]
+      _ = 2 ^ k * 2 * (3 ^ (W - 1 - i) * 2 ^ v2SumExact i n) := by ring
+
 /-! **Correction bound via geometric series**: the correction term is bounded
 by the worst-case geometric series (all v₂ = 1):
 `correctionTerm W n ≤ (3^W - 2^W) · 2^(v2SumExact W n - W)`.
