@@ -983,6 +983,47 @@ lemma correctionTerm_split (a b n : ℕ) :
     rw [ih (syracuseExact n), h_iter, pow_add]
     ring
 
+/-- **Explicit telescoping sum for the correction term** (✅ PROVEN)
+
+    `correctionTerm W n = ∑ i in Finset.range W, 3^(W-1-i) · 2^(v2SumExact i n)`
+
+    Each Syracuse step contributes a "+1 kick" at position i. That kick gets
+    multiplied by 3^(W-1-i) from the remaining multiplications and divided by
+    2^(v2SumExact i n) accumulated divisions from the prefix.
+
+    This is the **Pythagorean comma made explicit**: each step's "perfect fifth"
+    overshoot (the +1 in 3n+1) accumulates with geometric weighting. -/
+lemma correctionTerm_eq_sum (W n : ℕ) :
+    correctionTerm W n =
+      (Finset.range W).sum (fun i => 3 ^ (W - 1 - i) * 2 ^ v2SumExact i n) := by
+  induction W generalizing n with
+  | zero => simp [correctionTerm]
+  | succ W ih =>
+    -- correctionTerm (W+1) n = 3^W + 2^v₁ * correctionTerm W (syr n)
+    simp only [correctionTerm]
+    rw [ih (syracuseExact n)]
+    -- Now: 3^W + 2^v₁ * Σ_{i<W} 3^(W-1-i) * 2^(v2SumExact i (syr n))
+    --    = Σ_{i<W+1} 3^(W-i) * 2^(v2SumExact i n)
+    -- Peel off i=0: f(0) = 3^W * 2^0 = 3^W
+    rw [Finset.sum_range_succ']
+    -- Goal: ... = f(0) + Σ_{i<W} f(i+1)
+    -- Simplify f(0): 3^(W+1-1-0) * 2^(v2SumExact 0 n) = 3^W * 1 = 3^W
+    simp only [v2SumExact, pow_zero, mul_one, Nat.add_sub_cancel]
+    -- Goal: Σ_{i<W} 3^(W-(i+1)) * 2^(v₁+v2SumExact i (syr n)) + 3^(W-0)
+    --      = 3^W + 2^v₁ * Σ_{i<W} 3^(W-1-i) * 2^(v2SumExact i (syr n))
+    -- Step 1: Rewrite each sum term to factor out 2^v₁
+    have h_sum : (Finset.range W).sum
+          (fun x => 3 ^ (W - (x + 1)) * 2 ^ (v2 (3 * n + 1) + v2SumExact x (syracuseExact n)))
+        = (Finset.range W).sum
+          (fun x => 2 ^ v2 (3 * n + 1) * (3 ^ (W - 1 - x) * 2 ^ v2SumExact x (syracuseExact n))) := by
+      apply Finset.sum_congr rfl
+      intro i hi
+      have hi_bound : i < W := Finset.mem_range.mp hi
+      rw [show W - (i + 1) = W - 1 - i from by omega, pow_add]
+      ring
+    rw [h_sum, ← Finset.mul_sum, show W - 0 = W from by omega]
+    ring
+
 /-! ### §5.9 Conditional Contraction from the Exact Orbit Formula
 
 The `exact_orbit_formula` gives `2^S · q = 3^W · n + ε`. When `3^W · n + ε < 2^S · n`,
