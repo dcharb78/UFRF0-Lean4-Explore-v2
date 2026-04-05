@@ -2522,6 +2522,136 @@ theorem streak_eq_trailing_ones_small :
           v2Fuel 64 (3 * syracuseExact^[i.val] m + 1) = 1)) := by
   native_decide
 
+/-! ## Section 11.5: The Contraction Duality — Every Odd n Is in One of Two Regimes
+
+For any odd n > 1, exactly one of two structural regimes holds:
+- **Regime I** (v₂ ≥ 2): Immediate contraction. `syracuseExact n < n`. PROVEN.
+- **Regime II** (v₂ = 1): Carry chain regime. `trailing_ones(n) ≥ 2`, and the
+  carry chain runs for exactly `trailing_ones - 1` steps before breaking into Regime I.
+
+There is no third option. This duality follows from:
+- v₂(3n+1) = 1 ↔ r odd (where n=2r+1) ↔ n ≡ 3 mod 4 ↔ trailing_ones(n) ≥ 2
+- trailing_ones = 1 ↔ n ≡ 1 mod 4 ↔ v₂(3n+1) ≥ 2
+
+The sorry reduces to: in Regime II, after the carry chain breaks into Regime I,
+does the cumulative v₂ surplus eventually exceed the growth threshold? -/
+
+/-- **Lemma A: v₂=1 implies carry chain regime** (trailing_ones ≥ 2).
+    If n is odd and v₂(3n+1) = 1, then trailing_ones(n) = v₂(n+1) ≥ 2.
+    Proof: v₂=1 means r is odd (where n=2r+1), so n = 4s+3, n+1 = 4(s+1).
+    ✅ PROVEN (structural, no native_decide) -/
+lemma trailing_ones_ge_two_of_v2_one (n : ℕ) (hn : n % 2 = 1)
+    (hv : v2 (3 * n + 1) = 1) : 2 ≤ v2 (n + 1) := by
+  -- Write n = 2r + 1
+  set r := n / 2
+  have hn_eq : n = 2 * r + 1 := by omega
+  -- v₂(3(2r+1)+1) = 1 → r is odd
+  have hr_odd : r % 2 = 1 := (v2_three_odd_succ_eq_one r).mp (by rwa [hn_eq] at hv)
+  -- n = 4s+3, so n+1 = 4(s+1), hence 4 | n+1
+  have hdvd : 2 ^ 2 ∣ (n + 1) := ⟨r / 2 + 1, by omega⟩
+  -- v₂(n+1) ≥ 2 by contradiction: if < 2, then 2^2 ∤ n+1
+  by_contra hlt
+  push_neg at hlt
+  exact v2_pow_succ_not_dvd (n + 1) (by omega)
+    (dvd_trans (Nat.pow_dvd_pow 2 (by omega : v2 (n + 1) + 1 ≤ 2)) hdvd)
+
+/-- **Lemma B: trailing_ones = 1 implies immediate contraction regime** (v₂ ≥ 2).
+    If n is odd and v₂(n+1) = 1 (trailing_ones = 1), then v₂(3n+1) ≥ 2.
+    Proof: trailing_ones = 1 → n ≡ 1 mod 4 → 3n+1 ≡ 0 mod 4.
+    This is the CONVERSE of Lemma A: the two regimes are exactly complementary.
+    ✅ PROVEN (structural, no native_decide) -/
+lemma v2_ge_two_of_trailing_ones_one (n : ℕ) (hn : n % 2 = 1)
+    (ht : v2 (n + 1) = 1) : 2 ≤ v2 (3 * n + 1) := by
+  -- v₂(n+1) = 1 means 2 | n+1 but ¬ 4 | n+1
+  have h2 : 2 ∣ (n + 1) := by
+    have := v2_pow_dvd (n + 1); rw [ht] at this; simpa using this
+  have h4 : ¬ (4 ∣ (n + 1)) := by
+    have := v2_pow_succ_not_dvd (n + 1) (by omega); rw [ht] at this; simpa [pow_succ] using this
+  -- n ≡ 1 mod 4, so 3n+1 ≡ 4 ≡ 0 mod 4
+  have hdvd : 2 ^ 2 ∣ (3 * n + 1) := by
+    refine ⟨(3 * n + 1) / 4, ?_⟩; omega
+  by_contra hlt
+  push_neg at hlt
+  exact v2_pow_succ_not_dvd (3 * n + 1) (by omega)
+    (dvd_trans (Nat.pow_dvd_pow 2 (by omega : v2 (3 * n + 1) + 1 ≤ 2)) hdvd)
+
+/-- **The Contraction Duality**: for odd n, v₂(3n+1) = 1 iff trailing_ones ≥ 2.
+    Equivalently: v₂(3n+1) ≥ 2 iff trailing_ones = 1.
+    Every odd n is in exactly one regime, and the regimes are complementary.
+    ✅ PROVEN (structural, no native_decide) -/
+theorem contraction_duality (n : ℕ) (hn : n % 2 = 1) :
+    v2 (3 * n + 1) = 1 ↔ 2 ≤ v2 (n + 1) := by
+  constructor
+  · exact trailing_ones_ge_two_of_v2_one n hn
+  · intro ht
+    -- Contrapositive: if v₂(3n+1) ≥ 2, then trailing_ones = 1 (i.e., v₂(n+1) < 2)
+    -- We prove: v₂(n+1) ≥ 2 → v₂(3n+1) = 1
+    -- By v₂_three_odd_succ_eq_one: v₂(3(2r+1)+1) = 1 ↔ r odd
+    set r := n / 2
+    have hn_eq : n = 2 * r + 1 := by omega
+    rw [hn_eq]
+    exact (v2_three_odd_succ_eq_one r).mpr (by
+      -- Need: r % 2 = 1. From v₂(n+1) ≥ 2: n+1 = 2r+2, v₂(2r+2) ≥ 2
+      -- 2r+2 = 2(r+1), v₂(2(r+1)) = 1 + v₂(r+1) ≥ 2, so v₂(r+1) ≥ 1
+      -- r+1 even → r odd
+      rw [hn_eq] at ht
+      -- ht : 2 ≤ v2 (2 * r + 1 + 1)
+      -- i.e., 2 ≤ v2 (2 * (r + 1))
+      -- v2(2*(r+1)) = 1 + v2(r+1) (since 2*(r+1) = 2 * (r+1))
+      -- So v2(r+1) ≥ 1, meaning 2 | r+1, i.e., r is odd
+      by_contra hr_even
+      push_neg at hr_even
+      have : r % 2 = 0 := by omega
+      -- r even → r+1 odd → v₂(2(r+1)) = 1 → contradicts ht ≥ 2
+      have h1 : v2 (2 * r + 1 + 1) = 1 := by
+        apply v2_eq_of_dvd_not_dvd (by omega)
+        · exact ⟨r + 1, by ring⟩
+        · simp only [pow_succ, pow_one]
+          intro ⟨q, hq⟩
+          omega
+      omega)
+
+/-- **Odd decomposition for carry chain**: every odd n with trailing_ones = T
+    can be written as a·2^T - 1 where a is odd and positive.
+    This is the entry point for `carry_chain_identity`.
+    ✅ PROVEN -/
+lemma odd_trailing_ones_form (n : ℕ) (hn : n % 2 = 1) :
+    let T := v2 (n + 1)
+    ∃ a : ℕ, a % 2 = 1 ∧ 0 < a ∧ n + 1 = a * 2 ^ T := by
+  set T := v2 (n + 1)
+  have hpos : 0 < n + 1 := by omega
+  -- 2^T | n+1
+  obtain ⟨a, ha⟩ := v2_pow_dvd (n + 1)
+  -- a must be odd (otherwise 2^(T+1) | n+1, contradicting v₂ = T)
+  have ha_odd : a % 2 = 1 := by
+    by_contra h
+    push_neg at h
+    have : a % 2 = 0 := by omega
+    obtain ⟨b, hb⟩ := Nat.dvd_of_mod_eq_zero this
+    have : 2 ^ (T + 1) ∣ (n + 1) := ⟨b, by rw [ha, hb, pow_succ]; ring⟩
+    exact v2_pow_succ_not_dvd (n + 1) hpos this
+  have ha_pos : 0 < a := by
+    by_contra h; push_neg at h
+    have : a = 0 := by omega
+    omega
+  exact ⟨a, ha_odd, ha_pos, by rw [mul_comm]; exact ha⟩
+
+/-- **Streak break at trailing_ones = 1**: after a carry chain streak,
+    the orbit reaches a number with trailing_ones = 1, and the NEXT step
+    has v₂ ≥ 2 (entering Regime I = immediate contraction).
+    Verified computationally for all odd n < 1024 with trailing_ones ≥ 2.
+    ✅ PROVEN -/
+theorem streak_breaks_to_regime_I :
+    ∀ n : Fin 512,
+      let m := 2 * n.val + 1
+      let trailing := v2Fuel 64 (m + 1)
+      trailing ≥ 2 →
+        -- After trailing-1 steps, trailing_ones becomes 1
+        v2Fuel 64 (syracuseExact^[trailing - 1] m + 1) = 1 ∧
+        -- Hence the next step has v₂ ≥ 2 (contraction)
+        v2Fuel 64 (3 * syracuseExact^[trailing - 1] m + 1) ≥ 2 := by
+  native_decide
+
 /-! ## Section 12: The Concurrent Context Structure
 
 Every odd number n simultaneously inhabits three concurrent voices:
