@@ -2666,6 +2666,591 @@ lemma odd_trailing_ones_form (n : ℕ) (hn : n % 2 = 1) :
     omega
   exact ⟨a, ha_odd, ha_pos, by rw [mul_comm]; exact ha⟩
 
+/-! ### §11.5a Exact Carry-Chain Transport
+
+These lemmas upgrade the carry-chain story from a qualitative streak statement to an
+exact induced-dynamics formula. A pure `v₂ = 1` streak is not just "many bad steps" —
+it is a completely rigid transport inside the family `odd * 2^t - 1`, and the first
+resolving step lands at the odd part of `3^T * a - 1`.
+
+This is the exact Regime-II meta-step theorem suggested by the memory-loop review:
+compress the whole unresolved phase into one induced map on the odd part. -/
+
+/-- Along a pure `v₂ = 1` streak, every step contributes exactly one unit to the
+    cumulative integer `v₂` sum. -/
+lemma v2SumExact_eq_of_v2_one_streak (W n : ℕ)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    v2SumExact W n = W := by
+  induction W generalizing n with
+  | zero =>
+      simp [v2SumExact]
+  | succ W ih =>
+      have h0 : v2 (3 * n + 1) = 1 := hstreak 0 (Nat.zero_lt_succ W)
+      have htail : ∀ i < W, v2 (3 * syracuseExact^[i] (syracuseExact n) + 1) = 1 := by
+        intro i hi
+        simpa [Function.iterate_succ_apply] using hstreak (i + 1) (Nat.succ_lt_succ hi)
+      rw [v2SumExact, h0, ih (syracuseExact n) htail]
+      omega
+
+/-- Along a pure `v₂ = 1` streak, the correction term is exactly the all-ones geometric
+    worst case `3^W - 2^W`. -/
+lemma correctionTerm_eq_of_v2_one_streak (W n : ℕ)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    correctionTerm W n = 3 ^ W - 2 ^ W := by
+  induction W generalizing n with
+  | zero =>
+      simp [correctionTerm]
+  | succ W ih =>
+      have h0 : v2 (3 * n + 1) = 1 := hstreak 0 (Nat.zero_lt_succ W)
+      have htail : ∀ i < W, v2 (3 * syracuseExact^[i] (syracuseExact n) + 1) = 1 := by
+        intro i hi
+        simpa [Function.iterate_succ_apply] using hstreak (i + 1) (Nat.succ_lt_succ hi)
+      rw [correctionTerm, h0, ih (syracuseExact n) htail]
+      rw [Nat.mul_sub_left_distrib, pow_succ, pow_succ]
+      have h3ge2 : 2 ^ W ≤ 3 ^ W := Nat.pow_le_pow_left (by norm_num) W
+      omega
+
+/-- Exact orbit formula specialized to a pure `v₂ = 1` streak. -/
+lemma exact_orbit_formula_of_v2_one_streak (W n : ℕ) (hn : n % 2 = 1)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    2 ^ W * syracuseExact^[W] n = 3 ^ W * n + (3 ^ W - 2 ^ W) := by
+  have hS : v2SumExact W n = W := v2SumExact_eq_of_v2_one_streak W n hstreak
+  have hct : correctionTerm W n = 3 ^ W - 2 ^ W := correctionTerm_eq_of_v2_one_streak W n hstreak
+  simpa [hS, hct] using exact_orbit_formula W n hn
+
+/-- A pure `v₂ = 1` streak forces the expected dyadic divisibility of `n + 1`. -/
+theorem v2_one_streak_dvd_n_plus_one (W n : ℕ) (hn : n % 2 = 1)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    2 ^ W ∣ n + 1 := by
+  have hformula := exact_orbit_formula_of_v2_one_streak W n hn hstreak
+  have h3ge2 : 2 ^ W ≤ 3 ^ W := Nat.pow_le_pow_left (by norm_num) W
+  have hmain : 2 ^ W * (syracuseExact^[W] n + 1) = 3 ^ W * (n + 1) := by
+    calc
+      2 ^ W * (syracuseExact^[W] n + 1)
+          = 2 ^ W * syracuseExact^[W] n + 2 ^ W := by ring
+      _ = 3 ^ W * n + (3 ^ W - 2 ^ W) + 2 ^ W := by rw [hformula]
+      _ = 3 ^ W * n + ((3 ^ W - 2 ^ W) + 2 ^ W) := by rw [add_assoc]
+      _ = 3 ^ W * n + 3 ^ W := by rw [Nat.sub_add_cancel h3ge2]
+      _ = 3 ^ W * (n + 1) := by ring
+  have hdvd : 2 ^ W ∣ 3 ^ W * (n + 1) := ⟨syracuseExact^[W] n + 1, hmain.symm⟩
+  have hcop : Nat.Coprime (2 ^ W) (3 ^ W) := by
+    simpa using Nat.coprime_pow_primes W W (by decide : Nat.Prime 2) (by decide : Nat.Prime 3)
+      (by decide : 2 ≠ 3)
+  exact hcop.dvd_of_dvd_mul_left hdvd
+
+/-- Exact normal form of a pure `v₂ = 1` streak. -/
+theorem v2_one_streak_normal_form (W n : ℕ) (hn : n % 2 = 1)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    syracuseExact^[W] n + 1 = 3 ^ W * ((n + 1) / 2 ^ W) := by
+  have hdvd : 2 ^ W ∣ n + 1 := v2_one_streak_dvd_n_plus_one W n hn hstreak
+  obtain ⟨t, ht⟩ := hdvd
+  have hformula := exact_orbit_formula_of_v2_one_streak W n hn hstreak
+  have hmain : 2 ^ W * (syracuseExact^[W] n + 1) = 2 ^ W * (3 ^ W * t) := by
+    calc
+      2 ^ W * (syracuseExact^[W] n + 1) = 3 ^ W * (n + 1) := by
+        have h3ge2 : 2 ^ W ≤ 3 ^ W := Nat.pow_le_pow_left (by norm_num) W
+        calc
+          2 ^ W * (syracuseExact^[W] n + 1)
+              = 2 ^ W * syracuseExact^[W] n + 2 ^ W := by ring
+          _ = 3 ^ W * n + (3 ^ W - 2 ^ W) + 2 ^ W := by rw [hformula]
+          _ = 3 ^ W * n + ((3 ^ W - 2 ^ W) + 2 ^ W) := by rw [add_assoc]
+          _ = 3 ^ W * n + 3 ^ W := by rw [Nat.sub_add_cancel h3ge2]
+          _ = 3 ^ W * (n + 1) := by ring
+      _ = 3 ^ W * (2 ^ W * t) := by rw [ht]
+      _ = 2 ^ W * (3 ^ W * t) := by ring
+  have hpow_pos : 0 < 2 ^ W := by positivity
+  have hcancel : syracuseExact^[W] n + 1 = 3 ^ W * t :=
+    Nat.eq_of_mul_eq_mul_left hpow_pos hmain
+  have hdiv : (n + 1) / 2 ^ W = t := by
+    rw [ht, Nat.mul_div_right _ hpow_pos]
+  rw [hdiv]
+  exact hcancel
+
+/-- Pulling out a maximal power of `2` leaves an odd factor. -/
+private lemma v2_pow_mul_of_not_two_dvd (k a : ℕ) (ha : ¬ 2 ∣ a) :
+    v2 (2 ^ k * a) = k := by
+  have ha_ne : a ≠ 0 := by
+    intro ha_zero
+    apply ha
+    subst ha_zero
+    exact ⟨0, by simp⟩
+  have ha_pos : 0 < a := Nat.pos_of_ne_zero ha_ne
+  have hpow_pos : 0 < 2 ^ k := by positivity
+  apply v2_eq_of_dvd_not_dvd (Nat.mul_pos hpow_pos ha_pos)
+  · exact ⟨a, by ring⟩
+  · intro hupper
+    obtain ⟨t, ht⟩ := hupper
+    have hmul : 2 ^ k * a = 2 ^ k * (2 * t) := by
+      simpa [pow_succ, Nat.mul_assoc, Nat.mul_left_comm, Nat.mul_comm] using ht
+    have ha' : 2 ∣ a := ⟨t, Nat.eq_of_mul_eq_mul_left hpow_pos hmul⟩
+    exact ha ha'
+
+/-- Doubling an odd factor adds exactly one to the valuation. -/
+private lemma v2_two_mul_of_not_two_dvd (a : ℕ) (ha : ¬ 2 ∣ a) :
+    v2 (2 * a) = 1 := by
+  simpa [pow_one] using v2_pow_mul_of_not_two_dvd 1 a ha
+
+/-- If a positive number is even, then its predecessor is odd. -/
+private lemma two_not_dvd_sub_one_of_two_dvd {a : ℕ} (ha_pos : 0 < a) (ha : 2 ∣ a) :
+    ¬ 2 ∣ a - 1 := by
+  intro hsub
+  have hone : a - (a - 1) = 1 := by omega
+  have hdiff : 2 ∣ 1 := by
+    simpa [hone] using Nat.dvd_sub ha hsub
+  norm_num at hdiff
+
+/-- States of the form `c * 3^a * 2^b - 1` with `b > 1` stay on the pure `v₂ = 1` strand. -/
+private lemma v2_scaled_geom_minus_one_step (c a b : ℕ) (hc : 0 < c) (hb : 1 < b) :
+    v2 (3 * (c * 3 ^ a * 2 ^ b - 1) + 1) = 1 := by
+  set x := c * 3 ^ a * 2 ^ (b - 1)
+  have hxmul : c * 3 ^ a * 2 ^ b = 2 * x := by
+    dsimp [x]
+    have hb' : b = Nat.succ (b - 1) := by omega
+    rw [hb', pow_succ']
+    have hsub : b - 1 + 1 - 1 = b - 1 := by omega
+    simp [hsub]
+    ring
+  have hpow_dvd : 2 ∣ 2 ^ (b - 1) := by
+    have hb1 : 1 ≤ b - 1 := by omega
+    simpa using (Nat.pow_dvd_pow 2 hb1)
+  have hx_even : 2 ∣ x := by
+    dsimp [x]
+    exact hpow_dvd.mul_left (c * 3 ^ a)
+  have hx3_pos : 0 < 3 * x := by
+    dsimp [x]
+    have hx_pos : 0 < x := by
+      apply Nat.mul_pos
+      · apply Nat.mul_pos hc
+        positivity
+      · positivity
+    positivity
+  have hx3_odd : ¬ 2 ∣ 3 * x - 1 :=
+    two_not_dvd_sub_one_of_two_dvd hx3_pos (hx_even.mul_left 3)
+  have hfac : 3 * (c * 3 ^ a * 2 ^ b - 1) + 1 = 2 * (3 * x - 1) := by
+    rw [hxmul]
+    have hx_pos : 0 < x := by
+      apply Nat.mul_pos
+      · apply Nat.mul_pos hc
+        positivity
+      · positivity
+    omega
+  rw [hfac]
+  exact v2_two_mul_of_not_two_dvd (3 * x - 1) hx3_odd
+
+/-- The Syracuse map advances the scaled family `c * 3^a * 2^b - 1` by one unresolved step. -/
+private lemma syracuseExact_scaled_geom_minus_one_step (c a b : ℕ) (hc : 0 < c) (hb : 1 < b) :
+    syracuseExact (c * 3 ^ a * 2 ^ b - 1) = c * 3 ^ (a + 1) * 2 ^ (b - 1) - 1 := by
+  set x := c * 3 ^ a * 2 ^ (b - 1)
+  have hxmul : c * 3 ^ a * 2 ^ b = 2 * x := by
+    dsimp [x]
+    have hb' : b = Nat.succ (b - 1) := by omega
+    rw [hb', pow_succ']
+    have hsub : b - 1 + 1 - 1 = b - 1 := by omega
+    simp [hsub]
+    ring
+  have hx3 : c * 3 ^ (a + 1) * 2 ^ (b - 1) = 3 * x := by
+    dsimp [x]
+    rw [pow_succ]
+    ring
+  have hfac : 3 * (c * 3 ^ a * 2 ^ b - 1) + 1 = 2 * (3 * x - 1) := by
+    have hxsub : c * 3 ^ a * 2 ^ b - 1 = 2 * x - 1 := by rw [hxmul]
+    calc
+      3 * (c * 3 ^ a * 2 ^ b - 1) + 1 = 3 * (2 * x - 1) + 1 := by rw [hxsub]
+      _ = 2 * (3 * x - 1) := by
+            have hx_pos : 0 < x := by
+              apply Nat.mul_pos
+              · apply Nat.mul_pos hc
+                positivity
+              · positivity
+            have hx_ge : 1 ≤ x := by omega
+            omega
+  have hv2 : v2 (3 * (c * 3 ^ a * 2 ^ b - 1) + 1) = 1 :=
+    v2_scaled_geom_minus_one_step c a b hc hb
+  unfold syracuseExact
+  rw [hfac]
+  have hv2' : v2 (2 * (3 * x - 1)) = 1 := by simpa [hfac] using hv2
+  rw [hv2', pow_one]
+  simp [hx3]
+
+/-- Exact inductive carry-chain transport inside the family `odd * 2^t - 1`.
+    After `W` unresolved steps, the state is exactly `3^W * a * 2^(T-W) - 1`. -/
+private lemma carry_chain_prefix (a T W : ℕ) (ha : a % 2 = 1) (ha_pos : 0 < a)
+    (hW : W ≤ T - 1) :
+    (∀ i < W, v2 (3 * syracuseExact^[i] (a * 2 ^ T - 1) + 1) = 1) ∧
+      syracuseExact^[W] (a * 2 ^ T - 1) = 3 ^ W * a * 2 ^ (T - W) - 1 := by
+  induction W generalizing a T with
+  | zero =>
+      constructor
+      · intro i hi
+        omega
+      · simp
+  | succ W ih =>
+      have hW' : W ≤ T - 1 := by omega
+      obtain ⟨hstreak, hiter⟩ := ih a T ha ha_pos hW'
+      have hTrem : 1 < T - W := by omega
+      have hstep_v2 :
+          v2 (3 * syracuseExact^[W] (a * 2 ^ T - 1) + 1) = 1 := by
+        rw [hiter]
+        simpa [Nat.mul_assoc, Nat.mul_left_comm, Nat.mul_comm] using
+          v2_scaled_geom_minus_one_step a W (T - W) ha_pos hTrem
+      have hstep_iter :
+          syracuseExact (syracuseExact^[W] (a * 2 ^ T - 1)) =
+            3 ^ (W + 1) * a * 2 ^ (T - (W + 1)) - 1 := by
+        rw [hiter]
+        have hsub : (T - W) - 1 = T - (W + 1) := by omega
+        simpa [Nat.mul_assoc, Nat.mul_left_comm, Nat.mul_comm, hsub] using
+          syracuseExact_scaled_geom_minus_one_step a W (T - W) ha_pos hTrem
+      constructor
+      · intro i hi
+        rcases Nat.lt_succ_iff_lt_or_eq.mp hi with hi' | rfl
+        · exact hstreak i hi'
+        · exact hstep_v2
+      · rw [show syracuseExact^[W + 1] (a * 2 ^ T - 1) =
+            syracuseExact (syracuseExact^[W] (a * 2 ^ T - 1)) by
+            rw [Function.iterate_succ_apply']]
+        exact hstep_iter
+
+/-- Doubling raises the exact `2`-adic valuation by one. -/
+private lemma v2_two_mul (m : ℕ) (hm : 0 < m) :
+    v2 (2 * m) = v2 m + 1 := by
+  obtain ⟨q, hq⟩ := v2_pow_dvd m
+  have hq_not : ¬ 2 ∣ q := by
+    intro hq_even
+    obtain ⟨t, ht⟩ := hq_even
+    apply v2_pow_succ_not_dvd m hm
+    refine ⟨t, ?_⟩
+    calc
+      m = 2 ^ v2 m * q := hq
+      _ = 2 ^ v2 m * (2 * t) := by rw [ht]
+      _ = 2 ^ (v2 m + 1) * t := by rw [pow_succ']; ring
+  have hrepr : 2 * m = 2 ^ (v2 m + 1) * q := by
+    have hmul : 2 * m = 2 * (2 ^ v2 m * q) := by
+      exact congrArg (fun x => 2 * x) hq
+    calc
+      2 * m = 2 * (2 ^ v2 m * q) := hmul
+      _ = 2 ^ (v2 m + 1) * q := by rw [pow_succ']; ring
+  calc
+    v2 (2 * m) = v2 (2 ^ (v2 m + 1) * q) := by rw [hrepr]
+    _ = v2 m + 1 := v2_pow_mul_of_not_two_dvd (v2 m + 1) q hq_not
+
+/-- Exact ejection formula from the last state of a carry chain. -/
+private lemma syracuseExact_double_mul_sub_one (m : ℕ) (hm : 0 < m) :
+    syracuseExact (2 * m - 1) = (3 * m - 1) / 2 ^ v2 (3 * m - 1) := by
+  have hcore : 0 < 3 * m - 1 := by omega
+  have heq : 3 * (2 * m - 1) + 1 = 2 * (3 * m - 1) := by
+    omega
+  unfold syracuseExact
+  rw [heq, v2_two_mul (3 * m - 1) hcore]
+  calc
+    (2 * (3 * m - 1)) / 2 ^ (v2 (3 * m - 1) + 1)
+        = (2 * (3 * m - 1)) / (2 * 2 ^ v2 (3 * m - 1)) := by
+            rw [pow_succ']
+    _ = (3 * m - 1) / 2 ^ v2 (3 * m - 1) := by
+          rw [Nat.mul_comm 2 (3 * m - 1), Nat.mul_comm 2 (2 ^ v2 (3 * m - 1))]
+          exact Nat.mul_div_mul_right (m := 2) (3 * m - 1) (2 ^ v2 (3 * m - 1))
+            (by positivity : 0 < 2)
+
+/-- One-step centered relation for the exact odd Syracuse map. Multiplying the
+    centered next state by the step's dyadic valuation recovers the affine
+    `3(n+1)` transport plus the ejection offset. -/
+private lemma syracuseExact_centered_step_relation (n : ℕ) :
+    let s := v2 (3 * n + 1)
+    2 ^ s * (syracuseExact n + 1) = 3 * (n + 1) + 2 ^ s - 2 := by
+  set s := v2 (3 * n + 1) with hs
+  have h_key : 2 ^ s * ((3 * n + 1) / 2 ^ s) = 3 * n + 1 := by
+    have hdvd : 2 ^ v2 (3 * n + 1) ∣ 3 * n + 1 := v2Fuel_dvd_lower _ _
+    rw [mul_comm]
+    simpa [hs] using Nat.div_mul_cancel hdvd
+  unfold syracuseExact
+  rw [hs]
+  calc
+    2 ^ s * ((3 * n + 1) / 2 ^ s + 1)
+        = 2 ^ s * ((3 * n + 1) / 2 ^ s) + 2 ^ s := by ring
+    _ = (3 * n + 1) + 2 ^ s := by rw [h_key]
+    _ = 3 * (n + 1) + 2 ^ s - 2 := by
+          have hs_pos : 0 < 2 ^ s := by positivity
+          omega
+
+/-- **Exact Regime-II meta-step formula**: if `n = a * 2^T - 1` with `a` odd and `T ≥ 2`,
+    then the first `T-1` odd steps are a pure carry chain, and the `T`-th odd step lands at
+    the odd part of `3^T * a - 1`. The cumulative `v₂` sum through this meta-step is
+    exactly `T + v₂(3^T * a - 1)`. -/
+theorem regimeII_meta_step_core (a T : ℕ) (ha : a % 2 = 1) (ha_pos : 0 < a)
+    (hT : 2 ≤ T) :
+    let n := a * 2 ^ T - 1
+    syracuseExact^[T] n = (3 ^ T * a - 1) / 2 ^ v2 (3 ^ T * a - 1) ∧
+      v2SumExact T n = T + v2 (3 ^ T * a - 1) := by
+  dsimp
+  obtain ⟨hstreak, hpre⟩ := carry_chain_prefix a T (T - 1) ha ha_pos (le_rfl)
+  have hsum : v2SumExact (T - 1) (a * 2 ^ T - 1) = T - 1 :=
+    v2SumExact_eq_of_v2_one_streak (T - 1) (a * 2 ^ T - 1) hstreak
+  have hlast : T - (T - 1) = 1 := by omega
+  have hpre' :
+      syracuseExact^[T - 1] (a * 2 ^ T - 1) = 2 * (3 ^ (T - 1) * a) - 1 := by
+    rw [hpre, hlast, pow_one]
+    have hmulf : 3 ^ (T - 1) * a * 2 = 2 * (3 ^ (T - 1) * a) := by ring
+    rw [hmulf]
+  have hm_pos : 0 < 3 ^ (T - 1) * a := by positivity
+  have hTsucc : T = (T - 1) + 1 := by omega
+  have hTsucc' : T = Nat.succ (T - 1) := by omega
+  have hpowT : 3 * (3 ^ (T - 1) * a) - 1 = 3 ^ T * a - 1 := by
+    rw [hTsucc', pow_succ', Nat.succ_sub_one]
+    ring
+  have hstep :
+      syracuseExact (2 * (3 ^ (T - 1) * a) - 1) =
+        (3 ^ T * a - 1) / 2 ^ v2 (3 ^ T * a - 1) := by
+    simpa [hpowT] using
+      syracuseExact_double_mul_sub_one (3 ^ (T - 1) * a) hm_pos
+  have hmeta_step :
+      syracuseExact (syracuseExact^[T - 1] (a * 2 ^ T - 1)) =
+        (3 ^ T * a - 1) / 2 ^ v2 (3 ^ T * a - 1) := by
+    rw [hpre']
+    exact hstep
+  have hmeta :
+      syracuseExact^[T] (a * 2 ^ T - 1) =
+        (3 ^ T * a - 1) / 2 ^ v2 (3 ^ T * a - 1) := by
+    rw [hTsucc, Function.iterate_succ_apply']
+    have hpow2 : 2 ^ (T - 1 + 1) = 2 ^ T := by
+      congr
+      omega
+    have hpow3 : 3 ^ (T - 1 + 1) = 3 ^ T := by
+      congr
+      omega
+    simpa [hpow2, hpow3] using hmeta_step
+  have hcore_pos : 0 < 3 ^ T * a - 1 := by
+    have hpow_ge : 3 ^ 2 ≤ 3 ^ T := Nat.pow_le_pow_right (by norm_num) hT
+    have hmul_ge : 9 ≤ 3 ^ T * a := by
+      calc
+        9 = 3 ^ 2 := by norm_num
+        _ ≤ 3 ^ T := hpow_ge
+        _ ≤ 3 ^ T * a := by
+              simpa using Nat.mul_le_mul_left (3 ^ T) (Nat.succ_le_of_lt ha_pos)
+    omega
+  have hv2_last : v2 (3 * syracuseExact^[T - 1] (a * 2 ^ T - 1) + 1) = v2 (3 ^ T * a - 1) + 1 := by
+    rw [hpre']
+    have heq :
+        3 * (2 * (3 ^ (T - 1) * a) - 1) + 1 = 2 * (3 ^ T * a - 1) := by
+      rw [← hpowT]
+      omega
+    rw [heq, v2_two_mul (3 ^ T * a - 1) hcore_pos]
+  have hsplit : v2SumExact T (a * 2 ^ T - 1) =
+      v2SumExact (T - 1) (a * 2 ^ T - 1) +
+        v2 (3 * syracuseExact^[T - 1] (a * 2 ^ T - 1) + 1) := by
+    rw [hTsucc, v2SumExact_split (T - 1) 1]
+    simp [v2SumExact]
+  refine ⟨hmeta, ?_⟩
+  rw [hsplit, hsum, hv2_last]
+  omega
+
+/-- **Exact Regime-II meta-step formula on the actual odd orbit**:
+    for any odd `n` with `trailing_ones(n) = v₂(n+1) ≥ 2`, writing
+    `n + 1 = a * 2^T` with `a` odd gives the induced meta-step
+      `syr^T(n) = oddpart(3^T * a - 1)`
+    and cumulative valuation
+      `v2SumExact T n = T + v₂(3^T * a - 1)`. -/
+theorem regimeII_meta_step (n : ℕ) (hn : n % 2 = 1) (hT : 2 ≤ v2 (n + 1)) :
+    let T := v2 (n + 1)
+    let a := (n + 1) / 2 ^ T
+    syracuseExact^[T] n = (3 ^ T * a - 1) / 2 ^ v2 (3 ^ T * a - 1) ∧
+      v2SumExact T n = T + v2 (3 ^ T * a - 1) := by
+  dsimp
+  set T := v2 (n + 1) with hT_def
+  set a := (n + 1) / 2 ^ T with ha_def
+  have hT' : 2 ≤ T := by simpa [hT_def] using hT
+  obtain ⟨a', ha'_odd, ha'_pos, hform⟩ := odd_trailing_ones_form n hn
+  have hformT : n + 1 = a' * 2 ^ T := by simpa [hT_def] using hform
+  have ha_eq : a = a' := by
+    dsimp [a]
+    rw [hformT]
+    simpa [Nat.mul_comm] using (Nat.mul_div_right a' (show 0 < 2 ^ T by positivity))
+  have hn_form : n = a * 2 ^ T - 1 := by
+    have hformA : n + 1 = a * 2 ^ T := by simpa [ha_eq] using hformT
+    omega
+  rw [hn_form]
+  have hcore := regimeII_meta_step_core a T (by simpa [ha_eq] using ha'_odd)
+      (by simpa [ha_eq] using ha'_pos) hT'
+  simpa using hcore
+
+/-- In the Regime-II window `T = v₂(n+1)`, the v₂ surplus condition depends only on the
+    ejection valuation `j = v₂(3^T · a - 1)`. The carry-chain part contributes exactly `T`,
+    so the surplus threshold becomes `1000·j > 585·T`. -/
+theorem regimeII_meta_step_surplus_iff (n : ℕ) (hn : n % 2 = 1) (hT : 2 ≤ v2 (n + 1)) :
+    let T := v2 (n + 1)
+    let a := (n + 1) / 2 ^ T
+    let j := v2 (3 ^ T * a - 1)
+    1000 * v2SumExact T n > T * 1585 ↔ 1000 * j > T * 585 := by
+  dsimp
+  set T := v2 (n + 1) with hT_def
+  set a := (n + 1) / 2 ^ T with ha_def
+  set j := v2 (3 ^ T * a - 1) with hj_def
+  have hT' : 2 ≤ T := by simpa [hT_def] using hT
+  obtain ⟨_, hsum⟩ := regimeII_meta_step n hn hT'
+  have hsum' : v2SumExact T n = T + j := by
+    simpa [hT_def, ha_def, hj_def] using hsum
+  rw [hsum']
+  omega
+
+/-- In the Regime-II window `T = v₂(n+1)`, shrinking after the full carry chain is exactly the
+    arithmetic inequality `3^T · a - 1 < n · 2^j`, where `j = v₂(3^T · a - 1)` and
+    `a = (n+1)/2^T`. This packages the whole unresolved phase into a single odd-part comparison. -/
+theorem regimeII_meta_step_shrinks_iff (n : ℕ) (hn : n % 2 = 1) (hT : 2 ≤ v2 (n + 1)) :
+    let T := v2 (n + 1)
+    let a := (n + 1) / 2 ^ T
+    let j := v2 (3 ^ T * a - 1)
+    syracuseExact^[T] n < n ↔ 3 ^ T * a - 1 < n * 2 ^ j := by
+  dsimp
+  set T := v2 (n + 1) with hT_def
+  set a := (n + 1) / 2 ^ T with ha_def
+  set j := v2 (3 ^ T * a - 1) with hj_def
+  have hT' : 2 ≤ T := by simpa [hT_def] using hT
+  obtain ⟨hiter, _⟩ := regimeII_meta_step n hn hT'
+  have hiter' : syracuseExact^[T] n = (3 ^ T * a - 1) / 2 ^ j := by
+    simpa [hT_def, ha_def, hj_def] using hiter
+  rw [hiter']
+  exact Nat.div_lt_iff_lt_mul (pow_pos (by norm_num) _)
+
+/-- Regime-II shrinkage via the two-voice criterion, rewritten in terms of the ejection
+    valuation `j = v₂(3^T · a - 1)` on the induced meta-step.
+
+    This is the clean bridge from the new meta-step theorem back to the original shrink
+    machinery: the carry chain contributes the fixed base cost `T`, and only the ejection
+    valuation `j` carries genuine surplus information. -/
+theorem regimeII_meta_step_two_voice_shrinks (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ v2 (n + 1)) :
+    let T := v2 (n + 1)
+    let a := (n + 1) / 2 ^ T
+    let j := v2 (3 ^ T * a - 1)
+    1000 * j > T * 585 →
+    3 ^ T * (2 ^ (T + j) + n * 2 ^ T) < 2 ^ (T + (T + j)) * (1 + n) →
+    syracuseExact^[T] n < n := by
+  dsimp
+  set T := v2 (n + 1) with hT_def
+  set a := (n + 1) / 2 ^ T with ha_def
+  set j := v2 (3 ^ T * a - 1) with hj_def
+  intro hsurplus hn_bound
+  have hT' : 2 ≤ T := by simpa [hT_def] using hT
+  have hTpos : 0 < T := by omega
+  have hn_pos : 0 < n := by
+    apply Nat.pos_of_ne_zero
+    intro hz
+    simp [hz] at hn
+  have hn1 : 1 < n := by
+    by_contra hle
+    have hn_le : n ≤ 1 := by omega
+    have h1 : n = 1 := by omega
+    have hT_one : T = 1 := by
+      rw [hT_def, h1]
+      apply v2_eq_of_dvd_not_dvd (by norm_num)
+      · exact ⟨1, by norm_num⟩
+      · intro h
+        rcases h with ⟨q, hq⟩
+        norm_num at hq
+        have hdiv : 4 ∣ 2 := ⟨q, hq⟩
+        norm_num at hdiv
+    omega
+  obtain ⟨_, hsum⟩ := regimeII_meta_step n hn hT'
+  have hsum' : v2SumExact T n = T + j := by
+    simpa [hT_def, ha_def, hj_def] using hsum
+  have hv2 : 1000 * v2SumExact T n > T * 1585 := by
+    rw [hsum']
+    calc
+      1000 * (T + j) = 1000 * T + 1000 * j := by ring
+      _ > 1000 * T + T * 585 := by gcongr
+      _ = T * 1585 := by ring
+  have hn_bound' :
+      3 ^ T * (2 ^ v2SumExact T n + n * 2 ^ T) <
+        2 ^ (T + v2SumExact T n) * (1 + n) := by
+    rw [hsum']
+    simpa [add_assoc]
+      using hn_bound
+  exact surplus_implies_threshold T n hn hTpos hn1 hv2 hn_bound'
+
+/-- The duration of the Regime-II meta-step: the trailing-ones depth `v₂(n+1)`. -/
+def regimeIITime (n : ℕ) : ℕ := v2 (n + 1)
+
+/-- The odd coefficient in the Regime-II normal form `n + 1 = a · 2^T`. -/
+def regimeIIBase (n : ℕ) : ℕ := (n + 1) / 2 ^ regimeIITime n
+
+/-- The ejection valuation at the end of the Regime-II carry chain. -/
+def regimeIIEjectionValuation (n : ℕ) : ℕ :=
+  v2 (3 ^ regimeIITime n * regimeIIBase n - 1)
+
+/-- The induced next node after compressing a full Regime-II meta-step. -/
+def regimeIINext (n : ℕ) : ℕ :=
+  (3 ^ regimeIITime n * regimeIIBase n - 1) / 2 ^ regimeIIEjectionValuation n
+
+/-- Exact iterate formula for the compressed Regime-II next node. -/
+theorem regimeIINext_eq_iterate (n : ℕ) (hn : n % 2 = 1) (hT : 2 ≤ regimeIITime n) :
+    regimeIINext n = syracuseExact^[regimeIITime n] n := by
+  unfold regimeIINext regimeIIEjectionValuation regimeIIBase regimeIITime
+  symm
+  simpa using (regimeII_meta_step n hn hT).1
+
+/-- Exact v₂-sum formula for a compressed Regime-II meta-step. -/
+theorem regimeIIEjectionValuation_eq_surplus (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) :
+    v2SumExact (regimeIITime n) n = regimeIITime n + regimeIIEjectionValuation n := by
+  unfold regimeIIEjectionValuation regimeIIBase regimeIITime
+  simpa using (regimeII_meta_step n hn hT).2
+
+/-- The compressed Regime-II next node is odd, since it is an exact odd Syracuse iterate. -/
+theorem regimeIINext_odd (n : ℕ) (hn : n % 2 = 1) (hT : 2 ≤ regimeIITime n) :
+    regimeIINext n % 2 = 1 := by
+  rw [regimeIINext_eq_iterate n hn hT]
+  exact syracuseExact_iter_odd n hn (regimeIITime n)
+
+/-- Intrinsic one-step descent on the compressed Regime-II state.
+
+    This is the direct bridge from the two-voice meta-step criterion back to the
+    induced node `regimeIINext n`: if the ejection valuation and n-bound satisfy
+    the compressed two-voice inequalities, then the compressed next node is
+    already strictly smaller than `n`. -/
+theorem regimeIINext_lt_of_two_voice (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n)
+    (hsurplus : 1000 * regimeIIEjectionValuation n > regimeIITime n * 585)
+    (hn_bound :
+      3 ^ regimeIITime n *
+          (2 ^ (regimeIITime n + regimeIIEjectionValuation n) + n * 2 ^ regimeIITime n) <
+        2 ^ (regimeIITime n + (regimeIITime n + regimeIIEjectionValuation n)) * (1 + n)) :
+    regimeIINext n < n := by
+  have hshrink : syracuseExact^[regimeIITime n] n < n := by
+    exact regimeII_meta_step_two_voice_shrinks n hn (by simpa [regimeIITime] using hT)
+      (by simpa [regimeIITime, regimeIIBase, regimeIIEjectionValuation] using hsurplus)
+      (by simpa [regimeIITime, regimeIIBase, regimeIIEjectionValuation] using hn_bound)
+  rw [← regimeIINext_eq_iterate n hn hT] at hshrink
+  exact hshrink
+
+/-- Two Regime-II meta-steps compose exactly: the first compressed ejection node becomes the
+    seed for the next compressed ejection node, and the v₂ sums add. -/
+theorem regimeII_meta_step_compose (n : ℕ) (hn : n % 2 = 1)
+    (hT1 : 2 ≤ regimeIITime n)
+    (hT2 : 2 ≤ regimeIITime (regimeIINext n)) :
+    syracuseExact^[regimeIITime n + regimeIITime (regimeIINext n)] n =
+      regimeIINext (regimeIINext n) ∧
+    v2SumExact (regimeIITime n + regimeIITime (regimeIINext n)) n =
+      (regimeIITime n + regimeIIEjectionValuation n) +
+        (regimeIITime (regimeIINext n) + regimeIIEjectionValuation (regimeIINext n)) := by
+  have hnext_eq : syracuseExact^[regimeIITime n] n = regimeIINext n := by
+    symm
+    exact regimeIINext_eq_iterate n hn hT1
+  have hnext_odd : regimeIINext n % 2 = 1 := regimeIINext_odd n hn hT1
+  have hnext_iter :
+      syracuseExact^[regimeIITime (regimeIINext n)] (regimeIINext n) =
+        regimeIINext (regimeIINext n) := by
+    symm
+    exact regimeIINext_eq_iterate (regimeIINext n) hnext_odd hT2
+  have hnext_sum :
+      v2SumExact (regimeIITime (regimeIINext n)) (regimeIINext n) =
+        regimeIITime (regimeIINext n) + regimeIIEjectionValuation (regimeIINext n) :=
+    regimeIIEjectionValuation_eq_surplus (regimeIINext n) hnext_odd hT2
+  constructor
+  · have hcompose :
+        syracuseExact^[regimeIITime (regimeIINext n) + regimeIITime n] n =
+          regimeIINext (regimeIINext n) := by
+        rw [Function.iterate_add_apply, hnext_eq, hnext_iter]
+    simpa [Nat.add_comm] using hcompose
+  · rw [v2SumExact_split, hnext_eq, regimeIIEjectionValuation_eq_surplus n hn hT1, hnext_sum]
+
 /-- **Streak break at trailing_ones = 1**: after a carry chain streak,
     the orbit reaches a number with trailing_ones = 1, and the NEXT step
     has v₂ ≥ 2 (entering Regime I = immediate contraction).
@@ -2952,6 +3537,231 @@ theorem v2_one_mod5_cycles :
     -- Period 2
     ∀ r : ZMod 5, syrV2oneStep5 (syrV2oneStep5 r) = r := by decide
 
+/-- Centered prime clocks: local observer coordinates are `n + 1` modulo the prime.
+    The local zero is always `-1`, so pure `v₂=1` motion becomes multiplication
+    by `3/2` in the centered chart. -/
+structure ObserverBundle where
+  modulus : ℕ
+  inv2 : ℕ
+  period : ℕ
+  dyadicPeriod : ℕ
+  inv2_spec : ((inv2 : ZMod modulus) * (2 : ZMod modulus) = 1)
+  period_spec : ((3 * inv2 : ZMod modulus) ^ period) = 1
+  dyadicPeriod_pos : 0 < dyadicPeriod
+  dyadicPeriod_spec : ((2 : ZMod modulus) ^ dyadicPeriod) = 1
+
+def centeredClockMod (m : ℕ) (n : ℕ) : ZMod m := (n + 1 : ZMod m)
+def centeredClockBundle (S : ObserverBundle) (n : ℕ) : ZMod S.modulus := centeredClockMod S.modulus n
+def centeredClock3 (n : ℕ) : ZMod 3 := centeredClockMod 3 n
+def centeredClock5 (n : ℕ) : ZMod 5 := centeredClockMod 5 n
+def centeredClock7 (n : ℕ) : ZMod 7 := centeredClockMod 7 n
+def centeredClock11 (n : ℕ) : ZMod 11 := centeredClockMod 11 n
+def centeredClock13 (n : ℕ) : ZMod 13 := centeredClockMod 13 n
+def centeredClock65 (n : ℕ) : ZMod 65 := centeredClockMod 65 n
+
+def bundle5 : ObserverBundle where
+  modulus := 5
+  inv2 := 3
+  period := 2
+  dyadicPeriod := 4
+  inv2_spec := by decide
+  period_spec := by decide
+  dyadicPeriod_pos := by decide
+  dyadicPeriod_spec := by decide
+
+def bundle7 : ObserverBundle where
+  modulus := 7
+  inv2 := 4
+  period := 6
+  dyadicPeriod := 3
+  inv2_spec := by decide
+  period_spec := by decide
+  dyadicPeriod_pos := by decide
+  dyadicPeriod_spec := by decide
+
+def bundle11 : ObserverBundle where
+  modulus := 11
+  inv2 := 6
+  period := 10
+  dyadicPeriod := 10
+  inv2_spec := by decide
+  period_spec := by decide
+  dyadicPeriod_pos := by decide
+  dyadicPeriod_spec := by decide
+
+def bundle13 : ObserverBundle where
+  modulus := 13
+  inv2 := 7
+  period := 4
+  dyadicPeriod := 12
+  inv2_spec := by decide
+  period_spec := (ord13_three_halves).1
+  dyadicPeriod_pos := by decide
+  dyadicPeriod_spec := by decide
+
+def bundle65 : ObserverBundle where
+  modulus := 65
+  inv2 := 33
+  period := 4
+  dyadicPeriod := 12
+  inv2_spec := by decide
+  period_spec := by decide
+  dyadicPeriod_pos := by decide
+  dyadicPeriod_spec := by decide
+
+/-- Generic centered-clock transport along a pure `v₂=1` streak. The unresolved
+    carry chain acts as multiplication by `3/2` in any odd modulus where a
+    chosen `inv2` is a multiplicative inverse of `2`. -/
+private lemma centeredClock_v2_one_streak_transport
+    (m inv2 W n : ℕ)
+    (hinv : ((inv2 : ZMod m) * (2 : ZMod m) = 1))
+    (hn : n % 2 = 1)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    (((syracuseExact^[W] n + 1 : ℕ) : ZMod m)) =
+      (((3 * inv2 : ZMod m) ^ W) * ((n + 1 : ℕ) : ZMod m)) := by
+  obtain ⟨t, ht⟩ := v2_one_streak_dvd_n_plus_one W n hn hstreak
+  have hdiv : (n + 1) / 2 ^ W = t := by
+    rw [ht, Nat.mul_div_right _ (pow_pos (by norm_num) _)]
+  have hnorm : syracuseExact^[W] n + 1 = 3 ^ W * t := by
+    rw [v2_one_streak_normal_form W n hn hstreak, hdiv]
+  have hclock_t : (t : ZMod m) = (inv2 : ZMod m) ^ W * ((n + 1 : ℕ) : ZMod m) := by
+    have ht_cast_nat : (((n + 1 : ℕ) : ZMod m)) = (((2 ^ W * t : ℕ) : ZMod m)) := by
+      exact congrArg (fun x : ℕ => (x : ZMod m)) ht
+    have ht_cast : ((n + 1 : ℕ) : ZMod m) = ((2 : ZMod m) ^ W) * (t : ZMod m) := by
+      simpa using ht_cast_nat
+    have hinv_pow : (inv2 : ZMod m) ^ W * (2 : ZMod m) ^ W = 1 := by
+      rw [← mul_pow]
+      simpa using congrArg (fun x : ZMod m => x ^ W) hinv
+    calc
+      (t : ZMod m) = 1 * (t : ZMod m) := by simp
+      _ = ((inv2 : ZMod m) ^ W * (2 : ZMod m) ^ W) * (t : ZMod m) := by rw [hinv_pow]
+      _ = (inv2 : ZMod m) ^ W * (((2 : ZMod m) ^ W) * (t : ZMod m)) := by rw [mul_assoc]
+      _ = (inv2 : ZMod m) ^ W * ((n + 1 : ℕ) : ZMod m) := by rw [← ht_cast]
+  calc
+    (((syracuseExact^[W] n + 1 : ℕ) : ZMod m))
+        = (((3 ^ W * t : ℕ) : ZMod m)) := by
+            exact congrArg (fun x : ℕ => (x : ZMod m)) hnorm
+    _ = ((3 : ZMod m) ^ W) * (t : ZMod m) := by simp
+    _ = ((3 : ZMod m) ^ W) * ((inv2 : ZMod m) ^ W * ((n + 1 : ℕ) : ZMod m)) := by
+          rw [hclock_t]
+    _ = (((3 : ZMod m) ^ W) * (inv2 : ZMod m) ^ W) * ((n + 1 : ℕ) : ZMod m) := by
+          rw [mul_assoc]
+    _ = (((3 * inv2 : ZMod m) ^ W) * ((n + 1 : ℕ) : ZMod m)) := by
+          rw [← mul_pow]
+
+/-- Generic centered-clock return theorem: if the centered `v₂=1` multiplier has
+    period `P` modulo `m`, then every pure unresolved streak of length divisible
+    by `P` returns to its starting centered phase. -/
+theorem centeredClock_v2_one_streak_return_of_period
+    (m inv2 P W n : ℕ)
+    (hinv : ((inv2 : ZMod m) * (2 : ZMod m) = 1))
+    (hpow : ((3 * inv2 : ZMod m) ^ P) = 1)
+    (hn : n % 2 = 1)
+    (hperiod : P ∣ W)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClockMod m (syracuseExact^[W] n) = centeredClockMod m n := by
+  rcases hperiod with ⟨k, rfl⟩
+  simpa [centeredClockMod, pow_mul, hpow, one_pow, one_mul, Nat.cast_add] using
+    (centeredClock_v2_one_streak_transport m inv2 (P * k) n hinv hn hstreak)
+
+/-- The scale-packaged centered-clock return theorem. -/
+theorem centeredClockBundle_v2_one_streak_return
+    (S : ObserverBundle) (W n : ℕ)
+    (hn : n % 2 = 1)
+    (hperiod : S.period ∣ W)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClockBundle S (syracuseExact^[W] n) = centeredClockBundle S n := by
+  exact centeredClock_v2_one_streak_return_of_period
+    S.modulus S.inv2 S.period W n S.inv2_spec S.period_spec hn hperiod hstreak
+
+/-- On the centered mod-5 clock, a pure `v₂=1` streak acts by multiplication by
+    `(3/2) mod 5 = 4`. -/
+lemma centeredClock5_v2_one_streak (W n : ℕ) (hn : n % 2 = 1)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock5 (syracuseExact^[W] n) =
+      ((3 * 3 : ZMod 5) ^ W) * centeredClock5 n := by
+  unfold centeredClock5
+  simpa using centeredClock_v2_one_streak_transport 5 3 W n (by decide) hn hstreak
+
+/-- On the centered mod-13 clock, a pure `v₂=1` streak acts by multiplication by
+    `(3/2) mod 13 = 8`. -/
+lemma centeredClock13_v2_one_streak (W n : ℕ) (hn : n % 2 = 1)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock13 (syracuseExact^[W] n) =
+      ((3 * 7 : ZMod 13) ^ W) * centeredClock13 n := by
+  unfold centeredClock13
+  simpa using centeredClock_v2_one_streak_transport 13 7 W n (by decide) hn hstreak
+
+/-- The mod-5 centered clock returns after every two unresolved steps. -/
+theorem centeredClock5_v2_one_streak_return_of_period_two (W n : ℕ) (hn : n % 2 = 1)
+    (hperiod : 2 ∣ W)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock5 (syracuseExact^[W] n) = centeredClock5 n := by
+  simpa [centeredClock5, centeredClockBundle, bundle5] using
+    centeredClockBundle_v2_one_streak_return bundle5 W n hn hperiod hstreak
+
+/-- On the centered mod-7 clock, a pure `v₂=1` streak acts by multiplication by
+    `(3/2) mod 7 = 5`. -/
+lemma centeredClock7_v2_one_streak (W n : ℕ) (hn : n % 2 = 1)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock7 (syracuseExact^[W] n) =
+      ((3 * 4 : ZMod 7) ^ W) * centeredClock7 n := by
+  unfold centeredClock7
+  simpa using centeredClock_v2_one_streak_transport 7 4 W n (by decide) hn hstreak
+
+/-- On the centered mod-11 clock, a pure `v₂=1` streak acts by multiplication by
+    `(3/2) mod 11 = 7`. -/
+lemma centeredClock11_v2_one_streak (W n : ℕ) (hn : n % 2 = 1)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock11 (syracuseExact^[W] n) =
+      ((3 * 6 : ZMod 11) ^ W) * centeredClock11 n := by
+  unfold centeredClock11
+  simpa using centeredClock_v2_one_streak_transport 11 6 W n (by decide) hn hstreak
+
+/-- On the centered mod-3 clock, every positive unresolved streak is absorbed into
+    the observer sink because `(3/2) mod 3 = 0`. -/
+theorem centeredClock3_v2_one_streak_sink (W n : ℕ) (hn : n % 2 = 1)
+    (hW : 0 < W)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock3 (syracuseExact^[W] n) = 0 := by
+  rcases Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hW) with ⟨k, rfl⟩
+  have htransport :=
+    centeredClock_v2_one_streak_transport 3 2 (k + 1) n (by decide) hn hstreak
+  have hzero : ((3 * 2 : ZMod 3)) = 0 := by
+    change ((6 : ZMod 3) = 0)
+    decide
+  calc
+    centeredClock3 (syracuseExact^[k + 1] n)
+        = ((3 * 2 : ZMod 3) ^ (k + 1)) * centeredClock3 n := by
+            simpa [centeredClock3, centeredClockMod] using htransport
+    _ = 0 := by
+          rw [pow_succ, hzero]
+          simp
+
+/-- The mod-7 centered clock returns after every six unresolved steps. -/
+theorem centeredClock7_v2_one_streak_return_of_period_six (W n : ℕ) (hn : n % 2 = 1)
+    (hperiod : 6 ∣ W)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock7 (syracuseExact^[W] n) = centeredClock7 n := by
+  simpa [centeredClock7, centeredClockBundle, bundle7] using
+    centeredClockBundle_v2_one_streak_return bundle7 W n hn hperiod hstreak
+
+/-- The mod-11 centered clock returns after every ten unresolved steps. -/
+theorem centeredClock11_v2_one_streak_return_of_period_ten (W n : ℕ) (hn : n % 2 = 1)
+    (hperiod : 10 ∣ W)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock11 (syracuseExact^[W] n) = centeredClock11 n := by
+  simpa [centeredClock11, centeredClockBundle, bundle11] using
+    centeredClockBundle_v2_one_streak_return bundle11 W n hn hperiod hstreak
+
+/-- The mod-13 centered clock returns after every four unresolved steps. -/
+theorem centeredClock13_v2_one_streak_return_of_period_four (W n : ℕ) (hn : n % 2 = 1)
+    (hperiod : 4 ∣ W)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock13 (syracuseExact^[W] n) = centeredClock13 n := by
+  simpa [centeredClock13, centeredClockBundle, bundle13] using
+    centeredClockBundle_v2_one_streak_return bundle13 W n hn hperiod hstreak
+
 /-- The fixed point of the v₂=1 map is ALWAYS -1 mod p. Universal observer.
     (3(-1)+1)/2 = -2/2 = -1. Self-referential: the observer observes itself.
     Verified at p = 5, 13, 89, 233, 1597.  ✅ PROVEN -/
@@ -3040,6 +3850,15 @@ combined v₂ sum that reflects BOTH observers simultaneously. -/
     (3r+1)/2 mod 65, where inv(2) mod 65 = 33.  -/
 def syrV2oneStep65 (r : ZMod 65) : ZMod 65 := (3 * r + 1) * 33
 
+/-- On the centered mod-65 clock, a pure `v₂=1` streak acts by multiplication by
+    `(3/2) mod 65 = 34`. This is the joint 5×13 observer. -/
+lemma centeredClock65_v2_one_streak (W n : ℕ) (hn : n % 2 = 1)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock65 (syracuseExact^[W] n) =
+      ((3 * 33 : ZMod 65) ^ W) * centeredClock65 n := by
+  unfold centeredClock65
+  simpa using centeredClock_v2_one_streak_transport 65 33 W n (by decide) hn hstreak
+
 /-- CRT consistency: the mod-65 map projects correctly to mod-5 and mod-13 maps.
     ✅ PROVEN -/
 theorem crt_projection_consistent :
@@ -3074,6 +3893,758 @@ theorem v2_one_mod65_period :
     ∀ r : ZMod 65,
       syrV2oneStep65 (syrV2oneStep65 (syrV2oneStep65 (syrV2oneStep65 r))) = r := by
   decide
+
+/-- The combined mod-65 centered clock returns after every four unresolved steps,
+    reflecting `lcm(ord₅(3/2), ord₁₃(3/2)) = lcm(2,4) = 4`. -/
+theorem centeredClock65_v2_one_streak_return_of_period_four (W n : ℕ) (hn : n % 2 = 1)
+    (hperiod : 4 ∣ W)
+    (hstreak : ∀ i < W, v2 (3 * syracuseExact^[i] n + 1) = 1) :
+    centeredClock65 (syracuseExact^[W] n) = centeredClock65 n := by
+  simpa [centeredClock65, centeredClockBundle, bundle65] using
+    centeredClockBundle_v2_one_streak_return bundle65 W n hn hperiod hstreak
+
+/-- Generic Regime-II pre-ejection coherence theorem for centered observer clocks.
+    If the unresolved carry-chain length `T-1` is a multiple of a return period `P`
+    for the centered `v₂=1` multiplier modulo `m`, then the observer has already
+    returned to its starting phase at the ejection boundary. -/
+theorem regimeII_pre_ejection_centeredClock_coherence
+    (m inv2 P n : ℕ)
+    (hinv : ((inv2 : ZMod m) * (2 : ZMod m) = 1))
+    (hpow : ((3 * inv2 : ZMod m) ^ P) = 1)
+    (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n)
+    (hperiod : P ∣ regimeIITime n - 1) :
+    centeredClockMod m (syracuseExact^[regimeIITime n - 1] n) = centeredClockMod m n := by
+  set T := regimeIITime n with hT_def
+  have hT' : 2 ≤ T := by simpa [hT_def] using hT
+  obtain ⟨a, ha_odd, ha_pos, hform⟩ := odd_trailing_ones_form n hn
+  have hn_form : n = a * 2 ^ T - 1 := by
+    have hformT : n + 1 = a * 2 ^ T := by simpa [hT_def] using hform
+    omega
+  obtain ⟨hstreak, _⟩ := carry_chain_prefix a T (T - 1) ha_odd ha_pos (le_rfl)
+  have hodd_form : (a * 2 ^ T - 1) % 2 = 1 := by simpa [hn_form] using hn
+  have hret :=
+    centeredClock_v2_one_streak_return_of_period m inv2 P (T - 1) (a * 2 ^ T - 1)
+      hinv hpow hodd_form (by simpa [hT_def] using hperiod) hstreak
+  rw [hT_def]
+  change centeredClockMod m (syracuseExact^[T - 1] n) = centeredClockMod m n
+  rw [hn_form]
+  exact hret
+
+/-- Regime-II pre-ejection coherence phrased for a packaged periodic observer scale. -/
+theorem regimeII_pre_ejection_coherence_of_bundle
+    (S : ObserverBundle) (n : ℕ)
+    (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n)
+    (hperiod : S.period ∣ regimeIITime n - 1) :
+    centeredClockBundle S (syracuseExact^[regimeIITime n - 1] n) = centeredClockBundle S n := by
+  exact regimeII_pre_ejection_centeredClock_coherence
+    S.modulus S.inv2 S.period n S.inv2_spec S.period_spec hn hT hperiod
+
+/-- Regime-II pre-ejection coherence at the mod-5 centered clock:
+    if the pure carry-chain length `T-1` is even, the mod-5 clock has already
+    returned to its starting phase at the ejection boundary. -/
+theorem regimeII_pre_ejection_mod5_coherence (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : 2 ∣ regimeIITime n - 1) :
+    centeredClock5 (syracuseExact^[regimeIITime n - 1] n) = centeredClock5 n := by
+  simpa [centeredClock5, centeredClockBundle, bundle5] using
+    regimeII_pre_ejection_coherence_of_bundle bundle5 n hn hT hperiod
+
+/-- Regime-II pre-ejection sink behavior at the mod-3 centered clock.
+    Since `regimeIITime n ≥ 2`, the carry-chain length `T-1` is positive, so the
+    mod-3 centered observer has already collapsed to `0` before ejection. -/
+theorem regimeII_pre_ejection_mod3_sink (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) :
+    centeredClock3 (syracuseExact^[regimeIITime n - 1] n) = 0 := by
+  set T := regimeIITime n with hT_def
+  have hT' : 2 ≤ T := by simpa [hT_def] using hT
+  obtain ⟨a, ha_odd, ha_pos, hform⟩ := odd_trailing_ones_form n hn
+  have hn_form : n = a * 2 ^ T - 1 := by
+    have hformT : n + 1 = a * 2 ^ T := by simpa [hT_def] using hform
+    omega
+  obtain ⟨hstreak, _⟩ := carry_chain_prefix a T (T - 1) ha_odd ha_pos (le_rfl)
+  have hodd_form : (a * 2 ^ T - 1) % 2 = 1 := by simpa [hn_form] using hn
+  have hpos : 0 < T - 1 := by omega
+  have hsink :=
+    centeredClock3_v2_one_streak_sink (T - 1) (a * 2 ^ T - 1) hodd_form hpos hstreak
+  rw [hT_def]
+  change centeredClock3 (syracuseExact^[T - 1] n) = 0
+  rw [hn_form]
+  exact hsink
+
+/-- Regime-II pre-ejection coherence at the mod-7 centered clock. -/
+theorem regimeII_pre_ejection_mod7_coherence (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : 6 ∣ regimeIITime n - 1) :
+    centeredClock7 (syracuseExact^[regimeIITime n - 1] n) = centeredClock7 n := by
+  simpa [centeredClock7, centeredClockBundle, bundle7] using
+    regimeII_pre_ejection_coherence_of_bundle bundle7 n hn hT hperiod
+
+/-- Regime-II pre-ejection coherence at the mod-11 centered clock. -/
+theorem regimeII_pre_ejection_mod11_coherence (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : 10 ∣ regimeIITime n - 1) :
+    centeredClock11 (syracuseExact^[regimeIITime n - 1] n) = centeredClock11 n := by
+  simpa [centeredClock11, centeredClockBundle, bundle11] using
+    regimeII_pre_ejection_coherence_of_bundle bundle11 n hn hT hperiod
+
+/-- Regime-II pre-ejection coherence at the mod-13 centered clock:
+    if the pure carry-chain length `T-1` is a multiple of 4, the mod-13 clock
+    has returned to its starting phase at the ejection boundary. -/
+theorem regimeII_pre_ejection_mod13_coherence (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : 4 ∣ regimeIITime n - 1) :
+    centeredClock13 (syracuseExact^[regimeIITime n - 1] n) = centeredClock13 n := by
+  simpa [centeredClock13, centeredClockBundle, bundle13] using
+    regimeII_pre_ejection_coherence_of_bundle bundle13 n hn hT hperiod
+
+/-- Regime-II pre-ejection coherence at the combined mod-65 centered clock.
+    Since `lcm(2,4)=4`, the joint 5×13 observer returns whenever `T-1` is a
+    multiple of 4. -/
+theorem regimeII_pre_ejection_mod65_coherence (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : 4 ∣ regimeIITime n - 1) :
+    centeredClock65 (syracuseExact^[regimeIITime n - 1] n) = centeredClock65 n := by
+  simpa [centeredClock65, centeredClockBundle, bundle65] using
+    regimeII_pre_ejection_coherence_of_bundle bundle65 n hn hT hperiod
+
+/-- Explicit centered-clock relation at the Regime-II ejection boundary in any
+    observer modulus. The compressed next node is the next Syracuse step from
+    the pre-ejection state, and its centered clock satisfies the exact one-step
+    affine relation with dyadic weight `regimeIIEjectionValuation n + 1`. -/
+theorem regimeIINext_centeredClockMod_from_pre_ejection (m n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) :
+    let pre := syracuseExact^[regimeIITime n - 1] n
+    let j := regimeIIEjectionValuation n
+    ((2 : ZMod m) ^ (j + 1)) * centeredClockMod m (regimeIINext n) =
+      3 * centeredClockMod m pre + (((2 : ZMod m) ^ (j + 1)) - 2) := by
+  dsimp
+  set T := regimeIITime n with hT_def
+  set j := regimeIIEjectionValuation n with hj_def
+  have hT' : 2 ≤ T := by simpa [hT_def] using hT
+  obtain ⟨a, ha_odd, ha_pos, hform⟩ := odd_trailing_ones_form n hn
+  have hformT : n + 1 = a * 2 ^ T := by simpa [hT_def] using hform
+  have hbase : regimeIIBase n = a := by
+    unfold regimeIIBase
+    rw [show regimeIITime n = T by exact hT_def.symm]
+    rw [hformT]
+    rw [Nat.mul_comm]
+    exact Nat.mul_div_right _ (by positivity : 0 < 2 ^ T)
+  have hj : j = v2 (3 ^ T * a - 1) := by
+    rw [hj_def, regimeIIEjectionValuation, hT_def, hbase]
+  have hn_form : n = a * 2 ^ T - 1 := by omega
+  obtain ⟨_, hpre⟩ := carry_chain_prefix a T (T - 1) ha_odd ha_pos (le_rfl)
+  have hpre' : syracuseExact^[T - 1] (a * 2 ^ T - 1) = 2 * (3 ^ (T - 1) * a) - 1 := by
+    rw [hpre]
+    have hlast : T - (T - 1) = 1 := by omega
+    rw [hlast, pow_one]
+    ring
+  have hstep_v2 :
+      v2 (3 * syracuseExact^[T - 1] (a * 2 ^ T - 1) + 1) = j + 1 := by
+    rw [hpre']
+    have hpowT : 3 * (3 ^ (T - 1) * a) - 1 = 3 ^ T * a - 1 := by
+      have hTsucc' : T = Nat.succ (T - 1) := by omega
+      rw [hTsucc', pow_succ', Nat.succ_sub_one]
+      ring
+    have hcore_pos : 0 < 3 ^ T * a - 1 := by
+      have hpow_ge : 3 ^ 2 ≤ 3 ^ T := Nat.pow_le_pow_right (by norm_num) hT'
+      have hmul_ge : 9 ≤ 3 ^ T * a := by
+        calc
+          9 = 3 ^ 2 := by norm_num
+          _ ≤ 3 ^ T := hpow_ge
+          _ ≤ 3 ^ T * a := by
+                simpa using Nat.mul_le_mul_left (3 ^ T) (Nat.succ_le_of_lt ha_pos)
+      omega
+    have heq :
+        3 * (2 * (3 ^ (T - 1) * a) - 1) + 1 = 2 * (3 ^ T * a - 1) := by
+      rw [← hpowT]
+      omega
+    rw [heq, v2_two_mul (3 ^ T * a - 1) hcore_pos, hj]
+  have hstep_next :
+      syracuseExact (syracuseExact^[T - 1] n) = regimeIINext n := by
+    calc
+      syracuseExact (syracuseExact^[T - 1] n)
+          = syracuseExact^[(T - 1).succ] n := by
+            rw [Function.iterate_succ_apply']
+      _ = syracuseExact^[T] n := by
+            congr
+            omega
+      _ = regimeIINext n := by symm; exact regimeIINext_eq_iterate n hn hT'
+  have hpre_n : syracuseExact^[T - 1] (a * 2 ^ T - 1) = syracuseExact^[T - 1] n := by
+    simpa [hn_form]
+  have hstep_next_form :
+      syracuseExact (syracuseExact^[T - 1] (a * 2 ^ T - 1)) = regimeIINext n := by
+    calc
+      syracuseExact (syracuseExact^[T - 1] (a * 2 ^ T - 1))
+          = syracuseExact (syracuseExact^[T - 1] n) := by rw [hn_form]
+      _ = regimeIINext n := hstep_next
+  have hstep_rel_n :
+      2 ^ (j + 1) * (regimeIINext n + 1) =
+        3 * (syracuseExact^[T - 1] n + 1) + 2 ^ (j + 1) - 2 := by
+    have hstep_rel :=
+      syracuseExact_centered_step_relation (syracuseExact^[T - 1] (a * 2 ^ T - 1))
+    rw [hstep_v2] at hstep_rel
+    rw [hstep_next_form, hpre_n] at hstep_rel
+    exact hstep_rel
+  have hcenter_nat :
+      2 ^ (j + 1) * (regimeIINext n + 1) =
+        3 * (syracuseExact^[T - 1] n + 1) + 2 ^ (j + 1) - 2 := by
+    exact hstep_rel_n
+  have hcore_nat :
+      2 ^ (j + 1) * regimeIINext n = 3 * syracuseExact^[T - 1] n + 1 := by
+    have hcenter_nat' := hcenter_nat
+    ring_nf at hcenter_nat' ⊢
+    omega
+  have hcore_mod :
+      (((2 ^ (j + 1) * regimeIINext n : ℕ) : ZMod m)) =
+        (((3 * syracuseExact^[T - 1] n + 1 : ℕ) : ZMod m)) :=
+    congrArg (fun x : ℕ => (x : ZMod m)) hcore_nat
+  change ((2 : ZMod m) ^ (j + 1)) * centeredClockMod m (regimeIINext n) =
+      3 * centeredClockMod m (syracuseExact^[T - 1] n) + (((2 : ZMod m) ^ (j + 1)) - 2)
+  have hcore_mod' := hcore_mod
+  norm_num [centeredClockMod, Nat.cast_add, Nat.cast_mul, Nat.cast_pow] at hcore_mod' ⊢
+  calc
+    ((2 : ZMod m) ^ (j + 1)) * (((regimeIINext n : ℕ) : ZMod m) + 1)
+        = ((2 : ZMod m) ^ (j + 1)) * ((regimeIINext n : ℕ) : ZMod m) + ((2 : ZMod m) ^ (j + 1)) := by ring
+    _ = (3 * (((syracuseExact^[T - 1] n : ℕ) : ZMod m)) + 1) + ((2 : ZMod m) ^ (j + 1)) := by rw [hcore_mod']
+    _ = 3 * ((((syracuseExact^[T - 1] n : ℕ) : ZMod m)) + 1) + (((2 : ZMod m) ^ (j + 1)) - 2) := by ring
+
+/-- Explicit centered-clock relation at the Regime-II ejection boundary for the
+    bundled mod-65 observer. -/
+theorem regimeIINext_centeredClock65_from_pre_ejection (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) :
+    let pre := syracuseExact^[regimeIITime n - 1] n
+    let j := regimeIIEjectionValuation n
+    ((2 : ZMod 65) ^ (j + 1)) * centeredClock65 (regimeIINext n) =
+      3 * centeredClock65 pre + (((2 : ZMod 65) ^ (j + 1)) - 2) := by
+  simpa [centeredClock65, centeredClockMod] using
+    regimeIINext_centeredClockMod_from_pre_ejection 65 n hn hT
+
+/-- If a bundled observer is coherent through the Regime-II carry chain, the
+    post-ejection centered clock is determined by the starting clock together
+    with the ejection valuation. -/
+theorem regimeIINext_centeredClockBundle_of_coherence
+    (S : ObserverBundle) (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : S.period ∣ regimeIITime n - 1) :
+    let j := regimeIIEjectionValuation n
+    ((2 : ZMod S.modulus) ^ (j + 1)) * centeredClockBundle S (regimeIINext n) =
+      3 * centeredClockBundle S n + (((2 : ZMod S.modulus) ^ (j + 1)) - 2) := by
+  dsimp
+  have hrel := regimeIINext_centeredClockMod_from_pre_ejection S.modulus n hn hT
+  dsimp only at hrel
+  have hcoh :
+      centeredClockMod S.modulus (syracuseExact^[regimeIITime n - 1] n) =
+        centeredClockMod S.modulus n := by
+    simpa [centeredClockBundle, centeredClockMod] using
+      (regimeII_pre_ejection_coherence_of_bundle S n hn hT hperiod)
+  rw [hcoh] at hrel
+  simpa [centeredClockBundle, centeredClockMod] using hrel
+
+/-- The explicit one-step return map on an observer bundle after a coherent
+    Regime-II ejection. -/
+def observerBundleEjectionMap (S : ObserverBundle) (j : ℕ)
+    (c : ZMod S.modulus) : ZMod S.modulus :=
+  (S.inv2 : ZMod S.modulus) ^ (j + 1) *
+    (3 * c + (((2 : ZMod S.modulus) ^ (j + 1)) - 2))
+
+private lemma observerBundle_inv2_pow_cancel (S : ObserverBundle) (k : ℕ) :
+    (S.inv2 : ZMod S.modulus) ^ k * (2 : ZMod S.modulus) ^ k = 1 := by
+  rw [← mul_pow]
+  simpa using congrArg (fun x : ZMod S.modulus => x ^ k) S.inv2_spec
+
+private lemma observerBundle_inv2_dyadicPeriod_spec (S : ObserverBundle) :
+    ((S.inv2 : ZMod S.modulus) ^ S.dyadicPeriod) = 1 := by
+  have hmul : (S.inv2 : ZMod S.modulus) ^ S.dyadicPeriod * (2 : ZMod S.modulus) ^ S.dyadicPeriod = 1 := by
+    exact observerBundle_inv2_pow_cancel S S.dyadicPeriod
+  rw [S.dyadicPeriod_spec, mul_one] at hmul
+  exact hmul
+
+/-- The observer-bundle ejection map is periodic in the ejection valuation with
+    period given by the dyadic order of `2` in the bundle modulus. -/
+theorem observerBundleEjectionMap_periodic (S : ObserverBundle)
+    (j : ℕ) (c : ZMod S.modulus) :
+    observerBundleEjectionMap S (j + S.dyadicPeriod) c =
+      observerBundleEjectionMap S j c := by
+  unfold observerBundleEjectionMap
+  have hinv :
+      (S.inv2 : ZMod S.modulus) ^ (j + S.dyadicPeriod + 1) =
+        (S.inv2 : ZMod S.modulus) ^ (j + 1) := by
+    rw [Nat.add_assoc, pow_add, pow_succ, observerBundle_inv2_dyadicPeriod_spec, one_mul, ← pow_succ]
+  have hpow2 :
+      (2 : ZMod S.modulus) ^ (j + S.dyadicPeriod + 1) =
+        (2 : ZMod S.modulus) ^ (j + 1) := by
+    rw [Nat.add_assoc, pow_add, pow_succ, S.dyadicPeriod_spec, one_mul, ← pow_succ]
+  rw [hinv, hpow2]
+
+private lemma observerBundleEjectionMap_periodic_mul (S : ObserverBundle)
+    (j k : ℕ) (c : ZMod S.modulus) :
+    observerBundleEjectionMap S (j + k * S.dyadicPeriod) c =
+      observerBundleEjectionMap S j c := by
+  induction k with
+  | zero =>
+      simp [observerBundleEjectionMap]
+  | succ k ih =>
+      rw [Nat.succ_mul, ← Nat.add_assoc, observerBundleEjectionMap_periodic, ih]
+
+/-- Coherent Regime-II transport is an actual return map on the observer-bundle
+    state: the post-ejection centered clock equals the explicit bundle ejection
+    map applied to the pre-ejection clock value. -/
+theorem regimeIINext_centeredClockBundle_eq_ejectionMap_of_coherence
+    (S : ObserverBundle) (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : S.period ∣ regimeIITime n - 1) :
+    centeredClockBundle S (regimeIINext n) =
+      observerBundleEjectionMap S (regimeIIEjectionValuation n) (centeredClockBundle S n) := by
+  set j := regimeIIEjectionValuation n
+  have hrel := regimeIINext_centeredClockBundle_of_coherence S n hn hT hperiod
+  dsimp only at hrel
+  have hmul := congrArg
+    (fun z : ZMod S.modulus => (S.inv2 : ZMod S.modulus) ^ (j + 1) * z) hrel
+  have hcancel :
+      (S.inv2 : ZMod S.modulus) ^ (j + 1) *
+          (((2 : ZMod S.modulus) ^ (j + 1)) * centeredClockBundle S (regimeIINext n)) =
+        centeredClockBundle S (regimeIINext n) := by
+    calc
+      (S.inv2 : ZMod S.modulus) ^ (j + 1) *
+          (((2 : ZMod S.modulus) ^ (j + 1)) * centeredClockBundle S (regimeIINext n)) =
+          (((S.inv2 : ZMod S.modulus) ^ (j + 1) * (2 : ZMod S.modulus) ^ (j + 1)) *
+            centeredClockBundle S (regimeIINext n)) := by rw [mul_assoc]
+      _ = (1 : ZMod S.modulus) * centeredClockBundle S (regimeIINext n) := by
+        rw [observerBundle_inv2_pow_cancel]
+      _ = centeredClockBundle S (regimeIINext n) := by simp
+  calc
+    centeredClockBundle S (regimeIINext n) =
+        (S.inv2 : ZMod S.modulus) ^ (j + 1) *
+          (((2 : ZMod S.modulus) ^ (j + 1)) * centeredClockBundle S (regimeIINext n)) := by
+      symm
+      exact hcancel
+    _ = observerBundleEjectionMap S (regimeIIEjectionValuation n) (centeredClockBundle S n) := by
+      simpa [observerBundleEjectionMap, j, mul_assoc] using hmul
+
+/-- Under bundle coherence, the post-ejection centered clock depends only on the
+    dyadic residue class of the ejection valuation, not on its full size. -/
+theorem regimeIINext_centeredClockBundle_eq_ejectionMap_mod_dyadicPeriod_of_coherence
+    (S : ObserverBundle) (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : S.period ∣ regimeIITime n - 1) :
+    centeredClockBundle S (regimeIINext n) =
+      observerBundleEjectionMap S
+        (regimeIIEjectionValuation n % S.dyadicPeriod) (centeredClockBundle S n) := by
+  have hbase :=
+    regimeIINext_centeredClockBundle_eq_ejectionMap_of_coherence S n hn hT hperiod
+  let j := regimeIIEjectionValuation n
+  have hdecomp : j = j % S.dyadicPeriod + (j / S.dyadicPeriod) * S.dyadicPeriod := by
+    simpa [Nat.mul_comm] using (Nat.mod_add_div j S.dyadicPeriod).symm
+  rw [show regimeIIEjectionValuation n = j by rfl, hdecomp] at hbase
+  rw [observerBundleEjectionMap_periodic_mul] at hbase
+  simpa [j] using hbase
+
+/-- If the mod-65 clock is coherent through the Regime-II carry chain, the
+    post-ejection centered clock is determined by the starting clock together
+    with the ejection valuation. -/
+theorem regimeIINext_centeredClock65_of_coherence (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : 4 ∣ regimeIITime n - 1) :
+    let j := regimeIIEjectionValuation n
+    ((2 : ZMod 65) ^ (j + 1)) * centeredClock65 (regimeIINext n) =
+      3 * centeredClock65 n + (((2 : ZMod 65) ^ (j + 1)) - 2) := by
+  simpa [centeredClock65, centeredClockBundle, bundle65] using
+    regimeIINext_centeredClockBundle_of_coherence bundle65 n hn hT hperiod
+
+/-- Specialized bundle return map for the bundled mod-65 observer. -/
+theorem regimeIINext_centeredClock65_eq_ejectionMap_of_coherence
+    (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : 4 ∣ regimeIITime n - 1) :
+    centeredClock65 (regimeIINext n) =
+      observerBundleEjectionMap bundle65 (regimeIIEjectionValuation n) (centeredClock65 n) := by
+  simpa [centeredClock65, centeredClockBundle, bundle65] using
+    regimeIINext_centeredClockBundle_eq_ejectionMap_of_coherence bundle65 n hn hT hperiod
+
+/-- Specialized dyadic-period reduction for the bundled mod-65 observer. -/
+theorem regimeIINext_centeredClock65_eq_ejectionMap_mod12_of_coherence
+    (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : 4 ∣ regimeIITime n - 1) :
+    centeredClock65 (regimeIINext n) =
+      observerBundleEjectionMap bundle65
+        (regimeIIEjectionValuation n % bundle65.dyadicPeriod) (centeredClock65 n) := by
+  simpa [centeredClock65, centeredClockBundle, bundle65] using
+    regimeIINext_centeredClockBundle_eq_ejectionMap_mod_dyadicPeriod_of_coherence
+      bundle65 n hn hT hperiod
+
+/-- Finite observer-bundle state: centered phase together with the dyadic class
+    of the Regime-II ejection valuation. This is the minimal finite quotient of
+    the coherent post-ejection bundle dynamics currently formalized. -/
+structure BundleState (S : ObserverBundle) where
+  clock : ZMod S.modulus
+  ejectClass : Fin S.dyadicPeriod
+deriving DecidableEq
+
+/-- The radial height of the Regime-II base above a bundle modulus. This is an
+    intrinsic scale coordinate, not another local phase residue. -/
+def bundleFiberHeight (S : ObserverBundle) (n : ℕ) : ℕ :=
+  regimeIIBase n / S.modulus
+
+/-- Intrinsic compressed Regime-II source state: duration, odd base, and final
+    ejection valuation. Observer bundles are projections out of this state, not
+    replacements for it. -/
+structure RegimeIIState where
+  time : ℕ
+  base : ℕ
+  eject : ℕ
+deriving DecidableEq
+
+/-- The intrinsic Regime-II source state attached to an odd integer `n`. -/
+def regimeIIStateOf (n : ℕ) : RegimeIIState where
+  time := regimeIITime n
+  base := regimeIIBase n
+  eject := regimeIIEjectionValuation n
+
+/-- The intrinsic base threshold for exact-zone entry at target `B`, expressed
+    directly on the compressed Regime-II source state. -/
+def regimeIIBaseThreshold (B : ℕ) (s : RegimeIIState) : ℕ :=
+  (B * 2 ^ s.eject) / (3 ^ s.time) + 1
+
+/-- A first refined state object: local bundle data plus radial fiber height. -/
+structure BundleFiberState (S : ObserverBundle) where
+  bundleState : BundleState S
+  fiberHeight : ℕ
+deriving DecidableEq
+
+@[ext] theorem BundleFiberState.ext {S : ObserverBundle} {x y : BundleFiberState S}
+    (hBundle : x.bundleState = y.bundleState)
+    (hFiber : x.fiberHeight = y.fiberHeight) : x = y := by
+  cases x
+  cases y
+  cases hBundle
+  cases hFiber
+  rfl
+
+/-- The bundle state attached to an odd integer `n` at the current Regime-II
+    node. -/
+def bundleStateOf (S : ObserverBundle) (n : ℕ) : BundleState S where
+  clock := centeredClockBundle S n
+  ejectClass := ⟨regimeIIEjectionValuation n % S.dyadicPeriod, Nat.mod_lt _ S.dyadicPeriod_pos⟩
+
+/-- The refined bundle-plus-fiber state attached to an odd integer `n` at the
+    current Regime-II node. -/
+def bundleFiberStateOf (S : ObserverBundle) (n : ℕ) : BundleFiberState S where
+  bundleState := bundleStateOf S n
+  fiberHeight := bundleFiberHeight S n
+
+/-- Projection of the intrinsic Regime-II source state to a bundle-fiber chart.
+    This forgets most of the source state and keeps only the local bundle class
+    together with the radial height over the bundle modulus. -/
+def regimeIIStateToBundleFiberState (S : ObserverBundle) (n : ℕ)
+    (s : RegimeIIState) : BundleFiberState S where
+  bundleState := bundleStateOf S n
+  fiberHeight := s.base / S.modulus
+
+/-- The finite-state update induced by a coherent Regime-II ejection on a
+    single observer bundle. -/
+def bundleStateStep (S : ObserverBundle) (s : BundleState S) : ZMod S.modulus :=
+  observerBundleEjectionMap S s.ejectClass.val s.clock
+
+/-- Under bundle coherence, the post-ejection centered clock is exactly the
+    finite-state bundle update applied to the current bundle state. -/
+theorem regimeIINext_centeredClockBundle_eq_bundleStateStep_of_coherence
+    (S : ObserverBundle) (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : S.period ∣ regimeIITime n - 1) :
+    centeredClockBundle S (regimeIINext n) =
+      bundleStateStep S (bundleStateOf S n) := by
+  unfold bundleStateStep bundleStateOf
+  simpa using
+    regimeIINext_centeredClockBundle_eq_ejectionMap_mod_dyadicPeriod_of_coherence
+      S n hn hT hperiod
+
+/-- Specialized finite-state update for the bundled mod-65 observer. -/
+theorem regimeIINext_centeredClock65_eq_bundleStateStep_of_coherence
+    (n : ℕ) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hperiod : 4 ∣ regimeIITime n - 1) :
+    centeredClock65 (regimeIINext n) =
+      bundleStateStep bundle65 (bundleStateOf bundle65 n) := by
+  simpa [centeredClock65, centeredClockBundle, bundle65] using
+    regimeIINext_centeredClockBundle_eq_bundleStateStep_of_coherence
+      bundle65 n hn hT hperiod
+
+/-- The bundle-fiber chart factors through the intrinsic Regime-II source
+    state. This is the formal expression of “source state first, projection
+    second.” -/
+theorem bundleFiberStateOf_factors_through_regimeIIState
+    (S : ObserverBundle) (n : ℕ) :
+    bundleFiberStateOf S n =
+      regimeIIStateToBundleFiberState S n (regimeIIStateOf n) := by
+  unfold bundleFiberStateOf regimeIIStateToBundleFiberState regimeIIStateOf
+  rfl
+
+/-- Exact-zone entry for the compressed Regime-II node is governed by the
+    intrinsic numerator/denominator inequality, not by bundle phase data alone. -/
+theorem regimeIINext_lt_iff_meta_bound (n B : ℕ) :
+    regimeIINext n < B ↔
+      3 ^ regimeIITime n * regimeIIBase n - 1 <
+        B * 2 ^ regimeIIEjectionValuation n := by
+  unfold regimeIINext
+  have hpow : 0 < 2 ^ regimeIIEjectionValuation n := by
+    exact pow_pos (by norm_num : 0 < 2) _
+  simpa [Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using
+    (Nat.div_lt_iff_lt_mul hpow)
+
+/-- A uniform threshold form of the meta-bound: for any positive target `B`,
+    exact-zone entry is determined by whether the intrinsic odd base lies below
+    the corresponding `(time,eject)` threshold. -/
+theorem regimeIINext_lt_iff_base_lt_threshold
+    (n B : ℕ) (hB : 0 < B) :
+    regimeIINext n < B ↔
+      regimeIIBase n <
+        (B * 2 ^ regimeIIEjectionValuation n) / (3 ^ regimeIITime n) + 1 := by
+  rw [regimeIINext_lt_iff_meta_bound]
+  let A := 3 ^ regimeIITime n
+  let N := B * 2 ^ regimeIIEjectionValuation n
+  have hA : 0 < A := by
+    dsimp [A]
+    exact pow_pos (by norm_num : 0 < 3) _
+  have hN : 0 < N := by
+    dsimp [N]
+    exact Nat.mul_pos hB (pow_pos (by norm_num : 0 < 2) _)
+  change A * regimeIIBase n - 1 < N ↔ regimeIIBase n < N / A + 1
+  have hsub :
+      A * regimeIIBase n - 1 < N ↔ A * regimeIIBase n ≤ N := by
+    by_cases hmul0 : A * regimeIIBase n = 0
+    · rw [hmul0]
+      simp [hN]
+    · have hmul_pos : 0 < A * regimeIIBase n := Nat.pos_of_ne_zero hmul0
+      omega
+  have hdiv :
+      A * regimeIIBase n ≤ N ↔ regimeIIBase n ≤ N / A := by
+    exact Iff.symm <| by
+      simpa [Nat.mul_comm] using
+      (Nat.le_div_iff_mul_le hA :
+        regimeIIBase n ≤ N / A ↔ regimeIIBase n * A ≤ N)
+  have hsucc :
+      regimeIIBase n ≤ N / A ↔ regimeIIBase n < N / A + 1 := by
+    exact Iff.symm Nat.lt_succ_iff
+  exact hsub.trans (hdiv.trans hsucc)
+
+/-- State-level form of the threshold theorem: exact-zone entry depends only on
+    the intrinsic compressed Regime-II source state, not on the original `n`
+    directly. -/
+theorem regimeIINext_lt_iff_state_base_lt_threshold
+    (n B : ℕ) (hB : 0 < B) :
+    regimeIINext n < B ↔
+      (regimeIIStateOf n).base < regimeIIBaseThreshold B (regimeIIStateOf n) := by
+  unfold regimeIIStateOf regimeIIBaseThreshold
+  exact regimeIINext_lt_iff_base_lt_threshold n B hB
+
+/-- Fixed-slice exact-zone classifier: once the intrinsic Regime-II time and
+    ejection valuation are fixed, exact-zone entry is equivalent to a plain
+    bound on the intrinsic odd base. -/
+theorem regimeII_slice_exact_zone_classifier
+    (n B t j : ℕ) (hB : 0 < B)
+    (hT : regimeIITime n = t) (hj : regimeIIEjectionValuation n = j) :
+    regimeIINext n < B ↔ regimeIIBase n < (B * 2 ^ j) / (3 ^ t) + 1 := by
+  rw [regimeIINext_lt_iff_base_lt_threshold n B hB, hT, hj]
+
+/-- On the meaningful Regime-II slice `time = 5`, `eject = 1`, exact-zone entry
+    below `832` is equivalent to a simple intrinsic bound on the odd base. This
+    is the first broader exact-zone classifier built on the source-state layer,
+    and it is strictly stronger than the single arithmetic family theorem. -/
+theorem regimeIINext_lt_832_iff_base_lt_7_of_time5_eject1
+    (n : ℕ) (hT : regimeIITime n = 5) (hj : regimeIIEjectionValuation n = 1) :
+    regimeIINext n < 832 ↔ regimeIIBase n < 7 := by
+  rw [regimeIINext_lt_iff_base_lt_threshold n 832 (by norm_num : 0 < 832)]
+  rw [hT, hj]
+  norm_num
+
+/-- On the slice `time = 5`, `eject = 2`, exact-zone entry below `832` is
+    equivalent to the intrinsic base bound `base < 14`. -/
+theorem regimeIINext_lt_832_iff_base_lt_14_of_time5_eject2
+    (n : ℕ) (hT : regimeIITime n = 5) (hj : regimeIIEjectionValuation n = 2) :
+    regimeIINext n < 832 ↔ regimeIIBase n < 14 := by
+  rw [regimeII_slice_exact_zone_classifier n 832 5 2 (by norm_num : 0 < 832) hT hj]
+  norm_num
+
+/-- On the slice `time = 6`, `eject = 1`, exact-zone entry below `832` is
+    equivalent to the intrinsic base bound `base < 3`. -/
+theorem regimeIINext_lt_832_iff_base_lt_3_of_time6_eject1
+    (n : ℕ) (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 1) :
+    regimeIINext n < 832 ↔ regimeIIBase n < 3 := by
+  rw [regimeII_slice_exact_zone_classifier n 832 6 1 (by norm_num : 0 < 832) hT hj]
+  norm_num
+
+/-- On the slice `time = 6`, `eject = 2`, exact-zone entry below `832` is
+    equivalent to the intrinsic base bound `base < 5`. -/
+theorem regimeIINext_lt_832_iff_base_lt_5_of_time6_eject2
+    (n : ℕ) (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 2) :
+    regimeIINext n < 832 ↔ regimeIIBase n < 5 := by
+  rw [regimeII_slice_exact_zone_classifier n 832 6 2 (by norm_num : 0 < 832) hT hj]
+  norm_num
+
+/-- On the slice `time = 6`, `eject = 3`, exact-zone entry below `832` is
+    equivalent to the intrinsic base bound `base < 10`. -/
+theorem regimeIINext_lt_832_iff_base_lt_10_of_time6_eject3
+    (n : ℕ) (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 3) :
+    regimeIINext n < 832 ↔ regimeIIBase n < 10 := by
+  rw [regimeII_slice_exact_zone_classifier n 832 6 3 (by norm_num : 0 < 832) hT hj]
+  norm_num
+
+/-- The bundled mod-65 finite state is still too coarse to determine exact-zone
+    entry on its own: `31` and `8351` have the same `bundle65` state, but the
+    former lands below the exact `832` zone while the latter does not. -/
+theorem bundle65_state_not_exact_zone_complete :
+    bundleStateOf bundle65 31 = bundleStateOf bundle65 8351 ∧
+    regimeIINext 31 < 832 ∧ ¬ regimeIINext 8351 < 832 := by
+  native_decide
+
+/-- Even adding the small dyadic residue `regimeIIBase mod 8` is still too
+    coarse to determine exact-zone entry: `31` and `16671` agree on the bundled
+    mod-65 state and on `regimeIIBase mod 8`, but have different exact-zone
+    outcomes. -/
+theorem bundle65_state_and_baseMod8_not_exact_zone_complete :
+    bundleStateOf bundle65 31 = bundleStateOf bundle65 16671 ∧
+    regimeIIBase 31 % 8 = regimeIIBase 16671 % 8 ∧
+    regimeIINext 31 < 832 ∧ ¬ regimeIINext 16671 < 832 := by
+  native_decide
+
+/-- Infinite family with constant bundled mod-65 state.
+
+    For `n_k = 32 * (1 + 520k) - 1`, the Regime-II data stabilize locally:
+    `regimeIITime = 5`, `regimeIIBase = 1 + 520k`, `regimeIIEjectionValuation = 1`,
+    and the bundled mod-65 observer state is the same as at `n = 31`. The
+    compressed next node grows linearly with `k`, so exact-zone entry is not
+    determined by the local bundle state. -/
+theorem bundle65_constant_state_family (k : ℕ) :
+    let a := 1 + 520 * k
+    let n := 32 * a - 1
+    regimeIITime n = 5 ∧
+    regimeIIBase n = a ∧
+    regimeIIEjectionValuation n = 1 ∧
+    bundleStateOf bundle65 n = bundleStateOf bundle65 31 ∧
+    regimeIINext n = 121 + 63180 * k := by
+  dsimp
+  have ha_not : ¬ 2 ∣ (1 + 520 * k) := by
+    omega
+  have hform :
+      32 * (1 + 520 * k) - 1 + 1 = 2 ^ 5 * (1 + 520 * k) := by
+    omega
+  have htime : regimeIITime (32 * (1 + 520 * k) - 1) = 5 := by
+    unfold regimeIITime
+    rw [hform]
+    simpa [Nat.mul_comm, Nat.mul_left_comm, Nat.mul_assoc] using
+      v2_pow_mul_of_not_two_dvd 5 (1 + 520 * k) ha_not
+  have hbase : regimeIIBase (32 * (1 + 520 * k) - 1) = 1 + 520 * k := by
+    unfold regimeIIBase
+    rw [htime, hform]
+    norm_num
+  have hej : regimeIIEjectionValuation (32 * (1 + 520 * k) - 1) = 1 := by
+    unfold regimeIIEjectionValuation
+    rw [htime, hbase]
+    have hfac :
+        3 ^ 5 * (1 + 520 * k) - 1 = 2 * (121 + 63180 * k) := by
+      norm_num
+      omega
+    rw [hfac]
+    have hodd : ¬ 2 ∣ (121 + 63180 * k) := by
+      omega
+    exact v2_two_mul_of_not_two_dvd (121 + 63180 * k) hodd
+  have hclock : centeredClock65 (32 * (1 + 520 * k) - 1) = centeredClock65 31 := by
+    have hsum_left : (32 * (1 + 520 * k) - 1) + 1 = 32 * (1 + 520 * k) := by omega
+    have hk65 : ((1 + 520 * k : ℕ) : ZMod 65) = (1 : ZMod 65) := by
+      have h520k : 520 * k = 65 * (8 * k) := by ring
+      have h65 : (65 : ZMod 65) = 0 := by native_decide
+      have hzero : (((65 * (8 * k) : ℕ) : ZMod 65)) = 0 := by
+        simpa [Nat.cast_mul, h65]
+      calc
+        ((1 + 520 * k : ℕ) : ZMod 65)
+            = (((1 + 65 * (8 * k) : ℕ)) : ZMod 65) := by rw [h520k]
+        _ = (1 : ZMod 65) + (((65 * (8 * k) : ℕ) : ZMod 65)) := by norm_num
+        _ = (1 : ZMod 65) + 0 := by rw [hzero]
+        _ = (1 : ZMod 65) := by simp
+    calc
+      centeredClock65 (32 * (1 + 520 * k) - 1)
+          = (((32 * (1 + 520 * k) : ℕ) : ZMod 65)) := by
+              simpa [centeredClock65, centeredClockMod] using
+                congrArg (fun t : ℕ => ((t : ℕ) : ZMod 65)) hsum_left
+      _ = ((32 : ZMod 65) * ((1 + 520 * k : ℕ) : ZMod 65)) := by norm_num
+      _ = (32 : ZMod 65) * 1 := by rw [hk65]
+      _ = (32 : ZMod 65) := by simp
+      _ = centeredClock65 31 := by
+            norm_num [centeredClock65, centeredClockMod]
+  have hej31 : regimeIIEjectionValuation 31 = 1 := by
+    native_decide
+  have hclockBundle :
+      centeredClockBundle bundle65 (32 * (1 + 520 * k) - 1) = centeredClockBundle bundle65 31 := by
+    simpa [centeredClock65, centeredClockBundle, bundle65] using hclock
+  have hstate : bundleStateOf bundle65 (32 * (1 + 520 * k) - 1) = bundleStateOf bundle65 31 := by
+    unfold bundleStateOf
+    simp [hclockBundle, hej, hej31]
+  have hnext : regimeIINext (32 * (1 + 520 * k) - 1) = 121 + 63180 * k := by
+    unfold regimeIINext
+    rw [htime, hbase, hej]
+    have hfac :
+        3 ^ 5 * (1 + 520 * k) - 1 = 2 * (121 + 63180 * k) := by
+      norm_num
+      omega
+    rw [hfac]
+    exact Nat.mul_div_right _ (by norm_num)
+  exact ⟨htime, hbase, hej, hstate, hnext⟩
+
+/-- The constant-state family splits exact-zone behavior by scale: `k = 0` lands
+    in the exact `832` zone, while every `k ≥ 1` escapes it despite having the
+    same bundled mod-65 state. -/
+theorem bundle65_constant_state_family_exact_zone_split (k : ℕ) :
+    let a := 1 + 520 * k
+    let n := 32 * a - 1
+    bundleStateOf bundle65 n = bundleStateOf bundle65 31 ∧
+    (regimeIINext n < 832 ↔ k = 0) := by
+  dsimp
+  rcases bundle65_constant_state_family k with ⟨_, _, _, hstate, hnext⟩
+  refine ⟨hstate, ?_⟩
+  rw [hnext]
+  constructor
+  · intro h
+    omega
+  · intro hk
+    subst hk
+    omega
+
+/-- The same arithmetic family has constant bundled local state but linearly
+    increasing radial fiber height over the mod-65 bundle. -/
+theorem bundle65_fiber_state_family (k : ℕ) :
+    let a := 1 + 520 * k
+    let n := 32 * a - 1
+    bundleFiberStateOf bundle65 n =
+      BundleFiberState.mk (bundleStateOf bundle65 31) (8 * k) := by
+  dsimp
+  rcases bundle65_constant_state_family k with ⟨_, hbase, _, hstate, _⟩
+  have hfiber : bundleFiberHeight bundle65 (32 * (1 + 520 * k) - 1) = 8 * k := by
+    unfold bundleFiberHeight
+    rw [hbase, bundle65]
+    have h520k : 520 * k = 65 * (8 * k) := by ring
+    rw [h520k]
+    rw [Nat.mul_comm 65 (8 * k)]
+    change (1 + (8 * k) * 65) / 65 = 8 * k
+    rw [Nat.add_mul_div_right _ _ (by norm_num : 0 < 65)]
+    rw [Nat.div_eq_of_lt (by norm_num : 1 < 65)]
+    simp
+  apply BundleFiberState.ext
+  · simpa [bundleFiberStateOf] using hstate
+  · exact hfiber
+
+/-- On the constant-state family, exact-zone entry is equivalent to zero radial
+    fiber height for the bundled mod-65 observer. This identifies the missing
+    intrinsic coordinate explicitly. -/
+theorem bundle65_fiber_state_family_exact_zone_split (k : ℕ) :
+    let a := 1 + 520 * k
+    let n := 32 * a - 1
+    bundleFiberStateOf bundle65 n =
+      BundleFiberState.mk (bundleStateOf bundle65 31) (8 * k) ∧
+    (regimeIINext n < 832 ↔ bundleFiberHeight bundle65 n = 0) := by
+  dsimp
+  have hfiber : bundleFiberHeight bundle65 (32 * (1 + 520 * k) - 1) = 8 * k := by
+    exact congrArg (fun s => s.fiberHeight) (bundle65_fiber_state_family k)
+  have hsplit : regimeIINext (32 * (1 + 520 * k) - 1) < 832 ↔ k = 0 := by
+    exact (bundle65_constant_state_family_exact_zone_split k).2
+  refine ⟨bundle65_fiber_state_family k, ?_⟩
+  rw [hfiber]
+  constructor
+  · intro h
+    have hk : k = 0 := hsplit.mp h
+    omega
+  · intro h
+    have hk : k = 0 := by omega
+    exact hsplit.mpr hk
 
 /-- The mod-65 v₂ sum certificate: for every odd residue r mod 130 (= 2×65),
     the first 4 steps of the v₂=1 orbit have total v₂ at least 4.
@@ -3353,6 +4924,196 @@ theorem modular_certificate_exact_k3 :
       -- The modular 10-step v₂ sum using syracuseMod 104
       UFRF.CollatzSolenoid.v2Sum 104 10 n ≥ 16 := by
   native_decide +revert
+
+/-- **Exact k=3 integer shrink zone**: every odd `n` with `1 < n < 104`
+    has some certified shrinking window on the true integer orbit.
+
+    This is stronger than the modular certificate alone: it is a statement
+    about the true integer orbit, not just the residue dynamics. -/
+theorem exact_k3_zone_shrinks :
+    ∀ r : Fin 52,
+      let n := 2 * r.val + 1
+      1 < n → ∃ w : Fin 200, syracuseExact^[w.val + 1] n < n := by
+  native_decide
+
+/-- Repackaging of `exact_k3_zone_shrinks` for arbitrary odd `n < 104`. -/
+theorem odd_lt_104_shrinks_somewhere (n : ℕ) (hn1 : 1 < n) (hn_odd : n % 2 = 1) (hn104 : n < 104) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  have hidx : (n - 1) / 2 < 52 := by omega
+  have hrecover : n = 2 * ((n - 1) / 2) + 1 := by omega
+  obtain ⟨r, rfl⟩ : ∃ r : Fin 52, n = 2 * r.val + 1 := ⟨⟨(n - 1) / 2, hidx⟩, hrecover⟩
+  obtain ⟨w, hw⟩ := exact_k3_zone_shrinks r (by omega)
+  exact ⟨w.val + 1, by omega, hw⟩
+
+/-- Generic meta-step bridge into any exact finite shrink zone.
+
+    If every odd `m` below a bound `B` has some true shrinking window, then any
+    Regime-II state whose compressed next node lands below `B` already has a
+    certified shrinking window on the original integer orbit. -/
+theorem regimeII_next_hits_exact_zone_shrinks
+    (B : ℕ)
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hnext_small : regimeIINext n < B) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  by_cases hn_small : n < B
+  · exact hexact n hn1 hn hn_small
+  · by_cases hnext_one : regimeIINext n = 1
+    · refine ⟨regimeIITime n, by omega, ?_⟩
+      rw [← regimeIINext_eq_iterate n hn hT, hnext_one]
+      omega
+    · have hnext_odd : regimeIINext n % 2 = 1 := regimeIINext_odd n hn hT
+      have hnext_ne_zero : regimeIINext n ≠ 0 := by
+        intro hz
+        simpa [hz] using hnext_odd
+      have hnext_gt1 : 1 < regimeIINext n := by
+        have hpos : 0 < regimeIINext n := Nat.pos_of_ne_zero hnext_ne_zero
+        omega
+      obtain ⟨W, hWpos, hnext_shrinks⟩ :=
+        hexact (regimeIINext n) hnext_gt1 hnext_odd hnext_small
+      have hnext_lt_n : regimeIINext n < n := by omega
+      refine ⟨W + regimeIITime n, by omega, ?_⟩
+      have hcompose : syracuseExact^[W + regimeIITime n] n < n := by
+        rw [Function.iterate_add_apply, ← regimeIINext_eq_iterate n hn hT]
+        exact Nat.lt_trans hnext_shrinks hnext_lt_n
+      simpa [Nat.add_comm] using hcompose
+
+/-- **Meta-step bridge to the exact k=3 zone**:
+    if the induced Regime-II next node lands below `104`, then the true integer
+    orbit already has a certified shrinking window.
+
+    This is the first sound lift from the intrinsic meta-step state back to a
+    genuine finite contraction zone on the integer orbit. -/
+theorem regimeII_next_hits_k3_zone_shrinks (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hnext_small : regimeIINext n < 104) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  exact regimeII_next_hits_exact_zone_shrinks 104 odd_lt_104_shrinks_somewhere
+    n hn1 hn hT hnext_small
+
+/-- **Exact k=6 integer shrink zone**: every odd `n` with `1 < n < 832`
+    has some certified shrinking window on the true integer orbit.
+
+    This is the next doubled-scale exact zone after `104 = 13·2^3`. -/
+theorem exact_k6_zone_shrinks :
+    ∀ r : Fin 416,
+      let n := 2 * r.val + 1
+      1 < n → ∃ w : Fin 200, syracuseExact^[w.val + 1] n < n := by
+  native_decide
+
+/-- Repackaging of `exact_k6_zone_shrinks` for arbitrary odd `n < 832`. -/
+theorem odd_lt_832_shrinks_somewhere (n : ℕ) (hn1 : 1 < n) (hn_odd : n % 2 = 1) (hn832 : n < 832) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  have hidx : (n - 1) / 2 < 416 := by omega
+  have hrecover : n = 2 * ((n - 1) / 2) + 1 := by omega
+  obtain ⟨r, rfl⟩ : ∃ r : Fin 416, n = 2 * r.val + 1 := ⟨⟨(n - 1) / 2, hidx⟩, hrecover⟩
+  obtain ⟨w, hw⟩ := exact_k6_zone_shrinks r (by omega)
+  exact ⟨w.val + 1, by omega, hw⟩
+
+/-- **Meta-step bridge to the exact k=6 zone**:
+    if the induced Regime-II next node lands below `832`, then the true integer
+    orbit already has a certified shrinking window.
+
+    This is the doubled-scale analogue of the k=3 exact-zone bridge. -/
+theorem regimeII_next_hits_k6_zone_shrinks (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) (hnext_small : regimeIINext n < 832) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  exact regimeII_next_hits_exact_zone_shrinks 832 odd_lt_832_shrinks_somewhere
+    n hn1 hn hT hnext_small
+
+/-- Any fixed Regime-II slice whose intrinsic base lies below the exact-zone
+    threshold at `832` already has a certified shrinking window on the true
+    integer orbit. -/
+theorem regimeII_slice_shrinks_via_exact_zone
+    (n t j : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (ht : 2 ≤ t)
+    (hT : regimeIITime n = t) (hj : regimeIIEjectionValuation n = j)
+    (hbase : regimeIIBase n < (832 * 2 ^ j) / (3 ^ t) + 1) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  apply regimeII_next_hits_k6_zone_shrinks n hn1 hn
+  · simpa [hT] using ht
+  · exact (regimeII_slice_exact_zone_classifier n 832 t j (by norm_num : 0 < 832) hT hj).2 hbase
+
+/-- The slice `(time, eject) = (5, 2)` and intrinsic bound `base < 14` already
+    certify a shrinking window on the true integer orbit. -/
+theorem regimeII_slice_shrinks_via_exact_zone_of_time5_eject2_base_lt_14
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : regimeIITime n = 5) (hj : regimeIIEjectionValuation n = 2)
+    (hbase : regimeIIBase n < 14) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  apply regimeII_slice_shrinks_via_exact_zone n 5 2 hn1 hn (by norm_num) hT hj
+  simpa using hbase
+
+/-- The slice `(time, eject) = (6, 1)` and intrinsic bound `base < 3` already
+    certify a shrinking window on the true integer orbit. -/
+theorem regimeII_slice_shrinks_via_exact_zone_of_time6_eject1_base_lt_3
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 1)
+    (hbase : regimeIIBase n < 3) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  apply regimeII_slice_shrinks_via_exact_zone n 6 1 hn1 hn (by norm_num) hT hj
+  simpa using hbase
+
+/-- The slice `(time, eject) = (6, 2)` and intrinsic bound `base < 5` already
+    certify a shrinking window on the true integer orbit. -/
+theorem regimeII_slice_shrinks_via_exact_zone_of_time6_eject2_base_lt_5
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 2)
+    (hbase : regimeIIBase n < 5) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  apply regimeII_slice_shrinks_via_exact_zone n 6 2 hn1 hn (by norm_num) hT hj
+  simpa using hbase
+
+/-- The slice `(time, eject) = (6, 3)` and intrinsic bound `base < 10` already
+    certify a shrinking window on the true integer orbit. -/
+theorem regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_lt_10
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 3)
+    (hbase : regimeIIBase n < 10) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  apply regimeII_slice_shrinks_via_exact_zone n 6 3 hn1 hn (by norm_num) hT hj
+  simpa using hbase
+
+/-- Generic Regime-II return-map dichotomy into any exact finite zone.
+
+    A compressed Regime-II state yields true descent in either of two ways:
+    it already shrinks intrinsically by the two-voice criterion, or its next
+    node lands in a verified exact zone below `B`. -/
+theorem regimeII_shrinks_or_hits_exact_zone
+    (B : ℕ)
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) :
+    ((1000 * regimeIIEjectionValuation n > regimeIITime n * 585) ∧
+      3 ^ regimeIITime n *
+          (2 ^ (regimeIITime n + regimeIIEjectionValuation n) + n * 2 ^ regimeIITime n) <
+        2 ^ (regimeIITime n + (regimeIITime n + regimeIIEjectionValuation n)) * (1 + n)
+      ∨ regimeIINext n < B) →
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  intro h
+  rcases h with htwo | hzone
+  · rcases htwo with ⟨hsurplus, hn_bound⟩
+    refine ⟨regimeIITime n, by omega, ?_⟩
+    rw [← regimeIINext_eq_iterate n hn hT]
+    exact regimeIINext_lt_of_two_voice n hn hT hsurplus hn_bound
+  · exact regimeII_next_hits_exact_zone_shrinks B hexact n hn1 hn hT hzone
+
+/-- Regime-II return-map dichotomy at the `k=6` exact scale.
+
+    A compressed Regime-II state yields true descent in either of two ways:
+    it already shrinks intrinsically by the two-voice criterion, or its next
+    node lands in the verified exact `832 = 13·2^6` zone. -/
+theorem regimeII_shrinks_or_hits_k6_zone (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n) :
+    ((1000 * regimeIIEjectionValuation n > regimeIITime n * 585) ∧
+      3 ^ regimeIITime n *
+          (2 ^ (regimeIITime n + regimeIIEjectionValuation n) + n * 2 ^ regimeIITime n) <
+        2 ^ (regimeIITime n + (regimeIITime n + regimeIIEjectionValuation n)) * (1 + n)
+      ∨ regimeIINext n < 832) →
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  exact regimeII_shrinks_or_hits_exact_zone 832 odd_lt_832_shrinks_somewhere
+    n hn1 hn hT
 
 -- ════════════════════════════════════════════════════════════════════════════
 -- Bridge 4: Spectral Gap → CRT Certificate Structure
