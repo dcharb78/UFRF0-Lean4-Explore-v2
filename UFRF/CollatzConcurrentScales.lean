@@ -6804,6 +6804,33 @@ theorem nextState_shrinks_or_exists_nextBadState_multiview_of_coherence
 
 end RegimeIIBadFrontierState
 
+/-- Re-compressing a successor value into its next intrinsic state exactly
+    reconstructs that value as `2^time * base - 1`; equivalently,
+    `nextValue + 1 = 2^next.time * next.base`. -/
+theorem regimeIIState_nextValue_add_one_eq_two_pow_nextTime_mul_nextBase
+    (s : RegimeIIState) :
+    regimeIIStateNextValue s + 1 =
+      2 ^ (regimeIIStateNext s).time * (regimeIIStateNext s).base := by
+  have hrepr :
+      2 ^ (regimeIIStateNext s).time * (regimeIIStateNext s).base - 1 =
+        regimeIIStateNextValue s := by
+    simpa [regimeIIStateNext, regimeIIStateValue] using
+      regimeIIStateValue_stateOf (regimeIIStateNextValue s)
+  have hnext_adm : regimeIIStateAdmissible (regimeIIStateNext s) := by
+    simpa [regimeIIStateNext] using regimeIIStateOf_admissible (regimeIIStateNextValue s)
+  have hprod_pos :
+      0 < 2 ^ (regimeIIStateNext s).time * (regimeIIStateNext s).base := by
+    exact Nat.mul_pos (pow_pos (by norm_num : 0 < 2) _) hnext_adm.1
+  have hrepr' :
+      2 ^ (regimeIIStateNext s).time * (regimeIIStateNext s).base =
+        regimeIIStateNextValue s + 1 := by
+    have hrepr'' :
+        2 ^ (regimeIIStateNext s).time * (regimeIIStateNext s).base =
+          1 + regimeIIStateNextValue s := by
+      exact (Nat.sub_eq_iff_eq_add' (Nat.succ_le_of_lt hprod_pos)).1 hrepr
+    simpa [add_comm] using hrepr''
+  exact hrepr'.symm
+
 /-- On the intrinsic source slice `(time, eject) = (3, 1)`, the compressed
     successor satisfies a rigid arithmetic bridge:
     `2 * (nextValue + 1) = 27 * base + 1`. -/
@@ -6831,6 +6858,25 @@ theorem regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1
             have hmul_pos : 0 < 27 * s.base := by
               exact Nat.mul_pos (by norm_num) hbase_pos
             omega
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the affine source
+    numerator `27 * base + 1` is exactly the destination base measured in the
+    destination clock: `2^(next.time + 1) * next.base = 27 * base + 1`. -/
+theorem regimeIIState_two_pow_nextTime_succ_mul_nextBase_eq_of_time3_eject1
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1) :
+    2 ^ ((regimeIIStateNext s).time + 1) * (regimeIIStateNext s).base =
+      27 * s.base + 1 := by
+  calc
+    2 ^ ((regimeIIStateNext s).time + 1) * (regimeIIStateNext s).base
+        = 2 * (2 ^ (regimeIIStateNext s).time * (regimeIIStateNext s).base) := by
+            rw [pow_succ]
+            ring
+    _ = 2 * (regimeIIStateNextValue s + 1) := by
+            rw [regimeIIState_nextValue_add_one_eq_two_pow_nextTime_mul_nextBase]
+    _ = 27 * s.base + 1 :=
+            regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
 
 /-- On the intrinsic source state itself, the slice `(time, eject) = (3, 1)`
     together with `nextState.time ≥ 2` forces the tighter congruence
@@ -7119,6 +7165,81 @@ theorem regimeIIState_nextEject_eq_one_of_time3_eject1_of_base_mod64_eq29
   rw [hfac]
   exact v2_two_mul_of_not_two_dvd (1458 * k + 661) hodd
 
+/-- On the surviving intrinsic source branch `(time, eject) = (3, 1)` with
+    `base ≡ 29 (mod 64)`, the destination base satisfies the affine transport
+    law `16 * next.base = 27 * base + 1`. -/
+theorem regimeIIState_sixteen_mul_nextBase_eq_of_time3_eject1_of_base_mod64_eq29
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 64 = 29) :
+    16 * (regimeIIStateNext s).base = 27 * s.base + 1 := by
+  have hmod32 : s.base % 32 = 29 := by
+    omega
+  have htime : (regimeIIStateNext s).time = 3 := by
+    exact regimeIIState_nextTime_eq_three_of_time3_eject1_of_base_mod32_eq29
+      s hs ht he hmod32
+  have hscale :=
+    regimeIIState_two_pow_nextTime_succ_mul_nextBase_eq_of_time3_eject1
+      s hs ht he
+  simpa [htime] using hscale
+
+/-- On the surviving intrinsic source branch `(time, eject) = (3, 1)` with
+    `base ≡ 29 (mod 64)`, the destination state's self-threshold is exactly the
+    source base. -/
+theorem regimeIIState_selfThreshold_eq_sourceBase_of_time3_eject1_of_base_mod64_eq29
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 64 = 29) :
+    regimeIIBaseThreshold (regimeIIStateValue (regimeIIStateNext s)) (regimeIIStateNext s) = s.base := by
+  have hmod32 : s.base % 32 = 29 := by
+    omega
+  have htime : (regimeIIStateNext s).time = 3 := by
+    exact regimeIIState_nextTime_eq_three_of_time3_eject1_of_base_mod32_eq29
+      s hs ht he hmod32
+  have heject' : (regimeIIStateNext s).eject = 1 := by
+    exact regimeIIState_nextEject_eq_one_of_time3_eject1_of_base_mod64_eq29
+      s hs ht he hmod
+  have hscale :=
+    regimeIIState_sixteen_mul_nextBase_eq_of_time3_eject1_of_base_mod64_eq29
+      s hs ht he hmod
+  have hbase_pos : 0 < s.base := hs.1
+  unfold regimeIIBaseThreshold regimeIIStateValue
+  rw [htime, heject']
+  norm_num
+  omega
+
+/-- On the surviving intrinsic source branch `(time, eject) = (3, 1)` with
+    `base ≡ 29 (mod 64)`, the destination self-threshold defect is exactly the
+    gap between the destination base and the source base. -/
+theorem regimeIIState_selfThresholdDefect_next_eq_nextBase_sub_sourceBase_add_one_of_time3_eject1_of_base_mod64_eq29
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 64 = 29) :
+    regimeIISelfThresholdDefect (regimeIIStateNext s) =
+      (regimeIIStateNext s).base + 1 - s.base := by
+  unfold regimeIISelfThresholdDefect
+  rw [regimeIIState_selfThreshold_eq_sourceBase_of_time3_eject1_of_base_mod64_eq29
+    s hs ht he hmod]
+
+/-- On the surviving intrinsic source branch `(time, eject) = (3, 1)` with
+    `base ≡ 29 (mod 64)`, the destination self-threshold defect is an explicit
+    affine function of the source base. -/
+theorem regimeIIState_sixteen_mul_nextSelfThresholdDefect_eq_of_time3_eject1_of_base_mod64_eq29
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 64 = 29) :
+    16 * regimeIISelfThresholdDefect (regimeIIStateNext s) = 11 * s.base + 17 := by
+  rw [regimeIIState_selfThresholdDefect_next_eq_nextBase_sub_sourceBase_add_one_of_time3_eject1_of_base_mod64_eq29
+    s hs ht he hmod]
+  have hscale :=
+    regimeIIState_sixteen_mul_nextBase_eq_of_time3_eject1_of_base_mod64_eq29
+      s hs ht he hmod
+  omega
+
 /-- Any admissible intrinsic Regime-II state on the slice `time = 2` with
     ejection valuation at least `2` already self-shrinks on the compressed
     meta-step. -/
@@ -7307,6 +7428,17 @@ theorem dst_stateValue_eq_iterate {B : ℕ} (τ : RegimeIIBadFrontierTransition 
       symm
       exact τ.src.nextValue_eq_iterate
 
+/-- On a bad-to-bad transition out of the intrinsic source slice `(time,eject)
+    = (3,1)`, the source affine numerator `27 * base + 1` is exactly the
+    destination base measured in the destination clock. -/
+theorem two_pow_dst_time_succ_mul_dst_base_eq_of_src_time3_eject1
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1) :
+    2 ^ (τ.dst.src.time + 1) * τ.dst.src.base = 27 * τ.src.src.base + 1 := by
+  simpa [τ.step] using
+    regimeIIState_two_pow_nextTime_succ_mul_nextBase_eq_of_time3_eject1
+      τ.src.src τ.src.admissible ht he
+
 theorem dst_residueChart_eq_residue {B : ℕ} (τ : RegimeIIBadFrontierTransition B) :
     τ.dst.residueChart = regimeIIBaseResidue τ.dst.src.time τ.dst.src.eject := by
   exact τ.dst.residueChart_eq_residue
@@ -7386,6 +7518,88 @@ theorem dst_slice_eq_3_1_of_src_base_mod32_eq29
       exact False.elim
         ((regimeIIState_next_not_badFrontier_of_time3_eject1_of_base_mod64_eq61
             B τ.src.src τ.src.admissible ht he hmod64) hbadnext)
+
+/-- On the surviving bad-to-bad branch out of the intrinsic source slice
+    `(time,eject) = (3,1)` with `base ≡ 29 (mod 64)`, the destination base
+    satisfies the affine transport law `16 * dst.base = 27 * src.base + 1`. -/
+theorem sixteen_mul_dst_base_eq_of_src_base_mod64_eq29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 64 = 29) :
+    16 * τ.dst.src.base = 27 * τ.src.src.base + 1 := by
+  have hmod32 : τ.src.src.base % 32 = 29 := by
+    omega
+  have htime : τ.dst.src.time = 3 :=
+    (dst_slice_eq_3_1_of_src_base_mod32_eq29 τ ht he hmod32).1
+  have hscale := two_pow_dst_time_succ_mul_dst_base_eq_of_src_time3_eject1 τ ht he
+  simpa [htime] using hscale
+
+/-- On the surviving bad-to-bad branch out of the intrinsic source slice
+    `(time,eject) = (3,1)` with `base ≡ 29 (mod 64)`, the destination state's
+    self-threshold is exactly the source base. -/
+theorem dst_selfThreshold_eq_src_base_of_src_base_mod64_eq29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 64 = 29) :
+    regimeIIBaseThreshold (regimeIIStateValue τ.dst.src) τ.dst.src = τ.src.src.base := by
+  simpa [τ.step] using
+    regimeIIState_selfThreshold_eq_sourceBase_of_time3_eject1_of_base_mod64_eq29
+      τ.src.src τ.src.admissible ht he hmod
+
+/-- On the surviving bad-to-bad branch out of the intrinsic source slice
+    `(time,eject) = (3,1)` with `base ≡ 29 (mod 64)`, the destination
+    self-threshold defect is exactly the gap between destination and source
+    base. -/
+theorem dst_selfThresholdDefect_eq_dst_base_sub_src_base_add_one_of_src_base_mod64_eq29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 64 = 29) :
+    regimeIISelfThresholdDefect τ.dst.src = τ.dst.src.base + 1 - τ.src.src.base := by
+  unfold regimeIISelfThresholdDefect
+  rw [dst_selfThreshold_eq_src_base_of_src_base_mod64_eq29 τ ht he hmod]
+
+/-- On the surviving bad-to-bad branch out of the intrinsic source slice
+    `(time,eject) = (3,1)` with `base ≡ 29 (mod 64)`, the destination
+    self-threshold defect is an explicit affine function of the source base. -/
+theorem sixteen_mul_dst_selfThresholdDefect_eq_of_src_base_mod64_eq29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 64 = 29) :
+    16 * regimeIISelfThresholdDefect τ.dst.src = 11 * τ.src.src.base + 17 := by
+  rw [dst_selfThresholdDefect_eq_dst_base_sub_src_base_add_one_of_src_base_mod64_eq29
+    τ ht he hmod]
+  have hscale := sixteen_mul_dst_base_eq_of_src_base_mod64_eq29 τ ht he hmod
+  omega
+
+/-- On the surviving bad-to-bad branch out of the intrinsic source slice
+    `(time,eject) = (3,1)`, any source affine chart `base = 64*k + 29`
+    transports to the affine destination chart `base = 108*k + 49`. -/
+theorem dst_base_eq_108k_add_49_of_src_base_eq_64k_add_29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 64 * k + 29) :
+    τ.dst.src.base = 108 * k + 49 := by
+  have hmod : τ.src.src.base % 64 = 29 := by
+    rw [hk]
+    norm_num
+  have hscale := sixteen_mul_dst_base_eq_of_src_base_mod64_eq29 τ ht he hmod
+  omega
+
+/-- On the surviving bad-to-bad branch out of the intrinsic source slice
+    `(time,eject) = (3,1)`, the destination self-threshold defect is affine in
+    the same source chart parameter: `44*k + 21`. -/
+theorem dst_selfThresholdDefect_eq_44k_add_21_of_src_base_eq_64k_add_29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 64 * k + 29) :
+    regimeIISelfThresholdDefect τ.dst.src = 44 * k + 21 := by
+  have hbase := dst_base_eq_108k_add_49_of_src_base_eq_64k_add_29 τ ht he hk
+  have hmod : τ.src.src.base % 64 = 29 := by
+    rw [hk]
+    norm_num
+  rw [dst_selfThresholdDefect_eq_dst_base_sub_src_base_add_one_of_src_base_mod64_eq29
+    τ ht he hmod, hk, hbase]
+  omega
 
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
     `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
