@@ -4339,6 +4339,158 @@ def regimeIIStateOf (n : ℕ) : RegimeIIState where
   base := regimeIIBase n
   eject := regimeIIEjectionValuation n
 
+/-- The original odd integer reconstructed from an intrinsic Regime-II source
+    state. This is the source-side inverse to compression. -/
+def regimeIIStateValue (s : RegimeIIState) : ℕ :=
+  2 ^ s.time * s.base - 1
+
+/-- The compressed successor value determined by an intrinsic Regime-II source
+    state before re-compressing at the next layer. -/
+def regimeIIStateNextValue (s : RegimeIIState) : ℕ :=
+  (3 ^ s.time * s.base - 1) / 2 ^ s.eject
+
+/-- The next intrinsic Regime-II source state obtained by re-compressing the
+    compressed successor value. -/
+def regimeIIStateNext (s : RegimeIIState) : RegimeIIState :=
+  regimeIIStateOf (regimeIIStateNextValue s)
+
+/-- An intrinsic Regime-II state is admissible if its compressed coordinates
+    satisfy the source-state parity and valuation constraints. -/
+def regimeIIStateAdmissible (s : RegimeIIState) : Prop :=
+  0 < s.base ∧ s.base % 2 = 1 ∧ s.eject = v2 (3 ^ s.time * s.base - 1)
+
+/-- Real compressed Regime-II states are admissible by construction. -/
+theorem regimeIIStateOf_admissible (n : ℕ) :
+    regimeIIStateAdmissible (regimeIIStateOf n) := by
+  unfold regimeIIStateAdmissible regimeIIStateOf
+  exact ⟨regimeIIBase_pos n, regimeIIBase_odd n, rfl⟩
+
+/-- Reconstructing the source value from the compressed Regime-II state of `n`
+    recovers `n` exactly. -/
+theorem regimeIIStateValue_stateOf (n : ℕ) :
+    regimeIIStateValue (regimeIIStateOf n) = n := by
+  unfold regimeIIStateValue regimeIIStateOf
+  unfold regimeIIBase regimeIITime
+  rw [Nat.mul_div_cancel' (v2_pow_dvd (n + 1))]
+  omega
+
+/-- The intrinsic successor value attached to `regimeIIStateOf n` is exactly
+    the compressed Regime-II next node `regimeIINext n`. -/
+theorem regimeIIStateNextValue_stateOf (n : ℕ) :
+    regimeIIStateNextValue (regimeIIStateOf n) = regimeIINext n := by
+  rfl
+
+/-- Re-compressing the intrinsic successor value of `regimeIIStateOf n`
+    produces the intrinsic state of `regimeIINext n`. -/
+theorem regimeIIStateNext_stateOf (n : ℕ) :
+    regimeIIStateNext (regimeIIStateOf n) = regimeIIStateOf (regimeIINext n) := by
+  rfl
+
+/-- Admissible intrinsic Regime-II states reconstruct to themselves after
+    passing through the integer value map. -/
+theorem regimeIIStateOf_value (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) :
+    regimeIIStateOf (regimeIIStateValue s) = s := by
+  rcases hs with ⟨hbase_pos, hbase_odd, heject⟩
+  have hnot2 : ¬ 2 ∣ s.base := by
+    intro h2
+    have hzero : s.base % 2 = 0 := Nat.mod_eq_zero_of_dvd h2
+    omega
+  have htime : regimeIITime (regimeIIStateValue s) = s.time := by
+    unfold regimeIITime regimeIIStateValue
+    have hrepr : 2 ^ s.time * s.base - 1 + 1 = 2 ^ s.time * s.base := by
+      exact Nat.sub_add_cancel (Nat.succ_le_of_lt (Nat.mul_pos (pow_pos (by norm_num : 0 < 2) _) hbase_pos))
+    rw [hrepr]
+    exact v2_pow_mul_of_not_two_dvd s.time s.base hnot2
+  have hbase : regimeIIBase (regimeIIStateValue s) = s.base := by
+    unfold regimeIIBase regimeIIStateValue
+    have hrepr : 2 ^ s.time * s.base - 1 + 1 = 2 ^ s.time * s.base := by
+      exact Nat.sub_add_cancel (Nat.succ_le_of_lt (Nat.mul_pos (pow_pos (by norm_num : 0 < 2) _) hbase_pos))
+    rw [hrepr]
+    have htime' : regimeIITime (2 ^ s.time * s.base - 1) = s.time := by
+      simpa [regimeIIStateValue] using htime
+    rw [htime']
+    simpa [Nat.mul_comm] using
+      (Nat.mul_div_right s.base (pow_pos (by norm_num : 0 < 2) s.time))
+  have heject' : regimeIIEjectionValuation (regimeIIStateValue s) = s.eject := by
+    unfold regimeIIEjectionValuation
+    rw [htime, hbase]
+    exact heject.symm
+  cases s
+  simp [regimeIIStateOf, htime, hbase, heject']
+
+/-- Fieldwise reconstruction of the intrinsic time coordinate from an admissible
+    Regime-II state. -/
+theorem regimeIITime_stateValue (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) :
+    regimeIITime (regimeIIStateValue s) = s.time :=
+  congrArg RegimeIIState.time (regimeIIStateOf_value s hs)
+
+/-- Fieldwise reconstruction of the intrinsic base coordinate from an admissible
+    Regime-II state. -/
+theorem regimeIIBase_stateValue (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) :
+    regimeIIBase (regimeIIStateValue s) = s.base :=
+  congrArg RegimeIIState.base (regimeIIStateOf_value s hs)
+
+/-- Fieldwise reconstruction of the intrinsic ejection coordinate from an
+    admissible Regime-II state. -/
+theorem regimeIIEjectionValuation_stateValue (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) :
+    regimeIIEjectionValuation (regimeIIStateValue s) = s.eject :=
+  congrArg RegimeIIState.eject (regimeIIStateOf_value s hs)
+
+/-- The compressed successor of an admissible intrinsic Regime-II state agrees
+    with the integer-level compressed successor of its reconstructed value. -/
+theorem regimeIINext_stateValue (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) :
+    regimeIINext (regimeIIStateValue s) = regimeIIStateNextValue s := by
+  have hnext := regimeIIStateNextValue_stateOf (regimeIIStateValue s)
+  rw [regimeIIStateOf_value s hs] at hnext
+  exact hnext.symm
+
+/-- The reconstructed value of an admissible intrinsic Regime-II state is odd
+    whenever the compressed time coordinate is positive. -/
+theorem regimeIIStateValue_odd_of_admissible_of_time_pos
+    (s : RegimeIIState) (hs : regimeIIStateAdmissible s) (ht : 1 ≤ s.time) :
+    regimeIIStateValue s % 2 = 1 := by
+  have htime_pos : 1 ≤ regimeIITime (regimeIIStateValue s) := by
+    simpa [regimeIITime_stateValue s hs] using ht
+  have hv2_ge1 : 1 ≤ v2 (regimeIIStateValue s + 1) := by
+    simpa [regimeIITime] using htime_pos
+  have hdiv_succ : 2 ∣ regimeIIStateValue s + 1 := by
+    exact dvd_trans (Nat.pow_dvd_pow 2 hv2_ge1) (v2_pow_dvd (regimeIIStateValue s + 1))
+  have hnotdvd : ¬ 2 ∣ regimeIIStateValue s := by
+    intro hdiv
+    rcases hdiv with ⟨a, ha⟩
+    rcases hdiv_succ with ⟨b, hb⟩
+    omega
+  have hmod_lt : regimeIIStateValue s % 2 < 2 := Nat.mod_lt _ (by norm_num)
+  have hmod_ne : regimeIIStateValue s % 2 ≠ 0 := by
+    intro h0
+    exact hnotdvd (Nat.dvd_of_mod_eq_zero h0)
+  omega
+
+/-- The reconstructed value of an admissible intrinsic Regime-II state is
+    strictly larger than `1` once the compressed time coordinate is at least
+    `2`. -/
+theorem one_lt_regimeIIStateValue_of_admissible_of_time_ge_two
+    (s : RegimeIIState) (hs : regimeIIStateAdmissible s) (ht : 2 ≤ s.time) :
+    1 < regimeIIStateValue s := by
+  rcases hs with ⟨hbase_pos, _, _⟩
+  have hpow : 4 ≤ 2 ^ s.time := by
+    calc
+      (4 : ℕ) = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ s.time := Nat.pow_le_pow_right (by norm_num) ht
+  have hbase_ge1 : 1 ≤ s.base := Nat.succ_le_of_lt hbase_pos
+  have hprod : 4 ≤ 2 ^ s.time * s.base := by
+    calc
+      4 ≤ 2 ^ s.time := hpow
+      _ ≤ 2 ^ s.time * s.base := by
+        simpa using Nat.mul_le_mul_left (2 ^ s.time) hbase_ge1
+  unfold regimeIIStateValue
+  omega
+
 /-- The intrinsic base threshold for exact-zone entry at target `B`, expressed
     directly on the compressed Regime-II source state. -/
 def regimeIIBaseThreshold (B : ℕ) (s : RegimeIIState) : ℕ :=
@@ -4473,6 +4625,153 @@ theorem regimeIINext_lt_iff_state_base_lt_threshold
       (regimeIIStateOf n).base < regimeIIBaseThreshold B (regimeIIStateOf n) := by
   unfold regimeIIStateOf regimeIIBaseThreshold
   exact regimeIINext_lt_iff_base_lt_threshold n B hB
+
+/-- State-level threshold theorem: exact-zone entry is determined directly on
+    the intrinsic compressed source state, with no reference to an ambient `n`. -/
+theorem regimeIIStateNextValue_lt_iff_base_lt_threshold
+    (s : RegimeIIState) (B : ℕ) (hB : 0 < B) :
+    regimeIIStateNextValue s < B ↔ s.base < regimeIIBaseThreshold B s := by
+  unfold regimeIIStateNextValue regimeIIBaseThreshold
+  have hpow : 0 < 2 ^ s.eject := by
+    exact pow_pos (by norm_num : 0 < 2) _
+  rw [Nat.div_lt_iff_lt_mul hpow]
+  let A := 3 ^ s.time
+  let N := B * 2 ^ s.eject
+  have hA : 0 < A := by
+    dsimp [A]
+    exact pow_pos (by norm_num : 0 < 3) _
+  have hN : 0 < N := by
+    dsimp [N]
+    exact Nat.mul_pos hB (pow_pos (by norm_num : 0 < 2) _)
+  change A * s.base - 1 < N ↔ s.base < N / A + 1
+  have hsub : A * s.base - 1 < N ↔ A * s.base ≤ N := by
+    by_cases hmul0 : A * s.base = 0
+    · rw [hmul0]
+      simp [hN]
+    · have hmul_pos : 0 < A * s.base := Nat.pos_of_ne_zero hmul0
+      omega
+  have hdiv : A * s.base ≤ N ↔ s.base ≤ N / A := by
+    exact Iff.symm <| by
+      simpa [Nat.mul_comm] using
+        (Nat.le_div_iff_mul_le hA : s.base ≤ N / A ↔ s.base * A ≤ N)
+  have hsucc : s.base ≤ N / A ↔ s.base < N / A + 1 := by
+    exact Iff.symm Nat.lt_succ_iff
+  exact hsub.trans (hdiv.trans hsucc)
+
+/-- The intrinsic bad frontier at target exact zone `B`: admissible compressed
+    Regime-II states that remain outside both immediate self-shrink and the
+    current exact-zone basin under the compressed return map. -/
+def regimeIIBadFrontier (B : ℕ) (s : RegimeIIState) : Prop :=
+  regimeIIStateAdmissible s ∧
+    2 ≤ s.time ∧
+    regimeIIStateValue s ≤ regimeIIStateNextValue s ∧
+    B ≤ regimeIIStateNextValue s
+
+/-- Residue-chart readout of an intrinsic Regime-II state. This is one local
+    projection of the source state, not the ontology itself. -/
+def regimeIIStateResidueChart (s : RegimeIIState) : ℕ :=
+  s.base % 2 ^ (s.eject + 1)
+
+/-- Self-shrink defect of an intrinsic Regime-II state: how far the compressed
+    successor sits above the self-shrink boundary. -/
+def regimeIISelfDefect (s : RegimeIIState) : ℕ :=
+  regimeIIStateNextValue s + 1 - regimeIIStateValue s
+
+/-- Exact-zone defect of an intrinsic Regime-II state at target `B`: how far
+    the compressed successor sits above the exact-zone boundary. -/
+def regimeIIZoneDefect (B : ℕ) (s : RegimeIIState) : ℕ :=
+  regimeIIStateNextValue s + 1 - B
+
+/-- First-class source-state object on the intrinsic bad frontier. This lets us
+    carry the source state together with several concurrent readouts. -/
+structure RegimeIIBadFrontierState (B : ℕ) where
+  src : RegimeIIState
+  isBad : regimeIIBadFrontier B src
+
+namespace RegimeIIBadFrontierState
+
+/-- The compressed successor state obtained from a bad-frontier source state. -/
+def nextState {B : ℕ} (x : RegimeIIBadFrontierState B) : RegimeIIState :=
+  regimeIIStateNext x.src
+
+/-- The compressed successor value read out from a bad-frontier source state. -/
+def nextValue {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
+  regimeIIStateNextValue x.src
+
+/-- Residue-chart readout attached to a bad-frontier source state. -/
+def residueChart {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
+  regimeIIStateResidueChart x.src
+
+/-- Self-shrink defect readout attached to a bad-frontier source state. -/
+def selfDefect {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
+  regimeIISelfDefect x.src
+
+/-- Exact-zone defect readout attached to a bad-frontier source state. -/
+def zoneDefect {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
+  regimeIIZoneDefect B x.src
+
+theorem admissible {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    regimeIIStateAdmissible x.src :=
+  x.isBad.1
+
+theorem time_ge_two {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    2 ≤ x.src.time :=
+  x.isBad.2.1
+
+theorem self_boundary_le {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    regimeIIStateValue x.src ≤ regimeIIStateNextValue x.src :=
+  x.isBad.2.2.1
+
+theorem zone_boundary_le {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    B ≤ regimeIIStateNextValue x.src :=
+  x.isBad.2.2.2
+
+theorem selfDefect_pos {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    0 < x.selfDefect := by
+  unfold selfDefect regimeIISelfDefect
+  exact Nat.sub_pos_of_lt (Nat.lt_succ_of_le x.self_boundary_le)
+
+theorem zoneDefect_pos {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    0 < x.zoneDefect := by
+  unfold zoneDefect regimeIIZoneDefect
+  exact Nat.sub_pos_of_lt (Nat.lt_succ_of_le x.zone_boundary_le)
+
+end RegimeIIBadFrontierState
+
+/-- On an admissible Regime-II layer with time at least `2`, the intrinsic bad
+    frontier is exactly the pair of survivor inequalities for the compressed
+    successor. -/
+theorem regimeIIBadFrontier_iff
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) (hT : 2 ≤ s.time) :
+    regimeIIBadFrontier B s ↔
+      regimeIIStateValue s ≤ regimeIIStateNextValue s ∧ B ≤ regimeIIStateNextValue s := by
+  unfold regimeIIBadFrontier
+  simp [hs, hT]
+
+/-- Complement form of the intrinsic bad frontier on admissible Regime-II
+    states: outside the frontier, the compressed successor either already
+    self-shrinks or enters the target exact zone. -/
+theorem not_regimeIIBadFrontier_iff
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) (hT : 2 ≤ s.time) :
+    ¬ regimeIIBadFrontier B s ↔
+      regimeIIStateNextValue s < regimeIIStateValue s ∨ regimeIIStateNextValue s < B := by
+  rw [regimeIIBadFrontier_iff B s hs hT]
+  constructor
+  · intro hbad
+    by_cases hself : regimeIIStateValue s ≤ regimeIIStateNextValue s
+    · have hzone : ¬ B ≤ regimeIIStateNextValue s := by
+        intro hB
+        exact hbad ⟨hself, hB⟩
+      exact Or.inr (Nat.lt_of_not_ge hzone)
+    · exact Or.inl (Nat.lt_of_not_ge hself)
+  · intro h
+    intro hbad
+    rcases hbad with ⟨hself, hzone⟩
+    rcases h with hself_lt | hzone_lt
+    · exact (Nat.not_le_of_lt hself_lt) hself
+    · exact (Nat.not_le_of_lt hzone_lt) hzone
 
 /-- Fixed-slice exact-zone classifier: once the intrinsic Regime-II time and
     ejection valuation are fixed, exact-zone entry is equivalent to a plain
@@ -4661,6 +4960,22 @@ theorem regimeIIAdmissibleBase_iff_modEq_residue
     refine ⟨ha, hodd, ?_⟩
     exact (regimeIIBase_v2_eq_iff_modEq_residue
       (one_lt_three_pow_mul_of_pos_of_time_pos ha ht)).2 hres
+
+/-- The residue-chart projection of an admissible intrinsic Regime-II state is
+    exactly the canonical residue associated to its `(time, eject)` slice. -/
+theorem regimeIIStateResidueChart_eq_residue_of_admissible
+    (s : RegimeIIState) (hs : regimeIIStateAdmissible s) (ht : 1 ≤ s.time) :
+    regimeIIStateResidueChart s = regimeIIBaseResidue s.time s.eject := by
+  rcases hs with ⟨hbase_pos, hbase_odd, heject⟩
+  have hres : s.base ≡ regimeIIBaseResidue s.time s.eject [MOD 2 ^ (s.eject + 1)] := by
+    exact (regimeIIAdmissibleBase_iff_modEq_residue ht).1
+      ⟨hbase_pos, hbase_odd, heject.symm⟩ |>.2.2
+  unfold regimeIIStateResidueChart
+  have hmod : s.base % 2 ^ (s.eject + 1) ≡ regimeIIBaseResidue s.time s.eject [MOD 2 ^ (s.eject + 1)] :=
+    (Nat.mod_modEq _ _).trans hres
+  unfold Nat.ModEq at hmod
+  simpa [Nat.mod_eq_of_lt (Nat.mod_lt _ (pow_pos (by norm_num : 0 < 2) _)),
+    Nat.mod_eq_of_lt (regimeIIBaseResidue_lt s.time s.eject)] using hmod
 
 /-- Finite intrinsic base candidates below a cutoff `M` on a fixed
     `(time, eject)` slice. These are the positive odd bases below `M` whose
@@ -5734,6 +6049,106 @@ theorem regimeII_next_hits_k6_zone_shrinks (n : ℕ) (hn1 : 1 < n) (hn : n % 2 =
     ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
   exact regimeII_next_hits_exact_zone_shrinks 832 odd_lt_832_shrinks_somewhere
     n hn1 hn hT hnext_small
+
+/-- For genuine Regime-II states, the intrinsic bad-frontier condition is
+    exactly the statement that the compressed successor misses both self-shrink
+    and the exact zone below `B`. -/
+theorem regimeIIBadFrontier_stateOf_iff
+    (B n : ℕ) (hT : 2 ≤ regimeIITime n) :
+    regimeIIBadFrontier B (regimeIIStateOf n) ↔
+      n ≤ regimeIINext n ∧ B ≤ regimeIINext n := by
+  unfold regimeIIBadFrontier
+  rw [regimeIIStateValue_stateOf, regimeIIStateNextValue_stateOf]
+  change
+    regimeIIStateAdmissible (regimeIIStateOf n) ∧
+      2 ≤ regimeIITime n ∧ n ≤ regimeIINext n ∧ B ≤ regimeIINext n ↔
+      n ≤ regimeIINext n ∧ B ≤ regimeIINext n
+  constructor
+  · intro h
+    exact ⟨h.2.2.1, h.2.2.2⟩
+  · intro h
+    exact ⟨regimeIIStateOf_admissible n, hT, h.1, h.2⟩
+
+/-- The complement of the intrinsic bad frontier is exactly the current
+    shrink-or-zone dichotomy on compressed Regime-II states. -/
+theorem not_regimeIIBadFrontier_stateOf_iff
+    (B n : ℕ) (hT : 2 ≤ regimeIITime n) :
+    ¬ regimeIIBadFrontier B (regimeIIStateOf n) ↔
+      regimeIINext n < n ∨ regimeIINext n < B := by
+  rw [regimeIIBadFrontier_stateOf_iff B n hT]
+  constructor
+  · intro hbad
+    by_cases hself : n ≤ regimeIINext n
+    · have hzone : ¬ B ≤ regimeIINext n := by
+        intro hB
+        exact hbad ⟨hself, hB⟩
+      exact Or.inr (Nat.lt_of_not_ge hzone)
+    · exact Or.inl (Nat.lt_of_not_ge hself)
+  · intro h
+    intro hbad
+    rcases hbad with ⟨hself, hzone⟩
+    rcases h with hself_lt | hzone_lt
+    · exact (Nat.not_le_of_lt hself_lt) hself
+    · exact (Nat.not_le_of_lt hzone_lt) hzone
+
+/-- If the intrinsic Regime-II source state of `n` lies outside the bad
+    frontier at target `B`, then the existing source-state machinery already
+    certifies a true shrinking window on the integer orbit. -/
+theorem regimeII_not_bad_frontier_shrinks
+    (B : ℕ)
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : 2 ≤ regimeIITime n)
+    (hbad : ¬ regimeIIBadFrontier B (regimeIIStateOf n)) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  have hdispatch := (not_regimeIIBadFrontier_stateOf_iff B n hT).1 hbad
+  rcases hdispatch with hself | hzone
+  · refine ⟨regimeIITime n, by omega, ?_⟩
+    rw [← regimeIINext_eq_iterate n hn hT]
+    exact hself
+  · exact regimeII_next_hits_exact_zone_shrinks B hexact n hn1 hn hT hzone
+
+/-- Source-state form of the bad-frontier complement theorem: an admissible
+    intrinsic Regime-II state outside the bad frontier already certifies a true
+    shrinking window on the reconstructed integer orbit. -/
+theorem regimeIIState_not_bad_frontier_shrinks
+    (B : ℕ)
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (hT : 2 ≤ s.time)
+    (hbad : ¬ regimeIIBadFrontier B s) :
+    ∃ W : ℕ, 0 < W ∧
+      syracuseExact^[W] (regimeIIStateValue s) < regimeIIStateValue s := by
+  have hn1 : 1 < regimeIIStateValue s :=
+    one_lt_regimeIIStateValue_of_admissible_of_time_ge_two s hs hT
+  have hodd : regimeIIStateValue s % 2 = 1 :=
+    regimeIIStateValue_odd_of_admissible_of_time_pos s hs (by omega)
+  have hT' : 2 ≤ regimeIITime (regimeIIStateValue s) := by
+    simpa [regimeIITime_stateValue s hs] using hT
+  have hdispatch := (not_regimeIIBadFrontier_iff B s hs hT).1 hbad
+  rcases hdispatch with hself | hzone
+  · refine ⟨s.time, by omega, ?_⟩
+    have hself' : regimeIINext (regimeIIStateValue s) < regimeIIStateValue s := by
+      simpa [regimeIINext_stateValue s hs] using hself
+    rw [regimeIINext_eq_iterate (regimeIIStateValue s) hodd hT'] at hself'
+    simpa [regimeIITime_stateValue s hs] using hself'
+  · exact regimeII_next_hits_exact_zone_shrinks
+      B hexact (regimeIIStateValue s) hn1 hodd hT'
+      (by simpa [regimeIINext_stateValue s hs] using hzone)
+
+namespace RegimeIIBadFrontierState
+
+/-- Every intrinsic bad-frontier state lands on the canonical residue chart of
+    its `(time, eject)` source slice. -/
+theorem residueChart_eq_residue {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    x.residueChart = regimeIIBaseResidue x.src.time x.src.eject := by
+  exact regimeIIStateResidueChart_eq_residue_of_admissible
+    x.src x.admissible (le_trans (by decide : 1 ≤ 2) x.time_ge_two)
+
+end RegimeIIBadFrontierState
 
 /-- Any fixed Regime-II slice whose intrinsic base lies below the exact-zone
     threshold at `832` already has a certified shrinking window on the true
