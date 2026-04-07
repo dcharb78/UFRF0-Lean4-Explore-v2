@@ -4568,6 +4568,21 @@ theorem bundleFiberStateOf_factors_through_regimeIIState
   unfold bundleFiberStateOf regimeIIStateToBundleFiberState regimeIIStateOf
   rfl
 
+/-- Bundle-fiber chart readout of an intrinsic Regime-II source state. This is
+    one observer chart on the source state, obtained by reconstructing the
+    integer value and then projecting back down. -/
+def regimeIIStateBundleFiberChart (S : ObserverBundle) (s : RegimeIIState) :
+    BundleFiberState S :=
+  regimeIIStateToBundleFiberState S (regimeIIStateValue s) s
+
+/-- For admissible intrinsic source states, the bundle-fiber chart readout is
+    exactly the ordinary bundle-fiber chart of the reconstructed integer value. -/
+theorem regimeIIStateBundleFiberChart_eq_bundleFiberStateOf
+    (S : ObserverBundle) (s : RegimeIIState) (hs : regimeIIStateAdmissible s) :
+    regimeIIStateBundleFiberChart S s = bundleFiberStateOf S (regimeIIStateValue s) := by
+  simpa [regimeIIStateBundleFiberChart, regimeIIStateOf_value s hs] using
+    (bundleFiberStateOf_factors_through_regimeIIState S (regimeIIStateValue s)).symm
+
 /-- Exact-zone entry for the compressed Regime-II node is governed by the
     intrinsic numerator/denominator inequality, not by bundle phase data alone. -/
 theorem regimeIINext_lt_iff_meta_bound (n B : ℕ) :
@@ -4702,6 +4717,11 @@ def nextValue {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
 def residueChart {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
   regimeIIStateResidueChart x.src
 
+/-- Bundle-fiber chart readout attached to a bad-frontier source state. -/
+def bundleFiberChart {B : ℕ} (S : ObserverBundle) (x : RegimeIIBadFrontierState B) :
+    BundleFiberState S :=
+  regimeIIStateBundleFiberChart S x.src
+
 /-- Self-shrink defect readout attached to a bad-frontier source state. -/
 def selfDefect {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
   regimeIISelfDefect x.src
@@ -4735,6 +4755,52 @@ theorem zoneDefect_pos {B : ℕ} (x : RegimeIIBadFrontierState B) :
     0 < x.zoneDefect := by
   unfold zoneDefect regimeIIZoneDefect
   exact Nat.sub_pos_of_lt (Nat.lt_succ_of_le x.zone_boundary_le)
+
+theorem nextState_admissible {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    regimeIIStateAdmissible x.nextState :=
+  regimeIIStateOf_admissible x.nextValue
+
+theorem nextState_value_eq_nextValue {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    regimeIIStateValue x.nextState = x.nextValue := by
+  unfold nextState nextValue
+  simpa using regimeIIStateValue_stateOf (regimeIIStateNextValue x.src)
+
+theorem nextValue_eq_iterate {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    syracuseExact^[x.src.time] (regimeIIStateValue x.src) = x.nextValue := by
+  have hodd : regimeIIStateValue x.src % 2 = 1 :=
+    regimeIIStateValue_odd_of_admissible_of_time_pos x.src x.admissible
+      (le_trans (by decide : 1 ≤ 2) x.time_ge_two)
+  have hT : 2 ≤ regimeIITime (regimeIIStateValue x.src) := by
+    simpa [regimeIITime_stateValue x.src x.admissible] using x.time_ge_two
+  calc
+    syracuseExact^[x.src.time] (regimeIIStateValue x.src)
+      = syracuseExact^[regimeIITime (regimeIIStateValue x.src)] (regimeIIStateValue x.src) := by
+          simp [regimeIITime_stateValue x.src x.admissible]
+    _ = regimeIINext (regimeIIStateValue x.src) := by
+          symm
+          exact regimeIINext_eq_iterate (regimeIIStateValue x.src) hodd hT
+    _ = x.nextValue := by
+          simpa [nextValue] using regimeIINext_stateValue x.src x.admissible
+
+theorem bundleFiberChart_eq_bundleFiberStateOf
+    {B : ℕ} (S : ObserverBundle) (x : RegimeIIBadFrontierState B) :
+    x.bundleFiberChart S = bundleFiberStateOf S (regimeIIStateValue x.src) :=
+  regimeIIStateBundleFiberChart_eq_bundleFiberStateOf S x.src x.admissible
+
+theorem centeredClockBundle_nextValue_eq_bundleStateStep_of_coherence
+    {B : ℕ} (S : ObserverBundle) (x : RegimeIIBadFrontierState B)
+    (hperiod : S.period ∣ x.src.time - 1) :
+    centeredClockBundle S x.nextValue =
+      bundleStateStep S (bundleStateOf S (regimeIIStateValue x.src)) := by
+  have hodd : regimeIIStateValue x.src % 2 = 1 :=
+    regimeIIStateValue_odd_of_admissible_of_time_pos x.src x.admissible
+      (le_trans (by decide : 1 ≤ 2) x.time_ge_two)
+  have hT : 2 ≤ regimeIITime (regimeIIStateValue x.src) := by
+    simpa [regimeIITime_stateValue x.src x.admissible] using x.time_ge_two
+  have hclock :=
+    regimeIINext_centeredClockBundle_eq_bundleStateStep_of_coherence
+      S (regimeIIStateValue x.src) hodd hT (by simpa [regimeIITime_stateValue x.src x.admissible] using hperiod)
+  simpa [nextValue, regimeIINext_stateValue x.src x.admissible] using hclock
 
 end RegimeIIBadFrontierState
 
