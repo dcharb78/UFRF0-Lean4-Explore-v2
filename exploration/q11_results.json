@@ -1,0 +1,1624 @@
+{
+  "B": 832,
+  "limit": 200000,
+  "promising_source_slices": [
+    {
+      "key": [
+        3,
+        1
+      ],
+      "count": 1783,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            2,
+            1
+          ],
+          "count": 778
+        },
+        {
+          "slice": [
+            3,
+            1
+          ],
+          "count": 389
+        },
+        {
+          "slice": [
+            4,
+            1
+          ],
+          "count": 195
+        },
+        {
+          "slice": [
+            5,
+            1
+          ],
+          "count": 97
+        },
+        {
+          "slice": [
+            4,
+            2
+          ],
+          "count": 97
+        },
+        {
+          "slice": [
+            6,
+            1
+          ],
+          "count": 49
+        },
+        {
+          "slice": [
+            5,
+            2
+          ],
+          "count": 49
+        },
+        {
+          "slice": [
+            7,
+            1
+          ],
+          "count": 25
+        },
+        {
+          "slice": [
+            6,
+            2
+          ],
+          "count": 25
+        },
+        {
+          "slice": [
+            7,
+            2
+          ],
+          "count": 12
+        }
+      ]
+    }
+  ],
+  "promising_transition_slices": [
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "count": 1556,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            2,
+            1
+          ],
+          "count": 1556
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "count": 778,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            2,
+            1
+          ],
+          "count": 778
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "count": 389,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            3,
+            1
+          ],
+          "count": 389
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          4,
+          1
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "count": 389,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            2,
+            1
+          ],
+          "count": 389
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "count": 195,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            5,
+            1
+          ],
+          "count": 195
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          1
+        ]
+      ],
+      "count": 195,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            4,
+            1
+          ],
+          "count": 195
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "count": 194,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            4,
+            2
+          ],
+          "count": 194
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          6,
+          1
+        ]
+      ],
+      "count": 98,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            6,
+            1
+          ],
+          "count": 98
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "count": 97,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            5,
+            2
+          ],
+          "count": 97
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "count": 97,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            4,
+            2
+          ],
+          "count": 97
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "count": 97,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            5,
+            1
+          ],
+          "count": 97
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          1
+        ]
+      ],
+      "count": 97,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            4,
+            1
+          ],
+          "count": 97
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          7,
+          1
+        ]
+      ],
+      "count": 49,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            7,
+            1
+          ],
+          "count": 49
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "count": 49,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            5,
+            2
+          ],
+          "count": 49
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        [
+          6,
+          1
+        ]
+      ],
+      "count": 49,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            6,
+            1
+          ],
+          "count": 49
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "count": 49,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            5,
+            1
+          ],
+          "count": 49
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          6,
+          2
+        ]
+      ],
+      "count": 48,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            6,
+            2
+          ],
+          "count": 48
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "count": 48,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            4,
+            2
+          ],
+          "count": 48
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        [
+          6,
+          2
+        ]
+      ],
+      "count": 25,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            6,
+            2
+          ],
+          "count": 25
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        [
+          7,
+          1
+        ]
+      ],
+      "count": 25,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            7,
+            1
+          ],
+          "count": 25
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          4,
+          1
+        ],
+        [
+          6,
+          1
+        ]
+      ],
+      "count": 25,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            6,
+            1
+          ],
+          "count": 25
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "count": 24,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            6,
+            3
+          ],
+          "count": 24
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          7,
+          2
+        ]
+      ],
+      "count": 24,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            7,
+            2
+          ],
+          "count": 24
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          2,
+          1
+        ],
+        [
+          8,
+          1
+        ]
+      ],
+      "count": 24,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            8,
+            1
+          ],
+          "count": 24
+        }
+      ]
+    },
+    {
+      "key": [
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "count": 24,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            5,
+            2
+          ],
+          "count": 24
+        }
+      ]
+    }
+  ],
+  "promising_residue_cells": [
+    {
+      "key": [
+        [
+          3,
+          1
+        ],
+        1
+      ],
+      "count": 1783,
+      "sign_range": {
+        "min": -1,
+        "max": -1
+      },
+      "dst_slices": [
+        {
+          "slice": [
+            2,
+            1
+          ],
+          "count": 778
+        },
+        {
+          "slice": [
+            3,
+            1
+          ],
+          "count": 389
+        },
+        {
+          "slice": [
+            4,
+            1
+          ],
+          "count": 195
+        },
+        {
+          "slice": [
+            5,
+            1
+          ],
+          "count": 97
+        },
+        {
+          "slice": [
+            4,
+            2
+          ],
+          "count": 97
+        },
+        {
+          "slice": [
+            6,
+            1
+          ],
+          "count": 49
+        },
+        {
+          "slice": [
+            5,
+            2
+          ],
+          "count": 49
+        },
+        {
+          "slice": [
+            7,
+            1
+          ],
+          "count": 25
+        },
+        {
+          "slice": [
+            6,
+            2
+          ],
+          "count": 25
+        },
+        {
+          "slice": [
+            7,
+            2
+          ],
+          "count": 12
+        }
+      ]
+    }
+  ],
+  "promising_single_chart_cells": {
+    "bundle5": [
+      {
+        "key": [
+          [
+            3,
+            1
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        "count": 358,
+        "sign_range": {
+          "min": -1,
+          "max": -1
+        },
+        "dst_slices": [
+          {
+            "slice": [
+              2,
+              1
+            ],
+            "count": 156
+          },
+          {
+            "slice": [
+              3,
+              1
+            ],
+            "count": 78
+          },
+          {
+            "slice": [
+              4,
+              1
+            ],
+            "count": 39
+          },
+          {
+            "slice": [
+              4,
+              2
+            ],
+            "count": 20
+          },
+          {
+            "slice": [
+              5,
+              1
+            ],
+            "count": 19
+          },
+          {
+            "slice": [
+              5,
+              2
+            ],
+            "count": 10
+          },
+          {
+            "slice": [
+              6,
+              1
+            ],
+            "count": 10
+          },
+          {
+            "slice": [
+              7,
+              1
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              6,
+              2
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              6,
+              3
+            ],
+            "count": 3
+          }
+        ]
+      },
+      {
+        "key": [
+          [
+            3,
+            1
+          ],
+          [
+            0,
+            1
+          ]
+        ],
+        "count": 357,
+        "sign_range": {
+          "min": -1,
+          "max": -1
+        },
+        "dst_slices": [
+          {
+            "slice": [
+              2,
+              1
+            ],
+            "count": 155
+          },
+          {
+            "slice": [
+              3,
+              1
+            ],
+            "count": 78
+          },
+          {
+            "slice": [
+              4,
+              1
+            ],
+            "count": 39
+          },
+          {
+            "slice": [
+              4,
+              2
+            ],
+            "count": 20
+          },
+          {
+            "slice": [
+              5,
+              1
+            ],
+            "count": 19
+          },
+          {
+            "slice": [
+              5,
+              2
+            ],
+            "count": 10
+          },
+          {
+            "slice": [
+              6,
+              1
+            ],
+            "count": 10
+          },
+          {
+            "slice": [
+              6,
+              2
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              7,
+              1
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              8,
+              2
+            ],
+            "count": 2
+          }
+        ]
+      },
+      {
+        "key": [
+          [
+            3,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "count": 357,
+        "sign_range": {
+          "min": -1,
+          "max": -1
+        },
+        "dst_slices": [
+          {
+            "slice": [
+              2,
+              1
+            ],
+            "count": 156
+          },
+          {
+            "slice": [
+              3,
+              1
+            ],
+            "count": 78
+          },
+          {
+            "slice": [
+              4,
+              1
+            ],
+            "count": 39
+          },
+          {
+            "slice": [
+              5,
+              1
+            ],
+            "count": 20
+          },
+          {
+            "slice": [
+              4,
+              2
+            ],
+            "count": 19
+          },
+          {
+            "slice": [
+              6,
+              1
+            ],
+            "count": 10
+          },
+          {
+            "slice": [
+              5,
+              2
+            ],
+            "count": 9
+          },
+          {
+            "slice": [
+              6,
+              2
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              7,
+              1
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              7,
+              2
+            ],
+            "count": 3
+          }
+        ]
+      },
+      {
+        "key": [
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            1
+          ]
+        ],
+        "count": 356,
+        "sign_range": {
+          "min": -1,
+          "max": -1
+        },
+        "dst_slices": [
+          {
+            "slice": [
+              2,
+              1
+            ],
+            "count": 155
+          },
+          {
+            "slice": [
+              3,
+              1
+            ],
+            "count": 77
+          },
+          {
+            "slice": [
+              4,
+              1
+            ],
+            "count": 39
+          },
+          {
+            "slice": [
+              5,
+              1
+            ],
+            "count": 20
+          },
+          {
+            "slice": [
+              4,
+              2
+            ],
+            "count": 19
+          },
+          {
+            "slice": [
+              5,
+              2
+            ],
+            "count": 10
+          },
+          {
+            "slice": [
+              6,
+              1
+            ],
+            "count": 10
+          },
+          {
+            "slice": [
+              6,
+              2
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              7,
+              1
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              9,
+              1
+            ],
+            "count": 2
+          }
+        ]
+      },
+      {
+        "key": [
+          [
+            3,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "count": 355,
+        "sign_range": {
+          "min": -1,
+          "max": -1
+        },
+        "dst_slices": [
+          {
+            "slice": [
+              2,
+              1
+            ],
+            "count": 156
+          },
+          {
+            "slice": [
+              3,
+              1
+            ],
+            "count": 78
+          },
+          {
+            "slice": [
+              4,
+              1
+            ],
+            "count": 39
+          },
+          {
+            "slice": [
+              4,
+              2
+            ],
+            "count": 19
+          },
+          {
+            "slice": [
+              5,
+              1
+            ],
+            "count": 19
+          },
+          {
+            "slice": [
+              5,
+              2
+            ],
+            "count": 10
+          },
+          {
+            "slice": [
+              6,
+              1
+            ],
+            "count": 9
+          },
+          {
+            "slice": [
+              7,
+              1
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              6,
+              2
+            ],
+            "count": 5
+          },
+          {
+            "slice": [
+              7,
+              2
+            ],
+            "count": 3
+          }
+        ]
+      }
+    ],
+    "bundle7": [],
+    "bundle11": [],
+    "bundle13": [],
+    "bundle65": []
+  },
+  "samples": [
+    {
+      "n": 859,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        3,
+        1
+      ],
+      "src_self_threshold": 25,
+      "src_radial_gap": 27,
+      "dst_self_threshold": 50,
+      "dst_radial_gap": 135,
+      "cross_difference": -2025,
+      "slope_sign": -1
+    },
+    {
+      "n": 871,
+      "src_slice": [
+        3,
+        1
+      ],
+      "dst_slice": [
+        6,
+        1
+      ],
+      "src_self_threshold": 45,
+      "src_radial_gap": 39,
+      "dst_self_threshold": 19,
+      "dst_radial_gap": 639,
+      "cross_difference": -28014,
+      "slope_sign": -1
+    },
+    {
+      "n": 891,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        2,
+        1
+      ],
+      "src_self_threshold": 25,
+      "src_radial_gap": 59,
+      "dst_self_threshold": 29,
+      "dst_radial_gap": 171,
+      "cross_difference": -2564,
+      "slope_sign": -1
+    },
+    {
+      "n": 935,
+      "src_slice": [
+        3,
+        1
+      ],
+      "dst_slice": [
+        2,
+        1
+      ],
+      "src_self_threshold": 48,
+      "src_radial_gap": 103,
+      "dst_self_threshold": 45,
+      "dst_radial_gap": 747,
+      "cross_difference": -31221,
+      "slope_sign": -1
+    },
+    {
+      "n": 959,
+      "src_slice": [
+        6,
+        1
+      ],
+      "dst_slice": [
+        2,
+        1
+      ],
+      "src_self_threshold": 13,
+      "src_radial_gap": 127,
+      "dst_self_threshold": 153,
+      "dst_radial_gap": 4635,
+      "cross_difference": -40824,
+      "slope_sign": -1
+    },
+    {
+      "n": 991,
+      "src_slice": [
+        5,
+        2
+      ],
+      "dst_slice": [
+        2,
+        1
+      ],
+      "src_self_threshold": 15,
+      "src_radial_gap": 159,
+      "dst_self_threshold": 53,
+      "dst_radial_gap": 1051,
+      "cross_difference": -7338,
+      "slope_sign": -1
+    },
+    {
+      "n": 1019,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        2,
+        1
+      ],
+      "src_self_threshold": 29,
+      "src_radial_gap": 187,
+      "dst_self_threshold": 33,
+      "dst_radial_gap": 315,
+      "cross_difference": -2964,
+      "slope_sign": -1
+    },
+    {
+      "n": 1051,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        5,
+        1
+      ],
+      "src_self_threshold": 30,
+      "src_radial_gap": 219,
+      "dst_self_threshold": 28,
+      "dst_radial_gap": 351,
+      "cross_difference": -4398,
+      "slope_sign": -1
+    },
+    {
+      "n": 1115,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        3,
+        1
+      ],
+      "src_self_threshold": 32,
+      "src_radial_gap": 283,
+      "dst_self_threshold": 65,
+      "dst_radial_gap": 423,
+      "cross_difference": 4859,
+      "slope_sign": 1
+    },
+    {
+      "n": 1127,
+      "src_slice": [
+        3,
+        1
+      ],
+      "dst_slice": [
+        4,
+        1
+      ],
+      "src_self_threshold": 58,
+      "src_radial_gap": 295,
+      "dst_self_threshold": 73,
+      "dst_radial_gap": 1071,
+      "cross_difference": -40583,
+      "slope_sign": -1
+    },
+    {
+      "n": 1135,
+      "src_slice": [
+        4,
+        1
+      ],
+      "dst_slice": [
+        2,
+        1
+      ],
+      "src_self_threshold": 43,
+      "src_radial_gap": 303,
+      "dst_self_threshold": 81,
+      "dst_radial_gap": 2043,
+      "cross_difference": -63306,
+      "slope_sign": -1
+    },
+    {
+      "n": 1147,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        2,
+        1
+      ],
+      "src_self_threshold": 33,
+      "src_radial_gap": 315,
+      "dst_self_threshold": 37,
+      "dst_radial_gap": 459,
+      "cross_difference": -3492,
+      "slope_sign": -1
+    },
+    {
+      "n": 1179,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        4,
+        1
+      ],
+      "src_self_threshold": 33,
+      "src_radial_gap": 347,
+      "dst_self_threshold": 51,
+      "dst_radial_gap": 495,
+      "cross_difference": 1362,
+      "slope_sign": 1
+    },
+    {
+      "n": 1191,
+      "src_slice": [
+        3,
+        1
+      ],
+      "dst_slice": [
+        2,
+        1
+      ],
+      "src_self_threshold": 61,
+      "src_radial_gap": 359,
+      "dst_self_threshold": 57,
+      "dst_radial_gap": 1179,
+      "cross_difference": -51456,
+      "slope_sign": -1
+    },
+    {
+      "n": 1255,
+      "src_slice": [
+        3,
+        1
+      ],
+      "dst_slice": [
+        3,
+        1
+      ],
+      "src_self_threshold": 65,
+      "src_radial_gap": 423,
+      "dst_self_threshold": 109,
+      "dst_radial_gap": 1287,
+      "cross_difference": -37548,
+      "slope_sign": -1
+    },
+    {
+      "n": 1263,
+      "src_slice": [
+        4,
+        1
+      ],
+      "dst_slice": [
+        7,
+        1
+      ],
+      "src_self_threshold": 48,
+      "src_radial_gap": 431,
+      "dst_self_threshold": 23,
+      "dst_radial_gap": 2367,
+      "cross_difference": -103703,
+      "slope_sign": -1
+    },
+    {
+      "n": 1275,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        2,
+        1
+      ],
+      "src_self_threshold": 36,
+      "src_radial_gap": 443,
+      "dst_self_threshold": 41,
+      "dst_radial_gap": 603,
+      "cross_difference": -3545,
+      "slope_sign": -1
+    },
+    {
+      "n": 1307,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        6,
+        1
+      ],
+      "src_self_threshold": 37,
+      "src_radial_gap": 475,
+      "dst_self_threshold": 19,
+      "dst_radial_gap": 639,
+      "cross_difference": -14618,
+      "slope_sign": -1
+    },
+    {
+      "n": 1371,
+      "src_slice": [
+        2,
+        1
+      ],
+      "dst_slice": [
+        3,
+        1
+      ],
+      "src_self_threshold": 39,
+      "src_radial_gap": 539,
+      "dst_self_threshold": 79,
+      "dst_radial_gap": 711,
+      "cross_difference": 14852,
+      "slope_sign": 1
+    },
+    {
+      "n": 1383,
+      "src_slice": [
+        3,
+        1
+      ],
+      "dst_slice": [
+        5,
+        1
+      ],
+      "src_self_threshold": 71,
+      "src_radial_gap": 551,
+      "dst_self_threshold": 54,
+      "dst_radial_gap": 1503,
+      "cross_difference": -76959,
+      "slope_sign": -1
+    }
+  ]
+}

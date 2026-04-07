@@ -4496,6 +4496,15 @@ theorem one_lt_regimeIIStateValue_of_admissible_of_time_ge_two
 def regimeIIBaseThreshold (B : ℕ) (s : RegimeIIState) : ℕ :=
   (B * 2 ^ s.eject) / (3 ^ s.time) + 1
 
+/-- The intrinsic base threshold is monotone in the target cutoff `B`. -/
+theorem regimeIIBaseThreshold_mono
+    (s : RegimeIIState) {B₁ B₂ : ℕ} (hB : B₁ ≤ B₂) :
+    regimeIIBaseThreshold B₁ s ≤ regimeIIBaseThreshold B₂ s := by
+  unfold regimeIIBaseThreshold
+  have hmul : B₁ * 2 ^ s.eject ≤ B₂ * 2 ^ s.eject := by
+    exact Nat.mul_le_mul_right (2 ^ s.eject) hB
+  exact Nat.succ_le_succ (Nat.div_le_div_right hmul)
+
 /-- A first refined state object: local bundle data plus radial fiber height. -/
 structure BundleFiberState (S : ObserverBundle) where
   bundleState : BundleState S
@@ -4673,6 +4682,31 @@ theorem regimeIIStateNextValue_lt_iff_base_lt_threshold
     exact Iff.symm Nat.lt_succ_iff
   exact hsub.trans (hdiv.trans hsucc)
 
+/-- Immediate self-shrink of the compressed successor is the threshold theorem
+    specialized to the source state's own reconstructed value. -/
+theorem regimeIIStateNextValue_lt_value_iff_base_lt_self_threshold
+    (s : RegimeIIState) (hvalue : 0 < regimeIIStateValue s) :
+    regimeIIStateNextValue s < regimeIIStateValue s ↔
+      s.base < regimeIIBaseThreshold (regimeIIStateValue s) s := by
+  simpa using
+    regimeIIStateNextValue_lt_iff_base_lt_threshold s (regimeIIStateValue s) hvalue
+
+/-- Complement form of the intrinsic self-threshold classifier: non-shrink on
+    the compressed meta-step is exactly “base lies above the self-threshold.” -/
+theorem regimeIIStateValue_le_nextValue_iff_self_threshold_le_base
+    (s : RegimeIIState) (hvalue : 0 < regimeIIStateValue s) :
+    regimeIIStateValue s ≤ regimeIIStateNextValue s ↔
+      regimeIIBaseThreshold (regimeIIStateValue s) s ≤ s.base := by
+  rw [← not_lt, ← not_lt]
+  exact not_congr (regimeIIStateNextValue_lt_value_iff_base_lt_self_threshold s hvalue)
+
+/-- Complement form of the intrinsic exact-zone threshold classifier. -/
+theorem regimeIIBaseThreshold_le_iff_le_stateNextValue
+    (s : RegimeIIState) (B : ℕ) (hB : 0 < B) :
+    regimeIIBaseThreshold B s ≤ s.base ↔ B ≤ regimeIIStateNextValue s := by
+  rw [← not_lt, ← not_lt]
+  exact not_congr (regimeIIStateNextValue_lt_iff_base_lt_threshold s B hB).symm
+
 /-- The intrinsic bad frontier at target exact zone `B`: admissible compressed
     Regime-II states that remain outside both immediate self-shrink and the
     current exact-zone basin under the compressed return map. -/
@@ -4696,6 +4730,46 @@ def regimeIISelfDefect (s : RegimeIIState) : ℕ :=
     the compressed successor sits above the exact-zone boundary. -/
 def regimeIIZoneDefect (B : ℕ) (s : RegimeIIState) : ℕ :=
   regimeIIStateNextValue s + 1 - B
+
+/-- Self-threshold defect on the intrinsic source state: how far the odd base
+    sits above the source state's own self-shrink threshold. -/
+def regimeIISelfThresholdDefect (s : RegimeIIState) : ℕ :=
+  s.base + 1 - regimeIIBaseThreshold (regimeIIStateValue s) s
+
+/-- Exact-zone threshold defect on the intrinsic source state at target `B`:
+    how far the odd base sits above the exact-zone threshold. -/
+def regimeIIZoneThresholdDefect (B : ℕ) (s : RegimeIIState) : ℕ :=
+  s.base + 1 - regimeIIBaseThreshold B s
+
+/-- Radial gap above the target cutoff `B` on the intrinsic source state. This
+    is the coarse radial position of the reconstructed value relative to the
+    exact-zone boundary. -/
+def regimeIIRadialGap (B : ℕ) (s : RegimeIIState) : ℕ :=
+  regimeIIStateValue s - B
+
+/-- Threshold gap between the source state's self-threshold and the target-zone
+    threshold. This is the threshold-side radial separation between the two
+    views once the source value is itself used as a cutoff. -/
+def regimeIIThresholdGap (B : ℕ) (s : RegimeIIState) : ℕ :=
+  regimeIIBaseThreshold (regimeIIStateValue s) s - regimeIIBaseThreshold B s
+
+/-- Projective self-threshold slope comparison on the reduced core above `B`,
+    expressed without division by cross-multiplication. -/
+def regimeIIProjectiveSelfSlopeLE (B : ℕ) (s₁ s₂ : RegimeIIState) : Prop :=
+  regimeIISelfThresholdDefect s₂ * regimeIIRadialGap B s₁ ≤
+    regimeIISelfThresholdDefect s₁ * regimeIIRadialGap B s₂
+
+/-- Ordered multiview defect cone on the intrinsic source state at target `B`.
+    This is the source-state package saying all four defect readouts are
+    positive and the self defects are bounded above by the corresponding
+    zone defects. -/
+def regimeIIOrderedMultiviewCone (B : ℕ) (s : RegimeIIState) : Prop :=
+  0 < regimeIISelfDefect s ∧
+    0 < regimeIIZoneDefect B s ∧
+    0 < regimeIISelfThresholdDefect s ∧
+    0 < regimeIIZoneThresholdDefect B s ∧
+    regimeIISelfDefect s ≤ regimeIIZoneDefect B s ∧
+    regimeIISelfThresholdDefect s ≤ regimeIIZoneThresholdDefect B s
 
 /-- First-class source-state object on the intrinsic bad frontier. This lets us
     carry the source state together with several concurrent readouts. -/
@@ -4729,6 +4803,15 @@ def selfDefect {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
 /-- Exact-zone defect readout attached to a bad-frontier source state. -/
 def zoneDefect {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
   regimeIIZoneDefect B x.src
+
+/-- Self-threshold defect readout attached to a bad-frontier source state. -/
+def selfThresholdDefect {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
+  regimeIISelfThresholdDefect x.src
+
+/-- Exact-zone threshold defect readout attached to a bad-frontier source
+    state. -/
+def zoneThresholdDefect {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
+  regimeIIZoneThresholdDefect B x.src
 
 theorem admissible {B : ℕ} (x : RegimeIIBadFrontierState B) :
     regimeIIStateAdmissible x.src :=
@@ -4765,6 +4848,24 @@ theorem nextState_value_eq_nextValue {B : ℕ} (x : RegimeIIBadFrontierState B) 
   unfold nextState nextValue
   simpa using regimeIIStateValue_stateOf (regimeIIStateNextValue x.src)
 
+/-- Repackage the intrinsic successor as a bad-frontier state when it remains
+    on the bad frontier at the same exact-zone target. -/
+def nextBadState {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) : RegimeIIBadFrontierState B where
+  src := x.nextState
+  isBad := hnext
+
+@[simp] theorem nextBadState_src {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    (x.nextBadState hnext).src = x.nextState :=
+  rfl
+
+@[simp] theorem nextBadState_value_eq_nextValue {B : ℕ}
+    (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    regimeIIStateValue (x.nextBadState hnext).src = x.nextValue := by
+  simpa [nextBadState] using x.nextState_value_eq_nextValue
+
 theorem nextValue_eq_iterate {B : ℕ} (x : RegimeIIBadFrontierState B) :
     syracuseExact^[x.src.time] (regimeIIStateValue x.src) = x.nextValue := by
   have hodd : regimeIIStateValue x.src % 2 = 1 :=
@@ -4782,10 +4883,28 @@ theorem nextValue_eq_iterate {B : ℕ} (x : RegimeIIBadFrontierState B) :
     _ = x.nextValue := by
           simpa [nextValue] using regimeIINext_stateValue x.src x.admissible
 
+@[simp] theorem nextBadState_value_eq_iterate {B : ℕ}
+    (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    regimeIIStateValue (x.nextBadState hnext).src =
+      syracuseExact^[x.src.time] (regimeIIStateValue x.src) := by
+  rw [x.nextBadState_value_eq_nextValue, ← x.nextValue_eq_iterate]
+
 theorem bundleFiberChart_eq_bundleFiberStateOf
     {B : ℕ} (S : ObserverBundle) (x : RegimeIIBadFrontierState B) :
     x.bundleFiberChart S = bundleFiberStateOf S (regimeIIStateValue x.src) :=
   regimeIIStateBundleFiberChart_eq_bundleFiberStateOf S x.src x.admissible
+
+theorem nextBadState_bundleFiberChart_eq_bundleFiberStateOf
+    {B : ℕ} (S : ObserverBundle) (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    (x.nextBadState hnext).bundleFiberChart S = bundleFiberStateOf S x.nextValue := by
+  calc
+    (x.nextBadState hnext).bundleFiberChart S
+      = bundleFiberStateOf S (regimeIIStateValue (x.nextBadState hnext).src) := by
+          exact bundleFiberChart_eq_bundleFiberStateOf S (x.nextBadState hnext)
+    _ = bundleFiberStateOf S x.nextValue := by
+          rw [x.nextBadState_value_eq_nextValue hnext]
 
 theorem centeredClockBundle_nextValue_eq_bundleStateStep_of_coherence
     {B : ℕ} (S : ObserverBundle) (x : RegimeIIBadFrontierState B)
@@ -4802,6 +4921,27 @@ theorem centeredClockBundle_nextValue_eq_bundleStateStep_of_coherence
       S (regimeIIStateValue x.src) hodd hT (by simpa [regimeIITime_stateValue x.src x.admissible] using hperiod)
   simpa [nextValue, regimeIINext_stateValue x.src x.admissible] using hclock
 
+theorem nextBadState_bundleClock_eq_bundleStateStep_of_coherence
+    {B : ℕ} (S : ObserverBundle) (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState)
+    (hperiod : S.period ∣ x.src.time - 1) :
+    ((x.nextBadState hnext).bundleFiberChart S).bundleState.clock =
+      bundleStateStep S (x.bundleFiberChart S).bundleState := by
+  have hnextChart :=
+    x.nextBadState_bundleFiberChart_eq_bundleFiberStateOf S hnext
+  have hsrcChart := x.bundleFiberChart_eq_bundleFiberStateOf S
+  calc
+    ((x.nextBadState hnext).bundleFiberChart S).bundleState.clock
+      = (bundleFiberStateOf S x.nextValue).bundleState.clock := by
+          rw [hnextChart]
+    _ = centeredClockBundle S x.nextValue := rfl
+    _ = bundleStateStep S (bundleStateOf S (regimeIIStateValue x.src)) := by
+          exact x.centeredClockBundle_nextValue_eq_bundleStateStep_of_coherence S hperiod
+    _ = bundleStateStep S ((bundleFiberStateOf S (regimeIIStateValue x.src)).bundleState) := by
+          rfl
+    _ = bundleStateStep S (x.bundleFiberChart S).bundleState := by
+          rw [← hsrcChart]
+
 end RegimeIIBadFrontierState
 
 /-- On an admissible Regime-II layer with time at least `2`, the intrinsic bad
@@ -4814,6 +4954,237 @@ theorem regimeIIBadFrontier_iff
       regimeIIStateValue s ≤ regimeIIStateNextValue s ∧ B ≤ regimeIIStateNextValue s := by
   unfold regimeIIBadFrontier
   simp [hs, hT]
+
+/-- On an admissible genuine Regime-II layer, the intrinsic bad frontier is
+    exactly “base lies above both the self-threshold and the target-zone
+    threshold.” This is the source-state classifier version of survivorhood. -/
+theorem regimeIIBadFrontier_iff_base_ge_max_threshold
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) (hT : 2 ≤ s.time) (hB : 0 < B) :
+    regimeIIBadFrontier B s ↔
+      max (regimeIIBaseThreshold (regimeIIStateValue s) s)
+        (regimeIIBaseThreshold B s) ≤ s.base := by
+  have hvalue : 0 < regimeIIStateValue s := by
+    have hgt1 : 1 < regimeIIStateValue s :=
+      one_lt_regimeIIStateValue_of_admissible_of_time_ge_two s hs hT
+    omega
+  rw [regimeIIBadFrontier_iff B s hs hT]
+  rw [regimeIIStateValue_le_nextValue_iff_self_threshold_le_base s hvalue]
+  rw [← regimeIIBaseThreshold_le_iff_le_stateNextValue s B hB]
+  rw [max_le_iff]
+
+/-- The self-threshold defect is positive exactly when the source-state base
+    lies on or above the self-shrink threshold. -/
+theorem regimeIISelfThresholdDefect_pos_iff
+    (s : RegimeIIState) :
+    0 < regimeIISelfThresholdDefect s ↔
+      regimeIIBaseThreshold (regimeIIStateValue s) s ≤ s.base := by
+  unfold regimeIISelfThresholdDefect
+  rw [Nat.sub_pos_iff_lt]
+  exact Nat.lt_succ_iff
+
+/-- The successor-side self defect is positive exactly when the intrinsic
+    compressed successor lies on or above the reconstructed source value. -/
+theorem regimeIISelfDefect_pos_iff
+    (s : RegimeIIState) :
+    0 < regimeIISelfDefect s ↔
+      regimeIIStateValue s ≤ regimeIIStateNextValue s := by
+  unfold regimeIISelfDefect
+  rw [Nat.sub_pos_iff_lt]
+  exact Nat.lt_succ_iff
+
+/-- The successor-side exact-zone defect is positive exactly when the
+    compressed successor lies on or above the target cutoff `B`. -/
+theorem regimeIIZoneDefect_pos_iff
+    (B : ℕ) (s : RegimeIIState) :
+    0 < regimeIIZoneDefect B s ↔
+      B ≤ regimeIIStateNextValue s := by
+  unfold regimeIIZoneDefect
+  rw [Nat.sub_pos_iff_lt]
+  exact Nat.lt_succ_iff
+
+/-- The exact-zone threshold defect is positive exactly when the source-state
+    base lies on or above the target-zone threshold. -/
+theorem regimeIIZoneThresholdDefect_pos_iff
+    (B : ℕ) (s : RegimeIIState) :
+    0 < regimeIIZoneThresholdDefect B s ↔
+      regimeIIBaseThreshold B s ≤ s.base := by
+  unfold regimeIIZoneThresholdDefect
+  rw [Nat.sub_pos_iff_lt]
+  exact Nat.lt_succ_iff
+
+/-- The successor-side self defect and the source-threshold self defect cut out
+    the same survivor half-space on an intrinsic source state. -/
+theorem regimeIISelfDefect_pos_iff_selfThresholdDefect_pos
+    (s : RegimeIIState) (hvalue : 0 < regimeIIStateValue s) :
+    0 < regimeIISelfDefect s ↔ 0 < regimeIISelfThresholdDefect s := by
+  unfold regimeIISelfDefect
+  rw [Nat.sub_pos_iff_lt, Nat.lt_succ_iff]
+  rw [regimeIISelfThresholdDefect_pos_iff]
+  exact regimeIIStateValue_le_nextValue_iff_self_threshold_le_base s hvalue
+
+/-- The successor-side exact-zone defect and the source-threshold exact-zone
+    defect cut out the same target-zone survivor half-space. -/
+theorem regimeIIZoneDefect_pos_iff_zoneThresholdDefect_pos
+    (B : ℕ) (s : RegimeIIState) (hB : 0 < B) :
+    0 < regimeIIZoneDefect B s ↔ 0 < regimeIIZoneThresholdDefect B s := by
+  unfold regimeIIZoneDefect
+  rw [Nat.sub_pos_iff_lt, Nat.lt_succ_iff]
+  rw [regimeIIZoneThresholdDefect_pos_iff]
+  exact (regimeIIBaseThreshold_le_iff_le_stateNextValue s B hB).symm
+
+/-- Once the reconstructed source value is already above the target cutoff `B`,
+    the successor-side self defect is bounded above by the target-zone defect. -/
+theorem regimeIISelfDefect_le_zoneDefect_of_value_ge
+    (B : ℕ) (s : RegimeIIState) (hB : B ≤ regimeIIStateValue s) :
+    regimeIISelfDefect s ≤ regimeIIZoneDefect B s := by
+  unfold regimeIISelfDefect regimeIIZoneDefect
+  exact Nat.sub_le_sub_left hB (regimeIIStateNextValue s + 1)
+
+/-- Once the reconstructed source value is already above the target cutoff `B`,
+    the source-threshold self defect is bounded above by the target-zone
+    threshold defect. -/
+theorem regimeIISelfThresholdDefect_le_zoneThresholdDefect_of_value_ge
+    (B : ℕ) (s : RegimeIIState) (hB : B ≤ regimeIIStateValue s) :
+    regimeIISelfThresholdDefect s ≤ regimeIIZoneThresholdDefect B s := by
+  unfold regimeIISelfThresholdDefect regimeIIZoneThresholdDefect
+  have hthr :
+      regimeIIBaseThreshold B s ≤ regimeIIBaseThreshold (regimeIIStateValue s) s :=
+    regimeIIBaseThreshold_mono s hB
+  exact Nat.sub_le_sub_left hthr (s.base + 1)
+
+/-- Above the target cutoff `B`, the target-zone successor defect splits
+    exactly into the self defect plus the radial gap to `B`. -/
+theorem regimeIIZoneDefect_eq_selfDefect_add_radialGap
+    (B : ℕ) (s : RegimeIIState)
+    (hself : regimeIIStateValue s ≤ regimeIIStateNextValue s)
+    (hB : B ≤ regimeIIStateValue s) :
+    regimeIIZoneDefect B s =
+      regimeIISelfDefect s + regimeIIRadialGap B s := by
+  unfold regimeIIZoneDefect regimeIISelfDefect regimeIIRadialGap
+  omega
+
+/-- Above the target cutoff `B`, the target-zone threshold defect splits
+    exactly into the self-threshold defect plus the threshold gap. -/
+theorem regimeIIZoneThresholdDefect_eq_selfThresholdDefect_add_thresholdGap
+    (B : ℕ) (s : RegimeIIState)
+    (hselfT : regimeIIBaseThreshold (regimeIIStateValue s) s ≤ s.base)
+    (hB : B ≤ regimeIIStateValue s) :
+    regimeIIZoneThresholdDefect B s =
+      regimeIISelfThresholdDefect s + regimeIIThresholdGap B s := by
+  unfold regimeIIZoneThresholdDefect regimeIISelfThresholdDefect regimeIIThresholdGap
+  have hthr :
+      regimeIIBaseThreshold B s ≤ regimeIIBaseThreshold (regimeIIStateValue s) s :=
+    regimeIIBaseThreshold_mono s hB
+  omega
+
+/-- On an admissible genuine Regime-II layer, intrinsic bad-frontier survivor
+    status is exactly positivity of the two source-threshold defects. -/
+theorem regimeIIBadFrontier_iff_thresholdDefects_pos
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) (hT : 2 ≤ s.time) (hB : 0 < B) :
+    regimeIIBadFrontier B s ↔
+      0 < regimeIISelfThresholdDefect s ∧ 0 < regimeIIZoneThresholdDefect B s := by
+  rw [regimeIIBadFrontier_iff_base_ge_max_threshold B s hs hT hB]
+  rw [max_le_iff]
+  rw [← regimeIISelfThresholdDefect_pos_iff s]
+  rw [← regimeIIZoneThresholdDefect_pos_iff B s]
+
+/-- On an admissible genuine Regime-II layer, bad-frontier survivorhood is a
+    coherent multiview condition: both successor-side and source-threshold
+    defect charts are simultaneously positive. -/
+theorem regimeIIBadFrontier_iff_multiview_defects_pos
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) (hT : 2 ≤ s.time) (hB : 0 < B) :
+    regimeIIBadFrontier B s ↔
+      0 < regimeIISelfDefect s ∧ 0 < regimeIIZoneDefect B s ∧
+      0 < regimeIISelfThresholdDefect s ∧ 0 < regimeIIZoneThresholdDefect B s := by
+  have hvalue : 0 < regimeIIStateValue s := by
+    have hgt1 : 1 < regimeIIStateValue s :=
+      one_lt_regimeIIStateValue_of_admissible_of_time_ge_two s hs hT
+    omega
+  rw [regimeIIBadFrontier_iff_thresholdDefects_pos B s hs hT hB]
+  constructor
+  · intro h
+    refine ⟨?_, ?_, h.1, h.2⟩
+    · exact (regimeIISelfDefect_pos_iff_selfThresholdDefect_pos s hvalue).2 h.1
+    · exact (regimeIIZoneDefect_pos_iff_zoneThresholdDefect_pos B s hB).2 h.2
+  · rintro ⟨_, _, hselfT, hzoneT⟩
+    exact ⟨hselfT, hzoneT⟩
+
+/-- A genuine bad-frontier source state whose reconstructed value already lies
+    above the target cutoff `B` lies in the ordered multiview defect cone. -/
+theorem regimeIIBadFrontier_and_value_ge_implies_orderedMultiviewCone
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) (hT : 2 ≤ s.time) (hB : 0 < B)
+    (hbad : regimeIIBadFrontier B s)
+    (hvalue : B ≤ regimeIIStateValue s) :
+    regimeIIOrderedMultiviewCone B s := by
+  have hpos := (regimeIIBadFrontier_iff_multiview_defects_pos B s hs hT hB).1 hbad
+  refine ⟨hpos.1, hpos.2.1, hpos.2.2.1, hpos.2.2.2, ?_, ?_⟩
+  · exact regimeIISelfDefect_le_zoneDefect_of_value_ge B s hvalue
+  · exact regimeIISelfThresholdDefect_le_zoneThresholdDefect_of_value_ge B s hvalue
+
+/-- Above the target cutoff `B`, bad-frontier survivorhood collapses to the
+    self-survival inequality: once the source value itself already lies above
+    `B`, the target-zone branch is automatic. -/
+theorem regimeIIBadFrontier_iff_selfDefect_pos_of_value_ge
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) (hT : 2 ≤ s.time)
+    (hvalue : B ≤ regimeIIStateValue s) :
+    regimeIIBadFrontier B s ↔ 0 < regimeIISelfDefect s := by
+  rw [regimeIIBadFrontier_iff B s hs hT, regimeIISelfDefect_pos_iff]
+  constructor
+  · intro h
+    exact h.1
+  · intro hself
+    exact ⟨hself, le_trans hvalue hself⟩
+
+/-- Above the target cutoff `B`, bad-frontier survivorhood is equivalently the
+    positivity of the intrinsic self-threshold defect. The target-zone
+    threshold contributes no additional obstruction there. -/
+theorem regimeIIBadFrontier_iff_selfThresholdDefect_pos_of_value_ge
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) (hT : 2 ≤ s.time)
+    (hvalue : B ≤ regimeIIStateValue s) :
+    regimeIIBadFrontier B s ↔ 0 < regimeIISelfThresholdDefect s := by
+  have hvalue_pos : 0 < regimeIIStateValue s := by
+    have hgt1 : 1 < regimeIIStateValue s :=
+      one_lt_regimeIIStateValue_of_admissible_of_time_ge_two s hs hT
+    omega
+  rw [regimeIIBadFrontier_iff_selfDefect_pos_of_value_ge B s hs hT hvalue]
+  exact regimeIISelfDefect_pos_iff_selfThresholdDefect_pos s hvalue_pos
+
+/-- Above the target cutoff `B`, the ordered multiview cone collapses to the
+    self-threshold defect alone: zone-side positivity and ordering become
+    consequences of radial position plus self-threshold positivity. -/
+theorem regimeIIOrderedMultiviewCone_iff_selfThresholdDefect_pos_of_value_ge
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s) (hT : 2 ≤ s.time)
+    (hvalue : B ≤ regimeIIStateValue s) :
+    regimeIIOrderedMultiviewCone B s ↔ 0 < regimeIISelfThresholdDefect s := by
+  have hvalue_pos : 0 < regimeIIStateValue s := by
+    have hgt1 : 1 < regimeIIStateValue s :=
+      one_lt_regimeIIStateValue_of_admissible_of_time_ge_two s hs hT
+    omega
+  constructor
+  · intro hcone
+    exact hcone.2.2.1
+  · intro hselfT
+    have hself : 0 < regimeIISelfDefect s := by
+      exact (regimeIISelfDefect_pos_iff_selfThresholdDefect_pos s hvalue_pos).2 hselfT
+    have hzone : 0 < regimeIIZoneDefect B s := by
+      rw [regimeIIZoneDefect_pos_iff]
+      exact le_trans hvalue ((regimeIISelfDefect_pos_iff s).1 hself)
+    have hzoneT : 0 < regimeIIZoneThresholdDefect B s := by
+      refine (regimeIIZoneThresholdDefect_pos_iff B s).2 ?_
+      have hselfBound :
+          regimeIIBaseThreshold (regimeIIStateValue s) s ≤ s.base := by
+        exact (regimeIISelfThresholdDefect_pos_iff s).1 hselfT
+      exact le_trans (regimeIIBaseThreshold_mono s hvalue) hselfBound
+    exact ⟨hself, hzone, hselfT, hzoneT,
+      regimeIISelfDefect_le_zoneDefect_of_value_ge B s hvalue,
+      regimeIISelfThresholdDefect_le_zoneThresholdDefect_of_value_ge B s hvalue⟩
 
 /-- Complement form of the intrinsic bad frontier on admissible Regime-II
     states: outside the frontier, the compressed successor either already
@@ -6213,6 +6584,434 @@ theorem residueChart_eq_residue {B : ℕ} (x : RegimeIIBadFrontierState B) :
     x.residueChart = regimeIIBaseResidue x.src.time x.src.eject := by
   exact regimeIIStateResidueChart_eq_residue_of_admissible
     x.src x.admissible (le_trans (by decide : 1 ≤ 2) x.time_ge_two)
+
+theorem selfThreshold_boundary_le {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    regimeIIBaseThreshold (regimeIIStateValue x.src) x.src ≤ x.src.base := by
+  have hvalue : 0 < regimeIIStateValue x.src := by
+    have hgt1 : 1 < regimeIIStateValue x.src :=
+      one_lt_regimeIIStateValue_of_admissible_of_time_ge_two
+        x.src x.admissible x.time_ge_two
+    omega
+  exact (regimeIIStateValue_le_nextValue_iff_self_threshold_le_base x.src hvalue).1
+    x.self_boundary_le
+
+theorem zoneThreshold_boundary_le {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hB : 0 < B) :
+    regimeIIBaseThreshold B x.src ≤ x.src.base := by
+  exact (regimeIIBaseThreshold_le_iff_le_stateNextValue x.src B hB).2
+    x.zone_boundary_le
+
+theorem selfThresholdDefect_pos {B : ℕ} (x : RegimeIIBadFrontierState B) :
+    0 < x.selfThresholdDefect := by
+  exact (regimeIISelfThresholdDefect_pos_iff x.src).2 x.selfThreshold_boundary_le
+
+theorem zoneThresholdDefect_pos {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hB : 0 < B) :
+    0 < x.zoneThresholdDefect := by
+  exact (regimeIIZoneThresholdDefect_pos_iff B x.src).2
+    (x.zoneThreshold_boundary_le hB)
+
+/-- If the intrinsic successor of a bad-frontier state falls out of the bad
+    frontier on its own genuine Regime-II layer, then that successor already
+    carries a certified shrinking window. -/
+theorem nextState_not_bad_frontier_shrinks
+    {B : ℕ}
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (x : RegimeIIBadFrontierState B)
+    (hTnext : 2 ≤ x.nextState.time)
+    (hnextbad : ¬ regimeIIBadFrontier B x.nextState) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] x.nextValue < x.nextValue := by
+  obtain ⟨W, hW, hshrink⟩ :=
+    regimeIIState_not_bad_frontier_shrinks
+      B hexact x.nextState x.nextState_admissible hTnext hnextbad
+  refine ⟨W, hW, ?_⟩
+  simpa [x.nextState_value_eq_nextValue] using hshrink
+
+/-- One intrinsic meta-step from a bad-frontier source state either lands on a
+    new bad-frontier source state at the same target `B`, or the successor
+    value already has its own certified shrinking window. -/
+theorem nextState_shrinks_or_stays_bad
+    {B : ℕ}
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (x : RegimeIIBadFrontierState B)
+    (hTnext : 2 ≤ x.nextState.time) :
+    (∃ W : ℕ, 0 < W ∧ syracuseExact^[W] x.nextValue < x.nextValue) ∨
+      regimeIIBadFrontier B x.nextState := by
+  by_cases hnext : regimeIIBadFrontier B x.nextState
+  · exact Or.inr hnext
+  · exact Or.inl (x.nextState_not_bad_frontier_shrinks hexact hTnext hnext)
+
+/-- If the successor stays on the same bad frontier, its reconstructed source
+    value is exactly the current compressed successor value. -/
+theorem nextBadState_stateValue_eq_nextValue
+    {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    regimeIIStateValue (x.nextBadState hnext).src = x.nextValue := by
+  simpa using x.nextBadState_value_eq_nextValue hnext
+
+/-- If the successor stays on the same bad frontier, its reconstructed source
+    value is the intrinsic Regime-II return iterate of the current source
+    value. -/
+theorem nextBadState_stateValue_eq_iterate
+    {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    regimeIIStateValue (x.nextBadState hnext).src =
+      syracuseExact^[x.src.time] (regimeIIStateValue x.src) := by
+  calc
+    regimeIIStateValue (x.nextBadState hnext).src = x.nextValue := by
+      simpa using x.nextBadState_value_eq_nextValue hnext
+    _ = syracuseExact^[x.src.time] (regimeIIStateValue x.src) := by
+      symm
+      exact x.nextValue_eq_iterate
+
+/-- A surviving successor lands on the canonical residue chart of its own
+    `(time, eject)` slice. -/
+theorem nextBadState_residueChart_eq_residue
+    {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    (x.nextBadState hnext).residueChart =
+      regimeIIBaseResidue (x.nextBadState hnext).src.time
+        (x.nextBadState hnext).src.eject := by
+  exact residueChart_eq_residue (x.nextBadState hnext)
+
+/-- Under bundle coherence on the current source slice, the surviving
+    successor's centered bundle clock is exactly the finite bundle update
+    applied to the current source state's bundle chart. -/
+theorem nextBadState_centeredClockBundle_eq_bundleStateStep_of_coherence
+    {B : ℕ} (S : ObserverBundle) (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState)
+    (hperiod : S.period ∣ x.src.time - 1) :
+    centeredClockBundle S (regimeIIStateValue (x.nextBadState hnext).src) =
+      bundleStateStep S (x.bundleFiberChart S).bundleState := by
+  have hbundle :
+      (x.bundleFiberChart S).bundleState =
+        bundleStateOf S (regimeIIStateValue x.src) := by
+    simpa [bundleFiberStateOf] using
+      congrArg BundleFiberState.bundleState (x.bundleFiberChart_eq_bundleFiberStateOf S)
+  calc
+    centeredClockBundle S (regimeIIStateValue (x.nextBadState hnext).src)
+      = centeredClockBundle S x.nextValue := by
+          simpa using congrArg (centeredClockBundle S)
+            (x.nextBadState_value_eq_nextValue hnext)
+    _ = bundleStateStep S (bundleStateOf S (regimeIIStateValue x.src)) := by
+          exact x.centeredClockBundle_nextValue_eq_bundleStateStep_of_coherence S hperiod
+    _ = bundleStateStep S (x.bundleFiberChart S).bundleState := by
+          rw [hbundle]
+
+theorem multiviewDefects_pos {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hB : 0 < B) :
+    0 < x.selfDefect ∧ 0 < x.zoneDefect ∧
+      0 < x.selfThresholdDefect ∧ 0 < x.zoneThresholdDefect := by
+  exact ⟨x.selfDefect_pos, x.zoneDefect_pos, x.selfThresholdDefect_pos,
+    x.zoneThresholdDefect_pos hB⟩
+
+theorem nextBadState_multiviewDefects_pos {B : ℕ}
+    (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState)
+    (hB : 0 < B) :
+    0 < (x.nextBadState hnext).selfDefect ∧
+      0 < (x.nextBadState hnext).zoneDefect ∧
+      0 < (x.nextBadState hnext).selfThresholdDefect ∧
+      0 < (x.nextBadState hnext).zoneThresholdDefect := by
+  exact (x.nextBadState hnext).multiviewDefects_pos hB
+
+theorem nextBadState_value_ge_target {B : ℕ}
+    (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    B ≤ regimeIIStateValue (x.nextBadState hnext).src := by
+  calc
+    B ≤ x.nextValue := x.zone_boundary_le
+    _ = regimeIIStateValue (x.nextBadState hnext).src := by
+      symm
+      exact x.nextBadState_value_eq_nextValue hnext
+
+theorem nextBadState_selfDefect_le_zoneDefect {B : ℕ}
+    (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    (x.nextBadState hnext).selfDefect ≤ (x.nextBadState hnext).zoneDefect := by
+  exact regimeIISelfDefect_le_zoneDefect_of_value_ge B (x.nextBadState hnext).src
+    (x.nextBadState_value_ge_target hnext)
+
+theorem nextBadState_selfThresholdDefect_le_zoneThresholdDefect {B : ℕ}
+    (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    (x.nextBadState hnext).selfThresholdDefect ≤
+      (x.nextBadState hnext).zoneThresholdDefect := by
+  exact regimeIISelfThresholdDefect_le_zoneThresholdDefect_of_value_ge
+    B (x.nextBadState hnext).src (x.nextBadState_value_ge_target hnext)
+
+theorem nextBadState_orderedMultiviewCone {B : ℕ}
+    (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState)
+    (hB : 0 < B) :
+    regimeIIOrderedMultiviewCone B (x.nextBadState hnext).src := by
+  exact regimeIIBadFrontier_and_value_ge_implies_orderedMultiviewCone
+    B (x.nextBadState hnext).src (x.nextBadState hnext).admissible
+    (x.nextBadState hnext).time_ge_two hB hnext (x.nextBadState_value_ge_target hnext)
+
+/-- One intrinsic meta-step from a bad-frontier state either already yields a
+    shrinking certificate on the successor value, or lands on a new
+    bad-frontier source state carrying a coherent multiview defect profile. -/
+theorem nextState_shrinks_or_exists_nextBadState_multiview
+    {B : ℕ}
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (x : RegimeIIBadFrontierState B)
+    (hTnext : 2 ≤ x.nextState.time)
+    (hB : 0 < B) :
+    (∃ W : ℕ, 0 < W ∧ syracuseExact^[W] x.nextValue < x.nextValue) ∨
+      ∃ y : RegimeIIBadFrontierState B,
+        regimeIIStateValue y.src = x.nextValue ∧
+        y.residueChart = regimeIIBaseResidue y.src.time y.src.eject ∧
+        regimeIIOrderedMultiviewCone B y.src := by
+  rcases x.nextState_shrinks_or_stays_bad hexact hTnext with hshrink | hnext
+  · exact Or.inl hshrink
+  · refine Or.inr ?_
+    refine ⟨x.nextBadState hnext, ?_, ?_, ?_⟩
+    · simpa using x.nextBadState_stateValue_eq_nextValue hnext
+    · exact x.nextBadState_residueChart_eq_residue hnext
+    · exact x.nextBadState_orderedMultiviewCone hnext hB
+
+/-- Bundle-coherent form of the surviving-branch alternative: under coherence
+    on the current source slice, the surviving successor's centered bundle
+    clock is exactly the finite bundle update applied to the current bundle
+    chart. -/
+theorem nextState_shrinks_or_exists_nextBadState_multiview_of_coherence
+    {B : ℕ} (S : ObserverBundle)
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (x : RegimeIIBadFrontierState B)
+    (hTnext : 2 ≤ x.nextState.time)
+    (hB : 0 < B)
+    (hperiod : S.period ∣ x.src.time - 1) :
+    (∃ W : ℕ, 0 < W ∧ syracuseExact^[W] x.nextValue < x.nextValue) ∨
+      ∃ y : RegimeIIBadFrontierState B,
+        regimeIIStateValue y.src = x.nextValue ∧
+        y.residueChart = regimeIIBaseResidue y.src.time y.src.eject ∧
+        centeredClockBundle S (regimeIIStateValue y.src) =
+          bundleStateStep S (x.bundleFiberChart S).bundleState ∧
+        regimeIIOrderedMultiviewCone B y.src := by
+  rcases x.nextState_shrinks_or_stays_bad hexact hTnext with hshrink | hnext
+  · exact Or.inl hshrink
+  · refine Or.inr ?_
+    refine ⟨x.nextBadState hnext, ?_, ?_, ?_, ?_⟩
+    · simpa using x.nextBadState_stateValue_eq_nextValue hnext
+    · exact x.nextBadState_residueChart_eq_residue hnext
+    · exact x.nextBadState_centeredClockBundle_eq_bundleStateStep_of_coherence S hnext hperiod
+    · exact x.nextBadState_orderedMultiviewCone hnext hB
+
+end RegimeIIBadFrontierState
+
+/-- On the intrinsic source state itself, the slice `(time, eject) = (3, 1)`
+    together with `nextState.time ≥ 2` forces the tighter congruence
+    `base ≡ 5 (mod 8)`. This is a source-state transition law, not an observer
+    chart fact. -/
+theorem regimeIIState_base_mod_8_eq_5_of_time3_eject1_of_nextTime_ge_two
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hnext : 2 ≤ (regimeIIStateNext s).time) :
+    s.base % 8 = 5 := by
+  have htime_next : 2 ≤ regimeIITime (regimeIIStateNextValue s) := by
+    simpa [regimeIIStateNext, regimeIIStateOf] using hnext
+  have hv2_ge2 : 2 ≤ v2 (regimeIIStateNextValue s + 1) := by
+    simpa [regimeIITime] using htime_next
+  have hdiv4_next : 4 ∣ regimeIIStateNextValue s + 1 := by
+    exact dvd_trans (Nat.pow_dvd_pow 2 hv2_ge2) (v2_pow_dvd (regimeIIStateNextValue s + 1))
+  have hdiv_num : 2 ∣ 3 ^ s.time * s.base - 1 := by
+    have h := v2_pow_dvd (3 ^ s.time * s.base - 1)
+    rw [← hs.2.2, he] at h
+    simpa using h
+  have hdiv_num27 : 2 ∣ 27 * s.base - 1 := by
+    simpa [ht] using hdiv_num
+  have hbase_pos : 0 < s.base := hs.1
+  have hdouble :
+      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := by
+    unfold regimeIIStateNextValue
+    rw [ht, he]
+    calc
+      2 * (((3 ^ 3 * s.base - 1) / 2) + 1)
+          = 2 * ((27 * s.base - 1) / 2) + 2 := by
+              norm_num [Nat.mul_add]
+      _ = (27 * s.base - 1) + 2 := by
+              rw [Nat.mul_div_cancel' hdiv_num27]
+      _ = 27 * s.base + 1 := by
+              have hmul_pos : 0 < 27 * s.base := by
+                exact Nat.mul_pos (by norm_num) hbase_pos
+              omega
+  have hdiv8 : 8 ∣ 27 * s.base + 1 := by
+    rcases hdiv4_next with ⟨k, hk⟩
+    refine ⟨k, ?_⟩
+    calc
+      27 * s.base + 1 = 2 * (regimeIIStateNextValue s + 1) := by omega
+      _ = 2 * (4 * k) := by rw [hk]
+      _ = 8 * k := by omega
+  rcases hdiv8 with ⟨k, hk⟩
+  omega
+
+/-- First-class surviving Regime-II transition on the bad frontier at target
+    `B`: a source bad-frontier state together with its next bad-frontier state.
+    This packages the intrinsic source-to-source step when the successor
+    remains on the bad frontier. -/
+structure RegimeIIBadFrontierTransition (B : ℕ) where
+  src : RegimeIIBadFrontierState B
+  dst : RegimeIIBadFrontierState B
+  step : dst.src = src.nextState
+
+namespace RegimeIIBadFrontierTransition
+
+theorem dst_stateValue_eq_nextValue {B : ℕ} (τ : RegimeIIBadFrontierTransition B) :
+    regimeIIStateValue τ.dst.src = τ.src.nextValue := by
+  rw [τ.step]
+  exact τ.src.nextState_value_eq_nextValue
+
+theorem dst_stateValue_eq_iterate {B : ℕ} (τ : RegimeIIBadFrontierTransition B) :
+    regimeIIStateValue τ.dst.src =
+      syracuseExact^[τ.src.src.time] (regimeIIStateValue τ.src.src) := by
+  calc
+    regimeIIStateValue τ.dst.src = τ.src.nextValue := τ.dst_stateValue_eq_nextValue
+    _ = syracuseExact^[τ.src.src.time] (regimeIIStateValue τ.src.src) := by
+      symm
+      exact τ.src.nextValue_eq_iterate
+
+theorem dst_residueChart_eq_residue {B : ℕ} (τ : RegimeIIBadFrontierTransition B) :
+    τ.dst.residueChart = regimeIIBaseResidue τ.dst.src.time τ.dst.src.eject := by
+  exact τ.dst.residueChart_eq_residue
+
+/-- A bad-to-bad transition out of the intrinsic source slice `(time, eject) =
+    (3, 1)` forces the tighter source congruence `base ≡ 5 (mod 8)`. This is
+    the first source-side congruence shadow of the projective-core coherence
+    seen computationally on that slice. -/
+theorem src_base_mod_8_eq_5_of_time3_eject1
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1) :
+    τ.src.src.base % 8 = 5 := by
+  have hdst : 2 ≤ τ.src.nextState.time := by
+    simpa [τ.step] using τ.dst.time_ge_two
+  exact regimeIIState_base_mod_8_eq_5_of_time3_eject1_of_nextTime_ge_two
+    τ.src.src τ.src.admissible ht he hdst
+
+theorem dst_value_ge_target {B : ℕ} (τ : RegimeIIBadFrontierTransition B) :
+    B ≤ regimeIIStateValue τ.dst.src := by
+  calc
+    B ≤ τ.src.nextValue := τ.src.zone_boundary_le
+    _ = regimeIIStateValue τ.dst.src := by
+      symm
+      exact τ.dst_stateValue_eq_nextValue
+
+theorem dst_orderedMultiviewCone {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (hB : 0 < B) :
+    regimeIIOrderedMultiviewCone B τ.dst.src := by
+  exact regimeIIBadFrontier_and_value_ge_implies_orderedMultiviewCone
+    B τ.dst.src τ.dst.admissible τ.dst.time_ge_two hB τ.dst.isBad τ.dst_value_ge_target
+
+/-- On a surviving bad-frontier transition, the destination's target-zone
+    successor defect is exactly the self defect plus the radial gap above `B`. -/
+theorem dst_zoneDefect_eq_selfDefect_add_radialGap
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B) :
+    regimeIIZoneDefect B τ.dst.src =
+      regimeIISelfDefect τ.dst.src + regimeIIRadialGap B τ.dst.src := by
+  exact regimeIIZoneDefect_eq_selfDefect_add_radialGap
+    B τ.dst.src τ.dst.self_boundary_le τ.dst_value_ge_target
+
+/-- On a surviving bad-frontier transition, the destination's target-zone
+    threshold defect is exactly the self-threshold defect plus the threshold
+    gap between the self and target views. -/
+theorem dst_zoneThresholdDefect_eq_selfThresholdDefect_add_thresholdGap
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B) :
+    regimeIIZoneThresholdDefect B τ.dst.src =
+      regimeIISelfThresholdDefect τ.dst.src + regimeIIThresholdGap B τ.dst.src := by
+  exact regimeIIZoneThresholdDefect_eq_selfThresholdDefect_add_thresholdGap
+    B τ.dst.src τ.dst.selfThreshold_boundary_le τ.dst_value_ge_target
+
+theorem centeredClockBundle_eq_bundleStateStep_of_coherence
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (S : ObserverBundle) (hperiod : S.period ∣ τ.src.src.time - 1) :
+    centeredClockBundle S (regimeIIStateValue τ.dst.src) =
+      bundleStateStep S (τ.src.bundleFiberChart S).bundleState := by
+  have hbundle :
+      (τ.src.bundleFiberChart S).bundleState =
+        bundleStateOf S (regimeIIStateValue τ.src.src) := by
+    simpa [bundleFiberStateOf] using
+      congrArg BundleFiberState.bundleState (τ.src.bundleFiberChart_eq_bundleFiberStateOf S)
+  calc
+    centeredClockBundle S (regimeIIStateValue τ.dst.src)
+      = centeredClockBundle S τ.src.nextValue := by
+          rw [τ.dst_stateValue_eq_nextValue]
+    _ = bundleStateStep S (bundleStateOf S (regimeIIStateValue τ.src.src)) := by
+          exact τ.src.centeredClockBundle_nextValue_eq_bundleStateStep_of_coherence S hperiod
+    _ = bundleStateStep S (τ.src.bundleFiberChart S).bundleState := by
+          rw [← hbundle]
+
+/-- On a surviving bad-frontier transition, the destination already lies above
+    the target cutoff `B`, so its ordered multiview cone is equivalent to the
+    positivity of the intrinsic self-threshold defect alone. -/
+theorem dst_orderedMultiviewCone_iff_selfThresholdDefect_pos
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B) :
+    regimeIIOrderedMultiviewCone B τ.dst.src ↔
+      0 < regimeIISelfThresholdDefect τ.dst.src := by
+  exact regimeIIOrderedMultiviewCone_iff_selfThresholdDefect_pos_of_value_ge
+    B τ.dst.src τ.dst.admissible τ.dst.time_ge_two τ.dst_value_ge_target
+
+end RegimeIIBadFrontierTransition
+
+namespace RegimeIIBadFrontierState
+
+/-- Canonical surviving transition produced when the intrinsic successor of a
+    bad-frontier state remains on the same bad frontier. -/
+def nextTransition {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) : RegimeIIBadFrontierTransition B where
+  src := x
+  dst := x.nextBadState hnext
+  step := rfl
+
+@[simp] theorem nextTransition_src {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    (x.nextTransition hnext).src = x :=
+  rfl
+
+@[simp] theorem nextTransition_dst {B : ℕ} (x : RegimeIIBadFrontierState B)
+    (hnext : regimeIIBadFrontier B x.nextState) :
+    (x.nextTransition hnext).dst = x.nextBadState hnext :=
+  rfl
+
+/-- One intrinsic meta-step from a bad-frontier state either already yields a
+    shrinking certificate on the successor value, or yields a first-class
+    source-to-source bad-frontier transition. -/
+theorem nextState_shrinks_or_exists_transition
+    {B : ℕ}
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (x : RegimeIIBadFrontierState B)
+    (hTnext : 2 ≤ x.nextState.time) :
+    (∃ W : ℕ, 0 < W ∧ syracuseExact^[W] x.nextValue < x.nextValue) ∨
+      ∃ τ : RegimeIIBadFrontierTransition B, τ.src = x := by
+  rcases x.nextState_shrinks_or_stays_bad hexact hTnext with hshrink | hnext
+  · exact Or.inl hshrink
+  · exact Or.inr ⟨x.nextTransition hnext, rfl⟩
+
+/-- Core surviving-branch form: after one intrinsic bad-to-bad meta-step, the
+    destination source state already lies above the target cutoff `B`, and the
+    remaining independent obstruction is the self-threshold defect. -/
+theorem nextState_shrinks_or_exists_transition_core
+    {B : ℕ}
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < B → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (x : RegimeIIBadFrontierState B)
+    (hTnext : 2 ≤ x.nextState.time) :
+    (∃ W : ℕ, 0 < W ∧ syracuseExact^[W] x.nextValue < x.nextValue) ∨
+      ∃ τ : RegimeIIBadFrontierTransition B,
+        τ.src = x ∧
+        B ≤ regimeIIStateValue τ.dst.src ∧
+        0 < regimeIISelfThresholdDefect τ.dst.src := by
+  rcases x.nextState_shrinks_or_exists_transition hexact hTnext with hshrink | htrans
+  · exact Or.inl hshrink
+  · rcases htrans with ⟨τ, rfl⟩
+    refine Or.inr ⟨τ, rfl, τ.dst_value_ge_target, ?_⟩
+    exact (regimeIIBadFrontier_iff_selfThresholdDefect_pos_of_value_ge
+      B τ.dst.src τ.dst.admissible τ.dst.time_ge_two τ.dst_value_ge_target).1 τ.dst.isBad
 
 end RegimeIIBadFrontierState
 
