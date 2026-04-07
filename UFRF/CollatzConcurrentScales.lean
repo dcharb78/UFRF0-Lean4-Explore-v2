@@ -6804,6 +6804,34 @@ theorem nextState_shrinks_or_exists_nextBadState_multiview_of_coherence
 
 end RegimeIIBadFrontierState
 
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the compressed
+    successor satisfies a rigid arithmetic bridge:
+    `2 * (nextValue + 1) = 27 * base + 1`. -/
+theorem regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1) :
+    2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := by
+  have hdiv_num : 2 ∣ 3 ^ s.time * s.base - 1 := by
+    have h := v2_pow_dvd (3 ^ s.time * s.base - 1)
+    rw [← hs.2.2, he] at h
+    simpa using h
+  have hdiv_num27 : 2 ∣ 27 * s.base - 1 := by
+    simpa [ht] using hdiv_num
+  have hbase_pos : 0 < s.base := hs.1
+  unfold regimeIIStateNextValue
+  rw [ht, he]
+  calc
+    2 * (((3 ^ 3 * s.base - 1) / 2) + 1)
+        = 2 * ((27 * s.base - 1) / 2) + 2 := by
+            norm_num [Nat.mul_add]
+    _ = (27 * s.base - 1) + 2 := by
+            rw [Nat.mul_div_cancel' hdiv_num27]
+    _ = 27 * s.base + 1 := by
+            have hmul_pos : 0 < 27 * s.base := by
+              exact Nat.mul_pos (by norm_num) hbase_pos
+            omega
+
 /-- On the intrinsic source state itself, the slice `(time, eject) = (3, 1)`
     together with `nextState.time ≥ 2` forces the tighter congruence
     `base ≡ 5 (mod 8)`. This is a source-state transition law, not an observer
@@ -6820,27 +6848,8 @@ theorem regimeIIState_base_mod_8_eq_5_of_time3_eject1_of_nextTime_ge_two
     simpa [regimeIITime] using htime_next
   have hdiv4_next : 4 ∣ regimeIIStateNextValue s + 1 := by
     exact dvd_trans (Nat.pow_dvd_pow 2 hv2_ge2) (v2_pow_dvd (regimeIIStateNextValue s + 1))
-  have hdiv_num : 2 ∣ 3 ^ s.time * s.base - 1 := by
-    have h := v2_pow_dvd (3 ^ s.time * s.base - 1)
-    rw [← hs.2.2, he] at h
-    simpa using h
-  have hdiv_num27 : 2 ∣ 27 * s.base - 1 := by
-    simpa [ht] using hdiv_num
-  have hbase_pos : 0 < s.base := hs.1
-  have hdouble :
-      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := by
-    unfold regimeIIStateNextValue
-    rw [ht, he]
-    calc
-      2 * (((3 ^ 3 * s.base - 1) / 2) + 1)
-          = 2 * ((27 * s.base - 1) / 2) + 2 := by
-              norm_num [Nat.mul_add]
-      _ = (27 * s.base - 1) + 2 := by
-              rw [Nat.mul_div_cancel' hdiv_num27]
-      _ = 27 * s.base + 1 := by
-              have hmul_pos : 0 < 27 * s.base := by
-                exact Nat.mul_pos (by norm_num) hbase_pos
-              omega
+  have hdouble :=
+    regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
   have hdiv8 : 8 ∣ 27 * s.base + 1 := by
     rcases hdiv4_next with ⟨k, hk⟩
     refine ⟨k, ?_⟩
@@ -6850,6 +6859,428 @@ theorem regimeIIState_base_mod_8_eq_5_of_time3_eject1_of_nextTime_ge_two
       _ = 8 * k := by omega
   rcases hdiv8 with ⟨k, hk⟩
   omega
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 5 (mod 32)` forces the compressed successor to return
+    immediately to time `2`. -/
+theorem regimeIIState_nextTime_eq_two_of_time3_eject1_of_base_mod32_eq5
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 32 = 5) :
+    (regimeIIStateNext s).time = 2 := by
+  obtain ⟨k, hk⟩ : ∃ k, s.base = 32 * k + 5 := by
+    refine ⟨s.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div s.base 32
+    omega
+  have hdouble :=
+    regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
+  have hdouble' : 2 * (regimeIIStateNextValue s + 1) = 2 * (2 ^ 2 * (108 * k + 17)) := by
+    calc
+      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := hdouble
+      _ = 27 * (32 * k + 5) + 1 := by rw [hk]
+      _ = 2 * (2 ^ 2 * (108 * k + 17)) := by ring_nf
+  have hnextplus : regimeIIStateNextValue s + 1 = 2 ^ 2 * (108 * k + 17) := by
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) hdouble'
+  have hodd : ¬ 2 ∣ (108 * k + 17) := by
+    omega
+  have hv2 : v2 (regimeIIStateNextValue s + 1) = 2 := by
+    rw [hnextplus]
+    simpa using v2_pow_mul_of_not_two_dvd 2 (108 * k + 17) hodd
+  simpa [regimeIIStateNext, regimeIIStateOf, regimeIITime] using hv2
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 21 (mod 32)` forces the compressed successor to return
+    immediately to time `2`. -/
+theorem regimeIIState_nextTime_eq_two_of_time3_eject1_of_base_mod32_eq21
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 32 = 21) :
+    (regimeIIStateNext s).time = 2 := by
+  obtain ⟨k, hk⟩ : ∃ k, s.base = 32 * k + 21 := by
+    refine ⟨s.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div s.base 32
+    omega
+  have hdouble :=
+    regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
+  have hdouble' : 2 * (regimeIIStateNextValue s + 1) = 2 * (2 ^ 2 * (108 * k + 71)) := by
+    calc
+      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := hdouble
+      _ = 27 * (32 * k + 21) + 1 := by rw [hk]
+      _ = 2 * (2 ^ 2 * (108 * k + 71)) := by ring_nf
+  have hnextplus : regimeIIStateNextValue s + 1 = 2 ^ 2 * (108 * k + 71) := by
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) hdouble'
+  have hodd : ¬ 2 ∣ (108 * k + 71) := by
+    omega
+  have hv2 : v2 (regimeIIStateNextValue s + 1) = 2 := by
+    rw [hnextplus]
+    simpa using v2_pow_mul_of_not_two_dvd 2 (108 * k + 71) hodd
+  simpa [regimeIIStateNext, regimeIIStateOf, regimeIITime] using hv2
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 29 (mod 32)` forces the compressed successor to return
+    to time `3`. -/
+theorem regimeIIState_nextTime_eq_three_of_time3_eject1_of_base_mod32_eq29
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 32 = 29) :
+    (regimeIIStateNext s).time = 3 := by
+  obtain ⟨k, hk⟩ : ∃ k, s.base = 32 * k + 29 := by
+    refine ⟨s.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div s.base 32
+    omega
+  have hdouble :=
+    regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
+  have hdouble' : 2 * (regimeIIStateNextValue s + 1) = 2 * (2 ^ 3 * (54 * k + 49)) := by
+    calc
+      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := hdouble
+      _ = 27 * (32 * k + 29) + 1 := by rw [hk]
+      _ = 2 * (2 ^ 3 * (54 * k + 49)) := by ring_nf
+  have hnextplus : regimeIIStateNextValue s + 1 = 2 ^ 3 * (54 * k + 49) := by
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) hdouble'
+  have hodd : ¬ 2 ∣ (54 * k + 49) := by
+    omega
+  have hv2 : v2 (regimeIIStateNextValue s + 1) = 3 := by
+    rw [hnextplus]
+    simpa using v2_pow_mul_of_not_two_dvd 3 (54 * k + 49) hodd
+  simpa [regimeIIStateNext, regimeIIStateOf, regimeIITime] using hv2
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 13 (mod 32)` forces the compressed successor to jump to
+    time at least `4`. -/
+theorem regimeIIState_nextTime_ge_four_of_time3_eject1_of_base_mod32_eq13
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 32 = 13) :
+    4 ≤ (regimeIIStateNext s).time := by
+  obtain ⟨k, hk⟩ : ∃ k, s.base = 32 * k + 13 := by
+    refine ⟨s.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div s.base 32
+    omega
+  have hdouble :=
+    regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
+  have hdouble' : 2 * (regimeIIStateNextValue s + 1) = 2 * (2 ^ 4 * (27 * k + 11)) := by
+    calc
+      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := hdouble
+      _ = 27 * (32 * k + 13) + 1 := by rw [hk]
+      _ = 2 * (2 ^ 4 * (27 * k + 11)) := by ring_nf
+  have hnextplus : regimeIIStateNextValue s + 1 = 2 ^ 4 * (27 * k + 11) := by
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) hdouble'
+  have hpos : 0 < regimeIIStateNextValue s + 1 := by
+    rw [hnextplus]
+    omega
+  have hdvd16 : 2 ^ 4 ∣ regimeIIStateNextValue s + 1 := by
+    refine ⟨27 * k + 11, ?_⟩
+    exact hnextplus
+  have hv2_ge4 : 4 ≤ v2 (regimeIIStateNextValue s + 1) := by
+    by_contra hlt
+    have hlt' : v2 (regimeIIStateNextValue s + 1) + 1 ≤ 4 := by
+      omega
+    have hdiv : 2 ^ (v2 (regimeIIStateNextValue s + 1) + 1) ∣ regimeIIStateNextValue s + 1 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd16
+    exact (v2_pow_succ_not_dvd (regimeIIStateNextValue s + 1) hpos) hdiv
+  simpa [regimeIIStateNext, regimeIIStateOf, regimeIITime] using hv2_ge4
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 5 (mod 32)` forces the next compressed state to have
+    ejection valuation at least `2`. -/
+theorem regimeIIState_nextEject_ge_two_of_time3_eject1_of_base_mod32_eq5
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 32 = 5) :
+    2 ≤ (regimeIIStateNext s).eject := by
+  obtain ⟨k, hk⟩ : ∃ k, s.base = 32 * k + 5 := by
+    refine ⟨s.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div s.base 32
+    omega
+  have htime :
+      regimeIITime (regimeIIStateNextValue s) = 2 := by
+    simpa [regimeIIStateNext, regimeIIStateOf] using
+      regimeIIState_nextTime_eq_two_of_time3_eject1_of_base_mod32_eq5 s hs ht he hmod
+  have hdouble :=
+    regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
+  have hdouble' : 2 * (regimeIIStateNextValue s + 1) = 2 * (2 ^ 2 * (108 * k + 17)) := by
+    calc
+      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := hdouble
+      _ = 27 * (32 * k + 5) + 1 := by rw [hk]
+      _ = 2 * (2 ^ 2 * (108 * k + 17)) := by ring_nf
+  have hnextplus : regimeIIStateNextValue s + 1 = 2 ^ 2 * (108 * k + 17) := by
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) hdouble'
+  have hbase :
+      regimeIIBase (regimeIIStateNextValue s) = 108 * k + 17 := by
+    unfold regimeIIBase
+    rw [htime, hnextplus]
+    norm_num
+  unfold regimeIIStateNext regimeIIStateOf regimeIIEjectionValuation
+  rw [htime, hbase]
+  by_contra hlt
+  have hdiv4 : 2 ^ 2 ∣ 3 ^ 2 * (108 * k + 17) - 1 := by
+    refine ⟨243 * k + 38, ?_⟩
+    norm_num
+    omega
+  have hpos : 0 < 3 ^ 2 * (108 * k + 17) - 1 := by
+    norm_num
+    omega
+  have hv2_le1 : v2 (3 ^ 2 * (108 * k + 17) - 1) ≤ 1 := by
+    exact Nat.lt_succ_iff.mp (Nat.lt_of_not_ge hlt)
+  have hpow : v2 (3 ^ 2 * (108 * k + 17) - 1) + 1 ≤ 2 := by
+    simpa using Nat.succ_le_succ hv2_le1
+  have hdiv :
+      2 ^ (v2 (3 ^ 2 * (108 * k + 17) - 1) + 1) ∣
+        3 ^ 2 * (108 * k + 17) - 1 := by
+    exact dvd_trans (Nat.pow_dvd_pow 2 hpow) hdiv4
+  exact (v2_pow_succ_not_dvd (3 ^ 2 * (108 * k + 17) - 1) hpos) hdiv
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 21 (mod 32)` forces the next compressed state to land on
+    ejection valuation `1`, i.e. the destination slice `(2,1)`. -/
+theorem regimeIIState_nextEject_eq_one_of_time3_eject1_of_base_mod32_eq21
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 32 = 21) :
+    (regimeIIStateNext s).eject = 1 := by
+  obtain ⟨k, hk⟩ : ∃ k, s.base = 32 * k + 21 := by
+    refine ⟨s.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div s.base 32
+    omega
+  have htime :
+      regimeIITime (regimeIIStateNextValue s) = 2 := by
+    simpa [regimeIIStateNext, regimeIIStateOf] using
+      regimeIIState_nextTime_eq_two_of_time3_eject1_of_base_mod32_eq21 s hs ht he hmod
+  have hdouble :=
+    regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
+  have hdouble' : 2 * (regimeIIStateNextValue s + 1) = 2 * (2 ^ 2 * (108 * k + 71)) := by
+    calc
+      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := hdouble
+      _ = 27 * (32 * k + 21) + 1 := by rw [hk]
+      _ = 2 * (2 ^ 2 * (108 * k + 71)) := by ring_nf
+  have hnextplus : regimeIIStateNextValue s + 1 = 2 ^ 2 * (108 * k + 71) := by
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) hdouble'
+  have hbase :
+      regimeIIBase (regimeIIStateNextValue s) = 108 * k + 71 := by
+    unfold regimeIIBase
+    rw [htime, hnextplus]
+    norm_num
+  unfold regimeIIStateNext regimeIIStateOf regimeIIEjectionValuation
+  rw [htime, hbase]
+  have hodd : ¬ 2 ∣ (486 * k + 319) := by
+    omega
+  have hfac :
+      3 ^ 2 * (108 * k + 71) - 1 = 2 * (486 * k + 319) := by
+    omega
+  rw [hfac]
+  exact v2_two_mul_of_not_two_dvd (486 * k + 319) hodd
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 29 (mod 64)` forces the next compressed state to land on
+    ejection valuation `1`, i.e. the destination slice `(3,1)`. -/
+theorem regimeIIState_nextEject_eq_one_of_time3_eject1_of_base_mod64_eq29
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 64 = 29) :
+    (regimeIIStateNext s).eject = 1 := by
+  obtain ⟨k, hk⟩ : ∃ k, s.base = 64 * k + 29 := by
+    refine ⟨s.base / 64, ?_⟩
+    have hdiv := Nat.mod_add_div s.base 64
+    omega
+  have hmod32 : s.base % 32 = 29 := by
+    omega
+  have htime :
+      regimeIITime (regimeIIStateNextValue s) = 3 := by
+    simpa [regimeIIStateNext, regimeIIStateOf] using
+      regimeIIState_nextTime_eq_three_of_time3_eject1_of_base_mod32_eq29 s hs ht he hmod32
+  have hdouble :=
+    regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
+  have hdouble' : 2 * (regimeIIStateNextValue s + 1) = 2 * (2 ^ 3 * (108 * k + 49)) := by
+    calc
+      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := hdouble
+      _ = 27 * (64 * k + 29) + 1 := by rw [hk]
+      _ = 2 * (2 ^ 3 * (108 * k + 49)) := by ring_nf
+  have hnextplus : regimeIIStateNextValue s + 1 = 2 ^ 3 * (108 * k + 49) := by
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) hdouble'
+  have hbase :
+      regimeIIBase (regimeIIStateNextValue s) = 108 * k + 49 := by
+    unfold regimeIIBase
+    rw [htime, hnextplus]
+    norm_num
+  unfold regimeIIStateNext regimeIIStateOf regimeIIEjectionValuation
+  rw [htime, hbase]
+  have hodd : ¬ 2 ∣ (1458 * k + 661) := by
+    omega
+  have hfac :
+      3 ^ 3 * (108 * k + 49) - 1 = 2 * (1458 * k + 661) := by
+    omega
+  rw [hfac]
+  exact v2_two_mul_of_not_two_dvd (1458 * k + 661) hodd
+
+/-- Any admissible intrinsic Regime-II state on the slice `time = 2` with
+    ejection valuation at least `2` already self-shrinks on the compressed
+    meta-step. -/
+theorem regimeIIStateNextValue_lt_value_of_time2_of_eject_ge_two
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 2) (he : 2 ≤ s.eject) :
+    regimeIIStateNextValue s < regimeIIStateValue s := by
+  have h4 : (4 : ℕ) ≤ 2 ^ s.eject := by
+    calc
+      (4 : ℕ) = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ s.eject := Nat.pow_le_pow_right (by norm_num) he
+  have hstep : regimeIIStateNextValue s ≤ (9 * s.base - 1) / 4 := by
+    unfold regimeIIStateNextValue
+    rw [ht]
+    exact Nat.div_le_div_left h4 (by omega)
+  have hbound : (9 * s.base - 1) / 4 < 4 * s.base - 1 := by
+    rw [Nat.div_lt_iff_lt_mul (by norm_num : 0 < 4)]
+    have hbase_pos : 0 < s.base := hs.1
+    omega
+  have hlt : regimeIIStateNextValue s < 4 * s.base - 1 := by
+    exact lt_of_le_of_lt hstep hbound
+  simpa [regimeIIStateValue, ht] using hlt
+
+/-- Any admissible intrinsic Regime-II state on the slice `time = 3` with
+    ejection valuation at least `2` already self-shrinks on the compressed
+    meta-step. -/
+theorem regimeIIStateNextValue_lt_value_of_time3_of_eject_ge_two
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : 2 ≤ s.eject) :
+    regimeIIStateNextValue s < regimeIIStateValue s := by
+  have h4 : (4 : ℕ) ≤ 2 ^ s.eject := by
+    calc
+      (4 : ℕ) = 2 ^ 2 := by norm_num
+      _ ≤ 2 ^ s.eject := Nat.pow_le_pow_right (by norm_num) he
+  have hstep : regimeIIStateNextValue s ≤ (27 * s.base - 1) / 4 := by
+    unfold regimeIIStateNextValue
+    rw [ht]
+    exact Nat.div_le_div_left h4 (by omega)
+  have hbound : (27 * s.base - 1) / 4 < 8 * s.base - 1 := by
+    rw [Nat.div_lt_iff_lt_mul (by norm_num : 0 < 4)]
+    have hbase_pos : 0 < s.base := hs.1
+    omega
+  have hlt : regimeIIStateNextValue s < 8 * s.base - 1 := by
+    exact lt_of_le_of_lt hstep hbound
+  simpa [regimeIIStateValue, ht] using hlt
+
+/-- Any admissible intrinsic Regime-II state on the slice `time = 2` with
+    ejection valuation at least `2` lies outside the bad frontier at every
+    target cutoff `B`. -/
+theorem not_regimeIIBadFrontier_of_time2_of_eject_ge_two
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 2) (he : 2 ≤ s.eject) :
+    ¬ regimeIIBadFrontier B s := by
+  have hT : 2 ≤ s.time := by
+    omega
+  rw [not_regimeIIBadFrontier_iff B s hs hT]
+  exact Or.inl (regimeIIStateNextValue_lt_value_of_time2_of_eject_ge_two s hs ht he)
+
+/-- Any admissible intrinsic Regime-II state on the slice `time = 3` with
+    ejection valuation at least `2` lies outside the bad frontier at every
+    target cutoff `B`. -/
+theorem not_regimeIIBadFrontier_of_time3_of_eject_ge_two
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : 2 ≤ s.eject) :
+    ¬ regimeIIBadFrontier B s := by
+  have hT : 2 ≤ s.time := by
+    omega
+  rw [not_regimeIIBadFrontier_iff B s hs hT]
+  exact Or.inl (regimeIIStateNextValue_lt_value_of_time3_of_eject_ge_two s hs ht he)
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 5 (mod 32)` ejects the successor out of the bad frontier:
+    it lands on `time = 2` with ejection valuation at least `2`, so the
+    successor already self-shrinks. -/
+theorem regimeIIState_next_not_badFrontier_of_time3_eject1_of_base_mod32_eq5
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 32 = 5) :
+    ¬ regimeIIBadFrontier B (regimeIIStateNext s) := by
+  have hnext_adm : regimeIIStateAdmissible (regimeIIStateNext s) := by
+    simpa [regimeIIStateNext] using regimeIIStateOf_admissible (regimeIIStateNextValue s)
+  exact not_regimeIIBadFrontier_of_time2_of_eject_ge_two B (regimeIIStateNext s)
+    hnext_adm
+    (regimeIIState_nextTime_eq_two_of_time3_eject1_of_base_mod32_eq5 s hs ht he hmod)
+    (regimeIIState_nextEject_ge_two_of_time3_eject1_of_base_mod32_eq5 s hs ht he hmod)
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 61 (mod 64)` keeps the next compressed state on
+    `time = 3`, but forces ejection valuation at least `2`. -/
+theorem regimeIIState_nextEject_ge_two_of_time3_eject1_of_base_mod64_eq61
+    (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 64 = 61) :
+    2 ≤ (regimeIIStateNext s).eject := by
+  obtain ⟨k, hk⟩ : ∃ k, s.base = 64 * k + 61 := by
+    refine ⟨s.base / 64, ?_⟩
+    have hdiv := Nat.mod_add_div s.base 64
+    omega
+  have hmod32 : s.base % 32 = 29 := by
+    omega
+  have htime :
+      regimeIITime (regimeIIStateNextValue s) = 3 := by
+    simpa [regimeIIStateNext, regimeIIStateOf] using
+      regimeIIState_nextTime_eq_three_of_time3_eject1_of_base_mod32_eq29 s hs ht he hmod32
+  have hdouble :=
+    regimeIIState_two_mul_nextValue_add_one_eq_of_time3_eject1 s hs ht he
+  have hdouble' : 2 * (regimeIIStateNextValue s + 1) = 2 * (2 ^ 3 * (108 * k + 103)) := by
+    calc
+      2 * (regimeIIStateNextValue s + 1) = 27 * s.base + 1 := hdouble
+      _ = 27 * (64 * k + 61) + 1 := by rw [hk]
+      _ = 2 * (2 ^ 3 * (108 * k + 103)) := by ring_nf
+  have hnextplus : regimeIIStateNextValue s + 1 = 2 ^ 3 * (108 * k + 103) := by
+    exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) hdouble'
+  have hbase :
+      regimeIIBase (regimeIIStateNextValue s) = 108 * k + 103 := by
+    unfold regimeIIBase
+    rw [htime, hnextplus]
+    norm_num
+  unfold regimeIIStateNext regimeIIStateOf regimeIIEjectionValuation
+  rw [htime, hbase]
+  by_contra hlt
+  have hdiv4 : 2 ^ 2 ∣ 3 ^ 3 * (108 * k + 103) - 1 := by
+    refine ⟨729 * k + 695, ?_⟩
+    norm_num
+    omega
+  have hpos : 0 < 3 ^ 3 * (108 * k + 103) - 1 := by
+    norm_num
+    omega
+  have hv2_le1 : v2 (3 ^ 3 * (108 * k + 103) - 1) ≤ 1 := by
+    exact Nat.lt_succ_iff.mp (Nat.lt_of_not_ge hlt)
+  have hpow : v2 (3 ^ 3 * (108 * k + 103) - 1) + 1 ≤ 2 := by
+    simpa using Nat.succ_le_succ hv2_le1
+  have hdiv :
+      2 ^ (v2 (3 ^ 3 * (108 * k + 103) - 1) + 1) ∣
+        3 ^ 3 * (108 * k + 103) - 1 := by
+    exact dvd_trans (Nat.pow_dvd_pow 2 hpow) hdiv4
+  exact (v2_pow_succ_not_dvd (3 ^ 3 * (108 * k + 103) - 1) hpos) hdiv
+
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    congruence `base ≡ 61 (mod 64)` ejects the successor out of the bad
+    frontier: it stays on `time = 3` but has ejection valuation at least `2`,
+    so the successor already self-shrinks. -/
+theorem regimeIIState_next_not_badFrontier_of_time3_eject1_of_base_mod64_eq61
+    (B : ℕ) (s : RegimeIIState)
+    (hs : regimeIIStateAdmissible s)
+    (ht : s.time = 3) (he : s.eject = 1)
+    (hmod : s.base % 64 = 61) :
+    ¬ regimeIIBadFrontier B (regimeIIStateNext s) := by
+  have hnext_adm : regimeIIStateAdmissible (regimeIIStateNext s) := by
+    simpa [regimeIIStateNext] using regimeIIStateOf_admissible (regimeIIStateNextValue s)
+  have hmod32 : s.base % 32 = 29 := by
+    omega
+  exact not_regimeIIBadFrontier_of_time3_of_eject_ge_two B (regimeIIStateNext s)
+    hnext_adm
+    (regimeIIState_nextTime_eq_three_of_time3_eject1_of_base_mod32_eq29 s hs ht he hmod32)
+    (regimeIIState_nextEject_ge_two_of_time3_eject1_of_base_mod64_eq61 s hs ht he hmod)
 
 /-- First-class surviving Regime-II transition on the bad frontier at target
     `B`: a source bad-frontier state together with its next bad-frontier state.
@@ -6892,6 +7323,81 @@ theorem src_base_mod_8_eq_5_of_time3_eject1
     simpa [τ.step] using τ.dst.time_ge_two
   exact regimeIIState_base_mod_8_eq_5_of_time3_eject1_of_nextTime_ge_two
     τ.src.src τ.src.admissible ht he hdst
+
+/-- On a surviving bad-to-bad transition out of the intrinsic source slice
+    `(time, eject) = (3, 1)`, the excluded congruence class `base ≡ 5 (mod 32)`
+    cannot occur: that class ejects the successor out of the bad frontier. -/
+theorem src_base_mod32_ne_5_of_time3_eject1
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1) :
+    τ.src.src.base % 32 ≠ 5 := by
+  intro hmod
+  have hnot :=
+    regimeIIState_next_not_badFrontier_of_time3_eject1_of_base_mod32_eq5
+      B τ.src.src τ.src.admissible ht he hmod
+  exact hnot (by simpa [τ.step] using τ.dst.isBad)
+
+/-- On a surviving bad-to-bad transition out of the intrinsic source slice
+    `(time, eject) = (3, 1)`, the refined congruence `base ≡ 21 (mod 32)`
+    forces the destination source slice `(2,1)`. -/
+theorem dst_slice_eq_2_1_of_src_base_mod32_eq21
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 21) :
+    τ.dst.src.time = 2 ∧ τ.dst.src.eject = 1 := by
+  constructor
+  · simpa [τ.step] using
+      regimeIIState_nextTime_eq_two_of_time3_eject1_of_base_mod32_eq21
+        τ.src.src τ.src.admissible ht he hmod
+  · simpa [τ.step] using
+      regimeIIState_nextEject_eq_one_of_time3_eject1_of_base_mod32_eq21
+        τ.src.src τ.src.admissible ht he hmod
+
+/-- On a surviving bad-to-bad transition out of the intrinsic source slice
+    `(time, eject) = (3, 1)`, the refined congruence `base ≡ 29 (mod 32)`
+    forces the destination source slice `(3,1)`. -/
+theorem dst_slice_eq_3_1_of_src_base_mod32_eq29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 29) :
+    τ.dst.src.time = 3 ∧ τ.dst.src.eject = 1 := by
+  constructor
+  · simpa [τ.step] using
+      regimeIIState_nextTime_eq_three_of_time3_eject1_of_base_mod32_eq29
+        τ.src.src τ.src.admissible ht he hmod
+  · have hcases :
+        ∃ k, τ.src.src.base = 64 * k + 29 ∨ τ.src.src.base = 64 * k + 61 := by
+      refine ⟨τ.src.src.base / 64, ?_⟩
+      have hdiv := Nat.mod_add_div τ.src.src.base 64
+      have hodd := τ.src.admissible.2.1
+      omega
+    rcases hcases with ⟨k, hk | hk⟩
+    · have hmod64 : τ.src.src.base % 64 = 29 := by
+        rw [hk]
+        norm_num
+      simpa [τ.step] using
+        regimeIIState_nextEject_eq_one_of_time3_eject1_of_base_mod64_eq29
+          τ.src.src τ.src.admissible ht he hmod64
+    · have hmod64 : τ.src.src.base % 64 = 61 := by
+        rw [hk]
+        norm_num
+      have hbadnext : regimeIIBadFrontier B (regimeIIStateNext τ.src.src) := by
+        simpa [τ.step] using τ.dst.isBad
+      exact False.elim
+        ((regimeIIState_next_not_badFrontier_of_time3_eject1_of_base_mod64_eq61
+            B τ.src.src τ.src.admissible ht he hmod64) hbadnext)
+
+/-- On a surviving bad-to-bad transition out of the intrinsic source slice
+    `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
+    forces the destination time to jump to at least `4`. -/
+theorem four_le_dst_time_of_src_base_mod32_eq13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 13) :
+    4 ≤ τ.dst.src.time := by
+  simpa [τ.step] using
+    regimeIIState_nextTime_ge_four_of_time3_eject1_of_base_mod32_eq13
+      τ.src.src τ.src.admissible ht he hmod
 
 theorem dst_value_ge_target {B : ℕ} (τ : RegimeIIBadFrontierTransition B) :
     B ≤ regimeIIStateValue τ.dst.src := by
