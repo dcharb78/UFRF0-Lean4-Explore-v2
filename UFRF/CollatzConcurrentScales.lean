@@ -3171,6 +3171,45 @@ def regimeIITime (n : ℕ) : ℕ := v2 (n + 1)
 /-- The odd coefficient in the Regime-II normal form `n + 1 = a · 2^T`. -/
 def regimeIIBase (n : ℕ) : ℕ := (n + 1) / 2 ^ regimeIITime n
 
+/-- The intrinsic Regime-II base is always positive: it is the odd factor left
+    after removing the full dyadic valuation from `n + 1`. -/
+theorem regimeIIBase_pos (n : ℕ) : 0 < regimeIIBase n := by
+  obtain ⟨a, ha⟩ := v2_pow_dvd (n + 1)
+  have hbase : regimeIIBase n = a := by
+    unfold regimeIIBase
+    rw [ha]
+    unfold regimeIITime
+    exact Nat.mul_div_right a (pow_pos (by norm_num : 0 < 2) _)
+  have ha_pos : 0 < a := by
+    by_contra h
+    have ha_zero : a = 0 := by omega
+    rw [ha_zero] at ha
+    omega
+  simpa [hbase] using ha_pos
+
+/-- The intrinsic Regime-II base is always odd: all powers of `2` have already
+    been stripped from `n + 1`. -/
+theorem regimeIIBase_odd (n : ℕ) : regimeIIBase n % 2 = 1 := by
+  obtain ⟨a, ha⟩ := v2_pow_dvd (n + 1)
+  have hbase : regimeIIBase n = a := by
+    unfold regimeIIBase
+    rw [ha]
+    unfold regimeIITime
+    exact Nat.mul_div_right a (pow_pos (by norm_num : 0 < 2) _)
+  have hnp1_pos : 0 < n + 1 := by omega
+  have ha_odd : a % 2 = 1 := by
+    by_contra h
+    push_neg at h
+    have hmod : a % 2 = 0 := by omega
+    obtain ⟨b, hb⟩ := Nat.dvd_of_mod_eq_zero hmod
+    apply v2_pow_succ_not_dvd (n + 1) hnp1_pos
+    refine ⟨b, ?_⟩
+    calc
+      n + 1 = 2 ^ v2 (n + 1) * a := ha
+      _ = 2 ^ v2 (n + 1) * (2 * b) := by rw [hb]
+      _ = 2 ^ (v2 (n + 1) + 1) * b := by rw [pow_succ']; ring
+  simpa [hbase] using ha_odd
+
 /-- The ejection valuation at the end of the Regime-II carry chain. -/
 def regimeIIEjectionValuation (n : ℕ) : ℕ :=
   v2 (3 ^ regimeIITime n * regimeIIBase n - 1)
@@ -3192,6 +3231,14 @@ theorem regimeIIEjectionValuation_eq_surplus (n : ℕ) (hn : n % 2 = 1)
     v2SumExact (regimeIITime n) n = regimeIITime n + regimeIIEjectionValuation n := by
   unfold regimeIIEjectionValuation regimeIIBase regimeIITime
   simpa using (regimeII_meta_step n hn hT).2
+
+/-- Once the intrinsic Regime-II time and base are fixed, the ejection valuation
+    is exactly the valuation of the corresponding compressed numerator. -/
+theorem regimeIIEjectionValuation_eq_v2_of_time_base
+    (n t a : ℕ) (hT : regimeIITime n = t) (hbase : regimeIIBase n = a) :
+    regimeIIEjectionValuation n = v2 (3 ^ t * a - 1) := by
+  unfold regimeIIEjectionValuation
+  rw [hT, hbase]
 
 /-- The compressed Regime-II next node is odd, since it is an exact odd Syracuse iterate. -/
 theorem regimeIINext_odd (n : ℕ) (hn : n % 2 = 1) (hT : 2 ≤ regimeIITime n) :
@@ -4436,6 +4483,398 @@ theorem regimeII_slice_exact_zone_classifier
     regimeIINext n < B ↔ regimeIIBase n < (B * 2 ^ j) / (3 ^ t) + 1 := by
   rw [regimeIINext_lt_iff_base_lt_threshold n B hB, hT, hj]
 
+/-- Intrinsic admissibility of an odd base on a fixed `(time, eject)` source
+    slice. This is the source-state notion underlying all finite exact-zone
+    candidate sets. -/
+def regimeIIAdmissibleBase (t j a : ℕ) : Prop :=
+  0 < a ∧ a % 2 = 1 ∧ v2 (3 ^ t * a - 1) = j
+
+/-- Positive bases on a positive Regime-II time layer give a genuinely positive
+    compressed numerator `3^t * a`, so the residue-class form of exact
+    valuation applies. -/
+private theorem one_lt_three_pow_mul_of_pos_of_time_pos
+    {t a : ℕ} (ha : 0 < a) (ht : 1 ≤ t) :
+    1 < 3 ^ t * a := by
+  have hpow : 3 ≤ 3 ^ t := by
+    simpa using Nat.pow_le_pow_right (by norm_num : 1 ≤ 3) ht
+  have ha1 : 1 ≤ a := Nat.succ_le_of_lt ha
+  have hmul : 3 * 1 ≤ 3 ^ t * a := by
+    simpa [Nat.mul_comm] using Nat.mul_le_mul ha1 hpow
+  omega
+
+/-- Exact valuation is equivalent to hitting the distinguished residue
+    `2^j mod 2^(j+1)`. -/
+private theorem v2_eq_iff_modEq_pow
+    {n j : ℕ} (hn : 0 < n) :
+    v2 n = j ↔ n ≡ 2 ^ j [MOD 2 ^ (j + 1)] := by
+  constructor
+  · intro hv2
+    have hdvd : 2 ^ j ∣ n := by
+      simpa [hv2] using v2_pow_dvd n
+    have hndvd : ¬ 2 ^ (j + 1) ∣ n := by
+      simpa [hv2] using v2_pow_succ_not_dvd n hn
+    obtain ⟨q, hq⟩ := hdvd
+    have hq_not_even : ¬ 2 ∣ q := by
+      intro hq_even
+      apply hndvd
+      rcases hq_even with ⟨b, hb⟩
+      refine ⟨b, ?_⟩
+      calc
+        n = 2 ^ j * q := hq
+        _ = 2 ^ j * (2 * b) := by rw [hb]
+        _ = 2 ^ (j + 1) * b := by rw [pow_succ']; ring
+    have hq_odd : q % 2 = 1 := by
+      have hmod_lt : q % 2 < 2 := Nat.mod_lt _ (by norm_num)
+      have hmod_ne_zero : q % 2 ≠ 0 := by
+        intro hmod
+        apply hq_not_even
+        exact Nat.dvd_of_mod_eq_zero hmod
+      omega
+    have hq_repr : q = 2 * (q / 2) + 1 := by
+      have h := Nat.mod_add_div q 2
+      omega
+    have hq_pos : 0 < q := by
+      have hpow_pos : 0 < 2 ^ j := pow_pos (by norm_num) j
+      omega
+    have hle : 2 ^ j ≤ n := by
+      have hq1 : 1 ≤ q := Nat.succ_le_of_lt hq_pos
+      have hq_ge : 2 ^ j ≤ 2 ^ j * q := by
+        simpa using Nat.mul_le_mul_left (2 ^ j) hq1
+      omega
+    have hmod : 2 ^ j ≡ n [MOD 2 ^ (j + 1)] := by
+      refine (Nat.modEq_iff_dvd' hle).2 ?_
+      refine ⟨q / 2, ?_⟩
+      have hq_sub : q - 1 = 2 * (q / 2) := by
+        omega
+      calc
+        n - 2 ^ j = 2 ^ j * q - 2 ^ j := by rw [hq]
+        _ = 2 ^ j * (q - 1) := by
+          simpa using (Nat.mul_sub_left_distrib (2 ^ j) q 1).symm
+        _ = 2 ^ j * (2 * (q / 2)) := by rw [hq_sub]
+        _ = 2 ^ (j + 1) * (q / 2) := by rw [pow_succ']; ring
+    exact hmod.symm
+  · intro hmod
+    have hdvd : 2 ^ j ∣ n := by
+      have hsmall : n ≡ 2 ^ j [MOD 2 ^ j] :=
+        (Nat.ModEq.of_dvd (Nat.pow_dvd_pow 2 (Nat.le_succ j)) hmod)
+      have hzero : 2 ^ j ≡ 0 [MOD 2 ^ j] := (dvd_rfl : 2 ^ j ∣ 2 ^ j).modEq_zero_nat
+      exact Nat.modEq_zero_iff_dvd.mp (hsmall.trans hzero)
+    have hndvd : ¬ 2 ^ (j + 1) ∣ n := by
+      intro hdiv
+      have hz : n ≡ 0 [MOD 2 ^ (j + 1)] := hdiv.modEq_zero_nat
+      have hpowdiv : 2 ^ (j + 1) ∣ 2 ^ j := by
+        exact Nat.modEq_zero_iff_dvd.mp (hmod.symm.trans hz)
+      have hpow_pos : 0 < 2 ^ j := pow_pos (by norm_num) j
+      have hlt : 2 ^ j < 2 ^ (j + 1) := by
+        rw [pow_succ']
+        omega
+      exact (Nat.not_dvd_of_pos_of_lt hpow_pos hlt) hpowdiv
+    exact v2_eq_of_dvd_not_dvd hn hdvd hndvd
+
+/-- Exact valuation at `x - 1` is equivalent to the single residue
+    `1 + 2^j mod 2^(j+1)`. This is the local 2-adic classifier behind the
+    intrinsic Regime-II ejection valuation. -/
+private theorem v2_sub_one_eq_iff_modEq_one_add_pow
+    {x j : ℕ} (hx : 1 < x) :
+    v2 (x - 1) = j ↔ x ≡ 1 + 2 ^ j [MOD 2 ^ (j + 1)] := by
+  have hx1_pos : 0 < x - 1 := by omega
+  constructor
+  · intro hv2
+    have hsub : x - 1 ≡ 2 ^ j [MOD 2 ^ (j + 1)] :=
+      (v2_eq_iff_modEq_pow hx1_pos).1 hv2
+    have hplus := hsub.add_right 1
+    simpa [show x - 1 + 1 = x by omega, add_assoc, add_left_comm, add_comm] using hplus
+  · intro hmod
+    have hsub : x - 1 ≡ 2 ^ j [MOD 2 ^ (j + 1)] := by
+      apply Nat.ModEq.add_right_cancel' (c := 1)
+      simpa [show x - 1 + 1 = x by omega, add_assoc, add_left_comm, add_comm] using hmod
+    exact (v2_eq_iff_modEq_pow hx1_pos).2 hsub
+
+/-- Every fixed `(time, eject)` slice has a canonical intrinsic base residue
+    modulo `2^(j+1)`. This is the source-state congruence class that survives
+    after compressing away the raw integer presentation. -/
+private theorem exists_regimeIIBaseResidue (t j : ℕ) :
+    ∃ a < 2 ^ (j + 1), 3 ^ t * a % 2 ^ (j + 1) = (1 + 2 ^ j) % 2 ^ (j + 1) := by
+  refine Nat.exists_mul_mod_eq_of_coprime (1 + 2 ^ j) ?_ ?_
+  · simpa using Nat.coprime_pow_primes t (j + 1)
+      (by decide : Nat.Prime 3) (by decide : Nat.Prime 2) (by decide : 3 ≠ 2)
+  · exact pow_ne_zero (j + 1) (by decide : 2 ≠ 0)
+
+/-- Canonical residue class for intrinsic admissible Regime-II bases on the
+    `(time, eject)` slice `(t, j)`. -/
+def regimeIIBaseResidue (t j : ℕ) : ℕ :=
+  Nat.find (exists_regimeIIBaseResidue t j)
+
+/-- The canonical Regime-II base residue lies in the fundamental window
+    `[0, 2^(j+1))`. -/
+theorem regimeIIBaseResidue_lt (t j : ℕ) :
+    regimeIIBaseResidue t j < 2 ^ (j + 1) :=
+  (Nat.find_spec (exists_regimeIIBaseResidue t j)).1
+
+/-- By construction, the canonical residue solves the intrinsic ejection
+    congruence `3^t * a ≡ 1 + 2^j mod 2^(j+1)`. -/
+theorem regimeIIBaseResidue_spec (t j : ℕ) :
+    3 ^ t * regimeIIBaseResidue t j ≡ 1 + 2 ^ j [MOD 2 ^ (j + 1)] := by
+  unfold regimeIIBaseResidue Nat.ModEq
+  exact (Nat.find_spec (exists_regimeIIBaseResidue t j)).2
+
+/-- Structural source-state classifier: on every positive time slice, the exact
+    ejection valuation is equivalent to the intrinsic odd base lying in a
+    single congruence class modulo `2^(j+1)`. -/
+theorem regimeIIBase_v2_eq_iff_modEq_residue
+    {t j a : ℕ} (hgt : 1 < 3 ^ t * a) :
+    v2 (3 ^ t * a - 1) = j ↔
+      a ≡ regimeIIBaseResidue t j [MOD 2 ^ (j + 1)] := by
+  constructor
+  · intro hv2
+    have htarget : 3 ^ t * a ≡ 1 + 2 ^ j [MOD 2 ^ (j + 1)] :=
+      (v2_sub_one_eq_iff_modEq_one_add_pow hgt).1 hv2
+    have hmul :
+        3 ^ t * a ≡ 3 ^ t * regimeIIBaseResidue t j [MOD 2 ^ (j + 1)] :=
+      htarget.trans (regimeIIBaseResidue_spec t j).symm
+    have hcop : Nat.gcd (2 ^ (j + 1)) (3 ^ t) = 1 := by
+      have hcop' : Nat.Coprime (2 ^ (j + 1)) (3 ^ t) := by
+        simpa using Nat.coprime_pow_primes (j + 1) t
+          (by decide : Nat.Prime 2) (by decide : Nat.Prime 3) (by decide : 2 ≠ 3)
+      simpa using hcop'.gcd_eq_one
+    exact Nat.ModEq.cancel_left_of_coprime hcop hmul
+  · intro hres
+    have hmul :
+        3 ^ t * a ≡ 3 ^ t * regimeIIBaseResidue t j [MOD 2 ^ (j + 1)] :=
+      hres.mul_left (3 ^ t)
+    have htarget : 3 ^ t * a ≡ 1 + 2 ^ j [MOD 2 ^ (j + 1)] :=
+      hmul.trans (regimeIIBaseResidue_spec t j)
+    exact (v2_sub_one_eq_iff_modEq_one_add_pow hgt).2 htarget
+
+/-- Intrinsic admissibility is exactly “positive odd base in the canonical
+    source-state residue class” on every positive time slice. -/
+theorem regimeIIAdmissibleBase_iff_modEq_residue
+    {t j a : ℕ} (ht : 1 ≤ t) :
+    regimeIIAdmissibleBase t j a ↔
+      0 < a ∧ a % 2 = 1 ∧ a ≡ regimeIIBaseResidue t j [MOD 2 ^ (j + 1)] := by
+  constructor
+  · rintro ⟨ha, hodd, hv2⟩
+    refine ⟨ha, hodd, ?_⟩
+    exact (regimeIIBase_v2_eq_iff_modEq_residue
+      (one_lt_three_pow_mul_of_pos_of_time_pos ha ht)).1 hv2
+  · rintro ⟨ha, hodd, hres⟩
+    refine ⟨ha, hodd, ?_⟩
+    exact (regimeIIBase_v2_eq_iff_modEq_residue
+      (one_lt_three_pow_mul_of_pos_of_time_pos ha ht)).2 hres
+
+/-- Finite intrinsic base candidates below a cutoff `M` on a fixed
+    `(time, eject)` slice. These are the positive odd bases below `M` whose
+    compressed numerator has the requested ejection valuation. -/
+def regimeIIBaseCandidates (t j M : ℕ) : Finset ℕ :=
+  (Finset.range M).filter (fun a => 0 < a ∧ a % 2 = 1 ∧ v2 (3 ^ t * a - 1) = j)
+
+/-- The finite intrinsic candidate sets are threshold windows cut out from a
+    single canonical source-state residue class. -/
+theorem mem_regimeIIBaseCandidates_iff_modEq_residue
+    {t j M a : ℕ} (ht : 1 ≤ t) :
+    a ∈ regimeIIBaseCandidates t j M ↔
+      a < M ∧ 0 < a ∧ a % 2 = 1 ∧ a ≡ regimeIIBaseResidue t j [MOD 2 ^ (j + 1)] := by
+  rw [regimeIIBaseCandidates, Finset.mem_filter, Finset.mem_range]
+  constructor
+  · rintro ⟨haM, haPos, haOdd, hv2⟩
+    refine ⟨haM, haPos, haOdd, ?_⟩
+    exact (regimeIIAdmissibleBase_iff_modEq_residue ht).1 ⟨haPos, haOdd, hv2⟩ |>.2.2
+  · rintro ⟨haM, haPos, haOdd, hres⟩
+    refine ⟨haM, haPos, haOdd, ?_⟩
+    exact (regimeIIAdmissibleBase_iff_modEq_residue ht).2 ⟨haPos, haOdd, hres⟩ |>.2.2
+
+/-- If two natural numbers are congruent modulo `m` and both lie strictly
+    below `m`, then they are equal. -/
+private theorem eq_of_lt_modulus_of_modEq
+    {a b m : ℕ} (ha : a < m) (hb : b < m) (hmod : a ≡ b [MOD m]) :
+    a = b := by
+  unfold Nat.ModEq at hmod
+  simpa [Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb] using hmod
+
+/-- Structural empty-window theorem: if the threshold window closes before the
+    canonical residue even appears, then the intrinsic candidate set is empty.
+    This is the generic source-state form of the dead-slice phenomenon. -/
+theorem regimeIIBaseCandidates_eq_empty_of_threshold_le_residue
+    {t j M : ℕ} (ht : 1 ≤ t) (hM : M ≤ regimeIIBaseResidue t j) :
+    regimeIIBaseCandidates t j M = (∅ : Finset ℕ) := by
+  ext a
+  constructor
+  · intro ha
+    exfalso
+    rcases (mem_regimeIIBaseCandidates_iff_modEq_residue ht).1 ha with
+      ⟨haM, haPos, haOdd, hmod⟩
+    have ha_lt_res : a < regimeIIBaseResidue t j := lt_of_lt_of_le haM hM
+    have hr_lt_mod : regimeIIBaseResidue t j < 2 ^ (j + 1) := regimeIIBaseResidue_lt t j
+    have ha_lt_mod : a < 2 ^ (j + 1) := Nat.lt_trans ha_lt_res hr_lt_mod
+    have heq : a = regimeIIBaseResidue t j :=
+      eq_of_lt_modulus_of_modEq ha_lt_mod hr_lt_mod hmod
+    exact (ne_of_lt ha_lt_res) heq
+  · intro ha
+    simp at ha
+
+/-- Exact-zone entry on a fixed `(time, eject)` slice is equivalent to the
+    intrinsic base lying in the corresponding finite candidate set below the
+    slice bound `M`. -/
+theorem regimeIINext_lt_iff_base_mem_candidates
+    (n B t j M : ℕ)
+    (hT : regimeIITime n = t) (hj : regimeIIEjectionValuation n = j)
+    (hbound : regimeIINext n < B ↔ regimeIIBase n < M) :
+    regimeIINext n < B ↔ regimeIIBase n ∈ regimeIIBaseCandidates t j M := by
+  constructor
+  · intro hnext
+    rw [regimeIIBaseCandidates, Finset.mem_filter, Finset.mem_range]
+    refine ⟨hbound.mp hnext, ?_⟩
+    refine ⟨regimeIIBase_pos n, regimeIIBase_odd n, ?_⟩
+    calc
+      v2 (3 ^ t * regimeIIBase n - 1) = regimeIIEjectionValuation n := by
+        symm
+        exact regimeIIEjectionValuation_eq_v2_of_time_base n t (regimeIIBase n) hT rfl
+      _ = j := hj
+  · intro hmem
+    rw [regimeIIBaseCandidates, Finset.mem_filter, Finset.mem_range] at hmem
+    exact hbound.mpr hmem.1
+
+/-- Pattern theorem: if a fixed `(time, eject)` slice has no admissible odd
+    base below a candidate bound, then the compressed next node cannot land
+    below the target at all. This packages the dead-slice arguments used in the
+    low-threshold exact-zone classifiers. -/
+theorem regimeIINext_lt_impossible_of_no_base_candidate
+    (n B t j M : ℕ)
+    (hT : regimeIITime n = t) (hj : regimeIIEjectionValuation n = j)
+    (hbound : regimeIINext n < B ↔ regimeIIBase n < M)
+    (hno : ∀ a : ℕ, 0 < a → a % 2 = 1 → a < M → v2 (3 ^ t * a - 1) ≠ j) :
+    ¬ regimeIINext n < B := by
+  intro hnext
+  have hbase_lt : regimeIIBase n < M := hbound.mp hnext
+  have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+  have hbase_odd : regimeIIBase n % 2 = 1 := regimeIIBase_odd n
+  have hv2_eq : v2 (3 ^ t * regimeIIBase n - 1) = j := by
+    calc
+      v2 (3 ^ t * regimeIIBase n - 1) = regimeIIEjectionValuation n := by
+        symm
+        exact regimeIIEjectionValuation_eq_v2_of_time_base n t (regimeIIBase n) hT rfl
+      _ = j := hj
+  exact hno (regimeIIBase n) hbase_pos hbase_odd hbase_lt hv2_eq
+
+/-- Pattern theorem: if a fixed `(time, eject)` slice has a unique admissible
+    odd base below the candidate bound, then exact-zone entry is equivalent to
+    that singleton intrinsic base. This packages the singleton-slice arguments
+    used by the first nonempty exact-zone classifiers. -/
+theorem regimeIINext_lt_iff_base_eq_of_unique_candidate
+    (n B t j M a0 : ℕ)
+    (hT : regimeIITime n = t) (hj : regimeIIEjectionValuation n = j)
+    (hbound : regimeIINext n < B ↔ regimeIIBase n < M)
+    (ha0_lt : a0 < M)
+    (hunique :
+      ∀ a : ℕ, 0 < a → a % 2 = 1 → a < M → v2 (3 ^ t * a - 1) = j → a = a0) :
+    regimeIINext n < B ↔ regimeIIBase n = a0 := by
+  constructor
+  · intro hnext
+    have hbase_lt : regimeIIBase n < M := hbound.mp hnext
+    have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+    have hbase_odd : regimeIIBase n % 2 = 1 := regimeIIBase_odd n
+    have hv2_eq : v2 (3 ^ t * regimeIIBase n - 1) = j := by
+      calc
+        v2 (3 ^ t * regimeIIBase n - 1) = regimeIIEjectionValuation n := by
+          symm
+          exact regimeIIEjectionValuation_eq_v2_of_time_base n t (regimeIIBase n) hT rfl
+        _ = j := hj
+    exact hunique (regimeIIBase n) hbase_pos hbase_odd hbase_lt hv2_eq
+  · intro hbase
+    exact hbound.mpr <| by simpa [hbase] using ha0_lt
+
+/-- The finite intrinsic base-candidate set on a fixed `(time, eject)` slice
+    below the exact-zone threshold for target `B`. This is the source-state
+    classifier object that the concrete slice theorems instantiate. -/
+def regimeIIBaseCandidatesBelow (B t j : ℕ) : Finset ℕ :=
+  regimeIIBaseCandidates t j ((B * 2 ^ j) / (3 ^ t) + 1)
+
+/-- Threshold-window form of the intrinsic residue classifier. The exact-zone
+    candidate set below a bound is precisely the positive odd part of a single
+    source-state residue class. -/
+theorem mem_regimeIIBaseCandidatesBelow_iff_modEq_residue
+    {B t j a : ℕ} (ht : 1 ≤ t) :
+    a ∈ regimeIIBaseCandidatesBelow B t j ↔
+      a < (B * 2 ^ j) / (3 ^ t) + 1 ∧
+      0 < a ∧ a % 2 = 1 ∧ a ≡ regimeIIBaseResidue t j [MOD 2 ^ (j + 1)] := by
+  unfold regimeIIBaseCandidatesBelow
+  exact mem_regimeIIBaseCandidates_iff_modEq_residue ht
+
+/-- Exact-zone version of the empty-window theorem: if the `B`-threshold on a
+    fixed slice lies at or below the canonical residue, the exact-zone
+    candidate set is empty. -/
+theorem regimeIIBaseCandidatesBelow_eq_empty_of_threshold_le_residue
+    {B t j : ℕ} (ht : 1 ≤ t)
+    (hthreshold : (B * 2 ^ j) / (3 ^ t) + 1 ≤ regimeIIBaseResidue t j) :
+    regimeIIBaseCandidatesBelow B t j = (∅ : Finset ℕ) := by
+  unfold regimeIIBaseCandidatesBelow
+  exact regimeIIBaseCandidates_eq_empty_of_threshold_le_residue ht hthreshold
+
+/-- Exact-zone entry on a fixed `(time, eject)` slice is equivalent to the
+    intrinsic base lying in the corresponding finite candidate set. -/
+theorem regimeIINext_lt_iff_base_mem_candidatesBelow
+    (n B t j : ℕ) (hB : 0 < B)
+    (hT : regimeIITime n = t) (hj : regimeIIEjectionValuation n = j) :
+    regimeIINext n < B ↔ regimeIIBase n ∈ regimeIIBaseCandidatesBelow B t j := by
+  unfold regimeIIBaseCandidatesBelow
+  exact regimeIINext_lt_iff_base_mem_candidates
+    n B t j ((B * 2 ^ j) / (3 ^ t) + 1) hT hj
+    (regimeII_slice_exact_zone_classifier n B t j hB hT hj)
+
+/-- Verified 832-slice candidate set: the low-threshold slice `(6,1)` has no
+    admissible intrinsic base at all. -/
+theorem regimeIIBaseCandidatesBelow_832_time6_eject1 :
+    regimeIIBaseCandidatesBelow 832 6 1 = (∅ : Finset ℕ) := by
+  native_decide
+
+/-- Verified 832-slice candidate set: the low-threshold slice `(6,2)` has no
+    admissible intrinsic base at all. -/
+theorem regimeIIBaseCandidatesBelow_832_time6_eject2 :
+    regimeIIBaseCandidatesBelow 832 6 2 = (∅ : Finset ℕ) := by
+  native_decide
+
+/-- Verified 832-slice candidate set: the first nonempty time-6 slice has the
+    unique candidate base `1`. -/
+theorem regimeIIBaseCandidatesBelow_832_time6_eject3 :
+    regimeIIBaseCandidatesBelow 832 6 3 = ({1} : Finset ℕ) := by
+  native_decide
+
+/-- Verified 832-slice candidate set: the low-threshold slice `(7,1)` has no
+    admissible intrinsic base at all. -/
+theorem regimeIIBaseCandidatesBelow_832_time7_eject1 :
+    regimeIIBaseCandidatesBelow 832 7 1 = (∅ : Finset ℕ) := by
+  native_decide
+
+/-- Verified 832-slice candidate set: the low-threshold slice `(7,2)` has no
+    admissible intrinsic base at all. -/
+theorem regimeIIBaseCandidatesBelow_832_time7_eject2 :
+    regimeIIBaseCandidatesBelow 832 7 2 = (∅ : Finset ℕ) := by
+  native_decide
+
+/-- Verified 832-slice candidate set: the low-threshold slice `(7,3)` has no
+    admissible intrinsic base at all. -/
+theorem regimeIIBaseCandidatesBelow_832_time7_eject3 :
+    regimeIIBaseCandidatesBelow 832 7 3 = (∅ : Finset ℕ) := by
+  native_decide
+
+/-- Verified 832-slice candidate set: the low-threshold slice `(7,4)` has no
+    admissible intrinsic base at all. -/
+theorem regimeIIBaseCandidatesBelow_832_time7_eject4 :
+    regimeIIBaseCandidatesBelow 832 7 4 = (∅ : Finset ℕ) := by
+  native_decide
+
+/-- Verified 832-slice candidate set: the first nonempty time-7 slice has the
+    unique candidate base `3`. -/
+theorem regimeIIBaseCandidatesBelow_832_time7_eject5 :
+    regimeIIBaseCandidatesBelow 832 7 5 = ({3} : Finset ℕ) := by
+  native_decide
+
+/-- Verified 832-slice candidate set: the first nonempty time-8 slice has the
+    unique candidate base `1`. -/
+theorem regimeIIBaseCandidatesBelow_832_time8_eject5 :
+    regimeIIBaseCandidatesBelow 832 8 5 = ({1} : Finset ℕ) := by
+  native_decide
+
 /-- On the meaningful Regime-II slice `time = 5`, `eject = 1`, exact-zone entry
     below `832` is equivalent to a simple intrinsic bound on the odd base. This
     is the first broader exact-zone classifier built on the source-state layer,
@@ -4478,6 +4917,281 @@ theorem regimeIINext_lt_832_iff_base_lt_10_of_time6_eject3
     regimeIINext n < 832 ↔ regimeIIBase n < 10 := by
   rw [regimeII_slice_exact_zone_classifier n 832 6 3 (by norm_num : 0 < 832) hT hj]
   norm_num
+
+/-- On the slice `time = 7`, `eject = 5`, exact-zone entry below `832` is
+    equivalent to the intrinsic base bound `base < 13`. -/
+theorem regimeIINext_lt_832_iff_base_lt_13_of_time7_eject5
+    (n : ℕ) (hT : regimeIITime n = 7) (hj : regimeIIEjectionValuation n = 5) :
+    regimeIINext n < 832 ↔ regimeIIBase n < 13 := by
+  rw [regimeII_slice_exact_zone_classifier n 832 7 5 (by norm_num : 0 < 832) hT hj]
+  norm_num
+
+/-- On the slice `time = 8`, `eject = 5`, exact-zone entry below `832` is
+    equivalent to the intrinsic base bound `base < 5`. -/
+theorem regimeIINext_lt_832_iff_base_lt_5_of_time8_eject5
+    (n : ℕ) (hT : regimeIITime n = 8) (hj : regimeIIEjectionValuation n = 5) :
+    regimeIINext n < 832 ↔ regimeIIBase n < 5 := by
+  rw [regimeII_slice_exact_zone_classifier n 832 8 5 (by norm_num : 0 < 832) hT hj]
+  norm_num
+
+/-- If the exact-zone threshold on a fixed Regime-II slice is at most `3`, then
+    exact-zone entry forces the intrinsic base to collapse to the singleton odd
+    value `1`. -/
+theorem regimeII_exact_zone_tiny_threshold_collapse
+    (n t j : ℕ)
+    (hT : regimeIITime n = t) (hj : regimeIIEjectionValuation n = j)
+    (hthr : (832 * 2 ^ j) / (3 ^ t) + 1 ≤ 3) :
+    regimeIINext n < 832 → regimeIIBase n = 1 := by
+  intro hzone
+  have hbase_lt :
+      regimeIIBase n < (832 * 2 ^ j) / (3 ^ t) + 1 :=
+    (regimeII_slice_exact_zone_classifier n 832 t j (by norm_num : 0 < 832) hT hj).1 hzone
+  have hbase_lt3 : regimeIIBase n < 3 := lt_of_lt_of_le hbase_lt hthr
+  have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+  have hbase_odd : regimeIIBase n % 2 = 1 := regimeIIBase_odd n
+  omega
+
+/-- If the exact-zone threshold on a fixed Regime-II slice is already at most
+    `1`, then that slice cannot enter the exact `832` zone at all. -/
+theorem regimeII_exact_zone_impossible_of_threshold_le_one
+    (n t j : ℕ)
+    (hT : regimeIITime n = t) (hj : regimeIIEjectionValuation n = j)
+    (hthr : (832 * 2 ^ j) / (3 ^ t) + 1 ≤ 1) :
+    ¬ regimeIINext n < 832 := by
+  intro hzone
+  have hbase_lt :
+      regimeIIBase n < (832 * 2 ^ j) / (3 ^ t) + 1 :=
+    (regimeII_slice_exact_zone_classifier n 832 t j (by norm_num : 0 < 832) hT hj).1 hzone
+  have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+  omega
+
+/-- The slice `(time, eject) = (7, 1)` cannot land in the exact `832` zone:
+    the intrinsic threshold has already collapsed below any positive odd base. -/
+theorem regimeIINext_not_lt_832_of_time7_eject1
+    (n : ℕ) (hT : regimeIITime n = 7) (hj : regimeIIEjectionValuation n = 1) :
+    ¬ regimeIINext n < 832 := by
+  exact regimeII_exact_zone_impossible_of_threshold_le_one n 7 1 hT hj (by norm_num)
+
+/-- The slice `(time, eject) = (7, 2)` also cannot land in the exact `832`
+    zone: the tiny-threshold collapse would force `base = 1`, but that source
+    state has ejection valuation `1`, not `2`. -/
+theorem regimeIINext_not_lt_832_of_time7_eject2
+    (n : ℕ) (hT : regimeIITime n = 7) (hj : regimeIIEjectionValuation n = 2) :
+    ¬ regimeIINext n < 832 := by
+  intro hzone
+  have hbase : regimeIIBase n = 1 :=
+    regimeII_exact_zone_tiny_threshold_collapse n 7 2 hT hj (by norm_num) hzone
+  have hej' : regimeIIEjectionValuation n = 1 := by
+    rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 1 hT hbase]
+    native_decide
+  omega
+
+/-- The slice `(time, eject) = (7, 3)` cannot land in the exact `832` zone:
+    the threshold only allows bases `1` or `3`, but those eject with
+    valuations `1` and `5`, not `3`. -/
+theorem regimeIINext_not_lt_832_of_time7_eject3
+    (n : ℕ) (hT : regimeIITime n = 7) (hj : regimeIIEjectionValuation n = 3) :
+    ¬ regimeIINext n < 832 := by
+  intro hzone
+  have hbase_lt :
+      regimeIIBase n < 4 :=
+    (regimeII_slice_exact_zone_classifier n 832 7 3 (by norm_num : 0 < 832) hT hj).1 hzone
+  have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+  have hbase_odd : regimeIIBase n % 2 = 1 := regimeIIBase_odd n
+  have hcases : regimeIIBase n = 1 ∨ regimeIIBase n = 3 := by
+    omega
+  cases hcases with
+  | inl hbase =>
+      have hej' : regimeIIEjectionValuation n = 1 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 1 hT hbase]
+        native_decide
+      omega
+  | inr hbase =>
+      have hej' : regimeIIEjectionValuation n = 5 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 3 hT hbase]
+        native_decide
+      omega
+
+/-- The slice `(time, eject) = (7, 4)` cannot land in the exact `832` zone:
+    the threshold only allows bases `1`, `3`, or `5`, but those eject with
+    valuations `1`, `5`, and `1`, never `4`. -/
+theorem regimeIINext_not_lt_832_of_time7_eject4
+    (n : ℕ) (hT : regimeIITime n = 7) (hj : regimeIIEjectionValuation n = 4) :
+    ¬ regimeIINext n < 832 := by
+  intro hzone
+  have hbase_lt :
+      regimeIIBase n < 7 :=
+    (regimeII_slice_exact_zone_classifier n 832 7 4 (by norm_num : 0 < 832) hT hj).1 hzone
+  have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+  have hbase_odd : regimeIIBase n % 2 = 1 := regimeIIBase_odd n
+  have hcases : regimeIIBase n = 1 ∨ regimeIIBase n = 3 ∨ regimeIIBase n = 5 := by
+    omega
+  rcases hcases with hbase | hcases
+  · have hej' : regimeIIEjectionValuation n = 1 := by
+      rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 1 hT hbase]
+      native_decide
+    omega
+  rcases hcases with hbase | hbase
+  · have hej' : regimeIIEjectionValuation n = 5 := by
+      rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 3 hT hbase]
+      native_decide
+    omega
+  · have hej' : regimeIIEjectionValuation n = 1 := by
+      rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 5 hT hbase]
+      native_decide
+    omega
+
+/-- The slice `(time, eject) = (6, 1)` cannot land in the exact `832` zone:
+    tiny-threshold collapse forces `base = 1`, but that intrinsic source state
+    ejects with valuation `3`. -/
+theorem regimeIINext_not_lt_832_of_time6_eject1
+    (n : ℕ) (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 1) :
+    ¬ regimeIINext n < 832 := by
+  intro hzone
+  have hbase : regimeIIBase n = 1 :=
+    regimeII_exact_zone_tiny_threshold_collapse n 6 1 hT hj (by norm_num) hzone
+  have hej' : regimeIIEjectionValuation n = 3 := by
+    rw [regimeIIEjectionValuation_eq_v2_of_time_base n 6 1 hT hbase]
+    native_decide
+  omega
+
+/-- The slice `(time, eject) = (6, 2)` cannot land in the exact `832` zone:
+    exact-zone entry would force `base ∈ {1, 3}`, but those source states eject
+    with valuations `3` and `1`, never `2`. -/
+theorem regimeIINext_not_lt_832_of_time6_eject2
+    (n : ℕ) (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 2) :
+    ¬ regimeIINext n < 832 := by
+  intro hzone
+  have hbase_lt : regimeIIBase n < 5 :=
+    (regimeIINext_lt_832_iff_base_lt_5_of_time6_eject2 n hT hj).1 hzone
+  have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+  have hbase_odd : regimeIIBase n % 2 = 1 := regimeIIBase_odd n
+  have hcases : regimeIIBase n = 1 ∨ regimeIIBase n = 3 := by
+    omega
+  cases hcases with
+  | inl hbase =>
+      have hej' : regimeIIEjectionValuation n = 3 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 6 1 hT hbase]
+        native_decide
+      omega
+  | inr hbase =>
+      have hej' : regimeIIEjectionValuation n = 1 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 6 3 hT hbase]
+        native_decide
+      omega
+
+/-- The slice `(time, eject) = (6, 3)` is the first nonempty exact-zone slice
+    after the dead low-threshold cases: exact-zone entry below `832` is
+    equivalent to the singleton intrinsic source state `base = 1`. -/
+theorem regimeIINext_lt_832_iff_base_eq_1_of_time6_eject3
+    (n : ℕ) (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 3) :
+    regimeIINext n < 832 ↔ regimeIIBase n = 1 := by
+  constructor
+  · intro hzone
+    have hbase_lt : regimeIIBase n < 10 :=
+      (regimeIINext_lt_832_iff_base_lt_10_of_time6_eject3 n hT hj).1 hzone
+    have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+    have hbase_odd : regimeIIBase n % 2 = 1 := regimeIIBase_odd n
+    have hcases :
+        regimeIIBase n = 1 ∨ regimeIIBase n = 3 ∨ regimeIIBase n = 5 ∨
+          regimeIIBase n = 7 ∨ regimeIIBase n = 9 := by
+      omega
+    rcases hcases with hbase | hcases
+    · exact hbase
+    rcases hcases with hbase | hcases
+    · have hej' : regimeIIEjectionValuation n = 1 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 6 3 hT hbase]
+        native_decide
+      omega
+    rcases hcases with hbase | hcases
+    · have hej' : regimeIIEjectionValuation n = 2 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 6 5 hT hbase]
+        native_decide
+      omega
+    rcases hcases with hbase | hbase
+    · have hej' : regimeIIEjectionValuation n = 1 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 6 7 hT hbase]
+        native_decide
+      omega
+    · have hej' : regimeIIEjectionValuation n = 5 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 6 9 hT hbase]
+        native_decide
+      omega
+  · intro hbase
+    exact (regimeIINext_lt_832_iff_base_lt_10_of_time6_eject3 n hT hj).2 <|
+      by simpa [hbase] using (show (1 : ℕ) < 10 by norm_num)
+
+/-- The first nonempty time-7 exact-zone slice is `(time, eject) = (7, 5)`,
+    and there exact-zone entry below `832` is equivalent to the singleton
+    intrinsic source state `base = 3`. -/
+theorem regimeIINext_lt_832_iff_base_eq_3_of_time7_eject5
+    (n : ℕ) (hT : regimeIITime n = 7) (hj : regimeIIEjectionValuation n = 5) :
+    regimeIINext n < 832 ↔ regimeIIBase n = 3 := by
+  constructor
+  · intro hzone
+    have hbase_lt : regimeIIBase n < 13 :=
+      (regimeIINext_lt_832_iff_base_lt_13_of_time7_eject5 n hT hj).1 hzone
+    have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+    have hbase_odd : regimeIIBase n % 2 = 1 := regimeIIBase_odd n
+    have hcases :
+        regimeIIBase n = 1 ∨ regimeIIBase n = 3 ∨ regimeIIBase n = 5 ∨
+          regimeIIBase n = 7 ∨ regimeIIBase n = 9 ∨ regimeIIBase n = 11 := by
+      omega
+    rcases hcases with hbase | hcases
+    · have hej' : regimeIIEjectionValuation n = 1 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 1 hT hbase]
+        native_decide
+      omega
+    rcases hcases with hbase | hcases
+    · exact hbase
+    rcases hcases with hbase | hcases
+    · have hej' : regimeIIEjectionValuation n = 1 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 5 hT hbase]
+        native_decide
+      omega
+    rcases hcases with hbase | hcases
+    · have hej' : regimeIIEjectionValuation n = 2 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 7 hT hbase]
+        native_decide
+      omega
+    rcases hcases with hbase | hbase
+    · have hej' : regimeIIEjectionValuation n = 1 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 9 hT hbase]
+        native_decide
+      omega
+    · have hej' : regimeIIEjectionValuation n = 3 := by
+        rw [regimeIIEjectionValuation_eq_v2_of_time_base n 7 11 hT hbase]
+        native_decide
+      omega
+  · intro hbase
+    exact (regimeIINext_lt_832_iff_base_lt_13_of_time7_eject5 n hT hj).2 <|
+      by simpa [hbase] using (show (3 : ℕ) < 13 by norm_num)
+
+/-- The first nonempty time-8 exact-zone slice is `(time, eject) = (8, 5)`,
+    and there exact-zone entry below `832` is equivalent to the singleton
+    intrinsic source state `base = 1`. -/
+theorem regimeIINext_lt_832_iff_base_eq_1_of_time8_eject5
+    (n : ℕ) (hT : regimeIITime n = 8) (hj : regimeIIEjectionValuation n = 5) :
+    regimeIINext n < 832 ↔ regimeIIBase n = 1 := by
+  constructor
+  · intro hzone
+    have hbase_lt : regimeIIBase n < 5 :=
+      (regimeIINext_lt_832_iff_base_lt_5_of_time8_eject5 n hT hj).1 hzone
+    have hbase_pos : 0 < regimeIIBase n := regimeIIBase_pos n
+    have hbase_odd : regimeIIBase n % 2 = 1 := regimeIIBase_odd n
+    have hcases : regimeIIBase n = 1 ∨ regimeIIBase n = 3 := by
+      omega
+    cases hcases with
+    | inl hbase =>
+        exact hbase
+    | inr hbase =>
+        have hej' : regimeIIEjectionValuation n = 1 := by
+          rw [regimeIIEjectionValuation_eq_v2_of_time_base n 8 3 hT hbase]
+          native_decide
+        omega
+  · intro hbase
+    exact (regimeIINext_lt_832_iff_base_lt_5_of_time8_eject5 n hT hj).2 <|
+      by simpa [hbase] using (show (1 : ℕ) < 5 by norm_num)
 
 /-- The bundled mod-65 finite state is still too coarse to determine exact-zone
     entry on its own: `31` and `8351` have the same `bundle65` state, but the
@@ -5073,6 +5787,39 @@ theorem regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_lt_10
     ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
   apply regimeII_slice_shrinks_via_exact_zone n 6 3 hn1 hn (by norm_num) hT hj
   simpa using hbase
+
+/-- The exact singleton source state `(time, base, eject) = (6, 1, 3)` already
+    certifies a shrinking window on the true integer orbit. -/
+theorem regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_eq_1
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : regimeIITime n = 6) (hj : regimeIIEjectionValuation n = 3)
+    (hbase : regimeIIBase n = 1) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  have hzone : regimeIINext n < 832 :=
+    (regimeIINext_lt_832_iff_base_eq_1_of_time6_eject3 n hT hj).2 hbase
+  exact regimeII_next_hits_k6_zone_shrinks n hn1 hn (by simpa [hT] using (show 2 ≤ 6 by norm_num)) hzone
+
+/-- The exact singleton source state `(time, base, eject) = (7, 3, 5)` already
+    certifies a shrinking window on the true integer orbit. -/
+theorem regimeII_slice_shrinks_via_exact_zone_of_time7_eject5_base_eq_3
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : regimeIITime n = 7) (hj : regimeIIEjectionValuation n = 5)
+    (hbase : regimeIIBase n = 3) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  have hzone : regimeIINext n < 832 :=
+    (regimeIINext_lt_832_iff_base_eq_3_of_time7_eject5 n hT hj).2 hbase
+  exact regimeII_next_hits_k6_zone_shrinks n hn1 hn (by simpa [hT] using (show 2 ≤ 7 by norm_num)) hzone
+
+/-- The exact singleton source state `(time, base, eject) = (8, 1, 5)` already
+    certifies a shrinking window on the true integer orbit. -/
+theorem regimeII_slice_shrinks_via_exact_zone_of_time8_eject5_base_eq_1
+    (n : ℕ) (hn1 : 1 < n) (hn : n % 2 = 1)
+    (hT : regimeIITime n = 8) (hj : regimeIIEjectionValuation n = 5)
+    (hbase : regimeIIBase n = 1) :
+    ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
+  have hzone : regimeIINext n < 832 :=
+    (regimeIINext_lt_832_iff_base_eq_1_of_time8_eject5 n hT hj).2 hbase
+  exact regimeII_next_hits_k6_zone_shrinks n hn1 hn (by simpa [hT] using (show 2 ≤ 8 by norm_num)) hzone
 
 /-- Generic Regime-II return-map dichotomy into any exact finite zone.
 
