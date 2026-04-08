@@ -8788,6 +8788,349 @@ theorem normalizedProjectiveSelfSlopeEq_832_of_prev_repeatInnerParam832_eq_16r_a
     normalizedProjectiveSelfSlopeEq_832_of_src_repeatThresholdSeedResidue832_eq_zero
       σ hσ h0src
 
+/-- Coupled repeat-core clock on an intrinsic `832` repeat-core transition.
+    The first coordinate is the persistence gate (`mod 16`) on the canonical
+    inner repeat parameter; the second is the pure-phase clock (`mod 27`). -/
+def RegimeIIBadFrontierTransition.repeatClock832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ × ℕ :=
+  (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16,
+    RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 27)
+
+/-- One-step persistence-gate update on the intrinsic `832` repeat core, read
+    from the source clock residue `mod 16`. -/
+def RegimeIIBadFrontierTransition.repeatClockPersistStep832 (a : ℕ) : ℕ :=
+  (27 * a + 22) % 16
+
+/-- One-step pure-phase clock update on the intrinsic `832` repeat core, read
+    from the source clock residue `mod 16`. Since `0 ≤ a < 16`, the value lies
+    in `[1,26]` and already represents the destination seed residue class
+    modulo `27`. -/
+def RegimeIIBadFrontierTransition.repeatClockPhaseStep832 (a : ℕ) : ℕ :=
+  (27 * a + 22) / 16
+
+@[simp] theorem repeatClock832_fst
+    (τ : RegimeIIBadFrontierTransition 832) :
+    (RegimeIIBadFrontierTransition.repeatClock832 τ).1 =
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 := rfl
+
+@[simp] theorem repeatClock832_snd
+    (τ : RegimeIIBadFrontierTransition 832) :
+    (RegimeIIBadFrontierTransition.repeatClock832 τ).2 =
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 27 := rfl
+
+/-- On an intrinsic `832` repeat-core transition, the source state is already
+    in the pure affine repeat phase exactly when the `mod 27` clock coordinate
+    on the canonical inner parameter is `9`. -/
+theorem src_repeatPurePhase832_iff_src_repeatInnerParam832_mod27_eq9_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIRepeatPurePhase832 τ.src ↔
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 27 = 9 := by
+  constructor
+  · intro hx
+    exact
+      (src_repeatThresholdSeedResidue832_eq_zero_iff_src_repeatInnerParam832_mod27_eq9_of_repeatCore832Transition
+        τ hτ).1 hx.2
+  · intro hq
+    exact ⟨hτ.1,
+      (src_repeatThresholdSeedResidue832_eq_zero_iff_src_repeatInnerParam832_mod27_eq9_of_repeatCore832Transition
+        τ hτ).2 hq⟩
+
+/-- Clock form of the source pure-phase classifier on an intrinsic `832`
+    repeat-core transition. -/
+theorem src_repeatPurePhase832_iff_repeatClock832_snd_eq9_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIRepeatPurePhase832 τ.src ↔
+      (RegimeIIBadFrontierTransition.repeatClock832 τ).2 = 9 := by
+  simpa [RegimeIIBadFrontierTransition.repeatClock832] using
+    src_repeatPurePhase832_iff_src_repeatInnerParam832_mod27_eq9_of_repeatCore832Transition τ hτ
+
+/-- On an intrinsic `832` repeat-core transition, the destination repeat
+    coordinate lands back in the persistence gate `13 mod 16` exactly when the
+    source inner repeat parameter lies in the residue `5 mod 16`. -/
+theorem dst_repeatParam832_mod16_eq13_iff_src_repeatInnerParam832_mod16_eq5_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    RegimeIIBadFrontierState.repeatParam832 τ.dst % 16 = 13 ↔
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 = 5 := by
+  rw [dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- Exact one-step update of the destination persistence gate on an intrinsic
+    `832` repeat-core transition. -/
+theorem dst_repeatParam832_mod16_eq_repeatClockPersistStep832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    RegimeIIBadFrontierState.repeatParam832 τ.dst % 16 =
+      RegimeIIBadFrontierTransition.repeatClockPersistStep832
+        ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) := by
+  unfold RegimeIIBadFrontierTransition.repeatClockPersistStep832
+  rw [repeatClock832_fst,
+    dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- Exact one-step update of the destination pure-phase clock on an intrinsic
+    `832` repeat-core transition. -/
+theorem dst_repeatSeedParam832_mod27_eq_repeatClockPhaseStep832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    RegimeIIBadFrontierState.repeatSeedParam832 τ.dst % 27 =
+      RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+        ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) := by
+  have hsplit :
+      RegimeIIBadFrontierState.repeatSeedParam832 τ.dst =
+        RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+            ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) +
+          27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16) := by
+    have hq :
+        RegimeIIBadFrontierTransition.repeatInnerParam832 τ =
+          RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
+            16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16) := by
+      simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+        (Nat.mod_add_div (RegimeIIBadFrontierTransition.repeatInnerParam832 τ) 16).symm
+    unfold RegimeIIBadFrontierState.repeatSeedParam832
+    unfold RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+    rw [dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ,
+      repeatClock832_fst, hq]
+    have hsplit_num :
+        (27 *
+              (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
+                16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) +
+            22) / 16 =
+          (27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16) + 22 +
+              (27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) * 16) / 16 := by
+      omega
+    have hslt :
+        RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 < 16 :=
+      Nat.mod_lt _ (by norm_num : 0 < 16)
+    have hmod16 :
+        (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
+            16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) % 16 =
+          RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 := by
+      omega
+    have hdiv16 :
+        (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
+            16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) / 16 =
+          RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16 := by
+      omega
+    rw [hsplit_num]
+    rw [hmod16, hdiv16]
+    rw [Nat.add_mul_div_right _ _ (by norm_num : 0 < 16)]
+  have hsmall :
+      RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+          ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) < 27 := by
+    unfold RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+    rw [repeatClock832_fst]
+    have hslt :
+        RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 < 16 :=
+      Nat.mod_lt _ (by norm_num : 0 < 16)
+    omega
+  rw [hsplit, Nat.add_mul_mod_self_left]
+  exact Nat.mod_eq_of_lt hsmall
+
+/-- Finite clock form of the pure-phase gate: on the intrinsic repeat clock,
+    the one-step phase update hits the pure value `9` exactly at the
+    persistence residue `5`. -/
+theorem repeatClockPhaseStep832_eq9_iff_eq5
+    {a : ℕ} (ha : a < 16) :
+    RegimeIIBadFrontierTransition.repeatClockPhaseStep832 a = 9 ↔ a = 5 := by
+  unfold RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+  omega
+
+/-- Finite clock form of the repeat-persistence gate: on the intrinsic repeat
+    clock, the one-step persistence update lands on the next repeat residue
+    `13` exactly at the source gate `5`. -/
+theorem repeatClockPersistStep832_eq13_iff_eq5
+    {a : ℕ} (ha : a < 16) :
+    RegimeIIBadFrontierTransition.repeatClockPersistStep832 a = 13 ↔ a = 5 := by
+  unfold RegimeIIBadFrontierTransition.repeatClockPersistStep832
+  omega
+
+/-- On the finite intrinsic repeat clock, the phase gate `9` and persistence
+    gate `13` are the same event one step later: both occur exactly at source
+    gate `5`. -/
+theorem repeatClockPhaseStep832_eq9_iff_repeatClockPersistStep832_eq13
+    {a : ℕ} (ha : a < 16) :
+    RegimeIIBadFrontierTransition.repeatClockPhaseStep832 a = 9 ↔
+      RegimeIIBadFrontierTransition.repeatClockPersistStep832 a = 13 := by
+  rw [repeatClockPhaseStep832_eq9_iff_eq5 ha, repeatClockPersistStep832_eq13_iff_eq5 ha]
+
+/-- Exact clock form of destination pure-phase entry on an intrinsic `832`
+    repeat-core transition. The destination is pure phase exactly when the
+    finite one-step phase clock computed from the source persistence clock
+    lands on `9`. -/
+theorem dst_repeatPurePhase832_iff_repeatClockPhaseStep832_eq9_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIRepeatPurePhase832 τ.dst ↔
+      RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+        ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) = 9 := by
+  rw [repeatPurePhase832_iff_repeatCore832_and_repeatSeedParam832_mod27_eq9 τ.dst]
+  constructor
+  · intro h
+    exact
+      dst_repeatSeedParam832_mod27_eq_repeatClockPhaseStep832_of_repeatCore832Transition τ hτ ▸ h.2
+  · intro hphase
+    exact ⟨hτ.2,
+      (dst_repeatSeedParam832_mod27_eq_repeatClockPhaseStep832_of_repeatCore832Transition τ hτ).symm ▸
+        hphase⟩
+
+/-- Destination-state clock equivalence on an intrinsic `832` repeat-core
+    transition: the destination seed residue hits the pure-phase value `9`
+    exactly when the destination repeat coordinate lands in the next
+    persistence gate `13 mod 16`. -/
+theorem dst_repeatSeedParam832_mod27_eq9_iff_dst_repeatParam832_mod16_eq13_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    RegimeIIBadFrontierState.repeatSeedParam832 τ.dst % 27 = 9 ↔
+      RegimeIIBadFrontierState.repeatParam832 τ.dst % 16 = 13 := by
+  have hfstlt :
+      (RegimeIIBadFrontierTransition.repeatClock832 τ).1 < 16 := by
+    rw [repeatClock832_fst]
+    exact Nat.mod_lt _ (by norm_num : 0 < 16)
+  rw [dst_repeatSeedParam832_mod27_eq_repeatClockPhaseStep832_of_repeatCore832Transition τ hτ,
+    dst_repeatParam832_mod16_eq_repeatClockPersistStep832_of_repeatCore832Transition τ hτ]
+  exact repeatClockPhaseStep832_eq9_iff_repeatClockPersistStep832_eq13 hfstlt
+
+/-- On an intrinsic `832` repeat-core transition, the destination enters the
+    pure affine phase exactly when the source inner repeat parameter lies in
+    the persistence residue `5 mod 16`. This is the first exact gate from the
+    coupled repeat clock into the locked pure-phase sector. -/
+theorem dst_repeatPurePhase832_iff_src_repeatInnerParam832_mod16_eq5_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIRepeatPurePhase832 τ.dst ↔
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 = 5 := by
+  constructor
+  · intro hdst
+    have hseed9 :
+        RegimeIIBadFrontierState.repeatSeedParam832 τ.dst % 27 = 9 :=
+      (repeatPurePhase832_iff_repeatCore832_and_repeatSeedParam832_mod27_eq9 τ.dst).1 hdst |>.2
+    have hdstp :
+        RegimeIIBadFrontierState.repeatParam832 τ.dst =
+          27 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 22 := by
+      exact dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ
+    unfold RegimeIIBadFrontierState.repeatSeedParam832 at hseed9
+    rw [hdstp] at hseed9
+    have hq :
+        (((27 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 22) / 16) % 27 = 9) ↔
+          RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 = 5 := by
+      omega
+    exact hq.mp hseed9
+  · intro hq
+    obtain ⟨r, hr⟩ : ∃ r, RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 16 * r + 5 := by
+      refine ⟨RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16, ?_⟩
+      have hdiv := Nat.mod_add_div (RegimeIIBadFrontierTransition.repeatInnerParam832 τ) 16
+      omega
+    exact
+      dst_repeatPurePhase832_of_src_repeatInnerParam832_eq_16r_add5 τ hτ hr
+
+/-- Clock form of the destination pure-phase gate on an intrinsic `832`
+    repeat-core transition. -/
+theorem dst_repeatPurePhase832_iff_repeatClock832_fst_eq5_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIRepeatPurePhase832 τ.dst ↔
+      (RegimeIIBadFrontierTransition.repeatClock832 τ).1 = 5 := by
+  have hfstlt :
+      (RegimeIIBadFrontierTransition.repeatClock832 τ).1 < 16 := by
+    rw [repeatClock832_fst]
+    exact Nat.mod_lt _ (by norm_num : 0 < 16)
+  rw [dst_repeatPurePhase832_iff_repeatClockPhaseStep832_eq9_of_repeatCore832Transition τ hτ]
+  exact repeatClockPhaseStep832_eq9_iff_eq5 hfstlt
+
+/-- State-level obstruction split on the intrinsic `832` repeat core: on a
+    repeat-core transition, the destination lies in the locked pure phase
+    exactly when it lies in the next repeat-persistence gate `13 mod 16`.
+    So the only way the repeat core can persist one level deeper is through
+    the pure-phase sector. -/
+theorem dst_repeatPurePhase832_iff_dst_repeatParam832_mod16_eq13_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIRepeatPurePhase832 τ.dst ↔
+      RegimeIIBadFrontierState.repeatParam832 τ.dst % 16 = 13 := by
+  rw [repeatPurePhase832_iff_repeatCore832_and_repeatSeedParam832_mod27_eq9 τ.dst]
+  constructor
+  · intro h
+    exact
+      (dst_repeatSeedParam832_mod27_eq9_iff_dst_repeatParam832_mod16_eq13_of_repeatCore832Transition
+        τ hτ).1 h.2
+  · intro h13
+    exact ⟨hτ.2,
+      (dst_repeatSeedParam832_mod27_eq9_iff_dst_repeatParam832_mod16_eq13_of_repeatCore832Transition
+        τ hτ).2 h13⟩
+
+/-- Bounded repeat-core persistence funnel: if a repeat-core transition is
+    immediately followed by another repeat-core transition, then the
+    intermediate source state must already lie in the intrinsic pure affine
+    phase. The non-pure shell cannot persist freely for two repeat-core steps. -/
+theorem dst_repeatPurePhase832_of_repeatCore832Transition_chain
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst) :
+    regimeIIRepeatPurePhase832 τ.dst := by
+  have hdst13 : RegimeIIBadFrontierState.repeatParam832 τ.dst % 16 = 13 := by
+    have hσsrc13 :
+        RegimeIIBadFrontierState.repeatParam832 σ.src % 16 = 13 :=
+      (dst_repeatCore832_iff_src_repeatParam832_mod16_eq13 σ hσ.1).1 hσ.2
+    simpa [hlink] using hσsrc13
+  have hq5 :
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 = 5 :=
+    (dst_repeatParam832_mod16_eq13_iff_src_repeatInnerParam832_mod16_eq5_of_repeatCore832Transition
+      τ hτ).1 hdst13
+  exact
+    (dst_repeatPurePhase832_iff_src_repeatInnerParam832_mod16_eq5_of_repeatCore832Transition
+      τ hτ).2 hq5
+
+/-- Clock form of the bounded repeat-core persistence funnel: if a repeat-core
+    transition is immediately followed by another repeat-core transition, then
+    the one-step phase clock read from the first transition's persistence
+    coordinate must already land on the pure value `9`. -/
+theorem repeatClockPhaseStep832_eq9_of_repeatCore832Transition_chain
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst) :
+    RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+      ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) = 9 := by
+  exact
+    (dst_repeatPurePhase832_iff_repeatClockPhaseStep832_eq9_of_repeatCore832Transition τ hτ).1
+      (dst_repeatPurePhase832_of_repeatCore832Transition_chain τ σ hτ hσ hlink)
+
+/-- Clock form of bounded repeat-core persistence: if a second repeat-core
+    transition follows immediately, then the first transition's source clock
+    must already lie in the unique persistence gate `5`. -/
+theorem repeatClock832_fst_eq5_of_repeatCore832Transition_chain
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst) :
+    (RegimeIIBadFrontierTransition.repeatClock832 τ).1 = 5 := by
+  have hfstlt :
+      (RegimeIIBadFrontierTransition.repeatClock832 τ).1 < 16 := by
+    rw [repeatClock832_fst]
+    exact Nat.mod_lt _ (by norm_num : 0 < 16)
+  exact
+    (repeatClockPhaseStep832_eq9_iff_eq5 hfstlt).1
+      (repeatClockPhaseStep832_eq9_of_repeatCore832Transition_chain τ σ hτ hσ hlink)
+
+/-- Non-pure-shell exclusion on the intrinsic `832` repeat clock: if the
+    source clock does not lie in the unique gate `5`, then no second
+    repeat-core transition can follow immediately from the destination.
+    The repeat core cannot sustain persistence beyond one step outside the
+    locked pure-phase sector. -/
+theorem not_exists_repeatCore832Transition_chain_of_repeatClock832_fst_ne5
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hne : (RegimeIIBadFrontierTransition.repeatClock832 τ).1 ≠ 5) :
+    ¬ ∃ σ : RegimeIIBadFrontierTransition 832,
+        regimeIIRepeatCore832Transition σ ∧ σ.src = τ.dst := by
+  intro h
+  rcases h with ⟨σ, hσ, hlink⟩
+  exact hne (repeatClock832_fst_eq5_of_repeatCore832Transition_chain τ σ hτ hσ hlink)
+
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
     `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
     forces the destination time to jump to at least `4`. -/
