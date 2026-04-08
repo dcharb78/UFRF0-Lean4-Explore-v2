@@ -7184,6 +7184,51 @@ theorem regimeIIState_sixteen_mul_nextBase_eq_of_time3_eject1_of_base_mod64_eq29
       s hs ht he
   simpa [htime] using hscale
 
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the refined source
+    chart `base = 64*k + 29` gives an explicit source self-threshold defect:
+    an affine term plus the finer staircase correction `⌊(2*k+23)/27⌋`. -/
+theorem regimeIIState_selfThresholdDefect_eq_26k_add_12_add_div27_of_time3_eject1_of_base_eq_64k_add_29
+    (s : RegimeIIState)
+    (ht : s.time = 3) (he : s.eject = 1)
+    {k : ℕ} (hk : s.base = 64 * k + 29) :
+    regimeIISelfThresholdDefect s = 26 * k + 12 + (2 * k + 23) / 27 := by
+  set q : ℕ := (2 * k + 23) / 27
+  set r : ℕ := (2 * k + 23) % 27
+  have hqr : r + 27 * q = 2 * k + 23 := by
+    simpa [q, r] using Nat.mod_add_div (2 * k + 23) 27
+  have hrlt : r < 27 := by
+    simpa [r] using Nat.mod_lt (2 * k + 23) (by norm_num : 0 < 27)
+  have hdiv : (1024 * k + 462) / 27 = 38 * k + 17 - q := by
+    have hdecomp :
+        1024 * k + 462 = (26 - r) + 27 * (38 * k + 17 - q) := by
+      omega
+    calc
+      (1024 * k + 462) / 27 = ((26 - r) + 27 * (38 * k + 17 - q)) / 27 := by
+        rw [hdecomp]
+      _ = (26 - r) / 27 + (38 * k + 17 - q) := by
+        simpa [Nat.mul_comm] using
+          (Nat.add_mul_div_right (26 - r) (38 * k + 17 - q) (by norm_num : 0 < 27))
+      _ = 0 + (38 * k + 17 - q) := by
+        rw [Nat.div_eq_of_lt (by omega)]
+      _ = 38 * k + 17 - q := by simp
+  have hqleK : q ≤ k := by
+    have hlt : (2 * k + 23) / 27 < k + 1 := by
+      rw [Nat.div_lt_iff_lt_mul (by norm_num : 0 < 27)]
+      omega
+    exact Nat.lt_succ_iff.mp (by simpa [q] using hlt)
+  have hqle : q ≤ 38 * k + 17 := by
+    omega
+  unfold regimeIISelfThresholdDefect regimeIIBaseThreshold regimeIIStateValue
+  rw [ht, he, hk]
+  norm_num
+  have hnum : (8 * (64 * k + 29) - 1) * 2 = 1024 * k + 462 := by
+    omega
+  rw [hnum, hdiv]
+  have hle : (38 * k + 17 - q) + 1 ≤ 64 * k + 29 + 1 := by
+    omega
+  apply (Nat.sub_eq_iff_eq_add hle).2
+  omega
+
 /-- On the surviving intrinsic source branch `(time, eject) = (3, 1)` with
     `base ≡ 29 (mod 64)`, the destination state's self-threshold is exactly the
     source base. -/
@@ -7599,6 +7644,387 @@ theorem dst_selfThresholdDefect_eq_44k_add_21_of_src_base_eq_64k_add_29
     norm_num
   rw [dst_selfThresholdDefect_eq_dst_base_sub_src_base_add_one_of_src_base_mod64_eq29
     τ ht he hmod, hk, hbase]
+  omega
+
+/-- On the surviving bad-to-bad branch out of the intrinsic source slice
+    `(time,eject) = (3,1)`, the source self-threshold defect is an explicit
+    affine-plus-staircase function of the source chart parameter. -/
+theorem src_selfThresholdDefect_eq_26k_add_12_add_div27_of_src_base_eq_64k_add_29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 64 * k + 29) :
+    regimeIISelfThresholdDefect τ.src.src = 26 * k + 12 + (2 * k + 23) / 27 := by
+  exact regimeIIState_selfThresholdDefect_eq_26k_add_12_add_div27_of_time3_eject1_of_base_eq_64k_add_29
+    τ.src.src ht he hk
+
+/-- On the surviving bad-to-bad branch out of the intrinsic source slice
+    `(time,eject) = (3,1)`, the source radial gap above the `832` cutoff is an
+    explicit affine function of the source chart parameter. -/
+theorem src_radialGap_832_eq_512k_sub_601_of_src_base_eq_64k_add_29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3)
+    {k : ℕ} (hk : τ.src.src.base = 64 * k + 29) :
+    regimeIIRadialGap 832 τ.src.src = 512 * k - 601 := by
+  unfold regimeIIRadialGap regimeIIStateValue
+  rw [ht, hk]
+  omega
+
+/-- On the surviving bad-to-bad branch out of the intrinsic source slice
+    `(time,eject) = (3,1)`, the destination radial gap above the `832` cutoff
+    is an explicit affine function of the same source chart parameter. -/
+theorem dst_radialGap_832_eq_864k_sub_441_of_src_base_eq_64k_add_29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 64 * k + 29) :
+    regimeIIRadialGap 832 τ.dst.src = 864 * k - 441 := by
+  have hmod32 : τ.src.src.base % 32 = 29 := by
+    omega
+  have htime : τ.dst.src.time = 3 :=
+    (dst_slice_eq_3_1_of_src_base_mod32_eq29 τ ht he hmod32).1
+  have hbase := dst_base_eq_108k_add_49_of_src_base_eq_64k_add_29 τ ht he hk
+  unfold regimeIIRadialGap regimeIIStateValue
+  rw [htime, hbase]
+  omega
+
+/-- On the surviving bad-to-bad `832` branch out of the intrinsic source slice
+    `(time,eject) = (3,1)` with `base = 64*k + 29`, the projective
+    self-threshold slope strictly decreases across the transition. -/
+theorem strict_projectiveSelfSlope_832_of_src_base_eq_64k_add_29
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 64 * k + 29)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    regimeIISelfThresholdDefect τ.dst.src * regimeIIRadialGap 832 τ.src.src <
+      regimeIISelfThresholdDefect τ.src.src * regimeIIRadialGap 832 τ.dst.src := by
+  set q : ℕ := (2 * k + 23) / 27
+  have hsrcdef :
+      regimeIISelfThresholdDefect τ.src.src = 26 * k + 12 + q := by
+    simpa [q] using
+      src_selfThresholdDefect_eq_26k_add_12_add_div27_of_src_base_eq_64k_add_29
+        τ ht he hk
+  have hdstdef :
+      regimeIISelfThresholdDefect τ.dst.src = 44 * k + 21 := by
+    exact dst_selfThresholdDefect_eq_44k_add_21_of_src_base_eq_64k_add_29 τ ht he hk
+  have hsrcgap :
+      regimeIIRadialGap 832 τ.src.src = 512 * k - 601 := by
+    exact src_radialGap_832_eq_512k_sub_601_of_src_base_eq_64k_add_29 τ ht hk
+  have hdstgap :
+      regimeIIRadialGap 832 τ.dst.src = 864 * k - 441 := by
+    exact dst_radialGap_832_eq_864k_sub_441_of_src_base_eq_64k_add_29 τ ht he hk
+  have hkge2 : 2 ≤ k := by
+    unfold regimeIIStateValue at hcore
+    rw [ht, hk] at hcore
+    omega
+  have hqbound : 2 * k ≤ 27 * q + 3 := by
+    have hmod : (2 * k + 23) % 27 ≤ 26 := by
+      exact Nat.le_pred_of_lt (Nat.mod_lt _ (by norm_num : 0 < 27))
+    have hqr : (2 * k + 23) % 27 + 27 * q = 2 * k + 23 := by
+      simpa [q] using Nat.mod_add_div (2 * k + 23) 27
+    omega
+  have hsrcgap_nonneg : 601 ≤ 512 * k := by
+    omega
+  have hdstgap_nonneg : 441 ≤ 864 * k := by
+    omega
+  rw [hsrcdef, hdstdef, hsrcgap, hdstgap]
+  have hkge2z : (2 : ℤ) ≤ k := by
+    exact_mod_cast hkge2
+  have hqboundz : (2 : ℤ) * k ≤ 27 * q + 3 := by
+    exact_mod_cast hqbound
+  let lhsN : ℕ := (44 * k + 21) * (512 * k - 601)
+  let rhsN : ℕ := (26 * k + 12 + q) * (864 * k - 441)
+  have hdiff :
+      (((lhsN : ℕ) : ℤ) - rhsN) =
+        64 * k ^ 2 - 14594 * k - 7329 + (441 - 864 * k) * q := by
+    dsimp [lhsN, rhsN]
+    zify [hsrcgap_nonneg, hdstgap_nonneg]
+    ring
+  have hdiff_neg : (((lhsN : ℕ) : ℤ) - rhsN) < 0 := by
+    rw [hdiff]
+    nlinarith [hqboundz, hkge2z]
+  have hltz : (lhsN : ℤ) < rhsN := by
+    nlinarith
+  have hlt_nat : lhsN < rhsN := by
+    exact Int.ofNat_lt.mp hltz
+  dsimp [lhsN, rhsN] at hlt_nat
+  exact hlt_nat
+
+/-- Weak comparison form of the strict projective monotonicity theorem on the
+    surviving bad-to-bad `832` branch out of `(time,eject) = (3,1)`. -/
+theorem projectiveSelfSlopeLE_832_of_src_base_eq_64k_add_29
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 64 * k + 29)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    regimeIIProjectiveSelfSlopeLE 832 τ.src.src τ.dst.src := by
+  unfold regimeIIProjectiveSelfSlopeLE
+  exact le_of_lt
+    (strict_projectiveSelfSlope_832_of_src_base_eq_64k_add_29 τ ht he hk hcore)
+
+/-- Intrinsic congruence form of the strict projective monotonicity theorem on
+    the surviving bad-to-bad `832` branch out of `(time,eject) = (3,1)`. -/
+theorem strict_projectiveSelfSlope_832_of_src_base_mod64_eq29
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 64 = 29)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    regimeIISelfThresholdDefect τ.dst.src * regimeIIRadialGap 832 τ.src.src <
+      regimeIISelfThresholdDefect τ.src.src * regimeIIRadialGap 832 τ.dst.src := by
+  obtain ⟨k, hk⟩ : ∃ k, τ.src.src.base = 64 * k + 29 := by
+    refine ⟨τ.src.src.base / 64, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 64
+    omega
+  exact strict_projectiveSelfSlope_832_of_src_base_eq_64k_add_29 τ ht he hk hcore
+
+/-- Intrinsic congruence form of the weak projective monotonicity theorem on
+    the surviving bad-to-bad `832` branch out of `(time,eject) = (3,1)`. -/
+theorem projectiveSelfSlopeLE_832_of_src_base_mod64_eq29
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 64 = 29)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    regimeIIProjectiveSelfSlopeLE 832 τ.src.src τ.dst.src := by
+  unfold regimeIIProjectiveSelfSlopeLE
+  exact le_of_lt
+    (strict_projectiveSelfSlope_832_of_src_base_mod64_eq29 τ ht he hmod hcore)
+
+/-- On the first deeper repeat-survival subbranch of the intrinsic
+    `(time,eject) = (3,1)` survivor family, `base = 1024*m + 93` transports back
+    into the same `29 mod 64` chart with the next chart parameter `27*m + 2`. -/
+theorem dst_base_eq_64_mul_27m_add2_add29_of_src_base_eq_1024m_add_93
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1024 * m + 93) :
+    τ.dst.src.base = 64 * (27 * m + 2) + 29 := by
+  have hk : τ.src.src.base = 64 * (16 * m + 1) + 29 := by
+    rw [hm]
+    omega
+  have hbase := dst_base_eq_108k_add_49_of_src_base_eq_64k_add_29 τ ht he hk
+  rw [hbase]
+  omega
+
+/-- The first deeper repeat-survival subbranch `base = 1024*m + 93` lands back
+    in the surviving `29 mod 64` chart after one bad-to-bad transition. -/
+theorem dst_base_mod64_eq29_of_src_base_eq_1024m_add_93
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1024 * m + 93) :
+    τ.dst.src.base % 64 = 29 := by
+  rw [dst_base_eq_64_mul_27m_add2_add29_of_src_base_eq_1024m_add_93 τ ht he hm]
+  norm_num
+
+/-- On the intrinsic surviving `(time,eject) = (3,1)` branch `base ≡ 29 (mod
+    64)`, landing back in the same `29 mod 64` branch after one bad-to-bad
+    transition is equivalent to the deeper source congruence `base ≡ 93 (mod
+    1024)`. -/
+theorem dst_base_mod64_eq29_iff_src_base_mod1024_eq93_of_src_base_mod64_eq29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hsrcmod : τ.src.src.base % 64 = 29) :
+    τ.dst.src.base % 64 = 29 ↔ τ.src.src.base % 1024 = 93 := by
+  obtain ⟨k, hk⟩ : ∃ k, τ.src.src.base = 64 * k + 29 := by
+    refine ⟨τ.src.src.base / 64, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 64
+    omega
+  constructor
+  · intro hdstmod
+    have hdstbase := dst_base_eq_108k_add_49_of_src_base_eq_64k_add_29 τ ht he hk
+    have hkmod : k % 16 = 1 := by
+      rw [hdstbase] at hdstmod
+      omega
+    have hdivk := Nat.mod_add_div k 16
+    rw [hk]
+    omega
+  · intro hsrcmod1024
+    obtain ⟨m, hm⟩ : ∃ m, τ.src.src.base = 1024 * m + 93 := by
+      refine ⟨τ.src.src.base / 1024, ?_⟩
+      have hdiv := Nat.mod_add_div τ.src.src.base 1024
+      omega
+    exact dst_base_mod64_eq29_of_src_base_eq_1024m_add_93 τ ht he hm
+
+/-- Repeat-survival on the intrinsic `(3,1)` bad-to-bad branch is governed by
+    the deeper source congruence `base ≡ 93 (mod 1024)`. -/
+theorem src_base_mod1024_eq93_of_dst_base_mod64_eq29_of_src_base_mod64_eq29
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hsrcmod : τ.src.src.base % 64 = 29)
+    (hdstmod : τ.dst.src.base % 64 = 29) :
+    τ.src.src.base % 1024 = 93 := by
+  exact
+    (dst_base_mod64_eq29_iff_src_base_mod1024_eq93_of_src_base_mod64_eq29
+      τ ht he hsrcmod).1 hdstmod
+
+/-- On the first repeat-survival branch `base = 1024*m + 93`, the deeper
+    subbranch `base = 16384*m + 13405` transports to a destination that is again
+    on the repeat-survival chart `base = 1024*(27*m + 22) + 93`. -/
+theorem dst_base_eq_1024_mul_27m_add22_add_93_of_src_base_eq_16384m_add_13405
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 16384 * m + 13405) :
+    τ.dst.src.base = 1024 * (27 * m + 22) + 93 := by
+  have hsrc93 : τ.src.src.base = 1024 * (16 * m + 13) + 93 := by
+    rw [hm]
+    omega
+  have hdst :=
+    dst_base_eq_64_mul_27m_add2_add29_of_src_base_eq_1024m_add_93 τ ht he hsrc93
+  rw [hdst]
+  omega
+
+/-- The deeper repeat-survival subbranch `base = 16384*m + 13405` lands back on
+    the repeat-survival congruence `base ≡ 93 (mod 1024)` after one bad-to-bad
+    transition. -/
+theorem dst_base_mod1024_eq93_of_src_base_eq_16384m_add_13405
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 16384 * m + 13405) :
+    τ.dst.src.base % 1024 = 93 := by
+  rw [dst_base_eq_1024_mul_27m_add22_add_93_of_src_base_eq_16384m_add_13405 τ ht he hm]
+  norm_num
+
+/-- On the intrinsic repeat-survival branch `base ≡ 93 (mod 1024)`, landing
+    back on the same repeat-survival branch after one bad-to-bad transition is
+    equivalent to the deeper source congruence `base ≡ 13405 (mod 16384)`. -/
+theorem dst_base_mod1024_eq93_iff_src_base_mod16384_eq13405_of_src_base_mod1024_eq93
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hsrc93 : τ.src.src.base % 1024 = 93) :
+    τ.dst.src.base % 1024 = 93 ↔ τ.src.src.base % 16384 = 13405 := by
+  obtain ⟨m, hm⟩ : ∃ m, τ.src.src.base = 1024 * m + 93 := by
+    refine ⟨τ.src.src.base / 1024, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 1024
+    omega
+  constructor
+  · intro hdst93
+    have hdst :=
+      dst_base_eq_64_mul_27m_add2_add29_of_src_base_eq_1024m_add_93 τ ht he hm
+    have hm16 : m % 16 = 13 := by
+      rw [hdst] at hdst93
+      omega
+    have hdivm := Nat.mod_add_div m 16
+    rw [hm]
+    omega
+  · intro hsrc16384
+    obtain ⟨n, hn⟩ : ∃ n, τ.src.src.base = 16384 * n + 13405 := by
+      refine ⟨τ.src.src.base / 16384, ?_⟩
+      have hdiv := Nat.mod_add_div τ.src.src.base 16384
+      omega
+    exact dst_base_mod1024_eq93_of_src_base_eq_16384m_add_13405 τ ht he hn
+
+/-- Second-level repeat-survival on the intrinsic `(3,1)` bad-to-bad branch is
+    governed by the deeper source congruence `base ≡ 13405 (mod 16384)`. -/
+theorem src_base_mod16384_eq13405_of_dst_base_mod1024_eq93_of_src_base_mod1024_eq93
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hsrc93 : τ.src.src.base % 1024 = 93)
+    (hdst93 : τ.dst.src.base % 1024 = 93) :
+    τ.src.src.base % 16384 = 13405 := by
+  exact
+    (dst_base_mod1024_eq93_iff_src_base_mod16384_eq13405_of_src_base_mod1024_eq93
+      τ ht he hsrc93).1 hdst93
+
+/-- Reduced repeat-survival parameter recurrence on the intrinsic `(3,1)`
+    branch: if both source and destination lie on the repeat-survival chart
+    `base = 1024*param + 93`, then the parameters satisfy `16*dst = 27*src + 1`.
+    This is the normalized affine self-map behind the first repeat-survival
+    tower. -/
+theorem sixteen_mul_dst_repeatParam_eq_twentySeven_mul_src_repeatParam_add_one
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m m' : ℕ}
+    (hsrc : τ.src.src.base = 1024 * m + 93)
+    (hdst : τ.dst.src.base = 1024 * m' + 93) :
+    16 * m' = 27 * m + 1 := by
+  have hdstbase :=
+    dst_base_eq_64_mul_27m_add2_add29_of_src_base_eq_1024m_add_93 τ ht he hsrc
+  rw [hdst] at hdstbase
+  omega
+
+/-- On the deeper repeat-survival subbranch `base = 16384*m + 13405`, the
+    normalized repeat parameter of the destination is exactly `27*m + 22`. -/
+theorem dst_repeatParam_eq_27m_add22_of_src_base_eq_16384m_add_13405
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m m' : ℕ}
+    (hsrc : τ.src.src.base = 16384 * m + 13405)
+    (hdst : τ.dst.src.base = 1024 * m' + 93) :
+    m' = 27 * m + 22 := by
+  have hrec :=
+    sixteen_mul_dst_repeatParam_eq_twentySeven_mul_src_repeatParam_add_one
+      τ ht he
+      (by
+        rw [hsrc]
+        omega : τ.src.src.base = 1024 * (16 * m + 13) + 93)
+      hdst
+  omega
+
+/-- Normalized repeat-chart classifier: on the intrinsic repeat-survival chart
+    `base = 1024*m + 93`, the destination stays on that same chart iff the
+    source repeat parameter satisfies `m ≡ 13 (mod 16)`. -/
+theorem dst_on_repeatChart_iff_src_repeatParam_mod16_eq13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hsrc : τ.src.src.base = 1024 * m + 93) :
+    τ.dst.src.base % 1024 = 93 ↔ m % 16 = 13 := by
+  have hsrc93 : τ.src.src.base % 1024 = 93 := by
+    rw [hsrc]
+    norm_num
+  constructor
+  · intro hdst93
+    have hsrc16384 :=
+      src_base_mod16384_eq13405_of_dst_base_mod1024_eq93_of_src_base_mod1024_eq93
+        τ ht he hsrc93 hdst93
+    rw [hsrc] at hsrc16384
+    omega
+  · intro hm16
+    have hsrc16384 : τ.src.src.base % 16384 = 13405 := by
+      rw [hsrc]
+      omega
+    exact
+      (dst_base_mod1024_eq93_iff_src_base_mod16384_eq13405_of_src_base_mod1024_eq93
+        τ ht he hsrc93).2 hsrc16384
+
+/-- Reduced self-map on the normalized repeat chart: if the source repeat
+    parameter is `16*q + 13` and the destination stays on the repeat chart,
+    then the destination repeat parameter is exactly `27*q + 22`. -/
+theorem dst_repeatParam_eq_27q_add22_of_src_repeatParam_eq_16q_add13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {q q' : ℕ}
+    (hsrc : τ.src.src.base = 1024 * (16 * q + 13) + 93)
+    (hdst : τ.dst.src.base = 1024 * q' + 93) :
+    q' = 27 * q + 22 := by
+  have hsrc' : τ.src.src.base = 16384 * q + 13405 := by
+    rw [hsrc]
+    omega
+  exact dst_repeatParam_eq_27m_add22_of_src_base_eq_16384m_add_13405 τ ht he hsrc' hdst
+
+/-- On the normalized repeat chart, asking for the destination repeat parameter
+    to land back in the repeating residue `13 mod 16` is equivalent to asking
+    the source inner parameter to lie in the residue `5 mod 16`. -/
+theorem dst_repeatParam_mod16_eq13_iff_src_innerParam_mod16_eq5
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {q q' : ℕ}
+    (hsrc : τ.src.src.base = 1024 * (16 * q + 13) + 93)
+    (hdst : τ.dst.src.base = 1024 * q' + 93) :
+    q' % 16 = 13 ↔ q % 16 = 5 := by
+  have hq' := dst_repeatParam_eq_27q_add22_of_src_repeatParam_eq_16q_add13 τ ht he hsrc hdst
+  rw [hq']
+  omega
+
+/-- On the deeper normalized repeat subbranch with inner parameter `q = 16*r +
+    5`, the destination repeat parameter lands in the affine chart
+    `16*(27*r + 9) + 13`. -/
+theorem dst_repeatParam_eq_16_mul_27r_add9_add13_of_src_innerParam_eq_16r_add5
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r q' : ℕ}
+    (hsrc : τ.src.src.base = 1024 * (16 * (16 * r + 5) + 13) + 93)
+    (hdst : τ.dst.src.base = 1024 * q' + 93) :
+    q' = 16 * (27 * r + 9) + 13 := by
+  have hq' :=
+    dst_repeatParam_eq_27q_add22_of_src_repeatParam_eq_16q_add13
+      τ ht he hsrc hdst
+  rw [hq']
   omega
 
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
