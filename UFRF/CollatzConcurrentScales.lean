@@ -7801,6 +7801,76 @@ def regimeIIRepeatCore832 (x : RegimeIIBadFrontierState 832) : Prop :=
 def RegimeIIBadFrontierState.repeatParam832 (x : RegimeIIBadFrontierState 832) : ℕ :=
   x.src.base / 1024
 
+/-- State-level repeat-seed staircase residue at target `832`. This is the
+    bounded observer read from a repeat-core source state when its repeat
+    parameter is viewed one level deeper through the normalized seed quotient
+    by `16`. -/
+def RegimeIIBadFrontierState.repeatSeedParam832
+    (x : RegimeIIBadFrontierState 832) : ℕ :=
+  RegimeIIBadFrontierState.repeatParam832 x / 16
+
+/-- State-level repeat-seed staircase residue at target `832`. This is the
+    bounded observer read from a repeat-core source state when its repeat
+    parameter is viewed one level deeper through the normalized seed quotient
+    by `16`. -/
+def RegimeIIBadFrontierState.repeatThresholdSeedResidue832
+    (x : RegimeIIBadFrontierState 832) : ℕ :=
+  (26 * RegimeIIBadFrontierState.repeatSeedParam832 x + 9) % 27
+
+/-- Thin pure affine phase on the intrinsic `832` repeat core: the repeat-core
+    source state whose deeper seed staircase residue has already collapsed to
+    `0`. This is still the same source-state object; the zero seed is one
+    intrinsic readout on it. -/
+def regimeIIRepeatPurePhase832 (x : RegimeIIBadFrontierState 832) : Prop :=
+  regimeIIRepeatCore832 x ∧
+    RegimeIIBadFrontierState.repeatThresholdSeedResidue832 x = 0
+
+/-- Normalized state-value observer on the intrinsic `832` repeat core. The
+    affine offset removes the constant term in the exact `27/16` transport
+    law. -/
+def RegimeIIBadFrontierState.normalizedRepeatValue832
+    (x : RegimeIIBadFrontierState 832) : ℕ :=
+  11 * regimeIIStateValue x.src + 19
+
+/-- Normalized radial-gap observer on the intrinsic `832` repeat core. The
+    affine offset removes the constant term in the exact `27/16` transport
+    law on the target-side radial view. -/
+def RegimeIIBadFrontierState.normalizedRepeatRadialGap832
+    (x : RegimeIIBadFrontierState 832) : ℕ :=
+  11 * regimeIIRadialGap 832 x.src + 9171
+
+/-- Normalized self-threshold-defect observer on the intrinsic `832` repeat
+    core. On the pure affine phase the defect shifts by the fixed point `1`
+    and then scales exactly by `27/16`. -/
+def RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832
+    (x : RegimeIIBadFrontierState 832) : ℕ :=
+  x.selfThresholdDefect - 1
+
+/-- The repeat-seed observer vanishes exactly when the deeper seed coordinate
+    lies in the intrinsic residue class `9 mod 27`. -/
+theorem repeatThresholdSeedResidue832_eq_zero_iff_repeatSeedParam832_mod27_eq9
+    (x : RegimeIIBadFrontierState 832) :
+    RegimeIIBadFrontierState.repeatThresholdSeedResidue832 x = 0 ↔
+      RegimeIIBadFrontierState.repeatSeedParam832 x % 27 = 9 := by
+  unfold RegimeIIBadFrontierState.repeatThresholdSeedResidue832
+  unfold RegimeIIBadFrontierState.repeatSeedParam832
+  omega
+
+/-- Intrinsic characterization of the pure affine repeat phase: it is the
+    repeat core together with the deeper seed congruence `9 mod 27`. -/
+theorem repeatPurePhase832_iff_repeatCore832_and_repeatSeedParam832_mod27_eq9
+    (x : RegimeIIBadFrontierState 832) :
+    regimeIIRepeatPurePhase832 x ↔
+      regimeIIRepeatCore832 x ∧
+        RegimeIIBadFrontierState.repeatSeedParam832 x % 27 = 9 := by
+  constructor
+  · intro hx
+    exact ⟨hx.1,
+      (repeatThresholdSeedResidue832_eq_zero_iff_repeatSeedParam832_mod27_eq9 x).1 hx.2⟩
+  · intro hx
+    exact ⟨hx.1,
+      (repeatThresholdSeedResidue832_eq_zero_iff_repeatSeedParam832_mod27_eq9 x).2 hx.2⟩
+
 theorem repeatParam832_base_eq_of_repeatCore832
     (x : RegimeIIBadFrontierState 832)
     (hx : regimeIIRepeatCore832 x) :
@@ -8390,6 +8460,333 @@ theorem strict_projectiveSelfSlope_832_in_repeatInnerParam_of_repeatCore832Trans
     src_radialGap_832_eq_131072_mul_repeatInnerParam832_add_106407_of_repeatCore832Transition τ hτ,
     dst_radialGap_832_eq_221184_mul_repeatInnerParam832_add_180135_of_repeatCore832Transition τ hτ] at h
   exact h
+
+/-- The repeat-core staircase residue at target `832`. This is the remaining
+    observer coordinate carried by the source self-threshold defect once the
+    affine repeat-core transport has been extracted into the normalized inner
+    parameter. -/
+def RegimeIIBadFrontierTransition.repeatThresholdResidue832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  (26 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 9) % 27
+
+/-- The transition-level staircase residue is exactly the state-level repeat
+    seed residue of the source state. This keeps the ontology source-first: the
+    transition observer is just the source-state seed residue read through the
+    current transition. -/
+theorem src_repeatThresholdSeedResidue832_eq_repeatThresholdResidue832
+    (τ : RegimeIIBadFrontierTransition 832) :
+    RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.src =
+      RegimeIIBadFrontierTransition.repeatThresholdResidue832 τ := by
+  unfold RegimeIIBadFrontierState.repeatThresholdSeedResidue832
+  unfold RegimeIIBadFrontierState.repeatSeedParam832
+  unfold RegimeIIBadFrontierTransition.repeatThresholdResidue832
+  unfold RegimeIIBadFrontierTransition.repeatInnerParam832
+  rfl
+
+/-- On a repeat-core transition, the source state's deeper seed coordinate is
+    exactly the canonical repeat inner parameter. -/
+theorem src_repeatSeedParam832_eq_repeatInnerParam832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832) :
+    RegimeIIBadFrontierState.repeatSeedParam832 τ.src =
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ := by
+  unfold RegimeIIBadFrontierState.repeatSeedParam832
+  unfold RegimeIIBadFrontierTransition.repeatInnerParam832
+  rfl
+
+/-- On a repeat-core transition, vanishing of the source seed residue is
+    exactly the intrinsic congruence `repeatInnerParam832 ≡ 9 (mod 27)`. -/
+theorem src_repeatThresholdSeedResidue832_eq_zero_iff_src_repeatInnerParam832_mod27_eq9_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.src = 0 ↔
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 27 = 9 := by
+  rw [repeatThresholdSeedResidue832_eq_zero_iff_repeatSeedParam832_mod27_eq9 τ.src,
+    src_repeatSeedParam832_eq_repeatInnerParam832_of_repeatCore832Transition τ]
+
+/-- The repeat-core staircase residue is a genuine residue coordinate, hence
+    always lies strictly below `27`. -/
+theorem repeatThresholdResidue832_lt_27
+    (τ : RegimeIIBadFrontierTransition 832) :
+    RegimeIIBadFrontierTransition.repeatThresholdResidue832 τ < 27 := by
+  unfold RegimeIIBadFrontierTransition.repeatThresholdResidue832
+  exact Nat.mod_lt _ (by norm_num : 0 < 27)
+
+/-- On an intrinsic `832` repeat-core transition, the state value obeys an
+    exact affine source-to-source transport law with scaling factor `27/16`. -/
+theorem sixteen_mul_dst_stateValue_eq_twentySeven_mul_src_stateValue_add_19_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    16 * regimeIIStateValue τ.dst.src = 27 * regimeIIStateValue τ.src.src + 19 := by
+  rw [src_stateValue_eq_131072_mul_repeatInnerParam832_add_107239_of_repeatCore832Transition τ hτ,
+    dst_stateValue_eq_221184_mul_repeatInnerParam832_add_180967_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- On an intrinsic `832` repeat-core transition, the radial gap above the
+    target obeys the same exact affine source-to-source transport law, now with
+    fixed gap offset `9171`. -/
+theorem sixteen_mul_dst_radialGap_832_eq_twentySeven_mul_src_radialGap_832_add_9171_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    16 * regimeIIRadialGap 832 τ.dst.src =
+      27 * regimeIIRadialGap 832 τ.src.src + 9171 := by
+  rw [src_radialGap_832_eq_131072_mul_repeatInnerParam832_add_106407_of_repeatCore832Transition τ hτ,
+    dst_radialGap_832_eq_221184_mul_repeatInnerParam832_add_180135_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- On an intrinsic `832` repeat-core transition, the self-threshold defect is
+    also transported by the same `27/16` scaling, up to one bounded staircase
+    residue readout. This packages the former floor term as an explicit
+    concurrent observer coordinate instead of leaving it hidden inside the
+    source defect formula. -/
+theorem sixteen_mul_dst_selfThresholdDefect_add_eleven_eq_twentySeven_mul_src_selfThresholdDefect_add_repeatThresholdResidue832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    16 * τ.dst.selfThresholdDefect + 11 =
+      27 * τ.src.selfThresholdDefect +
+        RegimeIIBadFrontierTransition.repeatThresholdResidue832 τ := by
+  let q := RegimeIIBadFrontierTransition.repeatInnerParam832 τ
+  have hsrc :
+      27 * (6674 * q + 5462 + (26 * q + 9) / 27) + ((26 * q + 9) % 27) =
+        180224 * q + 147483 := by
+    calc
+      27 * (6674 * q + 5462 + (26 * q + 9) / 27) + ((26 * q + 9) % 27)
+          = 180198 * q + 147474 +
+              (((26 * q + 9) % 27) + 27 * ((26 * q + 9) / 27)) := by
+              omega
+      _ = 180198 * q + 147474 + (26 * q + 9) := by
+        rw [Nat.mod_add_div (26 * q + 9) 27]
+      _ = 180224 * q + 147483 := by
+        omega
+  calc
+    16 * τ.dst.selfThresholdDefect + 11
+        = 180224 * q + 147483 := by
+            rw [dst_selfThresholdDefect_eq_11264_mul_repeatInnerParam832_add_9217_of_repeatCore832Transition τ hτ]
+            omega
+    _ = 27 * (6674 * q + 5462 + (26 * q + 9) / 27) + ((26 * q + 9) % 27) := by
+      exact hsrc.symm
+    _ = 27 * τ.src.selfThresholdDefect +
+          RegimeIIBadFrontierTransition.repeatThresholdResidue832 τ := by
+      rw [src_selfThresholdDefect_eq_6674_mul_repeatInnerParam832_add_5462_add_div27_of_repeatCore832Transition τ hτ,
+        RegimeIIBadFrontierTransition.repeatThresholdResidue832]
+
+/-- Quantitative upper comparison form of the repeat-core self-threshold
+    transport law. The destination defect grows roughly like `(27/16)` times
+    the source defect, with uniformly bounded error at most `15`. -/
+theorem sixteen_mul_dst_selfThresholdDefect_le_twentySeven_mul_src_selfThresholdDefect_add_15_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    16 * τ.dst.selfThresholdDefect ≤ 27 * τ.src.selfThresholdDefect + 15 := by
+  have hlt := repeatThresholdResidue832_lt_27 τ
+  have hexact :=
+    sixteen_mul_dst_selfThresholdDefect_add_eleven_eq_twentySeven_mul_src_selfThresholdDefect_add_repeatThresholdResidue832_of_repeatCore832Transition
+      τ hτ
+  omega
+
+/-- On the deeper repeat subbranch where the current inner repeat parameter is
+    `16*r + 5`, the destination repeat seed has staircase residue `0`. In other
+    words, one level deeper in the repeat tower the defect observer collapses
+    from a bounded staircase to the pure affine phase. -/
+theorem dst_repeatThresholdSeedResidue832_eq_zero_of_src_repeatInnerParam832_eq_16r_add5
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    {r : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 16 * r + 5) :
+    RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.dst = 0 := by
+  have hdstp :
+      RegimeIIBadFrontierState.repeatParam832 τ.dst = 16 * (27 * r + 9) + 13 := by
+    rw [dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ, hq]
+    omega
+  unfold RegimeIIBadFrontierState.repeatThresholdSeedResidue832
+  unfold RegimeIIBadFrontierState.repeatSeedParam832
+  rw [hdstp]
+  omega
+
+/-- On the deeper repeat subbranch `q = 16*r + 5`, the destination
+    self-threshold defect itself becomes a pure affine function of the deeper
+    chart parameter `r`. -/
+theorem dst_selfThresholdDefect_eq_180224_mul_r_add_65537_of_src_repeatInnerParam832_eq_16r_add5
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    {r : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 16 * r + 5) :
+    τ.dst.selfThresholdDefect = 180224 * r + 65537 := by
+  rw [dst_selfThresholdDefect_eq_11264_mul_repeatInnerParam832_add_9217_of_repeatCore832Transition τ hτ, hq]
+  omega
+
+/-- Once a repeat-core source state reaches seed residue `0`, the next
+    repeat-core transition has exact affine self-threshold transport with no
+    staircase correction term remaining. This is the first pure affine phase of
+    the repeat tower. -/
+theorem sixteen_mul_dst_selfThresholdDefect_add_eleven_eq_twentySeven_mul_src_selfThresholdDefect_of_src_repeatThresholdSeedResidue832_eq_zero
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (h0 : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.src = 0) :
+    16 * τ.dst.selfThresholdDefect + 11 = 27 * τ.src.selfThresholdDefect := by
+  have hexact :=
+    sixteen_mul_dst_selfThresholdDefect_add_eleven_eq_twentySeven_mul_src_selfThresholdDefect_add_repeatThresholdResidue832_of_repeatCore832Transition
+      τ hτ
+  rw [src_repeatThresholdSeedResidue832_eq_repeatThresholdResidue832 τ] at h0
+  rw [h0] at hexact
+  simpa using hexact
+
+/-- Two-step pure affine phase on the intrinsic `832` repeat tower: if one
+    repeat-core transition starts on the deeper branch `q = 16*r + 5`, then
+    the next repeat-core transition out of its destination has exact affine
+    self-threshold transport with no staircase correction term. This is the
+    first explicit "pattern of patterns" theorem on the repeat tower. -/
+theorem sixteen_mul_dst_selfThresholdDefect_add_eleven_eq_twentySeven_mul_src_selfThresholdDefect_of_prev_repeatInnerParam832_eq_16r_add5
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst)
+    {r : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 16 * r + 5) :
+    16 * σ.dst.selfThresholdDefect + 11 = 27 * σ.src.selfThresholdDefect := by
+  have h0dst : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.dst = 0 :=
+    dst_repeatThresholdSeedResidue832_eq_zero_of_src_repeatInnerParam832_eq_16r_add5 τ hτ hq
+  have h0src : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 σ.src = 0 := by
+    simpa [hlink] using h0dst
+  exact
+    sixteen_mul_dst_selfThresholdDefect_add_eleven_eq_twentySeven_mul_src_selfThresholdDefect_of_src_repeatThresholdSeedResidue832_eq_zero
+      σ hσ h0src
+
+/-- On the deeper branch `q = 16*r + 5`, the destination state has already
+    entered the intrinsic pure affine repeat phase at target `832`. -/
+theorem dst_repeatPurePhase832_of_src_repeatInnerParam832_eq_16r_add5
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    {r : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 16 * r + 5) :
+    regimeIIRepeatPurePhase832 τ.dst := by
+  exact ⟨hτ.2,
+    dst_repeatThresholdSeedResidue832_eq_zero_of_src_repeatInnerParam832_eq_16r_add5 τ hτ hq⟩
+
+/-- Exact normalized value transport on the intrinsic `832` repeat core. -/
+theorem sixteen_mul_dst_normalizedRepeatValue832_eq_twentySeven_mul_src_normalizedRepeatValue832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    16 * RegimeIIBadFrontierState.normalizedRepeatValue832 τ.dst =
+      27 * RegimeIIBadFrontierState.normalizedRepeatValue832 τ.src := by
+  unfold RegimeIIBadFrontierState.normalizedRepeatValue832
+  have h :=
+    sixteen_mul_dst_stateValue_eq_twentySeven_mul_src_stateValue_add_19_of_repeatCore832Transition
+      τ hτ
+  omega
+
+/-- Exact normalized radial-gap transport on the intrinsic `832` repeat core. -/
+theorem sixteen_mul_dst_normalizedRepeatRadialGap832_eq_twentySeven_mul_src_normalizedRepeatRadialGap832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    16 * RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.dst =
+      27 * RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.src := by
+  unfold RegimeIIBadFrontierState.normalizedRepeatRadialGap832
+  have h :=
+    sixteen_mul_dst_radialGap_832_eq_twentySeven_mul_src_radialGap_832_add_9171_of_repeatCore832Transition
+      τ hτ
+  omega
+
+/-- Exact normalized self-threshold transport on the intrinsic `832` pure
+    affine phase. -/
+theorem sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_src_repeatThresholdSeedResidue832_eq_zero
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (h0 : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.src = 0) :
+    16 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.dst =
+      27 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.src := by
+  unfold RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832
+  have hsrc1 : 1 ≤ τ.src.selfThresholdDefect := Nat.succ_le_of_lt τ.src.selfThresholdDefect_pos
+  have hdst1 : 1 ≤ τ.dst.selfThresholdDefect := Nat.succ_le_of_lt τ.dst.selfThresholdDefect_pos
+  have h :=
+    sixteen_mul_dst_selfThresholdDefect_add_eleven_eq_twentySeven_mul_src_selfThresholdDefect_of_src_repeatThresholdSeedResidue832_eq_zero
+      τ hτ h0
+  omega
+
+/-- Two-step normalized self-threshold transport on the repeat tower: the
+    deeper branch `q = 16*r + 5` forces the next repeat-core transition into
+    the exact normalized affine phase. -/
+theorem sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_prev_repeatInnerParam832_eq_16r_add5
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst)
+    {r : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 16 * r + 5) :
+    16 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.dst =
+      27 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src := by
+  have h0dst : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.dst = 0 :=
+    dst_repeatThresholdSeedResidue832_eq_zero_of_src_repeatInnerParam832_eq_16r_add5 τ hτ hq
+  have h0src : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 σ.src = 0 := by
+    simpa [hlink] using h0dst
+  exact
+    sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_src_repeatThresholdSeedResidue832_eq_zero
+      σ hσ h0src
+
+/-- On the intrinsic pure affine repeat phase, the normalized self-threshold
+    defect and normalized radial gap scale by the same factor, so the
+    corresponding projective coordinate is an exact invariant. -/
+theorem normalizedProjectiveSelfSlopeEq_832_of_src_repeatThresholdSeedResidue832_eq_zero
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (h0 : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.src = 0) :
+    RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.dst *
+        RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.src =
+      RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.src *
+        RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.dst := by
+  let Ddst := RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.dst
+  let Dsrc := RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.src
+  let Gdst := RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.dst
+  let Gsrc := RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.src
+  have hdef :
+      16 * Ddst = 27 * Dsrc := by
+    simpa [Ddst, Dsrc] using
+      sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_src_repeatThresholdSeedResidue832_eq_zero
+        τ hτ h0
+  have hgap :
+      16 * Gdst = 27 * Gsrc := by
+    simpa [Gdst, Gsrc] using
+      sixteen_mul_dst_normalizedRepeatRadialGap832_eq_twentySeven_mul_src_normalizedRepeatRadialGap832_of_repeatCore832Transition
+        τ hτ
+  have hscaledLeft :
+      16 * (Ddst * Gsrc) = 27 * (Dsrc * Gsrc) := by
+    calc
+      16 * (Ddst * Gsrc) = (16 * Ddst) * Gsrc := by ring
+      _ = (27 * Dsrc) * Gsrc := by rw [hdef]
+      _ = 27 * (Dsrc * Gsrc) := by ring
+  have hscaledRight :
+      16 * (Dsrc * Gdst) = 27 * (Dsrc * Gsrc) := by
+    calc
+      16 * (Dsrc * Gdst) = Dsrc * (16 * Gdst) := by ring
+      _ = Dsrc * (27 * Gsrc) := by rw [hgap]
+      _ = 27 * (Dsrc * Gsrc) := by ring
+  have hmul :
+      16 * (Ddst * Gsrc) = 16 * (Dsrc * Gdst) := by
+    calc
+      16 * (Ddst * Gsrc) = 27 * (Dsrc * Gsrc) := hscaledLeft
+      _ = 16 * (Dsrc * Gdst) := hscaledRight.symm
+  exact Nat.eq_of_mul_eq_mul_left (by decide : 0 < 16) hmul
+
+/-- Two-step exact projective invariance on the repeat tower: the deeper branch
+    `q = 16*r + 5` forces the next repeat-core transition into the normalized
+    pure affine phase, so its normalized projective coordinate is preserved
+    exactly. -/
+theorem normalizedProjectiveSelfSlopeEq_832_of_prev_repeatInnerParam832_eq_16r_add5
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst)
+    {r : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 16 * r + 5) :
+    RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.dst *
+        RegimeIIBadFrontierState.normalizedRepeatRadialGap832 σ.src =
+      RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src *
+        RegimeIIBadFrontierState.normalizedRepeatRadialGap832 σ.dst := by
+  have h0dst : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.dst = 0 :=
+    dst_repeatThresholdSeedResidue832_eq_zero_of_src_repeatInnerParam832_eq_16r_add5 τ hτ hq
+  have h0src : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 σ.src = 0 := by
+    simpa [hlink] using h0dst
+  exact
+    normalizedProjectiveSelfSlopeEq_832_of_src_repeatThresholdSeedResidue832_eq_zero
+      σ hσ h0src
 
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
     `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
