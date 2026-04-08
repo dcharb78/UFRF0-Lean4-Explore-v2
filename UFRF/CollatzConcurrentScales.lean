@@ -7787,6 +7787,44 @@ theorem projectiveSelfSlopeLE_832_of_src_base_mod64_eq29
   exact le_of_lt
     (strict_projectiveSelfSlope_832_of_src_base_mod64_eq29 τ ht he hmod hcore)
 
+/-- Thin intrinsic repeat core at target `832`: a bad-frontier source state on
+    the surviving `(time,eject) = (3,1)` branch whose base lies on the first
+    normalized repeat chart `base ≡ 93 (mod 1024)`. The repeat chart is a
+    projection/readout of this source-state core, not the ontology itself. -/
+def regimeIIRepeatCore832 (x : RegimeIIBadFrontierState 832) : Prop :=
+  x.src.time = 3 ∧ x.src.eject = 1 ∧ x.src.base % 1024 = 93
+
+/-- Canonical repeat coordinate on the intrinsic `832` repeat core, extracted
+    directly from the source base by division by the repeat-chart scale `1024`.
+    Under `regimeIIRepeatCore832`, this is the unique `m` such that
+    `base = 1024*m + 93`. -/
+def RegimeIIBadFrontierState.repeatParam832 (x : RegimeIIBadFrontierState 832) : ℕ :=
+  x.src.base / 1024
+
+theorem repeatParam832_base_eq_of_repeatCore832
+    (x : RegimeIIBadFrontierState 832)
+    (hx : regimeIIRepeatCore832 x) :
+    x.src.base = 1024 * RegimeIIBadFrontierState.repeatParam832 x + 93 := by
+  have hdiv := Nat.mod_add_div x.src.base 1024
+  calc
+    x.src.base = x.src.base % 1024 + 1024 * (x.src.base / 1024) := by
+      symm
+      exact hdiv
+    _ = 93 + 1024 * (x.src.base / 1024) := by rw [hx.2.2]
+    _ = 1024 * RegimeIIBadFrontierState.repeatParam832 x + 93 := by
+      unfold RegimeIIBadFrontierState.repeatParam832
+      omega
+
+theorem repeatCore832_base_mod64_eq29
+    (x : RegimeIIBadFrontierState 832)
+    (hx : regimeIIRepeatCore832 x) :
+    x.src.base % 64 = 29 := by
+  rw [repeatParam832_base_eq_of_repeatCore832 x hx]
+  omega
+
+def regimeIIRepeatCore832Transition (τ : RegimeIIBadFrontierTransition 832) : Prop :=
+  regimeIIRepeatCore832 τ.src ∧ regimeIIRepeatCore832 τ.dst
+
 /-- On the first deeper repeat-survival subbranch of the intrinsic
     `(time,eject) = (3,1)` survivor family, `base = 1024*m + 93` transports back
     into the same `29 mod 64` chart with the next chart parameter `27*m + 2`. -/
@@ -8026,6 +8064,115 @@ theorem dst_repeatParam_eq_16_mul_27r_add9_add13_of_src_innerParam_eq_16r_add5
       τ ht he hsrc hdst
   rw [hq']
   omega
+
+/-- Intrinsic repeat-core form of the normalized recurrence on the surviving
+    `(3,1)` bad-frontier branch at target `832`. Once both source and
+    destination lie in `regimeIIRepeatCore832`, the canonical repeat
+    coordinates satisfy the affine self-map `16*m' = 27*m + 1`. -/
+theorem sixteen_mul_dst_repeatParam832_eq_twentySeven_mul_src_repeatParam832_add_one_of_repeatCore832
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    16 * RegimeIIBadFrontierState.repeatParam832 τ.dst =
+      27 * RegimeIIBadFrontierState.repeatParam832 τ.src + 1 := by
+  exact
+    sixteen_mul_dst_repeatParam_eq_twentySeven_mul_src_repeatParam_add_one
+      τ hτ.1.1 hτ.1.2.1
+      (repeatParam832_base_eq_of_repeatCore832 τ.src hτ.1)
+      (repeatParam832_base_eq_of_repeatCore832 τ.dst hτ.2)
+
+/-- Intrinsic repeat-core gate on the normalized recurrence: if the source lies
+    in `regimeIIRepeatCore832`, then the destination stays in the same repeat
+    core exactly when the source repeat coordinate lies in the residue
+    `13 mod 16`. -/
+theorem dst_repeatCore832_iff_src_repeatParam832_mod16_eq13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hsrc : regimeIIRepeatCore832 τ.src) :
+    regimeIIRepeatCore832 τ.dst ↔
+      RegimeIIBadFrontierState.repeatParam832 τ.src % 16 = 13 := by
+  have hsrcbase := repeatParam832_base_eq_of_repeatCore832 τ.src hsrc
+  have hsrcmod32 : τ.src.src.base % 32 = 29 := by
+    omega
+  have hdstslice : τ.dst.src.time = 3 ∧ τ.dst.src.eject = 1 := by
+    exact dst_slice_eq_3_1_of_src_base_mod32_eq29 τ hsrc.1 hsrc.2.1 hsrcmod32
+  have hdstmod :
+      τ.dst.src.base % 1024 = 93 ↔
+        RegimeIIBadFrontierState.repeatParam832 τ.src % 16 = 13 := by
+    exact
+      dst_on_repeatChart_iff_src_repeatParam_mod16_eq13
+        (m := RegimeIIBadFrontierState.repeatParam832 τ.src)
+        τ hsrc.1 hsrc.2.1 hsrcbase
+  constructor
+  · intro hdst
+    exact hdstmod.1 hdst.2.2
+  · intro hmod
+    exact ⟨hdstslice.1, hdstslice.2, hdstmod.2 hmod⟩
+
+/-- Exact state-value formula on the intrinsic `832` repeat core. -/
+theorem stateValue_eq_8192_mul_repeatParam832_add_743_of_repeatCore832
+    (x : RegimeIIBadFrontierState 832)
+    (hx : regimeIIRepeatCore832 x) :
+    regimeIIStateValue x.src =
+      8192 * RegimeIIBadFrontierState.repeatParam832 x + 743 := by
+  unfold regimeIIStateValue
+  rw [hx.1, repeatParam832_base_eq_of_repeatCore832 x hx]
+  omega
+
+/-- Exact radial-gap formula at target `832` on the intrinsic repeat core. -/
+theorem radialGap_832_eq_8192_mul_repeatParam832_sub_89_of_repeatCore832
+    (x : RegimeIIBadFrontierState 832)
+    (hx : regimeIIRepeatCore832 x) :
+    regimeIIRadialGap 832 x.src =
+      8192 * RegimeIIBadFrontierState.repeatParam832 x - 89 := by
+  unfold regimeIIRadialGap
+  rw [stateValue_eq_8192_mul_repeatParam832_add_743_of_repeatCore832 x hx]
+  omega
+
+/-- Exact self-threshold-defect formula on the intrinsic `832` repeat core. -/
+theorem selfThresholdDefect_eq_416_mul_repeatParam832_add_38_add_div27_of_repeatCore832
+    (x : RegimeIIBadFrontierState 832)
+    (hx : regimeIIRepeatCore832 x) :
+    RegimeIIBadFrontierState.selfThresholdDefect x =
+      416 * RegimeIIBadFrontierState.repeatParam832 x + 38 +
+        (32 * RegimeIIBadFrontierState.repeatParam832 x + 25) / 27 := by
+  let p := RegimeIIBadFrontierState.repeatParam832 x
+  have hchart : x.src.base = 64 * (16 * p + 1) + 29 := by
+    rw [repeatParam832_base_eq_of_repeatCore832 x hx]
+    omega
+  have hdef :=
+    regimeIIState_selfThresholdDefect_eq_26k_add_12_add_div27_of_time3_eject1_of_base_eq_64k_add_29
+      x.src hx.1 hx.2.1 hchart
+  have hlin1 : 26 * (16 * p + 1) + 12 = 416 * p + 38 := by
+    omega
+  have hlin2 : 2 * (16 * p + 1) + 23 = 32 * p + 25 := by
+    omega
+  simpa [RegimeIIBadFrontierState.selfThresholdDefect, p, hlin1, hlin2] using hdef
+
+/-- On the intrinsic `832` repeat core, the source value lies above the target
+    exactly when the canonical repeat parameter is nonzero past the first seed:
+    `1 ≤ repeatParam832`. -/
+theorem target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832
+    (x : RegimeIIBadFrontierState 832)
+    (hx : regimeIIRepeatCore832 x) :
+    832 ≤ regimeIIStateValue x.src ↔
+      1 ≤ RegimeIIBadFrontierState.repeatParam832 x := by
+  rw [stateValue_eq_8192_mul_repeatParam832_add_743_of_repeatCore832 x hx]
+  omega
+
+/-- Projective monotonicity transported onto the intrinsic `832` repeat core.
+    Once a repeat-core transition starts above the target value, the same strict
+    `832` projective slope decrease holds, now with repeat-core hypotheses
+    rather than raw chart hypotheses. -/
+theorem strict_projectiveSelfSlope_832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hp : 1 ≤ RegimeIIBadFrontierState.repeatParam832 τ.src) :
+    regimeIISelfThresholdDefect τ.dst.src * regimeIIRadialGap 832 τ.src.src <
+      regimeIISelfThresholdDefect τ.src.src * regimeIIRadialGap 832 τ.dst.src := by
+  have hcore : 832 ≤ regimeIIStateValue τ.src.src := by
+    exact (target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832 τ.src hτ.1).2 hp
+  exact
+    strict_projectiveSelfSlope_832_of_src_base_mod64_eq29
+      τ hτ.1.1 hτ.1.2.1 (repeatCore832_base_mod64_eq29 τ.src hτ.1) hcore
 
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
     `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
