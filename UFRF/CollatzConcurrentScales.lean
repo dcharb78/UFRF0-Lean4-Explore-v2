@@ -8871,6 +8871,52 @@ theorem dst_repeatParam832_mod16_eq_repeatClockPersistStep832_of_repeatCore832Tr
   omega
 
 /-- Exact one-step update of the destination pure-phase clock on an intrinsic
+    `832` repeat-core transition, before reducing modulo `27`. The destination
+    seed parameter splits into a finite clock term read from the source
+    persistence gate and a coarse affine carry `27 * (q / 16)`. -/
+theorem dst_repeatSeedParam832_eq_repeatClockPhaseStep832_add_27_mul_div16_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    RegimeIIBadFrontierState.repeatSeedParam832 τ.dst =
+      RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+          ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) +
+        27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16) := by
+  have hq :
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ =
+        RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
+          16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div (RegimeIIBadFrontierTransition.repeatInnerParam832 τ) 16).symm
+  unfold RegimeIIBadFrontierState.repeatSeedParam832
+  unfold RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+  rw [dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ,
+    repeatClock832_fst, hq]
+  have hsplit_num :
+      (27 *
+            (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
+              16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) +
+          22) / 16 =
+        (27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16) + 22 +
+            (27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) * 16) / 16 := by
+    omega
+  have hslt :
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 < 16 :=
+    Nat.mod_lt _ (by norm_num : 0 < 16)
+  have hmod16 :
+      (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
+          16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) % 16 =
+        RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 := by
+    omega
+  have hdiv16 :
+      (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
+          16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) / 16 =
+        RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16 := by
+    omega
+  rw [hsplit_num]
+  rw [hmod16, hdiv16]
+  rw [Nat.add_mul_div_right _ _ (by norm_num : 0 < 16)]
+
+/-- Exact one-step update of the destination pure-phase clock on an intrinsic
     `832` repeat-core transition. -/
 theorem dst_repeatSeedParam832_mod27_eq_repeatClockPhaseStep832_of_repeatCore832Transition
     (τ : RegimeIIBadFrontierTransition 832)
@@ -8878,45 +8924,7 @@ theorem dst_repeatSeedParam832_mod27_eq_repeatClockPhaseStep832_of_repeatCore832
     RegimeIIBadFrontierState.repeatSeedParam832 τ.dst % 27 =
       RegimeIIBadFrontierTransition.repeatClockPhaseStep832
         ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) := by
-  have hsplit :
-      RegimeIIBadFrontierState.repeatSeedParam832 τ.dst =
-        RegimeIIBadFrontierTransition.repeatClockPhaseStep832
-            ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) +
-          27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16) := by
-    have hq :
-        RegimeIIBadFrontierTransition.repeatInnerParam832 τ =
-          RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
-            16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16) := by
-      simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
-        (Nat.mod_add_div (RegimeIIBadFrontierTransition.repeatInnerParam832 τ) 16).symm
-    unfold RegimeIIBadFrontierState.repeatSeedParam832
-    unfold RegimeIIBadFrontierTransition.repeatClockPhaseStep832
-    rw [dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ,
-      repeatClock832_fst, hq]
-    have hsplit_num :
-        (27 *
-              (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
-                16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) +
-            22) / 16 =
-          (27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16) + 22 +
-              (27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) * 16) / 16 := by
-      omega
-    have hslt :
-        RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 < 16 :=
-      Nat.mod_lt _ (by norm_num : 0 < 16)
-    have hmod16 :
-        (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
-            16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) % 16 =
-          RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 := by
-      omega
-    have hdiv16 :
-        (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 +
-            16 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16)) / 16 =
-          RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 16 := by
-      omega
-    rw [hsplit_num]
-    rw [hmod16, hdiv16]
-    rw [Nat.add_mul_div_right _ _ (by norm_num : 0 < 16)]
+  rw [dst_repeatSeedParam832_eq_repeatClockPhaseStep832_add_27_mul_div16_of_repeatCore832Transition τ hτ]
   have hsmall :
       RegimeIIBadFrontierTransition.repeatClockPhaseStep832
           ((RegimeIIBadFrontierTransition.repeatClock832 τ).1) < 27 := by
@@ -8926,7 +8934,7 @@ theorem dst_repeatSeedParam832_mod27_eq_repeatClockPhaseStep832_of_repeatCore832
         RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 < 16 :=
       Nat.mod_lt _ (by norm_num : 0 < 16)
     omega
-  rw [hsplit, Nat.add_mul_mod_self_left]
+  rw [Nat.add_mul_mod_self_left]
   exact Nat.mod_eq_of_lt hsmall
 
 /-- Finite clock form of the pure-phase gate: on the intrinsic repeat clock,
@@ -9130,6 +9138,208 @@ theorem not_exists_repeatCore832Transition_chain_of_repeatClock832_fst_ne5
   intro h
   rcases h with ⟨σ, hσ, hlink⟩
   exact hne (repeatClock832_fst_eq5_of_repeatCore832Transition_chain τ σ hτ hσ hlink)
+
+/-- Locked-sector transport on a two-step repeat-core chain: once deeper
+    repeat-core persistence occurs, the second transition starts in the pure
+    affine phase, so its normalized self-threshold defect transports exactly
+    with factor `27/16`. -/
+theorem sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst) :
+    16 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.dst =
+      27 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src := by
+  have hphase : regimeIIRepeatPurePhase832 σ.src := by
+    simpa [hlink] using dst_repeatPurePhase832_of_repeatCore832Transition_chain τ σ hτ hσ hlink
+  exact
+    sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_src_repeatThresholdSeedResidue832_eq_zero
+      σ hσ hphase.2
+
+/-- Locked-sector projective invariance on a two-step repeat-core chain: if
+    repeat-core persistence survives for two consecutive transitions, then the
+    second transition already lies in the exact pure affine phase, so its
+    normalized projective coordinate is preserved exactly. -/
+theorem normalizedProjectiveSelfSlopeEq_832_of_repeatCore832Transition_chain
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst) :
+    RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.dst *
+        RegimeIIBadFrontierState.normalizedRepeatRadialGap832 σ.src =
+      RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src *
+        RegimeIIBadFrontierState.normalizedRepeatRadialGap832 σ.dst := by
+  have hphase : regimeIIRepeatPurePhase832 σ.src := by
+    simpa [hlink] using dst_repeatPurePhase832_of_repeatCore832Transition_chain τ σ hτ hσ hlink
+  exact
+    normalizedProjectiveSelfSlopeEq_832_of_src_repeatThresholdSeedResidue832_eq_zero
+      σ hσ hphase.2
+
+/-- On a three-step repeat-core chain, the middle transition's source clock is
+    forced into the unique locked shell `(5, 9)`: persistence gate `5` and
+    pure-phase clock `9` simultaneously. This is the first exact finite-clock
+    classifier of deeper repeat-core survival. -/
+theorem repeatClock832_eq_5_9_of_repeatCore832Transition_chain3
+    (τ σ ρ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst) :
+    (RegimeIIBadFrontierTransition.repeatClock832 σ).1 = 5 ∧
+      (RegimeIIBadFrontierTransition.repeatClock832 σ).2 = 9 := by
+  constructor
+  · exact
+      repeatClock832_fst_eq5_of_repeatCore832Transition_chain σ ρ hσ hρ hlinkσρ
+  · have hpure : regimeIIRepeatPurePhase832 σ.src := by
+      simpa [hlinkτσ] using
+        dst_repeatPurePhase832_of_repeatCore832Transition_chain τ σ hτ hσ hlinkτσ
+    exact
+      (src_repeatPurePhase832_iff_repeatClock832_snd_eq9_of_repeatCore832Transition σ hσ).1 hpure
+
+/-- CRT form of the three-step repeat-core classifier: if three repeat-core
+    transitions occur consecutively, then the middle transition's intrinsic
+    inner repeat parameter lies in the unique residue class `117 mod 432`. -/
+theorem src_repeatInnerParam832_eq_432r_add_117_of_repeatCore832Transition_chain3
+    (τ σ ρ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst) :
+    ∃ r : ℕ,
+      RegimeIIBadFrontierTransition.repeatInnerParam832 σ = 432 * r + 117 := by
+  have hclock :
+      (RegimeIIBadFrontierTransition.repeatClock832 σ).1 = 5 ∧
+        (RegimeIIBadFrontierTransition.repeatClock832 σ).2 = 9 :=
+    repeatClock832_eq_5_9_of_repeatCore832Transition_chain3 τ σ ρ hτ hσ hρ hlinkτσ hlinkσρ
+  refine ⟨RegimeIIBadFrontierTransition.repeatInnerParam832 σ / 432, ?_⟩
+  have hdiv := Nat.mod_add_div (RegimeIIBadFrontierTransition.repeatInnerParam832 σ) 432
+  rw [repeatClock832_fst, repeatClock832_snd] at hclock
+  omega
+
+/-- Four-step locked-shell recurrence on the intrinsic `832` repeat core: if
+    repeat-core persistence survives one step deeper, then the middle source
+    shell parameter is forced into the unique affine branch
+    `432 * (16*r + 7) + 117`, and the next transition's source inner
+    parameter lands at `432 * (27*r + 12) + 117`. This is the first exact
+    self-map on the unique locked affine shell. -/
+theorem repeatInnerParam832_lockedShell_affine_of_repeatCore832Transition_chain4
+    (τ σ ρ ups : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst) :
+    ∃ r : ℕ,
+      RegimeIIBadFrontierTransition.repeatInnerParam832 σ = 432 * (16 * r + 7) + 117 ∧
+      RegimeIIBadFrontierTransition.repeatInnerParam832 ρ = 432 * (27 * r + 12) + 117 := by
+  obtain ⟨t, ht⟩ :=
+    src_repeatInnerParam832_eq_432r_add_117_of_repeatCore832Transition_chain3
+      τ σ ρ hτ hσ hρ hlinkτσ hlinkσρ
+  have hσclock :
+      (RegimeIIBadFrontierTransition.repeatClock832 σ).1 = 5 ∧
+        (RegimeIIBadFrontierTransition.repeatClock832 σ).2 = 9 :=
+    repeatClock832_eq_5_9_of_repeatCore832Transition_chain3
+      τ σ ρ hτ hσ hρ hlinkτσ hlinkσρ
+  have hρexact :
+      RegimeIIBadFrontierTransition.repeatInnerParam832 ρ = 729 * t + 198 := by
+    calc
+      RegimeIIBadFrontierTransition.repeatInnerParam832 ρ
+          = RegimeIIBadFrontierState.repeatSeedParam832 ρ.src := by
+              symm
+              exact src_repeatSeedParam832_eq_repeatInnerParam832_of_repeatCore832Transition ρ
+      _ = RegimeIIBadFrontierState.repeatSeedParam832 σ.dst := by simpa [hlinkσρ]
+      _ = RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+              ((RegimeIIBadFrontierTransition.repeatClock832 σ).1) +
+            27 * (RegimeIIBadFrontierTransition.repeatInnerParam832 σ / 16) := by
+              exact
+                dst_repeatSeedParam832_eq_repeatClockPhaseStep832_add_27_mul_div16_of_repeatCore832Transition
+                  σ hσ
+      _ = RegimeIIBadFrontierTransition.repeatClockPhaseStep832 5 +
+            27 * ((432 * t + 117) / 16) := by rw [hσclock.1, ht]
+      _ = 729 * t + 198 := by
+            unfold RegimeIIBadFrontierTransition.repeatClockPhaseStep832
+            omega
+  have hρfst5 :
+      (RegimeIIBadFrontierTransition.repeatClock832 ρ).1 = 5 :=
+    repeatClock832_fst_eq5_of_repeatCore832Transition_chain ρ ups hρ hups hlinkρups
+  have htmod : t % 16 = 7 := by
+    rw [repeatClock832_fst] at hρfst5
+    rw [hρexact] at hρfst5
+    omega
+  have htdecomp : t = t % 16 + 16 * (t / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div t 16).symm
+  refine ⟨t / 16, ?_, ?_⟩
+  · rw [ht, htdecomp, htmod]
+    omega
+  · rw [hρexact, htdecomp, htmod]
+    omega
+
+/-- Residue form of the four-step locked-shell classifier: if a repeat-core
+    chain survives four consecutive transitions, then the middle source inner
+    parameter lies in the unique residue class `3141 mod 6912`. -/
+theorem src_repeatInnerParam832_eq_6912r_add_3141_of_repeatCore832Transition_chain4
+    (τ σ ρ ups : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst) :
+    ∃ r : ℕ,
+      RegimeIIBadFrontierTransition.repeatInnerParam832 σ = 6912 * r + 3141 := by
+  obtain ⟨r, hrσ, _⟩ :=
+    repeatInnerParam832_lockedShell_affine_of_repeatCore832Transition_chain4
+      τ σ ρ ups hτ hσ hρ hups hlinkτσ hlinkσρ hlinkρups
+  refine ⟨r, ?_⟩
+  rw [hrσ]
+  omega
+
+/-- Canonical parameter on the unique locked affine shell of the intrinsic
+    `832` repeat core. This compresses the shell residue `117 mod 432` by the
+    next natural scale `432`. -/
+def RegimeIIBadFrontierTransition.repeatLockedShellParam832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 432
+
+/-- On the locked affine shell `repeatInnerParam832 = 432*r + 117`, the
+    canonical locked-shell parameter is exactly `r`. -/
+theorem repeatLockedShellParam832_eq_r_of_repeatInnerParam832_eq_432r_add_117
+    (τ : RegimeIIBadFrontierTransition 832)
+    {r : ℕ}
+    (hr : RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 432 * r + 117) :
+    RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ = r := by
+  unfold RegimeIIBadFrontierTransition.repeatLockedShellParam832
+  rw [hr]
+  omega
+
+/-- Exact affine self-map on the unique locked affine shell, expressed in the
+    canonical shell parameter. If repeat-core persistence survives four
+    consecutive transitions, then the middle shell parameter lies in
+    `16*r + 7` and the next shell parameter is exactly `27*r + 12`. -/
+theorem repeatLockedShellParam832_affine_of_repeatCore832Transition_chain4
+    (τ σ ρ ups : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst) :
+    ∃ r : ℕ,
+      RegimeIIBadFrontierTransition.repeatLockedShellParam832 σ = 16 * r + 7 ∧
+      RegimeIIBadFrontierTransition.repeatLockedShellParam832 ρ = 27 * r + 12 := by
+  obtain ⟨r, hrσ, hrρ⟩ :=
+    repeatInnerParam832_lockedShell_affine_of_repeatCore832Transition_chain4
+      τ σ ρ ups hτ hσ hρ hups hlinkτσ hlinkσρ hlinkρups
+  refine ⟨r, ?_, ?_⟩
+  · rw [repeatLockedShellParam832_eq_r_of_repeatInnerParam832_eq_432r_add_117 σ hrσ]
+  · rw [repeatLockedShellParam832_eq_r_of_repeatInnerParam832_eq_432r_add_117 ρ hrρ]
 
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
     `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
