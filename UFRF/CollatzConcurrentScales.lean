@@ -9341,6 +9341,147 @@ theorem repeatLockedShellParam832_affine_of_repeatCore832Transition_chain4
   · rw [repeatLockedShellParam832_eq_r_of_repeatInnerParam832_eq_432r_add_117 σ hrσ]
   · rw [repeatLockedShellParam832_eq_r_of_repeatInnerParam832_eq_432r_add_117 ρ hrρ]
 
+/-- Five-step closure of the intrinsic locked shell on the `832` repeat core:
+    if repeat-core persistence survives one step beyond the first locked-shell
+    affine branch, then that shell parameter itself is forced into the unique
+    next gate `23 mod 256`, and the next two shell parameters lie on the exact
+    reduced affine orbit `q ↦ 27*q + 2`, lifted back through the shell charts.
+    This is the first true one-variable recurrence one level deeper than the
+    raw repeat-inner parameter. -/
+theorem repeatLockedShellParam832_secondAffine_of_repeatCore832Transition_chain5
+    (τ σ ρ ups χ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst) :
+    ∃ q : ℕ,
+      RegimeIIBadFrontierTransition.repeatLockedShellParam832 σ = 256 * q + 23 ∧
+      RegimeIIBadFrontierTransition.repeatLockedShellParam832 ρ = 432 * q + 39 ∧
+      RegimeIIBadFrontierTransition.repeatLockedShellParam832 ups = 729 * q + 66 := by
+  obtain ⟨r, hrσ, hrρ⟩ :=
+    repeatLockedShellParam832_affine_of_repeatCore832Transition_chain4
+      τ σ ρ ups hτ hσ hρ hups hlinkτσ hlinkσρ hlinkρups
+  obtain ⟨s, hsρ, hsups⟩ :=
+    repeatLockedShellParam832_affine_of_repeatCore832Transition_chain4
+      σ ρ ups χ hσ hρ hups hχ hlinkσρ hlinkρups hlinkupsχ
+  have hrdecomp : r = r % 16 + 16 * (r / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div r 16).symm
+  have hrmod : r % 16 = 1 := by
+    rw [hrρ] at hsρ
+    omega
+  have hs_eq : s = 27 * (r / 16) + 2 := by
+    rw [hrρ] at hsρ
+    rw [hrdecomp, hrmod] at hsρ
+    omega
+  refine ⟨r / 16, ?_, ?_, ?_⟩
+  · rw [hrσ, hrdecomp, hrmod]
+    omega
+  · rw [hrρ, hrdecomp, hrmod]
+    omega
+  · rw [hsups, hs_eq]
+    omega
+
+/-- Canonical parameter on the unique second locked shell of the intrinsic
+    `832` repeat core. This compresses the next shell gate `23 mod 256` by the
+    natural scale `256`. -/
+def RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ / 256
+
+/-- On the second locked shell `repeatLockedShellParam832 = 256*q + 23`, the
+    canonical second-shell parameter is exactly `q`. -/
+theorem repeatSecondLockedShellParam832_eq_q_of_repeatLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ = 256 * q + 23) :
+    RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 τ = q := by
+  unfold RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832
+  rw [hq]
+  omega
+
+/-- Canonical reduced-shell form of five-step repeat-core persistence on the
+    intrinsic `832` shell. Once persistence reaches the second locked shell,
+    the source second-shell parameter is `q`, the next locked-shell parameter
+    is `16 * (27*q + 2) + 7`, and the following one is
+    `27 * (27*q + 2) + 12`. This packages the reduced recurrence
+    `q ↦ 27*q + 2` so later iteration theorems can work directly on the new
+    shell variable. -/
+theorem repeatSecondLockedShellParam832_affine_of_repeatCore832Transition_chain5
+    (τ σ ρ ups χ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst) :
+    ∃ q : ℕ,
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 σ = q ∧
+      RegimeIIBadFrontierTransition.repeatLockedShellParam832 ρ = 16 * (27 * q + 2) + 7 ∧
+      RegimeIIBadFrontierTransition.repeatLockedShellParam832 ups = 27 * (27 * q + 2) + 12 := by
+  obtain ⟨q, hσshell, hρshell, hupsshell⟩ :=
+    repeatLockedShellParam832_secondAffine_of_repeatCore832Transition_chain5
+      τ σ ρ ups χ hτ hσ hρ hups hχ hlinkτσ hlinkσρ hlinkρups hlinkupsχ
+  refine ⟨q, ?_, ?_, ?_⟩
+  · rw [repeatSecondLockedShellParam832_eq_q_of_repeatLockedShellParam832_eq_256q_add_23 σ hσshell]
+  · rw [hρshell]
+    omega
+  · rw [hupsshell]
+    omega
+
+/-- Six-step closure on the reduced locked shell of the intrinsic `832`
+    repeat core. If repeat-core persistence survives one step beyond the first
+    reduced recurrence, then the reduced shell parameter itself is forced into
+    the next gate `13 mod 16`, and the next reduced-shell parameter is exactly
+    `27*t + 22`. This is the same affine pattern one scale deeper, now stated
+    entirely on the second shell variable. -/
+theorem repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_chain6
+    (τ σ ρ ups χ ψ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst) :
+    ∃ t : ℕ,
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 σ = 16 * t + 13 ∧
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 ρ = 27 * t + 22 := by
+  obtain ⟨q, hqσ, hqρ, hqups⟩ :=
+    repeatSecondLockedShellParam832_affine_of_repeatCore832Transition_chain5
+      τ σ ρ ups χ hτ hσ hρ hups hχ hlinkτσ hlinkσρ hlinkρups hlinkupsχ
+  obtain ⟨s, hsρ, hsups, _⟩ :=
+    repeatSecondLockedShellParam832_affine_of_repeatCore832Transition_chain5
+      σ ρ ups χ ψ hσ hρ hups hχ hψ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  have hqs : 27 * q + 1 = 16 * s := by
+    rw [hqups] at hsups
+    omega
+  have hqdecomp : q = q % 16 + 16 * (q / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div q 16).symm
+  have hqmod : q % 16 = 13 := by
+    rw [hqdecomp] at hqs
+    omega
+  have hs_eq : s = 27 * (q / 16) + 22 := by
+    rw [hqdecomp, hqmod] at hqs
+    omega
+  refine ⟨q / 16, ?_, ?_⟩
+  · rw [hqσ, hqdecomp, hqmod]
+    omega
+  · rw [hsρ, hs_eq]
+
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
     `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
     forces the destination time to jump to at least `4`. -/
