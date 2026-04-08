@@ -8158,21 +8158,238 @@ theorem target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832
   rw [stateValue_eq_8192_mul_repeatParam832_add_743_of_repeatCore832 x hx]
   omega
 
+namespace RegimeIIBadFrontierTransition
+
+/-- Canonical inner repeat coordinate on an intrinsic `832` repeat-core
+    transition, extracted from the source repeat coordinate by quotienting by
+    the normalized recurrence modulus `16`. Under
+    `regimeIIRepeatCore832Transition`, this is the unique `q` such that
+    `src.repeatParam832 = 16*q + 13` and `dst.repeatParam832 = 27*q + 22`. -/
+def repeatInnerParam832 (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  RegimeIIBadFrontierState.repeatParam832 τ.src / 16
+
+end RegimeIIBadFrontierTransition
+
+/-- On an intrinsic `832` repeat-core transition, the source repeat coordinate
+    lies in the normalized residue chart `16*q + 13` for the canonical inner
+    repeat parameter `q`. -/
+theorem src_repeatParam832_eq_16_mul_repeatInnerParam832_add_13_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    RegimeIIBadFrontierState.repeatParam832 τ.src =
+      16 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 13 := by
+  have hmod :
+      RegimeIIBadFrontierState.repeatParam832 τ.src % 16 = 13 :=
+    (dst_repeatCore832_iff_src_repeatParam832_mod16_eq13 τ hτ.1).1 hτ.2
+  unfold RegimeIIBadFrontierTransition.repeatInnerParam832
+  have hdiv := Nat.mod_add_div (RegimeIIBadFrontierState.repeatParam832 τ.src) 16
+  omega
+
+/-- On an intrinsic `832` repeat-core transition, the destination repeat
+    coordinate is the affine image `27*q + 22` of the canonical inner repeat
+    parameter. -/
+theorem dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    RegimeIIBadFrontierState.repeatParam832 τ.dst =
+      27 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 22 := by
+  have hrec :=
+    sixteen_mul_dst_repeatParam832_eq_twentySeven_mul_src_repeatParam832_add_one_of_repeatCore832
+      τ hτ
+  rw [src_repeatParam832_eq_16_mul_repeatInnerParam832_add_13_of_repeatCore832Transition τ hτ] at hrec
+  omega
+
+/-- Exact source state-value formula on an intrinsic `832` repeat-core
+    transition, expressed in the canonical inner repeat parameter. -/
+theorem src_stateValue_eq_131072_mul_repeatInnerParam832_add_107239_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIStateValue τ.src.src =
+      131072 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 107239 := by
+  rw [stateValue_eq_8192_mul_repeatParam832_add_743_of_repeatCore832 τ.src hτ.1,
+    src_repeatParam832_eq_16_mul_repeatInnerParam832_add_13_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- Exact destination state-value formula on an intrinsic `832` repeat-core
+    transition, expressed in the canonical inner repeat parameter. -/
+theorem dst_stateValue_eq_221184_mul_repeatInnerParam832_add_180967_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIStateValue τ.dst.src =
+      221184 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 180967 := by
+  rw [stateValue_eq_8192_mul_repeatParam832_add_743_of_repeatCore832 τ.dst hτ.2,
+    dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- Exact source radial-gap formula on an intrinsic `832` repeat-core
+    transition, expressed in the canonical inner repeat parameter. -/
+theorem src_radialGap_832_eq_131072_mul_repeatInnerParam832_add_106407_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIRadialGap 832 τ.src.src =
+      131072 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 106407 := by
+  rw [radialGap_832_eq_8192_mul_repeatParam832_sub_89_of_repeatCore832 τ.src hτ.1,
+    src_repeatParam832_eq_16_mul_repeatInnerParam832_add_13_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- Exact destination radial-gap formula on an intrinsic `832` repeat-core
+    transition, expressed in the canonical inner repeat parameter. -/
+theorem dst_radialGap_832_eq_221184_mul_repeatInnerParam832_add_180135_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIRadialGap 832 τ.dst.src =
+      221184 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 180135 := by
+  rw [radialGap_832_eq_8192_mul_repeatParam832_sub_89_of_repeatCore832 τ.dst hτ.2,
+    dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- Exact source self-threshold-defect formula on an intrinsic `832`
+    repeat-core transition, expressed in the canonical inner repeat parameter.
+    The affine part is explicit; the remaining staircase term records the next
+    finer source-state misalignment. -/
+theorem src_selfThresholdDefect_eq_6674_mul_repeatInnerParam832_add_5462_add_div27_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    τ.src.selfThresholdDefect =
+      6674 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 5462 +
+        (26 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 9) / 27 := by
+  let q := RegimeIIBadFrontierTransition.repeatInnerParam832 τ
+  have hsrcp :
+      RegimeIIBadFrontierState.repeatParam832 τ.src = 16 * q + 13 := by
+    simpa [q] using
+      src_repeatParam832_eq_16_mul_repeatInnerParam832_add_13_of_repeatCore832Transition τ hτ
+  have hdiv :
+      (512 * q + 441) / 27 = 18 * q + 16 + (26 * q + 9) / 27 := by
+    calc
+      (512 * q + 441) / 27 = ((26 * q + 9) + 27 * (18 * q + 16)) / 27 := by
+        omega
+      _ = (26 * q + 9) / 27 + (18 * q + 16) := by
+        simpa [Nat.mul_comm] using
+          (Nat.add_mul_div_right (26 * q + 9) (18 * q + 16) (by norm_num : 0 < 27))
+      _ = 18 * q + 16 + (26 * q + 9) / 27 := by
+        omega
+  calc
+    τ.src.selfThresholdDefect
+        = 416 * (16 * q + 13) + 38 + (32 * (16 * q + 13) + 25) / 27 := by
+          rw [selfThresholdDefect_eq_416_mul_repeatParam832_add_38_add_div27_of_repeatCore832 τ.src hτ.1, hsrcp]
+    _ = 6656 * q + 5446 + (512 * q + 441) / 27 := by
+      omega
+    _ = 6656 * q + 5446 + (18 * q + 16 + (26 * q + 9) / 27) := by
+      rw [hdiv]
+    _ = 6674 * q + 5462 + (26 * q + 9) / 27 := by
+      omega
+
+/-- Exact destination self-threshold-defect formula on an intrinsic `832`
+    repeat-core transition, expressed in the canonical inner repeat parameter.
+    On the repeat branch the destination staircase collapses and the defect is
+    purely affine. -/
+theorem dst_selfThresholdDefect_eq_11264_mul_repeatInnerParam832_add_9217_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    τ.dst.selfThresholdDefect =
+      11264 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 9217 := by
+  let q := RegimeIIBadFrontierTransition.repeatInnerParam832 τ
+  have hdstp :
+      RegimeIIBadFrontierState.repeatParam832 τ.dst = 27 * q + 22 := by
+    simpa [q] using
+      dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ
+  have hdiv : (864 * q + 729) / 27 = 32 * q + 27 := by
+    calc
+      (864 * q + 729) / 27 = (27 * (32 * q + 27)) / 27 := by
+        omega
+      _ = 32 * q + 27 := by
+        rw [Nat.mul_div_right _ (by norm_num : 0 < 27)]
+  calc
+    τ.dst.selfThresholdDefect
+        = 416 * (27 * q + 22) + 38 + (32 * (27 * q + 22) + 25) / 27 := by
+          rw [selfThresholdDefect_eq_416_mul_repeatParam832_add_38_add_div27_of_repeatCore832 τ.dst hτ.2, hdstp]
+    _ = 11232 * q + 9190 + (864 * q + 729) / 27 := by
+      omega
+    _ = 11232 * q + 9190 + (32 * q + 27) := by
+      rw [hdiv]
+    _ = 11264 * q + 9217 := by
+      omega
+
+/-- An intrinsic `832` repeat-core transition automatically starts above the
+    target window: the source repeat coordinate lies in the live branch
+    `16*q + 13`, so it is at least `13`. -/
+theorem one_le_src_repeatParam832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    1 ≤ RegimeIIBadFrontierState.repeatParam832 τ.src := by
+  rw [src_repeatParam832_eq_16_mul_repeatInnerParam832_add_13_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- On an intrinsic `832` repeat-core transition, the normalized repeat
+    parameter strictly increases from source to destination. -/
+theorem src_repeatParam832_lt_dst_repeatParam832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    RegimeIIBadFrontierState.repeatParam832 τ.src <
+      RegimeIIBadFrontierState.repeatParam832 τ.dst := by
+  rw [src_repeatParam832_eq_16_mul_repeatInnerParam832_add_13_of_repeatCore832Transition τ hτ,
+    dst_repeatParam832_eq_27_mul_repeatInnerParam832_add_22_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- On an intrinsic `832` repeat-core transition, the exact state value is
+    strictly larger at the destination. The surviving repeat branch is radially
+    expanding even while its projective slope contracts. -/
+theorem src_stateValue_lt_dst_stateValue_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIStateValue τ.src.src < regimeIIStateValue τ.dst.src := by
+  rw [src_stateValue_eq_131072_mul_repeatInnerParam832_add_107239_of_repeatCore832Transition τ hτ,
+    dst_stateValue_eq_221184_mul_repeatInnerParam832_add_180967_of_repeatCore832Transition τ hτ]
+  omega
+
+/-- On an intrinsic `832` repeat-core transition, the radial gap above the
+    target window is strictly larger at the destination. -/
+theorem src_radialGap_832_lt_dst_radialGap_832_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    regimeIIRadialGap 832 τ.src.src < regimeIIRadialGap 832 τ.dst.src := by
+  rw [src_radialGap_832_eq_131072_mul_repeatInnerParam832_add_106407_of_repeatCore832Transition τ hτ,
+    dst_radialGap_832_eq_221184_mul_repeatInnerParam832_add_180135_of_repeatCore832Transition τ hτ]
+  omega
+
 /-- Projective monotonicity transported onto the intrinsic `832` repeat core.
     Once a repeat-core transition starts above the target value, the same strict
     `832` projective slope decrease holds, now with repeat-core hypotheses
     rather than raw chart hypotheses. -/
 theorem strict_projectiveSelfSlope_832_of_repeatCore832Transition
     (τ : RegimeIIBadFrontierTransition 832)
-    (hτ : regimeIIRepeatCore832Transition τ)
-    (hp : 1 ≤ RegimeIIBadFrontierState.repeatParam832 τ.src) :
+    (hτ : regimeIIRepeatCore832Transition τ) :
     regimeIISelfThresholdDefect τ.dst.src * regimeIIRadialGap 832 τ.src.src <
       regimeIISelfThresholdDefect τ.src.src * regimeIIRadialGap 832 τ.dst.src := by
   have hcore : 832 ≤ regimeIIStateValue τ.src.src := by
-    exact (target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832 τ.src hτ.1).2 hp
+    exact
+      (target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832 τ.src hτ.1).2
+        (one_le_src_repeatParam832_of_repeatCore832Transition τ hτ)
   exact
     strict_projectiveSelfSlope_832_of_src_base_mod64_eq29
       τ hτ.1.1 hτ.1.2.1 (repeatCore832_base_mod64_eq29 τ.src hτ.1) hcore
+
+/-- Explicit inner-parameter form of the repeat-core projective contraction at
+    target `832`. The branch is radially expanding, but in the normalized
+    source-state coordinate `q` its projective slope still contracts. -/
+theorem strict_projectiveSelfSlope_832_in_repeatInnerParam_of_repeatCore832Transition
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ) :
+    (11264 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 9217) *
+        (131072 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 106407) <
+      (6674 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 5462 +
+          (26 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 9) / 27) *
+        (221184 * RegimeIIBadFrontierTransition.repeatInnerParam832 τ + 180135) := by
+  have h :
+      τ.dst.selfThresholdDefect * regimeIIRadialGap 832 τ.src.src <
+        τ.src.selfThresholdDefect * regimeIIRadialGap 832 τ.dst.src := by
+    simpa [RegimeIIBadFrontierState.selfThresholdDefect] using
+      strict_projectiveSelfSlope_832_of_repeatCore832Transition τ hτ
+  rw [dst_selfThresholdDefect_eq_11264_mul_repeatInnerParam832_add_9217_of_repeatCore832Transition τ hτ,
+    src_selfThresholdDefect_eq_6674_mul_repeatInnerParam832_add_5462_add_div27_of_repeatCore832Transition τ hτ,
+    src_radialGap_832_eq_131072_mul_repeatInnerParam832_add_106407_of_repeatCore832Transition τ hτ,
+    dst_radialGap_832_eq_221184_mul_repeatInnerParam832_add_180135_of_repeatCore832Transition τ hτ] at h
+  exact h
 
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
     `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
