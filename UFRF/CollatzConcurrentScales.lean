@@ -7564,6 +7564,79 @@ theorem dst_slice_eq_3_1_of_src_base_mod32_eq29
         ((regimeIIState_next_not_badFrontier_of_time3_eject1_of_base_mod64_eq61
             B τ.src.src τ.src.admissible ht he hmod64) hbadnext)
 
+/-- Source-state obstruction splitter on the surviving bad-to-bad branch out of
+    the intrinsic source slice `(time, eject) = (3, 1)`.
+
+    A surviving transition from this hard source slice has only three
+    possibilities: the destination lands on the lower slice `(2,1)`, the
+    destination time jumps to at least `4`, or the source lies on the stricter
+    surviving congruence branch `base ≡ 29 (mod 64)` and the destination stays
+    on `(3,1)`. This is the first finite source-state split of the `(3,1)`
+    survivor frontier before the thinner repeat-core congruence is applied. -/
+theorem dst_slice_split_of_src_time3_eject1
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1) :
+    (τ.dst.src.time = 2 ∧ τ.dst.src.eject = 1) ∨
+      4 ≤ τ.dst.src.time ∨
+      (τ.dst.src.time = 3 ∧ τ.dst.src.eject = 1 ∧ τ.src.src.base % 64 = 29) := by
+  let q : ℕ := (τ.src.src.base % 32) / 8
+  have hmod8 : τ.src.src.base % 8 = 5 := src_base_mod_8_eq_5_of_time3_eject1 τ ht he
+  have hne5 : τ.src.src.base % 32 ≠ 5 := src_base_mod32_ne_5_of_time3_eject1 τ ht he
+  have hq :
+      τ.src.src.base % 32 = 8 * q + 5 := by
+    have hmod8' : (τ.src.src.base % 32) % 8 = 5 := by
+      simpa [Nat.mod_mod] using hmod8
+    unfold q
+    have hdiv := Nat.mod_add_div (τ.src.src.base % 32) 8
+    omega
+  have hq_lt : q < 4 := by
+    have hlt32 : τ.src.src.base % 32 < 32 := Nat.mod_lt _ (by norm_num : 0 < 32)
+    omega
+  have hq_pos : 1 ≤ q := by
+    by_contra hlt
+    have hq0 : q = 0 := by omega
+    rw [hq0] at hq
+    exact hne5 hq
+  have hq_cases : q = 1 ∨ q = 2 ∨ q = 3 := by
+    omega
+  rcases hq_cases with hq1 | hq2 | hq3
+  · have h13 : τ.src.src.base % 32 = 13 := by
+      rw [hq1] at hq
+      exact hq
+    exact Or.inr <| Or.inl <|
+      (by
+        simpa [τ.step] using
+          regimeIIState_nextTime_ge_four_of_time3_eject1_of_base_mod32_eq13
+            τ.src.src τ.src.admissible ht he h13)
+  · have h21 : τ.src.src.base % 32 = 21 := by
+      rw [hq2] at hq
+      exact hq
+    exact Or.inl (dst_slice_eq_2_1_of_src_base_mod32_eq21 τ ht he h21)
+  · have h29 : τ.src.src.base % 32 = 29 := by
+      rw [hq3] at hq
+      exact hq
+    have hslice : τ.dst.src.time = 3 ∧ τ.dst.src.eject = 1 :=
+      dst_slice_eq_3_1_of_src_base_mod32_eq29 τ ht he h29
+    have hcases64 :
+        ∃ k, τ.src.src.base = 64 * k + 29 ∨ τ.src.src.base = 64 * k + 61 := by
+      refine ⟨τ.src.src.base / 64, ?_⟩
+      have hdiv := Nat.mod_add_div τ.src.src.base 64
+      have hodd := τ.src.admissible.2.1
+      omega
+    rcases hcases64 with ⟨k, hk | hk⟩
+    · have hmod64 : τ.src.src.base % 64 = 29 := by
+        rw [hk]
+        norm_num
+      exact Or.inr <| Or.inr <| ⟨hslice.1, hslice.2, hmod64⟩
+    · have hmod64 : τ.src.src.base % 64 = 61 := by
+        rw [hk]
+        norm_num
+      have hbadnext : regimeIIBadFrontier B (regimeIIStateNext τ.src.src) := by
+        simpa [τ.step] using τ.dst.isBad
+      exact False.elim
+        ((regimeIIState_next_not_badFrontier_of_time3_eject1_of_base_mod64_eq61
+            B τ.src.src τ.src.admissible ht he hmod64) hbadnext)
+
 /-- On the surviving bad-to-bad branch out of the intrinsic source slice
     `(time,eject) = (3,1)` with `base ≡ 29 (mod 64)`, the destination base
     satisfies the affine transport law `16 * dst.base = 27 * src.base + 1`. -/
@@ -9496,6 +9569,1103 @@ theorem repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_
     omega
   · rw [hsρ, hs_eq]
 
+/-- Canonical continuation parameter on the reduced second locked shell of the
+    intrinsic `832` repeat core. This compresses the continuation gate
+    `13 mod 16` on `repeatSecondLockedShellParam832` by the natural scale `16`.
+    It is the next intrinsic shell variable beneath the neutral second-shell
+    carrier. -/
+def RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 τ / 16
+
+/-- On the reduced second locked shell, if the second-shell parameter lies on
+    the continuation gate `16*t + 13`, then the canonical third-shell
+    parameter is exactly `t`. -/
+theorem repeatThirdLockedShellParam832_eq_t_of_repeatSecondLockedShellParam832_eq_16t_add13
+    (τ : RegimeIIBadFrontierTransition 832)
+    {t : ℕ}
+    (ht : RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 τ = 16 * t + 13) :
+    RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 τ = t := by
+  unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832
+  rw [ht]
+  omega
+
+/-- Seven-step persistence on the intrinsic `832` repeat core exposes the
+    first explicit gate law on the compressed third-shell variable. The source
+    third-shell parameter lies in the continuation gate `16*w + 5`, and the
+    next third-shell parameter is exactly `27*w + 9`. This is the first
+    genuinely non-neutral recurrence stated directly on the shell variable
+    beneath the neutral second-shell carrier. -/
+theorem repeatThirdLockedShellParam832_affine_of_repeatCore832Transition_chain7
+    (τ σ ρ ups χ ψ ω : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst) :
+    ∃ w : ℕ,
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 σ = 16 * w + 5 ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 ρ = 27 * w + 9 := by
+  obtain ⟨t, htσ, htρ⟩ :=
+    repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_chain6
+      τ σ ρ ups χ ψ hτ hσ hρ hups hχ hψ hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  obtain ⟨t', htρ', _⟩ :=
+    repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_chain6
+      σ ρ ups χ ψ ω hσ hρ hups hχ hψ hω hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω
+  have hrel : 27 * t + 22 = 16 * t' + 13 := by
+    calc
+      27 * t + 22
+          = RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 ρ := by
+              symm
+              exact htρ
+      _ = 16 * t' + 13 := htρ'
+  have htdecomp : t = t % 16 + 16 * (t / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div t 16).symm
+  have htmod : t % 16 = 5 := by
+    rw [htdecomp] at hrel
+    omega
+  refine ⟨t / 16, ?_, ?_⟩
+  · unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832
+    rw [htσ, htdecomp, htmod]
+    omega
+  · unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832
+    rw [htρ, htdecomp, htmod]
+    omega
+
+/-- Eight-step continuation on the compressed third shell of the intrinsic
+    `832` repeat core. If persistence survives one step beyond the first
+    third-shell gate law, then the third-shell parameter itself is forced into
+    the next gate `69 mod 256`, and the next two third-shell parameters lie on
+    the exact lifted affine orbit `z ↦ (256*z + 69, 432*z + 117, 729*z + 198)`.
+    This packages the next continuation gate directly on the non-neutral shell
+    variable, rather than only through the neutral carrier tower. -/
+theorem repeatThirdLockedShellParam832_secondAffine_of_repeatCore832Transition_chain8
+    (τ σ ρ ups χ ψ ω ζ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst) :
+    ∃ z : ℕ,
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 σ = 256 * z + 69 ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 ρ = 432 * z + 117 ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 ups = 729 * z + 198 := by
+  obtain ⟨w, hwσ, hwρ⟩ :=
+    repeatThirdLockedShellParam832_affine_of_repeatCore832Transition_chain7
+      τ σ ρ ups χ ψ ω hτ hσ hρ hups hχ hψ hω
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω
+  obtain ⟨w', hwρ', hwups⟩ :=
+    repeatThirdLockedShellParam832_affine_of_repeatCore832Transition_chain7
+      σ ρ ups χ ψ ω ζ hσ hρ hups hχ hψ hω hζ
+      hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ
+  have hwrel : 27 * w + 9 = 16 * w' + 5 := by
+    calc
+      27 * w + 9
+          = RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 ρ := by
+              symm
+              exact hwρ
+      _ = 16 * w' + 5 := hwρ'
+  have hwdecomp : w = w % 16 + 16 * (w / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div w 16).symm
+  have hwmod : w % 16 = 4 := by
+    rw [hwdecomp] at hwrel
+    omega
+  have hw'_eq : w' = 27 * (w / 16) + 7 := by
+    rw [hwdecomp, hwmod] at hwrel
+    omega
+  refine ⟨w / 16, ?_, ?_, ?_⟩
+  · rw [hwσ, hwdecomp, hwmod]
+    omega
+  · rw [hwρ, hwdecomp, hwmod]
+    omega
+  · rw [hwups, hw'_eq]
+    omega
+
+/-- Canonical core on the compressed third shell of the intrinsic `832` repeat
+    core. This packages the third-shell continuation parameter into the affine
+    factor that re-couples it to the neutral carrier picture. -/
+def RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  11 * RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 τ + 9
+
+/-- On the third-shell gate `repeatThirdLockedShellParam832 = 16*w + 5`, the
+    third-shell core is exactly `16 * (11*w + 4)`. -/
+theorem repeatThirdLockedShellCore832_eq_16_mul_11w_add4_of_repeatThirdLockedShellParam832_eq_16w_add5
+    (τ : RegimeIIBadFrontierTransition 832)
+    {w : ℕ}
+    (hw : RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 τ = 16 * w + 5) :
+    RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 τ = 16 * (11 * w + 4) := by
+  unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832
+  rw [hw]
+  omega
+
+/-- On the next third-shell affine point `repeatThirdLockedShellParam832 =
+    27*w + 9`, the third-shell core is exactly `27 * (11*w + 4)`. -/
+theorem repeatThirdLockedShellCore832_eq_27_mul_11w_add4_of_repeatThirdLockedShellParam832_eq_27w_add9
+    (τ : RegimeIIBadFrontierTransition 832)
+    {w : ℕ}
+    (hw : RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 τ = 27 * w + 9) :
+    RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 τ = 27 * (11 * w + 4) := by
+  unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832
+  rw [hw]
+  omega
+
+/-- Carrier form of the compressed third-shell gate law. On a seven-step
+    repeat-core persistence chain, the consecutive third-shell source states
+    share a common carrier `u`, with third-shell core `16*u` at the source and
+    `27*u` at the next source. This re-couples the non-neutral third-shell gate
+    to the same neutral carrier pattern one level deeper. -/
+theorem exists_repeatThirdLockedShellCore832_carrier_of_repeatCore832Transition_chain7
+    (τ σ ρ ups χ ψ ω : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst) :
+    ∃ u : ℕ,
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 σ = 16 * u ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ρ = 27 * u := by
+  obtain ⟨w, hwσ, hwρ⟩ :=
+    repeatThirdLockedShellParam832_affine_of_repeatCore832Transition_chain7
+      τ σ ρ ups χ ψ ω hτ hσ hρ hups hχ hψ hω
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω
+  refine ⟨11 * w + 4, ?_, ?_⟩
+  · rw [repeatThirdLockedShellCore832_eq_16_mul_11w_add4_of_repeatThirdLockedShellParam832_eq_16w_add5 σ hwσ]
+  · rw [repeatThirdLockedShellCore832_eq_27_mul_11w_add4_of_repeatThirdLockedShellParam832_eq_27w_add9 ρ hwρ]
+
+/-- Eight-step shell iteration on the third-shell core. Once the compressed
+    third-shell gate itself persists one step further, the third-shell core
+    acquires a deeper carrier `u` with exact lifted orbit
+    `256*u -> 432*u -> 729*u`. This shows the coupled gate/core state is not an
+    isolated artifact: the same carrier pattern reappears one shell deeper. -/
+theorem exists_repeatThirdLockedShellCore832_thirdCarrier_of_repeatCore832Transition_chain8
+    (τ σ ρ ups χ ψ ω ζ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst) :
+    ∃ u : ℕ,
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 σ = 256 * u ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ρ = 432 * u ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ups = 729 * u := by
+  obtain ⟨z, hzσ, hzρ, hzups⟩ :=
+    repeatThirdLockedShellParam832_secondAffine_of_repeatCore832Transition_chain8
+      τ σ ρ ups χ ψ ω ζ hτ hσ hρ hups hχ hψ hω hζ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ
+  refine ⟨11 * z + 3, ?_, ?_, ?_⟩
+  · unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832
+    rw [hzσ]
+    omega
+  · unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832
+    rw [hzρ]
+    omega
+  · unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832
+    rw [hzups]
+    omega
+
+/-- Nine-step continuation gate on the coupled third-shell state. If the
+    third-shell gate/core package itself persists one step further, then the
+    third-shell carrier `u` from the chain-8 lift is forced into the next gate
+    `16 ∣ u`. This isolates the first continuation condition directly on the
+    coupled third-shell state instead of expressing it only through another
+    expanded residue tower. -/
+theorem exists_repeatThirdLockedShellCore832_thirdCarrier_with_gate_of_repeatCore832Transition_chain9
+    (τ σ ρ ups χ ψ ω ζ η : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst) :
+    ∃ u : ℕ,
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 σ = 256 * u ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ρ = 432 * u ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ups = 729 * u ∧
+      16 ∣ u := by
+  obtain ⟨u, huσ, huρ, huups⟩ :=
+    exists_repeatThirdLockedShellCore832_thirdCarrier_of_repeatCore832Transition_chain8
+      τ σ ρ ups χ ψ ω ζ hτ hσ hρ hups hχ hψ hω hζ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ
+  obtain ⟨u', huρ', huups', huχ⟩ :=
+    exists_repeatThirdLockedShellCore832_thirdCarrier_of_repeatCore832Transition_chain8
+      σ ρ ups χ ψ ω ζ η hσ hρ hups hχ hψ hω hζ hη
+      hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη
+  have hucore : 432 * u = 256 * u' := by
+    calc
+      432 * u
+          = RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ρ := by
+              symm
+              exact huρ
+      _ = 256 * u' := huρ'
+  have hurel : 27 * u = 16 * u' := by
+    omega
+  have h16dvd : 16 ∣ u := by
+    have hcop : Nat.Coprime 16 27 := by decide
+    exact hcop.dvd_of_dvd_mul_left ⟨u', by omega⟩
+  exact ⟨u, huσ, huρ, huups, h16dvd⟩
+
+/-- Canonical parameter on the fourth locked shell of the intrinsic `832`
+    repeat core. This compresses the third-shell continuation gate
+    `69 mod 256` by the natural scale `256`. -/
+def RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 τ / 256
+
+/-- On the third-shell gate `repeatThirdLockedShellParam832 = 256*z + 69`, the
+    canonical fourth-shell parameter is exactly `z`. -/
+theorem repeatFourthLockedShellParam832_eq_z_of_repeatThirdLockedShellParam832_eq_256z_add69
+    (τ : RegimeIIBadFrontierTransition 832)
+    {z : ℕ}
+    (hz : RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 τ = 256 * z + 69) :
+    RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 τ = z := by
+  unfold RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832
+  rw [hz]
+  omega
+
+/-- Nine-step continuation on the compressed fourth shell of the intrinsic
+    `832` repeat core. If persistence survives one step beyond the third-shell
+    gate law, then the fourth-shell parameter itself follows the exact affine
+    recurrence `16*t + 7 -> 27*t + 12`. This is the renormalized shell pattern
+    reappearing on the next compressed gate variable. -/
+theorem repeatFourthLockedShellParam832_affine_of_repeatCore832Transition_chain9
+    (τ σ ρ ups χ ψ ω ζ η : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst) :
+    ∃ t : ℕ,
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 σ = 16 * t + 7 ∧
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 ρ = 27 * t + 12 := by
+  obtain ⟨z, hzσ, hzρ, hzups⟩ :=
+    repeatThirdLockedShellParam832_secondAffine_of_repeatCore832Transition_chain8
+      τ σ ρ ups χ ψ ω ζ hτ hσ hρ hups hχ hψ hω hζ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ
+  obtain ⟨z', hzρ', hzups', _⟩ :=
+    repeatThirdLockedShellParam832_secondAffine_of_repeatCore832Transition_chain8
+      σ ρ ups χ ψ ω ζ η hσ hρ hups hχ hψ hω hζ hη
+      hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη
+  have hzmid : 432 * z + 117 = 256 * z' + 69 := by
+    calc
+      432 * z + 117
+          = RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 ρ := by
+              symm
+              exact hzρ
+      _ = 256 * z' + 69 := hzρ'
+  have hzrel : 27 * z + 3 = 16 * z' := by
+    omega
+  have hzdecomp : z = z % 16 + 16 * (z / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div z 16).symm
+  have hzmod : z % 16 = 7 := by
+    rw [hzdecomp] at hzrel
+    omega
+  have hz'_eq : z' = 27 * (z / 16) + 12 := by
+    rw [hzdecomp, hzmod] at hzrel
+    omega
+  refine ⟨z / 16, ?_, ?_⟩
+  · rw [repeatFourthLockedShellParam832_eq_z_of_repeatThirdLockedShellParam832_eq_256z_add69 σ hzσ,
+      hzdecomp, hzmod]
+    omega
+  · rw [repeatFourthLockedShellParam832_eq_z_of_repeatThirdLockedShellParam832_eq_256z_add69 ρ hzρ',
+      hz'_eq]
+
+/-- Full-cycle return theorem on the intrinsic `832` repeat core. If
+    repeat-core persistence survives through the first complete three-phase
+    shell cycle, then the compressed shell dynamics return to the first-shell
+    affine pattern while the deeper coupled carrier is simultaneously forced
+    into its continuation gate. This packages the current obstruction as a
+    finite phase automaton plus a gated renormalized carrier, rather than an
+    open-ended residue tower. -/
+theorem exists_repeatShellCycleReturn832_of_repeatCore832Transition_chain9
+    (τ σ ρ ups χ ψ ω ζ η : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst) :
+    ∃ t u : ℕ,
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 σ = 16 * t + 7 ∧
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 ρ = 27 * t + 12 ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 σ = 256 * u ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ρ = 432 * u ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ups = 729 * u ∧
+      16 ∣ u := by
+  obtain ⟨t, htσ, htρ⟩ :=
+    repeatFourthLockedShellParam832_affine_of_repeatCore832Transition_chain9
+      τ σ ρ ups χ ψ ω ζ η hτ hσ hρ hups hχ hψ hω hζ hη
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη
+  obtain ⟨u, huσ, huρ, huups, hu16⟩ :=
+    exists_repeatThirdLockedShellCore832_thirdCarrier_with_gate_of_repeatCore832Transition_chain9
+      τ σ ρ ups χ ψ ω ζ η hτ hσ hρ hups hχ hψ hω hζ hη
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη
+  exact ⟨t, u, htσ, htρ, huσ, huρ, huups, hu16⟩
+
+/-- Canonical core on the returned first shell after one full renormalized
+    cycle of the intrinsic `832` repeat core. The affine offset is chosen so
+    that the returned phase `16*t + 7 -> 27*t + 12` again becomes exact
+    `16/27` carrier transport. -/
+def RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  11 * RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 τ + 3
+
+/-- On the returned first-shell phase `repeatFourthLockedShellParam832 =
+    16*t + 7`, the fourth-shell core is exactly `16 * (11*t + 5)`. -/
+theorem repeatFourthLockedShellCore832_eq_16_mul_11t_add5_of_repeatFourthLockedShellParam832_eq_16t_add7
+    (τ : RegimeIIBadFrontierTransition 832)
+    {t : ℕ}
+    (ht : RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 τ = 16 * t + 7) :
+    RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 τ = 16 * (11 * t + 5) := by
+  unfold RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832
+  rw [ht]
+  omega
+
+/-- On the next returned first-shell affine point
+    `repeatFourthLockedShellParam832 = 27*t + 12`, the fourth-shell core is
+    exactly `27 * (11*t + 5)`. -/
+theorem repeatFourthLockedShellCore832_eq_27_mul_11t_add5_of_repeatFourthLockedShellParam832_eq_27t_add12
+    (τ : RegimeIIBadFrontierTransition 832)
+    {t : ℕ}
+    (ht : RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 τ = 27 * t + 12) :
+    RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 τ = 27 * (11 * t + 5) := by
+  unfold RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832
+  rw [ht]
+  omega
+
+/-- Carrier form of the full-cycle return on the intrinsic `832` repeat core.
+    After one complete three-phase shell cycle, the returned first-shell state
+    again has exact `16/27` carrier transport on its canonical core. This is
+    the precise restart/bridge law suggested by the cycle: the process returns
+    to the original shell shape with a deeper carrier. -/
+theorem exists_repeatFourthLockedShellCore832_carrier_of_repeatCore832Transition_chain9
+    (τ σ ρ ups χ ψ ω ζ η : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst) :
+    ∃ v : ℕ,
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 σ = 16 * v ∧
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 ρ = 27 * v := by
+  obtain ⟨t, htσ, htρ⟩ :=
+    repeatFourthLockedShellParam832_affine_of_repeatCore832Transition_chain9
+      τ σ ρ ups χ ψ ω ζ η hτ hσ hρ hups hχ hψ hω hζ hη
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη
+  refine ⟨11 * t + 5, ?_, ?_⟩
+  · rw [repeatFourthLockedShellCore832_eq_16_mul_11t_add5_of_repeatFourthLockedShellParam832_eq_16t_add7 σ htσ]
+  · rw [repeatFourthLockedShellCore832_eq_27_mul_11t_add5_of_repeatFourthLockedShellParam832_eq_27t_add12 ρ htρ]
+
+/-- Exact bridge theorem for the full-cycle return on the intrinsic `832`
+    repeat core. The returned fourth-shell core at the phase-restart state is
+    exactly the deeper carrier that previously appeared only existentially in
+    the third-shell lift. Consequently the incoming third-shell core orbit is
+    exactly `256/432/729` times the returned core, and that returned core is
+    itself continuation-gated by `16 ∣ _`. -/
+theorem repeatShellCycleReturnCore832_of_repeatCore832Transition_chain9
+    (τ σ ρ ups χ ψ ω ζ η : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst) :
+    RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 σ =
+        256 * RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 σ ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ρ =
+        432 * RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 σ ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ups =
+        729 * RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 σ ∧
+      16 ∣ RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 σ := by
+  obtain ⟨z, hzσ, hzρ, hzups⟩ :=
+    repeatThirdLockedShellParam832_secondAffine_of_repeatCore832Transition_chain8
+      τ σ ρ ups χ ψ ω ζ hτ hσ hρ hups hχ hψ hω hζ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ
+  obtain ⟨t, htσ, _⟩ :=
+    repeatFourthLockedShellParam832_affine_of_repeatCore832Transition_chain9
+      τ σ ρ ups χ ψ ω ζ η hτ hσ hρ hups hχ hψ hω hζ hη
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη
+  have hfourthσ :
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 σ = z := by
+    exact repeatFourthLockedShellParam832_eq_z_of_repeatThirdLockedShellParam832_eq_256z_add69 σ hzσ
+  constructor
+  · unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832
+    unfold RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832
+    rw [hzσ, hfourthσ]
+    omega
+  constructor
+  · unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832
+    unfold RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832
+    rw [hzρ, hfourthσ]
+    omega
+  constructor
+  · unfold RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832
+    unfold RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832
+    rw [hzups, hfourthσ]
+    omega
+  · refine ⟨11 * t + 5, ?_⟩
+    rw [repeatFourthLockedShellCore832_eq_16_mul_11t_add5_of_repeatFourthLockedShellParam832_eq_16t_add7 σ htσ]
+
+/-- Canonical renormalized seed after one full shell cycle on the intrinsic
+    `832` repeat core. This is the returned fourth-shell core compressed by
+    the continuation gate `16`, so it becomes the natural seed for the next
+    cycle/bridge step. -/
+def RegimeIIBadFrontierTransition.repeatShellCycleSeed832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 τ / 16
+
+/-- Full-cycle seed theorem on the intrinsic `832` repeat core. After one
+    complete shell cycle, the incoming third-shell core orbit and the returned
+    fourth-shell core are all exact powers of the same renormalized seed. This
+    is the formal seed/bridge restart law: the cycle closes and produces the
+    next seed explicitly. -/
+theorem repeatShellCycleSeed832_of_repeatCore832Transition_chain9
+    (τ σ ρ ups χ ψ ω ζ η : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst) :
+    RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 σ =
+        4096 * RegimeIIBadFrontierTransition.repeatShellCycleSeed832 σ ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ρ =
+        6912 * RegimeIIBadFrontierTransition.repeatShellCycleSeed832 σ ∧
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellCore832 ups =
+        11664 * RegimeIIBadFrontierTransition.repeatShellCycleSeed832 σ ∧
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 σ =
+        16 * RegimeIIBadFrontierTransition.repeatShellCycleSeed832 σ ∧
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 ρ =
+        27 * RegimeIIBadFrontierTransition.repeatShellCycleSeed832 σ := by
+  have hbridge :=
+    repeatShellCycleReturnCore832_of_repeatCore832Transition_chain9
+      τ σ ρ ups χ ψ ω ζ η hτ hσ hρ hups hχ hψ hω hζ hη
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη
+  have hcarrier :=
+    exists_repeatFourthLockedShellCore832_carrier_of_repeatCore832Transition_chain9
+      τ σ ρ ups χ ψ ω ζ η hτ hσ hρ hups hχ hψ hω hζ hη
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη
+  rcases hcarrier with ⟨v, hvσ, hvρ⟩
+  have hseedσ :
+      RegimeIIBadFrontierTransition.repeatShellCycleSeed832 σ = v := by
+    unfold RegimeIIBadFrontierTransition.repeatShellCycleSeed832
+    rw [hvσ]
+    omega
+  constructor
+  · rw [hbridge.1, hseedσ]
+    omega
+  constructor
+  · rw [hbridge.2.1, hseedσ]
+    omega
+  constructor
+  · rw [hbridge.2.2.1, hseedσ]
+    omega
+  constructor
+  · rw [hvσ, hseedσ]
+  · rw [hvρ, hseedσ]
+
+/-- One-step-deeper continuation on the returned first shell of the intrinsic
+    `832` repeat core. If persistence survives one step beyond the full-cycle
+    return, then the returned shell parameter itself is forced into the same
+    second gate `23 mod 256`, with the next two returned-shell parameters on
+    the exact reduced affine orbit `q ↦ 27*q + 2`. This is the first genuine
+    seed-continuation law on the returned phase. -/
+theorem repeatFourthLockedShellParam832_secondAffine_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    ∃ q : ℕ,
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 σ = 256 * q + 23 ∧
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 ρ = 432 * q + 39 ∧
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 ups = 729 * q + 66 := by
+  obtain ⟨t, htσ, htρ⟩ :=
+    repeatFourthLockedShellParam832_affine_of_repeatCore832Transition_chain9
+      τ σ ρ ups χ ψ ω ζ η hτ hσ hρ hups hχ hψ hω hζ hη
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη
+  obtain ⟨s, hsρ, hsups⟩ :=
+    repeatFourthLockedShellParam832_affine_of_repeatCore832Transition_chain9
+      σ ρ ups χ ψ ω ζ η θ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  have htdecomp : t = t % 16 + 16 * (t / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div t 16).symm
+  have htmod : t % 16 = 1 := by
+    rw [htρ] at hsρ
+    omega
+  have hs_eq : s = 27 * (t / 16) + 2 := by
+    rw [htρ] at hsρ
+    rw [htdecomp, htmod] at hsρ
+    omega
+  refine ⟨t / 16, ?_, ?_, ?_⟩
+  · rw [htσ, htdecomp, htmod]
+    omega
+  · rw [htρ, htdecomp, htmod]
+    omega
+  · rw [hsups, hs_eq]
+    omega
+
+/-- On the returned-shell gate `repeatFourthLockedShellParam832 = 256*q + 23`,
+    the renormalized cycle seed is exactly `16 * (11*q + 1)`. So one more
+    persistence step beyond the full-cycle return forces the returned seed
+    itself into the same continuation gate shape that previously appeared on
+    the reduced shell core. -/
+theorem repeatShellCycleSeed832_eq_16_mul_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 τ = 256 * q + 23) :
+    RegimeIIBadFrontierTransition.repeatShellCycleSeed832 τ = 16 * (11 * q + 1) := by
+  unfold RegimeIIBadFrontierTransition.repeatShellCycleSeed832
+  unfold RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832
+  rw [hq]
+  omega
+
+/-- Carrier form of the first seed-continuation law on the intrinsic `832`
+    repeat core. If persistence survives one step beyond the full shell-cycle
+    return, then the returned cycle seed at `σ` is continuation-gated by `16`,
+    and the next returned fourth-shell core at `ρ` is exactly `432` times the
+    same reduced carrier. -/
+theorem exists_repeatShellCycleSeed832_nextCarrier_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    ∃ u : ℕ,
+      RegimeIIBadFrontierTransition.repeatShellCycleSeed832 σ = 16 * u ∧
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 ρ = 432 * u := by
+  obtain ⟨q, hσq, hρq, _⟩ :=
+    repeatFourthLockedShellParam832_secondAffine_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  refine ⟨11 * q + 1, ?_, ?_⟩
+  · rw [repeatShellCycleSeed832_eq_16_mul_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23 σ hσq]
+  · unfold RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832
+    rw [hρq]
+    omega
+
+/-- Exact continuation transport on the renormalized cycle seed of the
+    intrinsic `832` repeat core. If persistence survives one step beyond the
+    full shell-cycle return, then consecutive returned states carry the cycle
+    seed by the same exact `16/27` law that previously appeared on the shell
+    cores. This is the first theorem where the cycle seed itself becomes a
+    genuine transport variable, not merely a bridge witness. -/
+theorem exists_repeatShellCycleSeed832_carrier_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    ∃ u : ℕ,
+      RegimeIIBadFrontierTransition.repeatShellCycleSeed832 σ = 16 * u ∧
+      RegimeIIBadFrontierTransition.repeatShellCycleSeed832 ρ = 27 * u := by
+  obtain ⟨u, huσ, huρcore⟩ :=
+    exists_repeatShellCycleSeed832_nextCarrier_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  refine ⟨u, huσ, ?_⟩
+  unfold RegimeIIBadFrontierTransition.repeatShellCycleSeed832
+  rw [huρcore]
+  omega
+
+/-- Exact `16/27` transport on the renormalized cycle seed. -/
+theorem sixteen_mul_next_repeatShellCycleSeed832_eq_twentySeven_mul_src_repeatShellCycleSeed832_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    16 * RegimeIIBadFrontierTransition.repeatShellCycleSeed832 ρ =
+      27 * RegimeIIBadFrontierTransition.repeatShellCycleSeed832 σ := by
+  obtain ⟨u, huσ, huρ⟩ :=
+    exists_repeatShellCycleSeed832_carrier_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  rw [huσ, huρ]
+  ring
+
+/-- Canonical core on the renormalized shell-cycle return state. This compresses
+    the cycle seed by its continuation gate `16`, so the cycle can be studied
+    through a single intrinsic carrier rather than only through bridge
+    witnesses. -/
+def RegimeIIBadFrontierTransition.repeatShellCycleCore832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  RegimeIIBadFrontierTransition.repeatShellCycleSeed832 τ / 16
+
+/-- On the returned-shell gate `repeatFourthLockedShellParam832 = 256*q + 23`,
+    the renormalized shell-cycle core is exactly `11*q + 1`. This identifies
+    the cycle-return core with the same canonical reduced-shell core that
+    previously appeared one level lower. -/
+theorem repeatShellCycleCore832_eq_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 τ = 256 * q + 23) :
+    RegimeIIBadFrontierTransition.repeatShellCycleCore832 τ = 11 * q + 1 := by
+  unfold RegimeIIBadFrontierTransition.repeatShellCycleCore832
+  rw [repeatShellCycleSeed832_eq_16_mul_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23 τ hq]
+  omega
+
+/-- On the returned-shell gate, the cycle seed is exactly `16` times the
+    canonical cycle core. -/
+theorem repeatShellCycleSeed832_eq_16_mul_repeatShellCycleCore832_of_repeatFourthLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 τ = 256 * q + 23) :
+    RegimeIIBadFrontierTransition.repeatShellCycleSeed832 τ =
+      16 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 τ := by
+  rw [repeatShellCycleSeed832_eq_16_mul_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23 τ hq,
+    repeatShellCycleCore832_eq_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23 τ hq]
+
+/-- Returned-shell carrier form written through the canonical cycle core. If
+    persistence survives one step beyond the full cycle, then the next returned
+    fourth-shell core is exactly `432` times the current cycle core. -/
+theorem next_repeatFourthLockedShellCore832_eq_432_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832 ρ =
+      432 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ := by
+  obtain ⟨q, hσq, hρq, _⟩ :=
+    repeatFourthLockedShellParam832_secondAffine_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  unfold RegimeIIBadFrontierTransition.repeatFourthLockedShellCore832
+  rw [hρq, repeatShellCycleCore832_eq_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23 σ hσq]
+  omega
+
+/-- Returned-shell seed transport written through the canonical cycle core. -/
+theorem next_repeatShellCycleSeed832_eq_27_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    RegimeIIBadFrontierTransition.repeatShellCycleSeed832 ρ =
+      27 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ := by
+  unfold RegimeIIBadFrontierTransition.repeatShellCycleSeed832
+  rw [next_repeatFourthLockedShellCore832_eq_432_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ]
+  omega
+
+/-- One-step-deeper continuation on the renormalized shell-cycle core. If
+    repeat-core persistence survives one more step beyond the first seed
+    continuation law, then the cycle core itself is forced into the same gate
+    pattern `13 mod 16`, with exact affine transport
+    `16 * (11*t + 9) -> 27 * (11*t + 9)`. This is the first place the cycle
+    return-state inherits the same recurrence shape as the lower shells. -/
+theorem repeatShellCycleCore832_secondAffine_of_repeatCore832Transition_chain11
+    (τ σ ρ ups χ ψ ω ζ η θ ι : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hι : regimeIIRepeatCore832Transition ι)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst)
+    (hlinkθι : ι.src = θ.dst) :
+    ∃ t : ℕ,
+      RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ = 16 * (11 * t + 9) ∧
+      RegimeIIBadFrontierTransition.repeatShellCycleCore832 ρ = 27 * (11 * t + 9) := by
+  obtain ⟨q, hσq, hρq, _⟩ :=
+    repeatFourthLockedShellParam832_secondAffine_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  obtain ⟨q', hρq', _, _⟩ :=
+    repeatFourthLockedShellParam832_secondAffine_of_repeatCore832Transition_chain10
+      σ ρ ups χ ψ ω ζ η θ ι hσ hρ hups hχ hψ hω hζ hη hθ hι
+      hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ hlinkθι
+  have hmid : 432 * q + 39 = 256 * q' + 23 := by
+    calc
+      432 * q + 39
+          = RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 ρ := by
+              symm
+              exact hρq
+      _ = 256 * q' + 23 := hρq'
+  have hqrel : 27 * q + 1 = 16 * q' := by
+    omega
+  have hqdecomp : q = q % 16 + 16 * (q / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div q 16).symm
+  have hqmod : q % 16 = 13 := by
+    rw [hqdecomp] at hqrel
+    omega
+  have hq' : q' = 27 * (q / 16) + 22 := by
+    rw [hqdecomp, hqmod] at hqrel
+    omega
+  refine ⟨q / 16, ?_, ?_⟩
+  · rw [repeatShellCycleCore832_eq_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23 σ hσq,
+      hqdecomp, hqmod]
+    omega
+  · rw [repeatShellCycleCore832_eq_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23 ρ hρq',
+      hq']
+    omega
+
+/-- Carrier form of the renormalized shell-cycle core transport on the first
+    true cycle-return state. -/
+theorem exists_repeatShellCycleCore832_carrier_of_repeatCore832Transition_chain11
+    (τ σ ρ ups χ ψ ω ζ η θ ι : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hι : regimeIIRepeatCore832Transition ι)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst)
+    (hlinkθι : ι.src = θ.dst) :
+    ∃ v : ℕ,
+      RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ = 16 * v ∧
+      RegimeIIBadFrontierTransition.repeatShellCycleCore832 ρ = 27 * v := by
+  obtain ⟨t, htσ, htρ⟩ :=
+    repeatShellCycleCore832_secondAffine_of_repeatCore832Transition_chain11
+      τ σ ρ ups χ ψ ω ζ η θ ι hτ hσ hρ hups hχ hψ hω hζ hη hθ hι
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ hlinkθι
+  refine ⟨11 * t + 9, htσ, htρ⟩
+
+/-- Exact `16/27` transport on the renormalized shell-cycle core. -/
+theorem sixteen_mul_next_repeatShellCycleCore832_eq_twentySeven_mul_src_repeatShellCycleCore832_of_repeatCore832Transition_chain11
+    (τ σ ρ ups χ ψ ω ζ η θ ι : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hι : regimeIIRepeatCore832Transition ι)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst)
+    (hlinkθι : ι.src = θ.dst) :
+    16 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 ρ =
+      27 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ := by
+  obtain ⟨v, hvσ, hvρ⟩ :=
+    exists_repeatShellCycleCore832_carrier_of_repeatCore832Transition_chain11
+      τ σ ρ ups χ ψ ω ζ η θ ι hτ hσ hρ hups hχ hψ hω hζ hη hθ hι
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ hlinkθι
+  rw [hvσ, hvρ]
+  ring
+
+/-- Canonical renormalized return-state parameter on the intrinsic `832`
+    shell-cycle. This compresses the returned fourth-shell gate `23 mod 256`
+    by the natural scale `256`, so the cycle can be studied through the same
+    kind of gate variable that previously appeared on the second locked shell,
+    but now as a first-class return-state coordinate. -/
+def RegimeIIBadFrontierTransition.repeatShellCycleParam832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 τ / 256
+
+/-- On the returned shell gate `repeatFourthLockedShellParam832 = 256*q + 23`,
+    the canonical cycle return-state parameter is exactly `q`. -/
+theorem repeatShellCycleParam832_eq_q_of_repeatFourthLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 τ = 256 * q + 23) :
+    RegimeIIBadFrontierTransition.repeatShellCycleParam832 τ = q := by
+  unfold RegimeIIBadFrontierTransition.repeatShellCycleParam832
+  rw [hq]
+  omega
+
+/-- Renormalized return-state gate law on the intrinsic `832` shell-cycle. If
+    persistence survives eleven consecutive repeat-core transitions, then the
+    cycle return-state parameter itself is forced into the same exact affine
+    gate pattern `16*t + 13 -> 27*t + 22` that previously governed the reduced
+    second shell. This is the strongest current evidence that the cycle has
+    become a genuine self-similar return map rather than another shell tower. -/
+theorem repeatShellCycleParam832_secondAffine_of_repeatCore832Transition_chain11
+    (τ σ ρ ups χ ψ ω ζ η θ ι : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hι : regimeIIRepeatCore832Transition ι)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst)
+    (hlinkθι : ι.src = θ.dst) :
+    ∃ t : ℕ,
+      RegimeIIBadFrontierTransition.repeatShellCycleParam832 σ = 16 * t + 13 ∧
+      RegimeIIBadFrontierTransition.repeatShellCycleParam832 ρ = 27 * t + 22 := by
+  obtain ⟨q, hσq, hρq, _⟩ :=
+    repeatFourthLockedShellParam832_secondAffine_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  obtain ⟨q', hρq', _, _⟩ :=
+    repeatFourthLockedShellParam832_secondAffine_of_repeatCore832Transition_chain10
+      σ ρ ups χ ψ ω ζ η θ ι hσ hρ hups hχ hψ hω hζ hη hθ hι
+      hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ hlinkθι
+  have hmid : 432 * q + 39 = 256 * q' + 23 := by
+    calc
+      432 * q + 39
+          = RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 ρ := by
+              symm
+              exact hρq
+      _ = 256 * q' + 23 := hρq'
+  have hqrel : 27 * q + 1 = 16 * q' := by
+    omega
+  have hqdecomp : q = q % 16 + 16 * (q / 16) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div q 16).symm
+  have hqmod : q % 16 = 13 := by
+    rw [hqdecomp] at hqrel
+    omega
+  have hq' : q' = 27 * (q / 16) + 22 := by
+    rw [hqdecomp, hqmod] at hqrel
+    omega
+  refine ⟨q / 16, ?_, ?_⟩
+  · rw [repeatShellCycleParam832_eq_q_of_repeatFourthLockedShellParam832_eq_256q_add_23 σ hσq,
+      hqdecomp, hqmod]
+    omega
+  · rw [repeatShellCycleParam832_eq_q_of_repeatFourthLockedShellParam832_eq_256q_add_23 ρ hρq',
+      hq']
+
 /-- On the second locked shell `repeatLockedShellParam832 = 256*q + 23`, the
     source inner repeat parameter is exactly `110592*q + 10053`. This is the
     uncompressed form of the second-shell coordinate inside the original
@@ -9654,6 +10824,976 @@ theorem src_normalizedRepeatValue832_eq_216_mul_src_normalizedRepeatSelfThreshol
     src_normalizedRepeatRadialGap832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain5
       τ σ ρ ups χ hτ hσ hρ hups hχ hlinkτσ hlinkσρ hlinkρups hlinkupsχ
 
+/-- Exact second-shell transport of the normalized self-threshold defect. If
+    repeat-core persistence survives six consecutive transitions, then the two
+    consecutive source states that lie on the reduced second shell are related
+    by exact `27/16` scaling on the normalized defect observer. -/
+theorem sixteen_mul_next_src_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain6
+    (τ σ ρ ups χ ψ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst) :
+    16 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 ρ.src =
+      27 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src := by
+  obtain ⟨t, htσ, htρ⟩ :=
+    repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_chain6
+      τ σ ρ ups χ ψ hτ hσ hρ hups hχ hψ hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  obtain ⟨qσ, hσshell, _, _⟩ :=
+    repeatLockedShellParam832_secondAffine_of_repeatCore832Transition_chain5
+      τ σ ρ ups χ hτ hσ hρ hups hχ hlinkτσ hlinkσρ hlinkρups hlinkupsχ
+  obtain ⟨qρ, hρshell, _, _⟩ :=
+    repeatLockedShellParam832_secondAffine_of_repeatCore832Transition_chain5
+      σ ρ ups χ ψ hσ hρ hups hχ hψ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  have hqσ :
+      qσ = 16 * t + 13 := by
+    have hsq :
+        RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 σ = qσ := by
+      rw [repeatSecondLockedShellParam832_eq_q_of_repeatLockedShellParam832_eq_256q_add_23 σ hσshell]
+    rw [hsq] at htσ
+    exact htσ
+  have hqρ :
+      qρ = 27 * t + 22 := by
+    have hrq :
+        RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 ρ = qρ := by
+      rw [repeatSecondLockedShellParam832_eq_q_of_repeatLockedShellParam832_eq_256q_add_23 ρ hρshell]
+    rw [hrq] at htρ
+    exact htρ
+  have hclockσ :
+      (RegimeIIBadFrontierTransition.repeatClock832 σ).1 = 5 ∧
+        (RegimeIIBadFrontierTransition.repeatClock832 σ).2 = 9 :=
+    repeatClock832_eq_5_9_of_repeatCore832Transition_chain3
+      τ σ ρ hτ hσ hρ hlinkτσ hlinkσρ
+  have hclockρ :
+      (RegimeIIBadFrontierTransition.repeatClock832 ρ).1 = 5 ∧
+        (RegimeIIBadFrontierTransition.repeatClock832 ρ).2 = 9 :=
+    repeatClock832_eq_5_9_of_repeatCore832Transition_chain3
+      σ ρ ups hσ hρ hups hlinkσρ hlinkρups
+  rw [src_normalizedRepeatSelfThresholdDefect832_eq_738197504_mul_q_add_67108864_of_repeatLockedShellParam832_eq_256q_add_23
+      σ hσ hσshell hclockσ.1 hclockσ.2,
+    src_normalizedRepeatSelfThresholdDefect832_eq_738197504_mul_q_add_67108864_of_repeatLockedShellParam832_eq_256q_add_23
+      ρ hρ hρshell hclockρ.1 hclockρ.2,
+    hqσ, hqρ]
+  omega
+
+/-- Exact second-shell transport of the normalized value observer. On the same
+    six-step persistence chain, the reduced-shell growth observer scales by
+    the same exact factor `27/16`. -/
+theorem sixteen_mul_next_src_normalizedRepeatValue832_eq_twentySeven_mul_src_normalizedRepeatValue832_of_repeatCore832Transition_chain6
+    (τ σ ρ ups χ ψ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst) :
+    16 * RegimeIIBadFrontierState.normalizedRepeatValue832 ρ.src =
+      27 * RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src := by
+  obtain ⟨t, htσ, htρ⟩ :=
+    repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_chain6
+      τ σ ρ ups χ ψ hτ hσ hρ hups hχ hψ hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  obtain ⟨qσ, hσshell, _, _⟩ :=
+    repeatLockedShellParam832_secondAffine_of_repeatCore832Transition_chain5
+      τ σ ρ ups χ hτ hσ hρ hups hχ hlinkτσ hlinkσρ hlinkρups hlinkupsχ
+  obtain ⟨qρ, hρshell, _, _⟩ :=
+    repeatLockedShellParam832_secondAffine_of_repeatCore832Transition_chain5
+      σ ρ ups χ ψ hσ hρ hups hχ hψ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  have hqσ :
+      qσ = 16 * t + 13 := by
+    have hsq :
+        RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 σ = qσ := by
+      rw [repeatSecondLockedShellParam832_eq_q_of_repeatLockedShellParam832_eq_256q_add_23 σ hσshell]
+    rw [hsq] at htσ
+    exact htσ
+  have hqρ :
+      qρ = 27 * t + 22 := by
+    have hrq :
+        RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 ρ = qρ := by
+      rw [repeatSecondLockedShellParam832_eq_q_of_repeatLockedShellParam832_eq_256q_add_23 ρ hρshell]
+    rw [hrq] at htρ
+    exact htρ
+  have hclockσ :
+      (RegimeIIBadFrontierTransition.repeatClock832 σ).1 = 5 ∧
+        (RegimeIIBadFrontierTransition.repeatClock832 σ).2 = 9 :=
+    repeatClock832_eq_5_9_of_repeatCore832Transition_chain3
+      τ σ ρ hτ hσ hρ hlinkτσ hlinkσρ
+  have hclockρ :
+      (RegimeIIBadFrontierTransition.repeatClock832 ρ).1 = 5 ∧
+        (RegimeIIBadFrontierTransition.repeatClock832 ρ).2 = 9 :=
+    repeatClock832_eq_5_9_of_repeatCore832Transition_chain3
+      σ ρ ups hσ hρ hups hlinkσρ hlinkρups
+  have htargetσ :
+      832 ≤ regimeIIStateValue σ.src.src := by
+    exact
+      (target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832 σ.src hσ.1).2
+        (one_le_src_repeatParam832_of_repeatCore832Transition σ hσ)
+  have htargetρ :
+      832 ≤ regimeIIStateValue ρ.src.src := by
+    exact
+      (target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832 ρ.src hρ.1).2
+        (one_le_src_repeatParam832_of_repeatCore832Transition ρ hρ)
+  rw [normalizedRepeatValue832_eq_normalizedRepeatRadialGap832_of_target_le σ.src htargetσ,
+    normalizedRepeatValue832_eq_normalizedRepeatRadialGap832_of_target_le ρ.src htargetρ,
+    src_normalizedRepeatRadialGap832_eq_159450660864_mul_q_add_14495514624_of_repeatLockedShellParam832_eq_256q_add_23
+      σ hσ hσshell hclockσ.1 hclockσ.2,
+    src_normalizedRepeatRadialGap832_eq_159450660864_mul_q_add_14495514624_of_repeatLockedShellParam832_eq_256q_add_23
+      ρ hρ hρshell hclockρ.1 hclockρ.2,
+    hqσ, hqρ]
+  omega
+
+/-- Exact second-shell projective neutrality on the reduced shell. Once six
+    repeat-core transitions persist consecutively, the two consecutive source
+    states that lie on the reduced second shell have identical normalized
+    value/defect slope. -/
+theorem normalizedProjectiveValueSlopeEq_832_of_repeatCore832Transition_chain6
+    (τ σ ρ ups χ ψ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst) :
+    RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 ρ.src *
+        RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src =
+      RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src *
+        RegimeIIBadFrontierState.normalizedRepeatValue832 ρ.src := by
+  let Dσ := RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src
+  let Dρ := RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 ρ.src
+  let Vσ := RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src
+  let Vρ := RegimeIIBadFrontierState.normalizedRepeatValue832 ρ.src
+  have hdef :
+      16 * Dρ = 27 * Dσ := by
+    simpa [Dσ, Dρ] using
+      sixteen_mul_next_src_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain6
+        τ σ ρ ups χ ψ hτ hσ hρ hups hχ hψ hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  have hval :
+      16 * Vρ = 27 * Vσ := by
+    simpa [Vσ, Vρ] using
+      sixteen_mul_next_src_normalizedRepeatValue832_eq_twentySeven_mul_src_normalizedRepeatValue832_of_repeatCore832Transition_chain6
+        τ σ ρ ups χ ψ hτ hσ hρ hups hχ hψ hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  have hscaledLeft :
+      16 * (Dρ * Vσ) = 27 * (Dσ * Vσ) := by
+    calc
+      16 * (Dρ * Vσ) = (16 * Dρ) * Vσ := by ring
+      _ = (27 * Dσ) * Vσ := by rw [hdef]
+      _ = 27 * (Dσ * Vσ) := by ring
+  have hscaledRight :
+      16 * (Dσ * Vρ) = 27 * (Dσ * Vσ) := by
+    calc
+      16 * (Dσ * Vρ) = Dσ * (16 * Vρ) := by ring
+      _ = Dσ * (27 * Vσ) := by rw [hval]
+      _ = 27 * (Dσ * Vσ) := by ring
+  have hmul :
+      16 * (Dρ * Vσ) = 16 * (Dσ * Vρ) := by
+    calc
+      16 * (Dρ * Vσ) = 27 * (Dσ * Vσ) := hscaledLeft
+      _ = 16 * (Dσ * Vρ) := hscaledRight.symm
+  exact Nat.eq_of_mul_eq_mul_left (by decide : 0 < 16) hmul
+
+/-- Canonical neutral carrier on the reduced second shell of the intrinsic
+    `832` repeat core. This compresses the shell parameter to the common affine
+    factor that simultaneously drives the normalized defect and value/gap
+    observers. -/
+def RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832
+    (τ : RegimeIIBadFrontierTransition 832) : ℕ :=
+  11 * RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 τ + 1
+
+/-- On the second locked shell `repeatLockedShellParam832 = 256*q + 23`, the
+    canonical reduced shell core is exactly `11*q + 1`. -/
+theorem repeatSecondLockedShellCore832_eq_11q_add_1_of_repeatLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ = 256 * q + 23) :
+    RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 τ = 11 * q + 1 := by
+  unfold RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832
+  rw [repeatSecondLockedShellParam832_eq_q_of_repeatLockedShellParam832_eq_256q_add_23 τ hq]
+
+/-- On the second locked shell, the normalized self-threshold defect is exactly
+    `2^26` times the canonical reduced shell core. -/
+theorem src_normalizedRepeatSelfThresholdDefect832_eq_67108864_mul_repeatSecondLockedShellCore832_of_repeatLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ = 256 * q + 23)
+    (hfst : (RegimeIIBadFrontierTransition.repeatClock832 τ).1 = 5)
+    (hsnd : (RegimeIIBadFrontierTransition.repeatClock832 τ).2 = 9) :
+    RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.src =
+      67108864 * RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 τ := by
+  rw [src_normalizedRepeatSelfThresholdDefect832_eq_738197504_mul_q_add_67108864_of_repeatLockedShellParam832_eq_256q_add_23
+      τ hτ hq hfst hsnd,
+    repeatSecondLockedShellCore832_eq_11q_add_1_of_repeatLockedShellParam832_eq_256q_add_23 τ hq]
+  omega
+
+/-- On the second locked shell, the normalized value observer is exactly
+    `216 * 2^26` times the same canonical reduced shell core. -/
+theorem src_normalizedRepeatValue832_eq_14495514624_mul_repeatSecondLockedShellCore832_of_repeatLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ = 256 * q + 23)
+    (hfst : (RegimeIIBadFrontierTransition.repeatClock832 τ).1 = 5)
+    (hsnd : (RegimeIIBadFrontierTransition.repeatClock832 τ).2 = 9) :
+    RegimeIIBadFrontierState.normalizedRepeatValue832 τ.src =
+      14495514624 * RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 τ := by
+  have htarget :
+      832 ≤ regimeIIStateValue τ.src.src := by
+    exact
+      (target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832 τ.src hτ.1).2
+        (one_le_src_repeatParam832_of_repeatCore832Transition τ hτ)
+  rw [normalizedRepeatValue832_eq_normalizedRepeatRadialGap832_of_target_le τ.src htarget,
+    src_normalizedRepeatRadialGap832_eq_159450660864_mul_q_add_14495514624_of_repeatLockedShellParam832_eq_256q_add_23
+      τ hτ hq hfst hsnd,
+    repeatSecondLockedShellCore832_eq_11q_add_1_of_repeatLockedShellParam832_eq_256q_add_23 τ hq]
+  omega
+
+/-- On the first true cycle-return state, the earlier reduced second-shell
+    neutral core is already an exact power-of-two multiple of the canonical
+    cycle core. This identifies the old reduced shell classifier as a direct
+    projection of the new intrinsic return-state coordinate rather than an
+    independent shell witness. -/
+theorem repeatSecondLockedShellCore832_eq_1048576_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 σ =
+      1048576 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ := by
+  obtain ⟨q, hσq, _, _⟩ :=
+    repeatFourthLockedShellParam832_secondAffine_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  obtain ⟨t, htσ, _⟩ :=
+    repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_chain6
+      τ σ ρ ups χ ψ hτ hσ hρ hups hχ hψ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  obtain ⟨z, hzσ, _, _⟩ :=
+    repeatThirdLockedShellParam832_secondAffine_of_repeatCore832Transition_chain8
+      τ σ ρ ups χ ψ ω ζ hτ hσ hρ hups hχ hψ hω hζ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ
+  have hthirdσ :
+      RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 σ = t := by
+    exact repeatThirdLockedShellParam832_eq_t_of_repeatSecondLockedShellParam832_eq_16t_add13 σ htσ
+  have hfourthσ :
+      RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 σ = z := by
+    exact repeatFourthLockedShellParam832_eq_z_of_repeatThirdLockedShellParam832_eq_256z_add69 σ hzσ
+  have hzq : z = 256 * q + 23 := by
+    calc
+      z = RegimeIIBadFrontierTransition.repeatFourthLockedShellParam832 σ := by
+        symm
+        exact hfourthσ
+      _ = 256 * q + 23 := hσq
+  have htq : t = 65536 * q + 5957 := by
+    calc
+      t = RegimeIIBadFrontierTransition.repeatThirdLockedShellParam832 σ := by
+        symm
+        exact hthirdσ
+      _ = 256 * z + 69 := hzσ
+      _ = 65536 * q + 5957 := by
+        rw [hzq]
+        omega
+  have hsecondσ :
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellParam832 σ =
+        1048576 * q + 95325 := by
+    rw [htσ, htq]
+    omega
+  unfold RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832
+  rw [hsecondσ,
+    repeatShellCycleCore832_eq_11q_add_1_of_repeatFourthLockedShellParam832_eq_256q_add_23 σ hσq]
+  omega
+
+/-- On the first true cycle-return state, the normalized self-threshold defect
+    already factors exactly through the canonical cycle core. The earlier
+    source observer is therefore reading the return-state itself, not an
+    unrelated shell artifact. -/
+theorem src_normalizedRepeatSelfThresholdDefect832_eq_70368744177664_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src =
+      70368744177664 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ := by
+  obtain ⟨q, hσshell, _, _⟩ :=
+    repeatLockedShellParam832_secondAffine_of_repeatCore832Transition_chain5
+      τ σ ρ ups χ hτ hσ hρ hups hχ hlinkτσ hlinkσρ hlinkρups hlinkupsχ
+  have hclockσ :
+      (RegimeIIBadFrontierTransition.repeatClock832 σ).1 = 5 ∧
+        (RegimeIIBadFrontierTransition.repeatClock832 σ).2 = 9 :=
+    repeatClock832_eq_5_9_of_repeatCore832Transition_chain3
+      τ σ ρ hτ hσ hρ hlinkτσ hlinkσρ
+  calc
+    RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src
+        = 67108864 * RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 σ := by
+            exact
+              src_normalizedRepeatSelfThresholdDefect832_eq_67108864_mul_repeatSecondLockedShellCore832_of_repeatLockedShellParam832_eq_256q_add_23
+                σ hσ hσshell hclockσ.1 hclockσ.2
+    _ = 67108864 * (1048576 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ) := by
+          rw [repeatSecondLockedShellCore832_eq_1048576_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+            τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+            hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ]
+    _ = 70368744177664 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ := by
+          ring
+
+/-- On the first true cycle-return state, the normalized value observer also
+    factors exactly through the canonical cycle core. Together with the defect
+    formula, this shows the source multiview collapse is already encoded by
+    the intrinsic return-state. -/
+theorem src_normalizedRepeatValue832_eq_15199648742375424_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src =
+      15199648742375424 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ := by
+  obtain ⟨q, hσshell, _, _⟩ :=
+    repeatLockedShellParam832_secondAffine_of_repeatCore832Transition_chain5
+      τ σ ρ ups χ hτ hσ hρ hups hχ hlinkτσ hlinkσρ hlinkρups hlinkupsχ
+  have hclockσ :
+      (RegimeIIBadFrontierTransition.repeatClock832 σ).1 = 5 ∧
+        (RegimeIIBadFrontierTransition.repeatClock832 σ).2 = 9 :=
+    repeatClock832_eq_5_9_of_repeatCore832Transition_chain3
+      τ σ ρ hτ hσ hρ hlinkτσ hlinkσρ
+  calc
+    RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src
+        = 14495514624 * RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 σ := by
+            exact
+              src_normalizedRepeatValue832_eq_14495514624_mul_repeatSecondLockedShellCore832_of_repeatLockedShellParam832_eq_256q_add_23
+                σ hσ hσshell hclockσ.1 hclockσ.2
+    _ = 14495514624 * (1048576 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ) := by
+          rw [repeatSecondLockedShellCore832_eq_1048576_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+            τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+            hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ]
+    _ = 15199648742375424 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ := by
+          ring
+
+/-- On the first true cycle-return state, the normalized value and normalized
+    self-threshold defect have already collapsed onto the same fixed ray when
+    written through the intrinsic cycle core. -/
+theorem src_normalizedRepeatValue832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src =
+      216 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src := by
+  rw [src_normalizedRepeatValue832_eq_15199648742375424_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ,
+    src_normalizedRepeatSelfThresholdDefect832_eq_70368744177664_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ]
+  ring
+
+/-- Exact source-side transport of the normalized self-threshold defect on the
+    first true cycle-return branch. Once the canonical cycle core acquires
+    exact `16/27` transport, the source defect observer inherits the same law
+    verbatim. -/
+theorem sixteen_mul_next_src_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain11
+    (τ σ ρ ups χ ψ ω ζ η θ ι : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hι : regimeIIRepeatCore832Transition ι)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst)
+    (hlinkθι : ι.src = θ.dst) :
+    16 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 ρ.src =
+      27 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src := by
+  have hσdef :=
+    src_normalizedRepeatSelfThresholdDefect832_eq_70368744177664_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  have hρdef :=
+    src_normalizedRepeatSelfThresholdDefect832_eq_70368744177664_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+      σ ρ ups χ ψ ω ζ η θ ι hσ hρ hups hχ hψ hω hζ hη hθ hι
+      hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ hlinkθι
+  calc
+    16 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 ρ.src
+        = 16 * (70368744177664 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 ρ) := by
+            rw [hρdef]
+    _ = 70368744177664 *
+          (16 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 ρ) := by
+            ring
+    _ = 70368744177664 *
+          (27 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ) := by
+            rw [sixteen_mul_next_repeatShellCycleCore832_eq_twentySeven_mul_src_repeatShellCycleCore832_of_repeatCore832Transition_chain11
+              τ σ ρ ups χ ψ ω ζ η θ ι hτ hσ hρ hups hχ hψ hω hζ hη hθ hι
+              hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+              hlinkθι]
+    _ = 27 * (70368744177664 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ) := by
+          ring
+    _ = 27 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src := by
+          rw [hσdef]
+
+/-- Exact source-side transport of the normalized value observer on the first
+    true cycle-return branch. The source growth observer inherits the same
+    `16/27` law from the intrinsic cycle core. -/
+theorem sixteen_mul_next_src_normalizedRepeatValue832_eq_twentySeven_mul_src_normalizedRepeatValue832_of_repeatCore832Transition_chain11
+    (τ σ ρ ups χ ψ ω ζ η θ ι : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hι : regimeIIRepeatCore832Transition ι)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst)
+    (hlinkθι : ι.src = θ.dst) :
+    16 * RegimeIIBadFrontierState.normalizedRepeatValue832 ρ.src =
+      27 * RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src := by
+  have hσval :=
+    src_normalizedRepeatValue832_eq_15199648742375424_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  have hρval :=
+    src_normalizedRepeatValue832_eq_15199648742375424_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+      σ ρ ups χ ψ ω ζ η θ ι hσ hρ hups hχ hψ hω hζ hη hθ hι
+      hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ hlinkθι
+  calc
+    16 * RegimeIIBadFrontierState.normalizedRepeatValue832 ρ.src
+        = 16 * (15199648742375424 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 ρ) := by
+            rw [hρval]
+    _ = 15199648742375424 *
+          (16 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 ρ) := by
+            ring
+    _ = 15199648742375424 *
+          (27 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ) := by
+            rw [sixteen_mul_next_repeatShellCycleCore832_eq_twentySeven_mul_src_repeatShellCycleCore832_of_repeatCore832Transition_chain11
+              τ σ ρ ups χ ψ ω ζ η θ ι hτ hσ hρ hups hχ hψ hω hζ hη hθ hι
+              hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+              hlinkθι]
+    _ = 27 * (15199648742375424 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ) := by
+          ring
+    _ = 27 * RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src := by
+          rw [hσval]
+
+/-- On the first true cycle-return branch, the two consecutive source states
+    already lie on the same fixed normalized ray `value = 216 * defect`. This
+    packages the source-side observer collapse directly on the cycle-return
+    branch instead of only at one marked return state. -/
+theorem src_normalizedRepeatValue832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain11
+    (τ σ ρ ups χ ψ ω ζ η θ ι : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hι : regimeIIRepeatCore832Transition ι)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst)
+    (hlinkθι : ι.src = θ.dst) :
+    RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src =
+        216 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src ∧
+      RegimeIIBadFrontierState.normalizedRepeatValue832 ρ.src =
+        216 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 ρ.src := by
+  constructor
+  · exact
+      src_normalizedRepeatValue832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain10
+        τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+        hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  · exact
+      src_normalizedRepeatValue832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain10
+        σ ρ ups χ ψ ω ζ η θ ι hσ hρ hups hχ hψ hω hζ hη hθ hι
+        hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ hlinkθι
+
+/-- Exact cycle-branch projective neutrality on the first true return map. The
+    normalized value/defect slope is preserved between consecutive source
+    states on a chain11 cycle-return branch. -/
+theorem normalizedProjectiveValueSlopeEq_832_of_repeatCore832Transition_chain11
+    (τ σ ρ ups χ ψ ω ζ η θ ι : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hι : regimeIIRepeatCore832Transition ι)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst)
+    (hlinkθι : ι.src = θ.dst) :
+    RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 ρ.src *
+        RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src =
+      RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src *
+        RegimeIIBadFrontierState.normalizedRepeatValue832 ρ.src := by
+  let Dσ := RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src
+  let Dρ := RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 ρ.src
+  let Vσ := RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src
+  let Vρ := RegimeIIBadFrontierState.normalizedRepeatValue832 ρ.src
+  have hdef :
+      16 * Dρ = 27 * Dσ := by
+    simpa [Dσ, Dρ] using
+      sixteen_mul_next_src_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain11
+        τ σ ρ ups χ ψ ω ζ η θ ι hτ hσ hρ hups hχ hψ hω hζ hη hθ hι
+        hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ hlinkθι
+  have hval :
+      16 * Vρ = 27 * Vσ := by
+    simpa [Vσ, Vρ] using
+      sixteen_mul_next_src_normalizedRepeatValue832_eq_twentySeven_mul_src_normalizedRepeatValue832_of_repeatCore832Transition_chain11
+        τ σ ρ ups χ ψ ω ζ η θ ι hτ hσ hρ hups hχ hψ hω hζ hη hθ hι
+        hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ hlinkθι
+  have hscaledLeft :
+      16 * (Dρ * Vσ) = 27 * (Dσ * Vσ) := by
+    calc
+      16 * (Dρ * Vσ) = (16 * Dρ) * Vσ := by ring
+      _ = (27 * Dσ) * Vσ := by rw [hdef]
+      _ = 27 * (Dσ * Vσ) := by ring
+  have hscaledRight :
+      16 * (Dσ * Vρ) = 27 * (Dσ * Vσ) := by
+    calc
+      16 * (Dσ * Vρ) = Dσ * (16 * Vρ) := by ring
+      _ = Dσ * (27 * Vσ) := by rw [hval]
+      _ = 27 * (Dσ * Vσ) := by ring
+  have hmul :
+      16 * (Dρ * Vσ) = 16 * (Dσ * Vρ) := by
+    calc
+      16 * (Dρ * Vσ) = 27 * (Dσ * Vσ) := hscaledLeft
+      _ = 16 * (Dσ * Vρ) := hscaledRight.symm
+  exact Nat.eq_of_mul_eq_mul_left (by decide : 0 < 16) hmul
+
+/-- On the first true cycle-return state, the actual source self-threshold
+    defect is an exact affine function of the intrinsic cycle core. This
+    rewrites survivorhood itself, not just a normalized observer, through the
+    return-state scalar. -/
+theorem src_selfThresholdDefect_eq_70368744177664_mul_repeatShellCycleCore832_add_one_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    σ.src.selfThresholdDefect =
+      70368744177664 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ + 1 := by
+  have hnorm :=
+    src_normalizedRepeatSelfThresholdDefect832_eq_70368744177664_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  unfold RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 at hnorm
+  rw [RegimeIIBadFrontierState.selfThresholdDefect] at hnorm
+  exact (Nat.sub_eq_iff_eq_add (Nat.succ_le_of_lt σ.src.selfThresholdDefect_pos)).1 hnorm
+
+/-- On the first true cycle-return state, the normalized source value equation
+    can be written directly on the actual source value as
+    `11 * value + 19 = C * cycleCore`. This is the exact source-side readout of
+    the cycle core without introducing a false affine law on raw value. -/
+theorem eleven_mul_src_stateValue_add_nineteen_eq_15199648742375424_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    11 * regimeIIStateValue σ.src.src + 19 =
+      15199648742375424 * RegimeIIBadFrontierTransition.repeatShellCycleCore832 σ := by
+  have hnorm :=
+    src_normalizedRepeatValue832_eq_15199648742375424_mul_repeatShellCycleCore832_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  unfold RegimeIIBadFrontierState.normalizedRepeatValue832 at hnorm
+  simpa using hnorm
+
+/-- Actual-source affine ray collapse on the first true cycle-return state.
+    This is the unnormalized form of the fixed projective direction:
+    `216 * selfThresholdDefect = 11 * value + 235`. -/
+theorem twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_stateValue_add_235_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    216 * σ.src.selfThresholdDefect = 11 * regimeIIStateValue σ.src.src + 235 := by
+  have hnorm :
+      11 * regimeIIStateValue σ.src.src + 19 =
+        216 * (σ.src.selfThresholdDefect - 1) := by
+    simpa [RegimeIIBadFrontierState.normalizedRepeatValue832,
+      RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832,
+      RegimeIIBadFrontierState.selfThresholdDefect] using
+      src_normalizedRepeatValue832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain10
+        τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+        hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  have hσ1 : 1 ≤ σ.src.selfThresholdDefect := Nat.succ_le_of_lt σ.src.selfThresholdDefect_pos
+  have hsplit : σ.src.selfThresholdDefect = (σ.src.selfThresholdDefect - 1) + 1 := by
+    exact (Nat.sub_eq_iff_eq_add hσ1).1 rfl
+  calc
+    216 * σ.src.selfThresholdDefect
+        = 216 * ((σ.src.selfThresholdDefect - 1) + 1) := by
+            exact congrArg (fun t => 216 * t) hsplit
+    _ = 216 * (σ.src.selfThresholdDefect - 1) + 216 := by ring
+    _ = (11 * regimeIIStateValue σ.src.src + 19) + 216 := by rw [← hnorm]
+    _ = 11 * regimeIIStateValue σ.src.src + 235 := by omega
+
+/-- Exact affine transport on the actual source self-threshold defect along
+    the first true cycle-return branch. This is the source-state form of the
+    normalized `16/27` transport law. -/
+theorem sixteen_mul_next_src_selfThresholdDefect_add_eleven_eq_twentySeven_mul_src_selfThresholdDefect_of_repeatCore832Transition_chain11
+    (τ σ ρ ups χ ψ ω ζ η θ ι : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hι : regimeIIRepeatCore832Transition ι)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst)
+    (hlinkθι : ι.src = θ.dst) :
+    16 * ρ.src.selfThresholdDefect + 11 = 27 * σ.src.selfThresholdDefect := by
+  have hphase : regimeIIRepeatPurePhase832 σ.src := by
+    simpa [hlinkτσ] using
+      dst_repeatPurePhase832_of_repeatCore832Transition_chain τ σ hτ hσ hlinkτσ
+  have htransport :=
+    sixteen_mul_dst_selfThresholdDefect_add_eleven_eq_twentySeven_mul_src_selfThresholdDefect_of_src_repeatThresholdSeedResidue832_eq_zero
+      σ hσ hphase.2
+  simpa [hlinkσρ] using htransport
+
+/-- Exact reduced-shell-core transport on a six-step persistence chain. The
+    canonical second-shell core itself scales by `27/16` between consecutive
+    reduced-shell source states. -/
+theorem sixteen_mul_next_repeatSecondLockedShellCore832_eq_twentySeven_mul_src_repeatSecondLockedShellCore832_of_repeatCore832Transition_chain6
+    (τ σ ρ ups χ ψ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst) :
+    16 * RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 ρ =
+      27 * RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 σ := by
+  obtain ⟨t, htσ, htρ⟩ :=
+    repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_chain6
+      τ σ ρ ups χ ψ hτ hσ hρ hups hχ hψ hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  unfold RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832
+  rw [htσ, htρ]
+  omega
+
+/-- Carrier form of the reduced second-shell neutral transport. On a six-step
+    persistence chain, the consecutive reduced-shell source states share a
+    common carrier `u`, with shell core `16*u` at the source and `27*u` at the
+    next source. This packages the neutral phase as one intrinsic carrier plus
+    the shell clock. -/
+theorem exists_repeatSecondLockedShellCore832_carrier_of_repeatCore832Transition_chain6
+    (τ σ ρ ups χ ψ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst) :
+    ∃ u : ℕ,
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 σ = 16 * u ∧
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 ρ = 27 * u := by
+  obtain ⟨t, htσ, htρ⟩ :=
+    repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_chain6
+      τ σ ρ ups χ ψ hτ hσ hρ hups hχ hψ hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  refine ⟨11 * t + 9, ?_, ?_⟩
+  · unfold RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832
+    rw [htσ]
+    omega
+  · unfold RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832
+    rw [htρ]
+    omega
+
+/-- Seven-step shell iteration on the reduced neutral carrier. If the reduced
+    second-shell neutral phase itself persists one step further, then its
+    carrier acquires a new deeper carrier `v` with exact lifted orbit
+    `256*v -> 432*v -> 729*v`. This is the first carrier-level shell-iteration
+    theorem, stated without returning to the raw residue charts. -/
+theorem exists_repeatSecondLockedShellCore832_thirdCarrier_of_repeatCore832Transition_chain7
+    (τ σ ρ ups χ ψ ω : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst) :
+    ∃ v : ℕ,
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 σ = 256 * v ∧
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 ρ = 432 * v ∧
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 ups = 729 * v := by
+  obtain ⟨u, huσ, huρ⟩ :=
+    exists_repeatSecondLockedShellCore832_carrier_of_repeatCore832Transition_chain6
+      τ σ ρ ups χ ψ hτ hσ hρ hups hχ hψ hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ
+  obtain ⟨u', huρ', huups⟩ :=
+    exists_repeatSecondLockedShellCore832_carrier_of_repeatCore832Transition_chain6
+      σ ρ ups χ ψ ω hσ hρ hups hχ hψ hω hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω
+  have huu' : 27 * u = 16 * u' := by
+    rw [← huρ, huρ']
+  have h16dvd : 16 ∣ u := by
+    have hcop : Nat.Coprime 16 27 := by decide
+    exact Nat.Coprime.dvd_of_dvd_mul_left hcop (Dvd.intro u' huu'.symm)
+  obtain ⟨v, hvu⟩ := h16dvd
+  have hvu' : u' = 27 * v := by
+    rw [hvu] at huu'
+    omega
+  refine ⟨v, ?_, ?_, ?_⟩
+  · rw [huσ, hvu]
+    omega
+  · rw [huρ, hvu]
+    omega
+  · rw [huups, hvu']
+    omega
+
+/-- Eight-step continuation gate on the carrier-level shell iteration. If the
+    reduced neutral second-shell carrier itself persists one step further, then
+    its carrier `v` is forced into the continuation gate `16*w`, yielding the
+    next lifted orbit `4096*w -> 6912*w -> 11664*w -> 19683*w` on the reduced
+    shell core. This is the first non-neutral gate law stated directly on the
+    carrier hierarchy. -/
+theorem exists_repeatSecondLockedShellCore832_fourthCarrier_of_repeatCore832Transition_chain8
+    (τ σ ρ ups χ ψ ω ζ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst) :
+    ∃ w : ℕ,
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 σ = 4096 * w ∧
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 ρ = 6912 * w ∧
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 ups = 11664 * w ∧
+      RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 χ = 19683 * w := by
+  obtain ⟨v, hvσ, hvρ, hvups⟩ :=
+    exists_repeatSecondLockedShellCore832_thirdCarrier_of_repeatCore832Transition_chain7
+      τ σ ρ ups χ ψ ω hτ hσ hρ hups hχ hψ hω
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω
+  obtain ⟨v', hvρ', hvups', hvχ⟩ :=
+    exists_repeatSecondLockedShellCore832_thirdCarrier_of_repeatCore832Transition_chain7
+      σ ρ ups χ ψ ω ζ hσ hρ hups hχ hψ hω hζ
+      hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ
+  have hvcore : 432 * v = 256 * v' := by
+    calc
+      432 * v
+          = RegimeIIBadFrontierTransition.repeatSecondLockedShellCore832 ρ := by
+              symm
+              exact hvρ
+      _ = 256 * v' := hvρ'
+  have hvrel : 27 * v = 16 * v' := by
+    omega
+  have h16dvd : 16 ∣ v := by
+    have hcop : Nat.Coprime 16 27 := by decide
+    exact hcop.dvd_of_dvd_mul_left ⟨v', by omega⟩
+  obtain ⟨w, hvw⟩ := h16dvd
+  have hv'w : v' = 27 * w := by
+    rw [hvw] at hvrel
+    omega
+  refine ⟨w, ?_, ?_, ?_, ?_⟩
+  · rw [hvσ, hvw]
+    omega
+  · rw [hvρ, hvw]
+    omega
+  · rw [hvups, hvw]
+    omega
+  · rw [hvχ, hv'w]
+    omega
+
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
     `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
     forces the destination time to jump to at least `4`. -/
@@ -9764,6 +11904,30 @@ theorem nextState_shrinks_or_exists_transition
   rcases x.nextState_shrinks_or_stays_bad hexact hTnext with hshrink | hnext
   · exact Or.inl hshrink
   · exact Or.inr ⟨x.nextTransition hnext, rfl⟩
+
+/-- On the hard source slice `(time, eject) = (3, 1)` at target `832`, one
+    intrinsic meta-step already reduces the bad-frontier search to a finite
+    obstruction split: either the successor value already carries a shrinking
+    certificate, or the surviving transition lands on `(2,1)`, or the
+    destination time jumps to at least `4`, or the source lies on the stricter
+    `29 mod 64` surviving branch. -/
+theorem nextState_shrinks_or_exists_transition_split_of_time3_eject1
+    (hexact :
+      ∀ m : ℕ, 1 < m → m % 2 = 1 → m < 832 → ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] m < m)
+    (x : RegimeIIBadFrontierState 832)
+    (ht : x.src.time = 3) (he : x.src.eject = 1)
+    (hTnext : 2 ≤ x.nextState.time) :
+    (∃ W : ℕ, 0 < W ∧ syracuseExact^[W] x.nextValue < x.nextValue) ∨
+      ∃ τ : RegimeIIBadFrontierTransition 832,
+        τ.src = x ∧
+        ((τ.dst.src.time = 2 ∧ τ.dst.src.eject = 1) ∨
+          4 ≤ τ.dst.src.time ∨
+          (τ.dst.src.time = 3 ∧ τ.dst.src.eject = 1 ∧ τ.src.src.base % 64 = 29)) := by
+  rcases x.nextState_shrinks_or_exists_transition hexact hTnext with hshrink | htrans
+  · exact Or.inl hshrink
+  · rcases htrans with ⟨τ, rfl⟩
+    exact Or.inr ⟨τ, rfl,
+      RegimeIIBadFrontierTransition.dst_slice_split_of_src_time3_eject1 τ ht he⟩
 
 /-- Core surviving-branch form: after one intrinsic bad-to-bad meta-step, the
     destination source state already lies above the target cutoff `B`, and the
