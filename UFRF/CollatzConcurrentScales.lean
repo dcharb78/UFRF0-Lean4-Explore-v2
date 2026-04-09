@@ -7846,6 +7846,20 @@ def RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832
     (x : RegimeIIBadFrontierState 832) : ℕ :=
   x.selfThresholdDefect - 1
 
+/-- Above the target `832`, the normalized value observer and normalized
+    radial-gap observer are identical. They are two readouts of the same
+    affine radial quantity, not independent coordinates once the state is
+    actually outside the target window. -/
+theorem normalizedRepeatValue832_eq_normalizedRepeatRadialGap832_of_target_le
+    (x : RegimeIIBadFrontierState 832)
+    (hx : 832 ≤ regimeIIStateValue x.src) :
+    RegimeIIBadFrontierState.normalizedRepeatValue832 x =
+      RegimeIIBadFrontierState.normalizedRepeatRadialGap832 x := by
+  unfold RegimeIIBadFrontierState.normalizedRepeatValue832
+  unfold RegimeIIBadFrontierState.normalizedRepeatRadialGap832
+  unfold regimeIIRadialGap
+  omega
+
 /-- The repeat-seed observer vanishes exactly when the deeper seed coordinate
     lies in the intrinsic residue class `9 mod 27`. -/
 theorem repeatThresholdSeedResidue832_eq_zero_iff_repeatSeedParam832_mod27_eq9
@@ -9481,6 +9495,164 @@ theorem repeatSecondLockedShellParam832_secondAffine_of_repeatCore832Transition_
   · rw [hqσ, hqdecomp, hqmod]
     omega
   · rw [hsρ, hs_eq]
+
+/-- On the second locked shell `repeatLockedShellParam832 = 256*q + 23`, the
+    source inner repeat parameter is exactly `110592*q + 10053`. This is the
+    uncompressed form of the second-shell coordinate inside the original
+    repeat-core source state. -/
+theorem src_repeatInnerParam832_eq_110592q_add_10053_of_repeatLockedShellParam832_eq_256q_add_23_of_repeatClock832_eq_5_9
+    (τ : RegimeIIBadFrontierTransition 832)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ = 256 * q + 23)
+    (hfst : (RegimeIIBadFrontierTransition.repeatClock832 τ).1 = 5)
+    (hsnd : (RegimeIIBadFrontierTransition.repeatClock832 τ).2 = 9) :
+    RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 110592 * q + 10053 := by
+  unfold RegimeIIBadFrontierTransition.repeatLockedShellParam832 at hq
+  have hmod16 : RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 16 = 5 := by
+    simpa using hfst
+  have hmod27 : RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 27 = 9 := by
+    simpa using hsnd
+  have hdecomp :
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ =
+        RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 432 +
+          432 * (RegimeIIBadFrontierTransition.repeatInnerParam832 τ / 432) := by
+    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc, Nat.mul_comm] using
+      (Nat.mod_add_div (RegimeIIBadFrontierTransition.repeatInnerParam832 τ) 432).symm
+  have hmod :
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 432 = 117 := by
+    have hm16 :
+        (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 432) % 16 = 5 := by
+      omega
+    have hm27 :
+        (RegimeIIBadFrontierTransition.repeatInnerParam832 τ % 432) % 27 = 9 := by
+      omega
+    omega
+  rw [hdecomp, hq, hmod]
+  omega
+
+/-- Exact normalized self-threshold-defect formula on the second locked shell
+    of the intrinsic `832` repeat core. On this shell the defect observer is
+    already confined to a single affine ray in the reduced shell parameter. -/
+theorem src_normalizedRepeatSelfThresholdDefect832_eq_738197504_mul_q_add_67108864_of_repeatLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ = 256 * q + 23)
+    (hfst : (RegimeIIBadFrontierTransition.repeatClock832 τ).1 = 5)
+    (hsnd : (RegimeIIBadFrontierTransition.repeatClock832 τ).2 = 9) :
+    RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.src =
+      738197504 * q + 67108864 := by
+  have hinner :
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 110592 * q + 10053 :=
+    src_repeatInnerParam832_eq_110592q_add_10053_of_repeatLockedShellParam832_eq_256q_add_23_of_repeatClock832_eq_5_9
+      τ hq hfst hsnd
+  have hdiv : (26 * (110592 * q + 10053) + 9) / 27 = 106496 * q + 9681 := by
+    calc
+      (26 * (110592 * q + 10053) + 9) / 27
+          = (27 * (106496 * q + 9681)) / 27 := by omega
+      _ = 106496 * q + 9681 := by
+        rw [Nat.mul_div_right _ (by norm_num : 0 < 27)]
+  unfold RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832
+  rw [src_selfThresholdDefect_eq_6674_mul_repeatInnerParam832_add_5462_add_div27_of_repeatCore832Transition τ hτ,
+    hinner, hdiv]
+  omega
+
+/-- Exact normalized radial-gap formula on the second locked shell of the
+    intrinsic `832` repeat core. The radial observer collapses onto the same
+    affine shell ray as the normalized self-threshold defect. -/
+theorem src_normalizedRepeatRadialGap832_eq_159450660864_mul_q_add_14495514624_of_repeatLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ = 256 * q + 23)
+    (hfst : (RegimeIIBadFrontierTransition.repeatClock832 τ).1 = 5)
+    (hsnd : (RegimeIIBadFrontierTransition.repeatClock832 τ).2 = 9) :
+    RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.src =
+      159450660864 * q + 14495514624 := by
+  have hinner :
+      RegimeIIBadFrontierTransition.repeatInnerParam832 τ = 110592 * q + 10053 :=
+    src_repeatInnerParam832_eq_110592q_add_10053_of_repeatLockedShellParam832_eq_256q_add_23_of_repeatClock832_eq_5_9
+      τ hq hfst hsnd
+  unfold RegimeIIBadFrontierState.normalizedRepeatRadialGap832
+  rw [src_radialGap_832_eq_131072_mul_repeatInnerParam832_add_106407_of_repeatCore832Transition τ hτ,
+    hinner]
+  omega
+
+/-- Exact multiview ray collapse on the second locked shell of the intrinsic
+    `832` repeat core. Once the shell parameter reaches the unique gate
+    `256*q + 23`, the normalized radial gap and normalized self-threshold
+    defect lie on one fixed ray: `gap = 216 * defect`. The shell clock still
+    carries persistence, but these two observer directions have merged. -/
+theorem src_normalizedRepeatRadialGap832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatLockedShellParam832_eq_256q_add_23
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    {q : ℕ}
+    (hq : RegimeIIBadFrontierTransition.repeatLockedShellParam832 τ = 256 * q + 23)
+    (hfst : (RegimeIIBadFrontierTransition.repeatClock832 τ).1 = 5)
+    (hsnd : (RegimeIIBadFrontierTransition.repeatClock832 τ).2 = 9) :
+    RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.src =
+      216 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.src := by
+  rw [src_normalizedRepeatRadialGap832_eq_159450660864_mul_q_add_14495514624_of_repeatLockedShellParam832_eq_256q_add_23
+      τ hτ hq hfst hsnd,
+    src_normalizedRepeatSelfThresholdDefect832_eq_738197504_mul_q_add_67108864_of_repeatLockedShellParam832_eq_256q_add_23
+      τ hτ hq hfst hsnd]
+  omega
+
+/-- Chain-level form of the second-shell ray collapse: if repeat-core
+    persistence survives five consecutive transitions, then the middle source
+    state already lies on the fixed normalized ray `gap = 216 * defect`. -/
+theorem src_normalizedRepeatRadialGap832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain5
+    (τ σ ρ ups χ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst) :
+    RegimeIIBadFrontierState.normalizedRepeatRadialGap832 σ.src =
+      216 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src := by
+  obtain ⟨q, hqσ, _, _⟩ :=
+    repeatLockedShellParam832_secondAffine_of_repeatCore832Transition_chain5
+      τ σ ρ ups χ hτ hσ hρ hups hχ hlinkτσ hlinkσρ hlinkρups hlinkupsχ
+  have hclockσ :
+      (RegimeIIBadFrontierTransition.repeatClock832 σ).1 = 5 ∧
+        (RegimeIIBadFrontierTransition.repeatClock832 σ).2 = 9 :=
+    repeatClock832_eq_5_9_of_repeatCore832Transition_chain3
+      τ σ ρ hτ hσ hρ hlinkτσ hlinkσρ
+  exact
+    src_normalizedRepeatRadialGap832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatLockedShellParam832_eq_256q_add_23
+      σ hσ hqσ hclockσ.1 hclockσ.2
+
+/-- Chain-level second-shell collapse written through the normalized value
+    observer: once five repeat-core transitions persist consecutively, the
+    middle source state's normalized value is exactly `216` times its
+    normalized self-threshold defect. This makes the shell collapse visible in
+    the growth observer as well as the radial one. -/
+theorem src_normalizedRepeatValue832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain5
+    (τ σ ρ ups χ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst) :
+    RegimeIIBadFrontierState.normalizedRepeatValue832 σ.src =
+      216 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 σ.src := by
+  have htarget :
+      832 ≤ regimeIIStateValue σ.src.src := by
+    exact
+      (target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832 σ.src hσ.1).2
+        (one_le_src_repeatParam832_of_repeatCore832Transition σ hσ)
+  rw [normalizedRepeatValue832_eq_normalizedRepeatRadialGap832_of_target_le σ.src htarget]
+  exact
+    src_normalizedRepeatRadialGap832_eq_216_mul_src_normalizedRepeatSelfThresholdDefect832_of_repeatCore832Transition_chain5
+      τ σ ρ ups χ hτ hσ hρ hups hχ hlinkτσ hlinkσρ hlinkρups hlinkupsχ
 
 /-- On a surviving bad-to-bad transition out of the intrinsic source slice
     `(time, eject) = (3, 1)`, the refined congruence `base ≡ 13 (mod 32)`
