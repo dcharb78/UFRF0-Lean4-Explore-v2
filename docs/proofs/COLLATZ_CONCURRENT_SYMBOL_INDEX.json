@@ -1,8 +1,8 @@
 {
   "title": "Collatz Concurrent Scales Symbol Index",
   "source": "UFRF/CollatzConcurrentScales.lean",
-  "generated_at": "2026-04-10T14:55:04.005584+00:00",
-  "declaration_count": 772,
+  "generated_at": "2026-04-10T22:11:05.401858+00:00",
+  "declaration_count": 864,
   "entries": [
     {
       "line": 56,
@@ -6098,7 +6098,835 @@
       "doc_summary": "Residual transport law after the first two dyadic shells of the `time \u2265 8` branch."
     },
     {
-      "line": 12536,
+      "line": 12535,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_ten_of_src_base_eq_4096m_add_3565",
+      "short_name": "dst_time_eq_ten_of_src_base_eq_4096m_add_3565",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 10` branch: `base = 4096*m + 3565` is exactly the `time = 10` case."
+    },
+    {
+      "line": 12561,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_47_of_src_base_eq_4096m_add_3565",
+      "short_name": "dst_base_eq_54m_add_47_of_src_base_eq_4096m_add_3565",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 4096*m + 3565`, the higher-time destination base is exactly `54*m + 47`."
+    },
+    {
+      "line": 12585,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_eleven_of_src_base_eq_8192m_add_5613",
+      "short_name": "dst_time_eq_eleven_of_src_base_eq_8192m_add_5613",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 10` branch: `base = 8192*m + 5613` is exactly the `time = 11` case."
+    },
+    {
+      "line": 12611,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_37_of_src_base_eq_8192m_add_5613",
+      "short_name": "dst_base_eq_54m_add_37_of_src_base_eq_8192m_add_5613",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 8192*m + 5613`, the higher-time destination base is exactly `54*m + 37`."
+    },
+    {
+      "line": 12635,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twelve_of_src_base_eq_16384m_add_1517",
+      "short_name": "dst_time_eq_twelve_of_src_base_eq_16384m_add_1517",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Third dyadic shell inside the residual `time \u2265 10` branch: `base = 16384*m + 1517` is exactly the `time = 12` case."
+    },
+    {
+      "line": 12661,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_5_of_src_base_eq_16384m_add_1517",
+      "short_name": "dst_base_eq_54m_add_5_of_src_base_eq_16384m_add_1517",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the third dyadic shell `base = 16384*m + 1517`, the higher-time destination base is exactly `54*m + 5`."
+    },
+    {
+      "line": 12686,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.thirteen_le_dst_time_of_src_base_eq_16384m_add_9709",
+      "short_name": "thirteen_le_dst_time_of_src_base_eq_16384m_add_9709",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first three dyadic cases of the `time \u2265 10` branch: `base = 16384*m + 9709` still forces destination time at least `13`."
+    },
+    {
+      "line": 12720,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_thirteen_mul_dst_base_eq_27m_add_16_of_src_base_eq_16384m_add_9709",
+      "short_name": "two_pow_dst_time_sub_thirteen_mul_dst_base_eq_27m_add_16_of_src_base_eq_16384m_add_9709",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first three dyadic shells of the `time \u2265 10` branch."
+    },
+    {
+      "line": 12755,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirteen_of_src_base_eq_32768m_add_26093",
+      "short_name": "dst_time_eq_thirteen_of_src_base_eq_32768m_add_26093",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 13` branch: `base = 32768*m + 26093` is exactly the `time = 13` case."
+    },
+    {
+      "line": 12781,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_43_of_src_base_eq_32768m_add_26093",
+      "short_name": "dst_base_eq_54m_add_43_of_src_base_eq_32768m_add_26093",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 32768*m + 26093`, the higher-time destination base is exactly `54*m + 43`."
+    },
+    {
+      "line": 12805,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_fourteen_of_src_base_eq_65536m_add_42477",
+      "short_name": "dst_time_eq_fourteen_of_src_base_eq_65536m_add_42477",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 13` branch: `base = 65536*m + 42477` is exactly the `time = 14` case."
+    },
+    {
+      "line": 12831,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_35_of_src_base_eq_65536m_add_42477",
+      "short_name": "dst_base_eq_54m_add_35_of_src_base_eq_65536m_add_42477",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 65536*m + 42477`, the higher-time destination base is exactly `54*m + 35`."
+    },
+    {
+      "line": 12855,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_fifteen_of_src_base_eq_131072m_add_75245",
+      "short_name": "dst_time_eq_fifteen_of_src_base_eq_131072m_add_75245",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Third dyadic shell inside the residual `time \u2265 13` branch: `base = 131072*m + 75245` is exactly the `time = 15` case."
+    },
+    {
+      "line": 12881,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_31_of_src_base_eq_131072m_add_75245",
+      "short_name": "dst_base_eq_54m_add_31_of_src_base_eq_131072m_add_75245",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the third dyadic shell `base = 131072*m + 75245`, the higher-time destination base is exactly `54*m + 31`."
+    },
+    {
+      "line": 12905,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_sixteen_of_src_base_eq_262144m_add_140781",
+      "short_name": "dst_time_eq_sixteen_of_src_base_eq_262144m_add_140781",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Fourth dyadic shell inside the residual `time \u2265 13` branch: `base = 262144*m + 140781` is exactly the `time = 16` case."
+    },
+    {
+      "line": 12931,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_29_of_src_base_eq_262144m_add_140781",
+      "short_name": "dst_base_eq_54m_add_29_of_src_base_eq_262144m_add_140781",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the fourth dyadic shell `base = 262144*m + 140781`, the higher-time destination base is exactly `54*m + 29`."
+    },
+    {
+      "line": 12955,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_seventeen_of_src_base_eq_524288m_add_9709",
+      "short_name": "dst_time_eq_seventeen_of_src_base_eq_524288m_add_9709",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Fifth dyadic shell inside the residual `time \u2265 13` branch: `base = 524288*m + 9709` is exactly the `time = 17` case."
+    },
+    {
+      "line": 12981,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_1_of_src_base_eq_524288m_add_9709",
+      "short_name": "dst_base_eq_54m_add_1_of_src_base_eq_524288m_add_9709",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the fifth dyadic shell `base = 524288*m + 9709`, the higher-time destination base is exactly `54*m + 1`."
+    },
+    {
+      "line": 13006,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.eighteen_le_dst_time_of_src_base_eq_524288m_add_271853",
+      "short_name": "eighteen_le_dst_time_of_src_base_eq_524288m_add_271853",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first five dyadic cases of the `time \u2265 13` branch: `base = 524288*m + 271853` still forces destination time at least `18`."
+    },
+    {
+      "line": 13040,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_eighteen_mul_dst_base_eq_27m_add_14_of_src_base_eq_524288m_add_271853",
+      "short_name": "two_pow_dst_time_sub_eighteen_mul_dst_base_eq_27m_add_14_of_src_base_eq_524288m_add_271853",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first five dyadic shells of the `time \u2265 13` branch."
+    },
+    {
+      "line": 13075,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_eighteen_of_src_base_eq_1048576m_add_796141",
+      "short_name": "dst_time_eq_eighteen_of_src_base_eq_1048576m_add_796141",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 18` branch: `base = 1048576*m + 796141` is exactly the `time = 18` case."
+    },
+    {
+      "line": 13101,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_41_of_src_base_eq_1048576m_add_796141",
+      "short_name": "dst_base_eq_54m_add_41_of_src_base_eq_1048576m_add_796141",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 1048576*m + 796141`, the higher-time destination base is exactly `54*m + 41`."
+    },
+    {
+      "line": 13125,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_nineteen_of_src_base_eq_2097152m_add_271853",
+      "short_name": "dst_time_eq_nineteen_of_src_base_eq_2097152m_add_271853",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 18` branch: `base = 2097152*m + 271853` is exactly the `time = 19` case."
+    },
+    {
+      "line": 13151,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_7_of_src_base_eq_2097152m_add_271853",
+      "short_name": "dst_base_eq_54m_add_7_of_src_base_eq_2097152m_add_271853",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 2097152*m + 271853`, the higher-time destination base is exactly `54*m + 7`."
+    },
+    {
+      "line": 13175,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_of_src_base_eq_4194304m_add_1320429",
+      "short_name": "dst_time_eq_twenty_of_src_base_eq_4194304m_add_1320429",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Third dyadic shell inside the residual `time \u2265 18` branch: `base = 4194304*m + 1320429` is exactly the `time = 20` case."
+    },
+    {
+      "line": 13201,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_17_of_src_base_eq_4194304m_add_1320429",
+      "short_name": "dst_base_eq_54m_add_17_of_src_base_eq_4194304m_add_1320429",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the third dyadic shell `base = 4194304*m + 1320429`, the higher-time destination base is exactly `54*m + 17`."
+    },
+    {
+      "line": 13225,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_one_of_src_base_eq_8388608m_add_7611885",
+      "short_name": "dst_time_eq_twenty_one_of_src_base_eq_8388608m_add_7611885",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Fourth dyadic shell inside the residual `time \u2265 18` branch: `base = 8388608*m + 7611885` is exactly the `time = 21` case."
+    },
+    {
+      "line": 13251,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_49_of_src_base_eq_8388608m_add_7611885",
+      "short_name": "dst_base_eq_54m_add_49_of_src_base_eq_8388608m_add_7611885",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the fourth dyadic shell `base = 8388608*m + 7611885`, the higher-time destination base is exactly `54*m + 49`."
+    },
+    {
+      "line": 13276,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.twenty_two_le_dst_time_of_src_base_eq_8388608m_add_3417581",
+      "short_name": "twenty_two_le_dst_time_of_src_base_eq_8388608m_add_3417581",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first four dyadic cases of the `time \u2265 18` branch: `base = 8388608*m + 3417581` still forces destination time at least `22`."
+    },
+    {
+      "line": 13310,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_twenty_two_mul_dst_base_eq_27m_add_11_of_src_base_eq_8388608m_add_3417581",
+      "short_name": "two_pow_dst_time_sub_twenty_two_mul_dst_base_eq_27m_add_11_of_src_base_eq_8388608m_add_3417581",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first four dyadic shells of the `time \u2265 18` branch."
+    },
+    {
+      "line": 13345,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_two_of_src_base_eq_16777216m_add_3417581",
+      "short_name": "dst_time_eq_twenty_two_of_src_base_eq_16777216m_add_3417581",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 22` branch: `base = 16777216*m + 3417581` is exactly the `time = 22` case."
+    },
+    {
+      "line": 13371,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_11_of_src_base_eq_16777216m_add_3417581",
+      "short_name": "dst_base_eq_54m_add_11_of_src_base_eq_16777216m_add_3417581",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 16777216*m + 3417581`, the higher-time destination base is exactly `54*m + 11`."
+    },
+    {
+      "line": 13395,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_three_of_src_base_eq_33554432m_add_11806189",
+      "short_name": "dst_time_eq_twenty_three_of_src_base_eq_33554432m_add_11806189",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 22` branch: `base = 33554432*m + 11806189` is exactly the `time = 23` case."
+    },
+    {
+      "line": 13421,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_19_of_src_base_eq_33554432m_add_11806189",
+      "short_name": "dst_base_eq_54m_add_19_of_src_base_eq_33554432m_add_11806189",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 33554432*m + 11806189`, the higher-time destination base is exactly `54*m + 19`."
+    },
+    {
+      "line": 13445,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_four_of_src_base_eq_67108864m_add_28583405",
+      "short_name": "dst_time_eq_twenty_four_of_src_base_eq_67108864m_add_28583405",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Third dyadic shell inside the residual `time \u2265 22` branch: `base = 67108864*m + 28583405` is exactly the `time = 24` case."
+    },
+    {
+      "line": 13471,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_23_of_src_base_eq_67108864m_add_28583405",
+      "short_name": "dst_base_eq_54m_add_23_of_src_base_eq_67108864m_add_28583405",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the third dyadic shell `base = 67108864*m + 28583405`, the higher-time destination base is exactly `54*m + 23`."
+    },
+    {
+      "line": 13495,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_five_of_src_base_eq_134217728m_add_62137837",
+      "short_name": "dst_time_eq_twenty_five_of_src_base_eq_134217728m_add_62137837",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Fourth dyadic shell inside the residual `time \u2265 22` branch: `base = 134217728*m + 62137837` is exactly the `time = 25` case."
+    },
+    {
+      "line": 13521,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_25_of_src_base_eq_134217728m_add_62137837",
+      "short_name": "dst_base_eq_54m_add_25_of_src_base_eq_134217728m_add_62137837",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the fourth dyadic shell `base = 134217728*m + 62137837`, the higher-time destination base is exactly `54*m + 25`."
+    },
+    {
+      "line": 13546,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.twenty_six_le_dst_time_of_src_base_eq_134217728m_add_129246701",
+      "short_name": "twenty_six_le_dst_time_of_src_base_eq_134217728m_add_129246701",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first four dyadic cases of the `time \u2265 22` branch: `base = 134217728*m + 129246701` still forces destination time at least `26`."
+    },
+    {
+      "line": 13580,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_twenty_six_mul_dst_base_eq_27m_add_26_of_src_base_eq_134217728m_add_129246701",
+      "short_name": "two_pow_dst_time_sub_twenty_six_mul_dst_base_eq_27m_add_26_of_src_base_eq_134217728m_add_129246701",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first four dyadic shells of the `time \u2265 22` branch."
+    },
+    {
+      "line": 13615,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_six_of_src_base_eq_268435456m_add_263464429",
+      "short_name": "dst_time_eq_twenty_six_of_src_base_eq_268435456m_add_263464429",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 26` branch: `base = 268435456*m + 263464429` is exactly the `time = 26` case."
+    },
+    {
+      "line": 13641,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_53_of_src_base_eq_268435456m_add_263464429",
+      "short_name": "dst_base_eq_54m_add_53_of_src_base_eq_268435456m_add_263464429",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 268435456*m + 263464429`, the higher-time destination base is exactly `54*m + 53`."
+    },
+    {
+      "line": 13665,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_seven_of_src_base_eq_536870912m_add_129246701",
+      "short_name": "dst_time_eq_twenty_seven_of_src_base_eq_536870912m_add_129246701",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 26` branch: `base = 536870912*m + 129246701` is exactly the `time = 27` case."
+    },
+    {
+      "line": 13691,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_13_of_src_base_eq_536870912m_add_129246701",
+      "short_name": "dst_base_eq_54m_add_13_of_src_base_eq_536870912m_add_129246701",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 536870912*m + 129246701`, the higher-time destination base is exactly `54*m + 13`."
+    },
+    {
+      "line": 13716,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.twenty_eight_le_dst_time_of_src_base_eq_536870912m_add_397682157",
+      "short_name": "twenty_eight_le_dst_time_of_src_base_eq_536870912m_add_397682157",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first two dyadic cases of the `time \u2265 26` branch: `base = 536870912*m + 397682157` still forces destination time at least `28`."
+    },
+    {
+      "line": 13750,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_twenty_eight_mul_dst_base_eq_27m_add_20_of_src_base_eq_536870912m_add_397682157",
+      "short_name": "two_pow_dst_time_sub_twenty_eight_mul_dst_base_eq_27m_add_20_of_src_base_eq_536870912m_add_397682157",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first two dyadic shells of the `time \u2265 26` branch."
+    },
+    {
+      "line": 13785,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_eight_of_src_base_eq_1073741824m_add_934553069",
+      "short_name": "dst_time_eq_twenty_eight_of_src_base_eq_1073741824m_add_934553069",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 28` branch: `base = 1073741824*m + 934553069` is exactly the `time = 28` case."
+    },
+    {
+      "line": 13811,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_47_of_src_base_eq_1073741824m_add_934553069",
+      "short_name": "dst_base_eq_54m_add_47_of_src_base_eq_1073741824m_add_934553069",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 1073741824*m + 934553069`, the higher-time destination base is exactly `54*m + 47`."
+    },
+    {
+      "line": 13835,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_twenty_nine_of_src_base_eq_2147483648m_add_1471423981",
+      "short_name": "dst_time_eq_twenty_nine_of_src_base_eq_2147483648m_add_1471423981",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 28` branch: `base = 2147483648*m + 1471423981` is exactly the `time = 29` case."
+    },
+    {
+      "line": 13861,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_37_of_src_base_eq_2147483648m_add_1471423981",
+      "short_name": "dst_base_eq_54m_add_37_of_src_base_eq_2147483648m_add_1471423981",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 2147483648*m + 1471423981`, the higher-time destination base is exactly `54*m + 37`."
+    },
+    {
+      "line": 13885,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_of_src_base_eq_4294967296m_add_397682157",
+      "short_name": "dst_time_eq_thirty_of_src_base_eq_4294967296m_add_397682157",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Third dyadic shell inside the residual `time \u2265 28` branch: `base = 4294967296*m + 397682157` is exactly the `time = 30` case."
+    },
+    {
+      "line": 13911,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_5_of_src_base_eq_4294967296m_add_397682157",
+      "short_name": "dst_base_eq_54m_add_5_of_src_base_eq_4294967296m_add_397682157",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the third dyadic shell `base = 4294967296*m + 397682157`, the higher-time destination base is exactly `54*m + 5`."
+    },
+    {
+      "line": 13936,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.thirty_one_le_dst_time_of_src_base_eq_4294967296m_add_2545165805",
+      "short_name": "thirty_one_le_dst_time_of_src_base_eq_4294967296m_add_2545165805",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first three dyadic cases of the `time \u2265 28` branch: `base = 4294967296*m + 2545165805` still forces destination time at least `31`."
+    },
+    {
+      "line": 13970,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_thirty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_4294967296m_add_2545165805",
+      "short_name": "two_pow_dst_time_sub_thirty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_4294967296m_add_2545165805",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first three dyadic shells of the `time \u2265 28` branch."
+    },
+    {
+      "line": 14005,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_one_of_src_base_eq_8589934592m_add_6840133101",
+      "short_name": "dst_time_eq_thirty_one_of_src_base_eq_8589934592m_add_6840133101",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 31` branch: `base = 8589934592*m + 6840133101` is exactly the `time = 31` case."
+    },
+    {
+      "line": 14031,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_43_of_src_base_eq_8589934592m_add_6840133101",
+      "short_name": "dst_base_eq_54m_add_43_of_src_base_eq_8589934592m_add_6840133101",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 8589934592*m + 6840133101`, the higher-time destination base is exactly `54*m + 43`."
+    },
+    {
+      "line": 14055,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_two_of_src_base_eq_17179869184m_add_11135100397",
+      "short_name": "dst_time_eq_thirty_two_of_src_base_eq_17179869184m_add_11135100397",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 31` branch: `base = 17179869184*m + 11135100397` is exactly the `time = 32` case."
+    },
+    {
+      "line": 14081,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_35_of_src_base_eq_17179869184m_add_11135100397",
+      "short_name": "dst_base_eq_54m_add_35_of_src_base_eq_17179869184m_add_11135100397",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 17179869184*m + 11135100397`, the higher-time destination base is exactly `54*m + 35`."
+    },
+    {
+      "line": 14105,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_three_of_src_base_eq_34359738368m_add_19725034989",
+      "short_name": "dst_time_eq_thirty_three_of_src_base_eq_34359738368m_add_19725034989",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Third dyadic shell inside the residual `time \u2265 31` branch: `base = 34359738368*m + 19725034989` is exactly the `time = 33` case."
+    },
+    {
+      "line": 14131,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_31_of_src_base_eq_34359738368m_add_19725034989",
+      "short_name": "dst_base_eq_54m_add_31_of_src_base_eq_34359738368m_add_19725034989",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the third dyadic shell `base = 34359738368*m + 19725034989`, the higher-time destination base is exactly `54*m + 31`."
+    },
+    {
+      "line": 14155,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_four_of_src_base_eq_68719476736m_add_36904904173",
+      "short_name": "dst_time_eq_thirty_four_of_src_base_eq_68719476736m_add_36904904173",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Fourth dyadic shell inside the residual `time \u2265 31` branch: `base = 68719476736*m + 36904904173` is exactly the `time = 34` case."
+    },
+    {
+      "line": 14181,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_29_of_src_base_eq_68719476736m_add_36904904173",
+      "short_name": "dst_base_eq_54m_add_29_of_src_base_eq_68719476736m_add_36904904173",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the fourth dyadic shell `base = 68719476736*m + 36904904173`, the higher-time destination base is exactly `54*m + 29`."
+    },
+    {
+      "line": 14205,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_five_of_src_base_eq_137438953472m_add_2545165805",
+      "short_name": "dst_time_eq_thirty_five_of_src_base_eq_137438953472m_add_2545165805",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Fifth dyadic shell inside the residual `time \u2265 31` branch: `base = 137438953472*m + 2545165805` is exactly the `time = 35` case."
+    },
+    {
+      "line": 14231,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_1_of_src_base_eq_137438953472m_add_2545165805",
+      "short_name": "dst_base_eq_54m_add_1_of_src_base_eq_137438953472m_add_2545165805",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the fifth dyadic shell `base = 137438953472*m + 2545165805`, the higher-time destination base is exactly `54*m + 1`."
+    },
+    {
+      "line": 14256,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.thirty_six_le_dst_time_of_src_base_eq_137438953472m_add_71264642541",
+      "short_name": "thirty_six_le_dst_time_of_src_base_eq_137438953472m_add_71264642541",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first five dyadic cases of the `time \u2265 31` branch: `base = 137438953472*m + 71264642541` still forces destination time at least `36`."
+    },
+    {
+      "line": 14290,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_thirty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_137438953472m_add_71264642541",
+      "short_name": "two_pow_dst_time_sub_thirty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_137438953472m_add_71264642541",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first five dyadic shells of the `time \u2265 31` branch."
+    },
+    {
+      "line": 14325,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_six_of_src_base_eq_274877906944m_add_208703596013",
+      "short_name": "dst_time_eq_thirty_six_of_src_base_eq_274877906944m_add_208703596013",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 36` branch: `base = 274877906944*m + 208703596013` is exactly the `time = 36` case."
+    },
+    {
+      "line": 14351,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_41_of_src_base_eq_274877906944m_add_208703596013",
+      "short_name": "dst_base_eq_54m_add_41_of_src_base_eq_274877906944m_add_208703596013",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 274877906944*m + 208703596013`, the higher-time destination base is exactly `54*m + 41`."
+    },
+    {
+      "line": 14375,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_seven_of_src_base_eq_549755813888m_add_71264642541",
+      "short_name": "dst_time_eq_thirty_seven_of_src_base_eq_549755813888m_add_71264642541",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 36` branch: `base = 549755813888*m + 71264642541` is exactly the `time = 37` case."
+    },
+    {
+      "line": 14401,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_7_of_src_base_eq_549755813888m_add_71264642541",
+      "short_name": "dst_base_eq_54m_add_7_of_src_base_eq_549755813888m_add_71264642541",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 549755813888*m + 71264642541`, the higher-time destination base is exactly `54*m + 7`."
+    },
+    {
+      "line": 14425,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_eight_of_src_base_eq_1099511627776m_add_346142549485",
+      "short_name": "dst_time_eq_thirty_eight_of_src_base_eq_1099511627776m_add_346142549485",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Third dyadic shell inside the residual `time \u2265 36` branch: `base = 1099511627776*m + 346142549485` is exactly the `time = 38` case."
+    },
+    {
+      "line": 14451,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_17_of_src_base_eq_1099511627776m_add_346142549485",
+      "short_name": "dst_base_eq_54m_add_17_of_src_base_eq_1099511627776m_add_346142549485",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the third dyadic shell `base = 1099511627776*m + 346142549485`, the higher-time destination base is exactly `54*m + 17`."
+    },
+    {
+      "line": 14475,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_thirty_nine_of_src_base_eq_2199023255552m_add_1995409991149",
+      "short_name": "dst_time_eq_thirty_nine_of_src_base_eq_2199023255552m_add_1995409991149",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Fourth dyadic shell inside the residual `time \u2265 36` branch: `base = 2199023255552*m + 1995409991149` is exactly the `time = 39` case."
+    },
+    {
+      "line": 14501,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_49_of_src_base_eq_2199023255552m_add_1995409991149",
+      "short_name": "dst_base_eq_54m_add_49_of_src_base_eq_2199023255552m_add_1995409991149",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the fourth dyadic shell `base = 2199023255552*m + 1995409991149`, the higher-time destination base is exactly `54*m + 49`."
+    },
+    {
+      "line": 14526,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.forty_le_dst_time_of_src_base_eq_2199023255552m_add_895898363373",
+      "short_name": "forty_le_dst_time_of_src_base_eq_2199023255552m_add_895898363373",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first four dyadic cases of the `time \u2265 36` branch: `base = 2199023255552*m + 895898363373` still forces destination time at least `40`."
+    },
+    {
+      "line": 14560,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_forty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2199023255552m_add_895898363373",
+      "short_name": "two_pow_dst_time_sub_forty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2199023255552m_add_895898363373",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first four dyadic shells of the `time \u2265 36` branch."
+    },
+    {
+      "line": 14595,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_forty_of_src_base_eq_4398046511104m_add_895898363373",
+      "short_name": "dst_time_eq_forty_of_src_base_eq_4398046511104m_add_895898363373",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 40` branch: `base = 4398046511104*m + 895898363373` is exactly the `time = 40` case."
+    },
+    {
+      "line": 14621,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_11_of_src_base_eq_4398046511104m_add_895898363373",
+      "short_name": "dst_base_eq_54m_add_11_of_src_base_eq_4398046511104m_add_895898363373",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 4398046511104*m + 895898363373`, the higher-time destination base is exactly `54*m + 11`."
+    },
+    {
+      "line": 14645,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_forty_one_of_src_base_eq_8796093022208m_add_3094921618925",
+      "short_name": "dst_time_eq_forty_one_of_src_base_eq_8796093022208m_add_3094921618925",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 40` branch: `base = 8796093022208*m + 3094921618925` is exactly the `time = 41` case."
+    },
+    {
+      "line": 14671,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_19_of_src_base_eq_8796093022208m_add_3094921618925",
+      "short_name": "dst_base_eq_54m_add_19_of_src_base_eq_8796093022208m_add_3094921618925",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 8796093022208*m + 3094921618925`, the higher-time destination base is exactly `54*m + 19`."
+    },
+    {
+      "line": 14695,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_forty_two_of_src_base_eq_17592186044416m_add_7492968130029",
+      "short_name": "dst_time_eq_forty_two_of_src_base_eq_17592186044416m_add_7492968130029",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Third dyadic shell inside the residual `time \u2265 40` branch: `base = 17592186044416*m + 7492968130029` is exactly the `time = 42` case."
+    },
+    {
+      "line": 14721,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_23_of_src_base_eq_17592186044416m_add_7492968130029",
+      "short_name": "dst_base_eq_54m_add_23_of_src_base_eq_17592186044416m_add_7492968130029",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the third dyadic shell `base = 17592186044416*m + 7492968130029`, the higher-time destination base is exactly `54*m + 23`."
+    },
+    {
+      "line": 14745,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_forty_three_of_src_base_eq_35184372088832m_add_16289061152237",
+      "short_name": "dst_time_eq_forty_three_of_src_base_eq_35184372088832m_add_16289061152237",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Fourth dyadic shell inside the residual `time \u2265 40` branch: `base = 35184372088832*m + 16289061152237` is exactly the `time = 43` case."
+    },
+    {
+      "line": 14771,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_25_of_src_base_eq_35184372088832m_add_16289061152237",
+      "short_name": "dst_base_eq_54m_add_25_of_src_base_eq_35184372088832m_add_16289061152237",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the fourth dyadic shell `base = 35184372088832*m + 16289061152237`, the higher-time destination base is exactly `54*m + 25`."
+    },
+    {
+      "line": 14796,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.forty_four_le_dst_time_of_src_base_eq_35184372088832m_add_33881247196653",
+      "short_name": "forty_four_le_dst_time_of_src_base_eq_35184372088832m_add_33881247196653",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first four dyadic cases of the `time \u2265 40` branch: `base = 35184372088832*m + 33881247196653` still forces destination time at least `44`."
+    },
+    {
+      "line": 14830,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_forty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_35184372088832m_add_33881247196653",
+      "short_name": "two_pow_dst_time_sub_forty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_35184372088832m_add_33881247196653",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first four dyadic shells of the `time \u2265 40` branch."
+    },
+    {
+      "line": 14866,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_forty_four_of_src_base_eq_70368744177664m_add_69065619285485",
+      "short_name": "dst_time_eq_forty_four_of_src_base_eq_70368744177664m_add_69065619285485",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 44` branch: `base = 70368744177664*m + 69065619285485` is exactly the `time = 44` case."
+    },
+    {
+      "line": 14893,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_53_of_src_base_eq_70368744177664m_add_69065619285485",
+      "short_name": "dst_base_eq_54m_add_53_of_src_base_eq_70368744177664m_add_69065619285485",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 70368744177664*m + 69065619285485`, the higher-time destination base is exactly `54*m + 53`."
+    },
+    {
+      "line": 14918,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_forty_five_of_src_base_eq_140737488355328m_add_33881247196653",
+      "short_name": "dst_time_eq_forty_five_of_src_base_eq_140737488355328m_add_33881247196653",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 44` branch: `base = 140737488355328*m + 33881247196653` is exactly the `time = 45` case."
+    },
+    {
+      "line": 14945,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_13_of_src_base_eq_140737488355328m_add_33881247196653",
+      "short_name": "dst_base_eq_54m_add_13_of_src_base_eq_140737488355328m_add_33881247196653",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 140737488355328*m + 33881247196653`, the higher-time destination base is exactly `54*m + 13`."
+    },
+    {
+      "line": 14970,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.forty_six_le_dst_time_of_src_base_eq_140737488355328m_add_104249991374317",
+      "short_name": "forty_six_le_dst_time_of_src_base_eq_140737488355328m_add_104249991374317",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first two dyadic cases of the `time \u2265 44` branch: `base = 140737488355328*m + 104249991374317` still forces destination time at least `46`."
+    },
+    {
+      "line": 15004,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_forty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq_140737488355328m_add_104249991374317",
+      "short_name": "two_pow_dst_time_sub_forty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq_140737488355328m_add_104249991374317",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first two dyadic shells of the `time \u2265 44` branch."
+    },
+    {
+      "line": 15040,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_1_of_src_base_eq_128r_add_13",
       "short_name": "dst_slice_eq_4_1_of_src_base_eq_128r_add_13",
@@ -6107,7 +6935,7 @@
       "doc_summary": "First time-4 sub-shell inside the higher-time `13 mod 32` exit: once the source branch refines to `base = 128*r + 13`, the destination source slice is exactly `(4,1)`."
     },
     {
-      "line": 12574,
+      "line": 15078,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_2_of_src_base_eq_256r_add_205",
       "short_name": "dst_slice_eq_4_2_of_src_base_eq_256r_add_205",
@@ -6116,7 +6944,7 @@
       "doc_summary": "Second time-4 sub-shell inside the higher-time `13 mod 32` exit: the refined source chart `base = 256*r + 205` lands exactly on destination slice `(4,2)`."
     },
     {
-      "line": 12612,
+      "line": 15116,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_3_of_src_base_eq_512r_add_333",
       "short_name": "dst_slice_eq_4_3_of_src_base_eq_512r_add_333",
@@ -6125,7 +6953,7 @@
       "doc_summary": "Third time-4 sub-shell inside the higher-time `13 mod 32` exit: the refined source chart `base = 512*r + 333` lands exactly on destination slice `(4,3)`."
     },
     {
-      "line": 12650,
+      "line": 15154,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_4_of_src_base_eq_1024r_add_77",
       "short_name": "dst_slice_eq_4_4_of_src_base_eq_1024r_add_77",
@@ -6134,7 +6962,7 @@
       "doc_summary": "Fourth time-4 sub-shell inside the higher-time `13 mod 32` exit: the refined source chart `base = 1024*r + 77` lands exactly on destination slice `(4,4)`."
     },
     {
-      "line": 12688,
+      "line": 15192,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.five_le_dst_eject_of_src_base_eq_1024r_add_589",
       "short_name": "five_le_dst_eject_of_src_base_eq_1024r_add_589",
@@ -6143,7 +6971,7 @@
       "doc_summary": "Residual time-4 branch after the first four exact ejection slices: the refined source chart `base = 1024*r + 589` still lands at `time = 4`, but now with destination ejection valuation at least `5`."
     },
     {
-      "line": 12730,
+      "line": 15234,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_5_of_src_base_eq_2048r_add_1613",
       "short_name": "dst_slice_eq_4_5_of_src_base_eq_2048r_add_1613",
@@ -6152,7 +6980,7 @@
       "doc_summary": "First exact refinement of the residual time-4 branch: `base = 2048*r + 1613` lands exactly on destination slice `(4,5)`."
     },
     {
-      "line": 12767,
+      "line": 15271,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_6_of_src_base_eq_4096r_add_589",
       "short_name": "dst_slice_eq_4_6_of_src_base_eq_4096r_add_589",
@@ -6161,7 +6989,7 @@
       "doc_summary": "Second exact refinement of the residual time-4 branch: `base = 4096*r + 589` lands exactly on destination slice `(4,6)`."
     },
     {
-      "line": 12805,
+      "line": 15309,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.seven_le_dst_eject_of_src_base_eq_4096r_add_2637",
       "short_name": "seven_le_dst_eject_of_src_base_eq_4096r_add_2637",
@@ -6170,7 +6998,7 @@
       "doc_summary": "Residual branch after the first two exact refinements of `base = 1024*r + 589`: the chart `base = 4096*r + 2637` still lands at `time = 4`, now with destination ejection valuation at least `7`."
     },
     {
-      "line": 12847,
+      "line": 15351,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_1_of_src_base_eq_256r_add_173",
       "short_name": "dst_slice_eq_5_1_of_src_base_eq_256r_add_173",
@@ -6179,7 +7007,7 @@
       "doc_summary": "First exact refinement of the `time = 5` shell: `base = 256*r + 173` lands exactly on destination slice `(5,1)`."
     },
     {
-      "line": 12884,
+      "line": 15388,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_2_of_src_base_eq_512r_add_301",
       "short_name": "dst_slice_eq_5_2_of_src_base_eq_512r_add_301",
@@ -6188,7 +7016,7 @@
       "doc_summary": "Second exact refinement of the `time = 5` shell: `base = 512*r + 301` lands exactly on destination slice `(5,2)`."
     },
     {
-      "line": 12921,
+      "line": 15425,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_3_of_src_base_eq_1024r_add_45",
       "short_name": "dst_slice_eq_5_3_of_src_base_eq_1024r_add_45",
@@ -6197,7 +7025,7 @@
       "doc_summary": "Third exact refinement of the `time = 5` shell: `base = 1024*r + 45` lands exactly on destination slice `(5,3)`."
     },
     {
-      "line": 12959,
+      "line": 15463,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.four_le_dst_eject_of_src_base_eq_1024r_add_557",
       "short_name": "four_le_dst_eject_of_src_base_eq_1024r_add_557",
@@ -6206,7 +7034,7 @@
       "doc_summary": "Residual branch after the first three exact refinements of the `time = 5` shell: `base = 1024*r + 557` still lands at `time = 5`, now with destination ejection valuation at least `4`."
     },
     {
-      "line": 13001,
+      "line": 15505,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_4_of_src_base_eq_2048r_add_557",
       "short_name": "dst_slice_eq_5_4_of_src_base_eq_2048r_add_557",
@@ -6215,7 +7043,7 @@
       "doc_summary": "First exact refinement of the residual `time = 5` shell: `base = 2048*r + 557` lands exactly on destination slice `(5,4)`."
     },
     {
-      "line": 13038,
+      "line": 15542,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_5_of_src_base_eq_4096r_add_1581",
       "short_name": "dst_slice_eq_5_5_of_src_base_eq_4096r_add_1581",
@@ -6224,7 +7052,7 @@
       "doc_summary": "Second exact refinement of the residual `time = 5` shell: `base = 4096*r + 1581` lands exactly on destination slice `(5,5)`."
     },
     {
-      "line": 13075,
+      "line": 15579,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_6_of_src_base_eq_8192r_add_3629",
       "short_name": "dst_slice_eq_5_6_of_src_base_eq_8192r_add_3629",
@@ -6233,7 +7061,7 @@
       "doc_summary": "Third exact refinement of the residual `time = 5` shell: `base = 8192*r + 3629` lands exactly on destination slice `(5,6)`."
     },
     {
-      "line": 13112,
+      "line": 15616,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_7_of_src_base_eq_16384r_add_7725",
       "short_name": "dst_slice_eq_5_7_of_src_base_eq_16384r_add_7725",
@@ -6242,7 +7070,7 @@
       "doc_summary": "Fourth exact refinement of the residual `time = 5` shell: `base = 16384*r + 7725` lands exactly on destination slice `(5,7)`."
     },
     {
-      "line": 13150,
+      "line": 15654,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.eight_le_dst_eject_of_src_base_eq_16384r_add_15917",
       "short_name": "eight_le_dst_eject_of_src_base_eq_16384r_add_15917",
@@ -6251,7 +7079,7 @@
       "doc_summary": "Residual branch after the first four exact refinements of the `time = 5` shell: `base = 16384*r + 15917` still lands at `time = 5`, now with destination ejection valuation at least `8`."
     },
     {
-      "line": 13192,
+      "line": 15696,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_1_of_src_base_eq_512r_add_109",
       "short_name": "dst_slice_eq_6_1_of_src_base_eq_512r_add_109",
@@ -6260,7 +7088,7 @@
       "doc_summary": "First exact refinement of the `time = 6` shell: `base = 512*r + 109` lands exactly on destination slice `(6,1)`."
     },
     {
-      "line": 13229,
+      "line": 15733,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_2_of_src_base_eq_1024r_add_365",
       "short_name": "dst_slice_eq_6_2_of_src_base_eq_1024r_add_365",
@@ -6269,7 +7097,7 @@
       "doc_summary": "Second exact refinement of the `time = 6` shell: `base = 1024*r + 365` lands exactly on destination slice `(6,2)`."
     },
     {
-      "line": 13266,
+      "line": 15770,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_3_of_src_base_eq_2048r_add_1901",
       "short_name": "dst_slice_eq_6_3_of_src_base_eq_2048r_add_1901",
@@ -6278,7 +7106,7 @@
       "doc_summary": "Third exact refinement of the `time = 6` shell: `base = 2048*r + 1901` lands exactly on destination slice `(6,3)`."
     },
     {
-      "line": 13303,
+      "line": 15807,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_4_of_src_base_eq_4096r_add_877",
       "short_name": "dst_slice_eq_6_4_of_src_base_eq_4096r_add_877",
@@ -6287,7 +7115,7 @@
       "doc_summary": "Fourth exact refinement of the `time = 6` shell: `base = 4096*r + 877` lands exactly on destination slice `(6,4)`."
     },
     {
-      "line": 13340,
+      "line": 15844,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_5_of_src_base_eq_8192r_add_7021",
       "short_name": "dst_slice_eq_6_5_of_src_base_eq_8192r_add_7021",
@@ -6296,7 +7124,7 @@
       "doc_summary": "Fifth exact refinement of the `time = 6` shell: `base = 8192*r + 7021` lands exactly on destination slice `(6,5)`."
     },
     {
-      "line": 13378,
+      "line": 15882,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.six_le_dst_eject_of_src_base_eq_8192r_add_2925",
       "short_name": "six_le_dst_eject_of_src_base_eq_8192r_add_2925",
@@ -6305,7 +7133,7 @@
       "doc_summary": "Residual branch after the first five exact refinements of the `time = 6` shell: `base = 8192*r + 2925` still lands at `time = 6`, now with destination ejection valuation at least `6`."
     },
     {
-      "line": 13420,
+      "line": 15924,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_1_of_src_base_eq_1024r_add_237",
       "short_name": "dst_slice_eq_7_1_of_src_base_eq_1024r_add_237",
@@ -6314,7 +7142,7 @@
       "doc_summary": "First exact refinement of the `time = 7` shell: `base = 1024*r + 237` lands exactly on destination slice `(7,1)`."
     },
     {
-      "line": 13457,
+      "line": 15961,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_2_of_src_base_eq_2048r_add_749",
       "short_name": "dst_slice_eq_7_2_of_src_base_eq_2048r_add_749",
@@ -6323,7 +7151,7 @@
       "doc_summary": "Second exact refinement of the `time = 7` shell: `base = 2048*r + 749` lands exactly on destination slice `(7,2)`."
     },
     {
-      "line": 13494,
+      "line": 15998,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_3_of_src_base_eq_4096r_add_1773",
       "short_name": "dst_slice_eq_7_3_of_src_base_eq_4096r_add_1773",
@@ -6332,7 +7160,7 @@
       "doc_summary": "Third exact refinement of the `time = 7` shell: `base = 4096*r + 1773` lands exactly on destination slice `(7,3)`."
     },
     {
-      "line": 13531,
+      "line": 16035,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_4_of_src_base_eq_8192r_add_3821",
       "short_name": "dst_slice_eq_7_4_of_src_base_eq_8192r_add_3821",
@@ -6341,7 +7169,7 @@
       "doc_summary": "Fourth exact refinement of the `time = 7` shell: `base = 8192*r + 3821` lands exactly on destination slice `(7,4)`."
     },
     {
-      "line": 13568,
+      "line": 16072,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_5_of_src_base_eq_16384r_add_7917",
       "short_name": "dst_slice_eq_7_5_of_src_base_eq_16384r_add_7917",
@@ -6350,7 +7178,7 @@
       "doc_summary": "Fifth exact refinement of the `time = 7` shell: `base = 16384*r + 7917` lands exactly on destination slice `(7,5)`."
     },
     {
-      "line": 13605,
+      "line": 16109,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_6_of_src_base_eq_32768r_add_32493",
       "short_name": "dst_slice_eq_7_6_of_src_base_eq_32768r_add_32493",
@@ -6359,7 +7187,7 @@
       "doc_summary": "Sixth exact refinement of the `time = 7` shell: `base = 32768*r + 32493` lands exactly on destination slice `(7,6)`."
     },
     {
-      "line": 13643,
+      "line": 16147,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.seven_le_dst_eject_of_src_base_eq_32768r_add_16109",
       "short_name": "seven_le_dst_eject_of_src_base_eq_32768r_add_16109",
@@ -6368,7 +7196,7 @@
       "doc_summary": "Residual branch after the first six exact refinements of the `time = 7` shell: `base = 32768*r + 16109` still lands at `time = 7`, now with destination ejection valuation at least `7`."
     },
     {
-      "line": 13683,
+      "line": 16187,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_value_ge_target",
       "short_name": "dst_value_ge_target",
@@ -6377,7 +7205,7 @@
       "doc_summary": ""
     },
     {
-      "line": 13691,
+      "line": 16195,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_orderedMultiviewCone",
       "short_name": "dst_orderedMultiviewCone",
@@ -6386,7 +7214,7 @@
       "doc_summary": ""
     },
     {
-      "line": 13699,
+      "line": 16203,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_zoneDefect_eq_selfDefect_add_radialGap",
       "short_name": "dst_zoneDefect_eq_selfDefect_add_radialGap",
@@ -6395,7 +7223,7 @@
       "doc_summary": "On a surviving bad-frontier transition, the destination's target-zone successor defect is exactly the self defect plus the radial gap above `B`."
     },
     {
-      "line": 13709,
+      "line": 16213,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_zoneThresholdDefect_eq_selfThresholdDefect_add_thresholdGap",
       "short_name": "dst_zoneThresholdDefect_eq_selfThresholdDefect_add_thresholdGap",
@@ -6404,7 +7232,7 @@
       "doc_summary": "On a surviving bad-frontier transition, the destination's target-zone threshold defect is exactly the self-threshold defect plus the threshold gap between the self and target views."
     },
     {
-      "line": 13716,
+      "line": 16220,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.centeredClockBundle_eq_bundleStateStep_of_coherence",
       "short_name": "centeredClockBundle_eq_bundleStateStep_of_coherence",
@@ -6413,7 +7241,7 @@
       "doc_summary": ""
     },
     {
-      "line": 13738,
+      "line": 16242,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_orderedMultiviewCone_iff_selfThresholdDefect_pos",
       "short_name": "dst_orderedMultiviewCone_iff_selfThresholdDefect_pos",
@@ -6422,7 +7250,7 @@
       "doc_summary": "On a surviving bad-frontier transition, the destination already lies above the target cutoff `B`, so its ordered multiview cone is equivalent to the positivity of the intrinsic self-threshold defect alone."
     },
     {
-      "line": 13751,
+      "line": 16255,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierState",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierState.nextTransition",
       "short_name": "nextTransition",
@@ -6431,7 +7259,7 @@
       "doc_summary": "Canonical surviving transition produced when the intrinsic successor of a bad-frontier state remains on the same bad frontier."
     },
     {
-      "line": 13770,
+      "line": 16274,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierState",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierState.nextState_shrinks_or_exists_transition",
       "short_name": "nextState_shrinks_or_exists_transition",
@@ -6440,7 +7268,7 @@
       "doc_summary": "One intrinsic meta-step from a bad-frontier state either already yields a shrinking certificate on the successor value, or yields a first-class source-to-source bad-frontier transition."
     },
     {
-      "line": 13788,
+      "line": 16292,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierState",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierState.nextState_shrinks_or_exists_transition_split_of_time3_eject1",
       "short_name": "nextState_shrinks_or_exists_transition_split_of_time3_eject1",
@@ -6449,7 +7277,7 @@
       "doc_summary": "On the hard source slice `(time, eject) = (3, 1)` at target `832`, one intrinsic meta-step already reduces the bad-frontier search to a finite obstruction split: either the successor value already carries a shrinking certificate, or the surviving transition lands on `(2,1)`, or the destination time jumps to at least `4`, or the source lies on the stricter `29 mod 64` surviving branch."
     },
     {
-      "line": 13809,
+      "line": 16313,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierState",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierState.nextState_shrinks_or_exists_transition_core",
       "short_name": "nextState_shrinks_or_exists_transition_core",
@@ -6458,7 +7286,7 @@
       "doc_summary": "Core surviving-branch form: after one intrinsic bad-to-bad meta-step, the destination source state already lies above the target cutoff `B`, and the remaining independent obstruction is the self-threshold defect."
     },
     {
-      "line": 13832,
+      "line": 16336,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone",
       "short_name": "regimeII_slice_shrinks_via_exact_zone",
@@ -6467,7 +7295,7 @@
       "doc_summary": "Any fixed Regime-II slice whose intrinsic base lies below the exact-zone threshold at `832` already has a certified shrinking window on the true integer orbit."
     },
     {
-      "line": 13844,
+      "line": 16348,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time2_eject1_base_lt_185",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time2_eject1_base_lt_185",
@@ -6476,7 +7304,7 @@
       "doc_summary": "The lower-time handoff slice `(time, eject) = (2, 1)` and intrinsic bound `base < 185` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13854,
+      "line": 16358,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time4_eject1_base_lt_21",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time4_eject1_base_lt_21",
@@ -6485,7 +7313,7 @@
       "doc_summary": "The first higher-time slice `(time, eject) = (4, 1)` and intrinsic bound `base < 21` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13864,
+      "line": 16368,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time4_eject2_base_lt_42",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time4_eject2_base_lt_42",
@@ -6494,7 +7322,7 @@
       "doc_summary": "The first higher-time slice `(time, eject) = (4, 2)` and intrinsic bound `base < 42` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13874,
+      "line": 16378,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time4_eject3_base_lt_83",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time4_eject3_base_lt_83",
@@ -6503,7 +7331,7 @@
       "doc_summary": "The first higher-time slice `(time, eject) = (4, 3)` and intrinsic bound `base < 83` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13884,
+      "line": 16388,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time4_eject4_base_lt_165",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time4_eject4_base_lt_165",
@@ -6512,7 +7340,7 @@
       "doc_summary": "The first higher-time slice `(time, eject) = (4, 4)` and intrinsic bound `base < 165` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13894,
+      "line": 16398,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time5_eject1_base_lt_7",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time5_eject1_base_lt_7",
@@ -6521,7 +7349,7 @@
       "doc_summary": "The slice `(time, eject) = (5, 1)` and intrinsic bound `base < 7` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13904,
+      "line": 16408,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time5_eject2_base_lt_14",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time5_eject2_base_lt_14",
@@ -6530,7 +7358,7 @@
       "doc_summary": "The slice `(time, eject) = (5, 2)` and intrinsic bound `base < 14` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13914,
+      "line": 16418,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time5_eject3_base_lt_28",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time5_eject3_base_lt_28",
@@ -6539,7 +7367,7 @@
       "doc_summary": "The slice `(time, eject) = (5, 3)` and intrinsic bound `base < 28` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13924,
+      "line": 16428,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time6_eject1_base_lt_3",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time6_eject1_base_lt_3",
@@ -6548,7 +7376,7 @@
       "doc_summary": "The slice `(time, eject) = (6, 1)` and intrinsic bound `base < 3` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13934,
+      "line": 16438,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time6_eject2_base_lt_5",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time6_eject2_base_lt_5",
@@ -6557,7 +7385,7 @@
       "doc_summary": "The slice `(time, eject) = (6, 2)` and intrinsic bound `base < 5` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13944,
+      "line": 16448,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_lt_10",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_lt_10",
@@ -6566,7 +7394,7 @@
       "doc_summary": "The slice `(time, eject) = (6, 3)` and intrinsic bound `base < 10` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 13954,
+      "line": 16458,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_eq_1",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_eq_1",
@@ -6575,7 +7403,7 @@
       "doc_summary": "The exact singleton source state `(time, base, eject) = (6, 1, 3)` already certifies a shrinking window on the true integer orbit."
     },
     {
-      "line": 13965,
+      "line": 16469,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time7_eject5_base_eq_3",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time7_eject5_base_eq_3",
@@ -6584,7 +7412,7 @@
       "doc_summary": "The exact singleton source state `(time, base, eject) = (7, 3, 5)` already certifies a shrinking window on the true integer orbit."
     },
     {
-      "line": 13976,
+      "line": 16480,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time8_eject5_base_eq_1",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time8_eject5_base_eq_1",
@@ -6593,7 +7421,7 @@
       "doc_summary": "The exact singleton source state `(time, base, eject) = (8, 1, 5)` already certifies a shrinking window on the true integer orbit."
     },
     {
-      "line": 13990,
+      "line": 16494,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_next_lt_832_of_dst_slice_exact_zone",
       "short_name": "dst_next_lt_832_of_dst_slice_exact_zone",
@@ -6602,7 +7430,7 @@
       "doc_summary": "If the destination source state of a bad-frontier transition already lies in the exact `832` threshold window of its own intrinsic slice, then its compressed successor enters the verified exact zone below `832`."
     },
     {
-      "line": 14015,
+      "line": 16519,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_next_lt_832",
       "short_name": "src_shrinks_of_dst_next_lt_832",
@@ -6611,7 +7439,7 @@
       "doc_summary": "If the destination source state of a bad-frontier transition already enters the exact `832` zone on its own next intrinsic meta-step, then the original source orbit already has a certified shrinking window."
     },
     {
-      "line": 14065,
+      "line": 16569,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_slice_exact_zone",
       "short_name": "src_shrinks_of_dst_slice_exact_zone",
@@ -6620,7 +7448,7 @@
       "doc_summary": "Exact-zone handoff principle for intrinsic bad-frontier transitions at target `832`: if the destination source state lies below the exact-zone threshold of its own slice, then the original source orbit already shrinks."
     },
     {
-      "line": 14078,
+      "line": 16582,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time2_eject1_base_lt_185",
       "short_name": "src_shrinks_of_dst_time2_eject1_base_lt_185",
@@ -6629,7 +7457,7 @@
       "doc_summary": "The `(2,1)` destination exit from a bad-frontier transition out of the hard `(3,1)` source slice already feeds the exact `832` zone whenever the destination base lies below `185`, so the original source orbit shrinks."
     },
     {
-      "line": 14091,
+      "line": 16595,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_32k_add_21_of_k_lt_two",
       "short_name": "src_shrinks_of_src_base_eq_32k_add_21_of_k_lt_two",
@@ -6638,7 +7466,7 @@
       "doc_summary": "Concrete `(2,1)` exact-zone handoff on the `21 mod 32` source branch: once the source chart is `base = 32*k + 21` with `k < 2`, the destination already enters the exact `832` zone on its own next meta-step, so the original source orbit shrinks."
     },
     {
-      "line": 14107,
+      "line": 16611,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_13",
       "short_name": "src_shrinks_of_src_base_eq_13",
@@ -6647,7 +7475,7 @@
       "doc_summary": "The first time-4 shell subcase on the non-residual `(3,1)` branch already collapses at source base `13`: it lands on destination slice `(4,1)` with destination base `11`, so the destination immediately enters the exact `832` zone and the original source orbit shrinks."
     },
     {
-      "line": 14127,
+      "line": 16631,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_77",
       "short_name": "src_shrinks_of_src_base_eq_77",
@@ -6656,7 +7484,7 @@
       "doc_summary": "The fourth time-4 shell subcase on the non-residual `(3,1)` branch already collapses at source base `77`: it lands on destination slice `(4,4)` with destination base `65`, which lies below the exact-zone threshold `165`, so the original source orbit shrinks."
     },
     {
-      "line": 14147,
+      "line": 16651,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_589",
       "short_name": "src_shrinks_of_src_base_eq_589",
@@ -6665,7 +7493,7 @@
       "doc_summary": "The next exact refinement of the residual time-4 branch already collapses at source base `589`: it lands on destination slice `(4,6)` with destination base `497`, which lies below the exact-zone threshold `658`, so the original source orbit shrinks."
     },
     {
-      "line": 14167,
+      "line": 16671,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_45",
       "short_name": "src_shrinks_of_src_base_eq_45",
@@ -6674,7 +7502,7 @@
       "doc_summary": "The first exact refinement of the `time = 5` shell already collapses at source base `45`: it lands on destination slice `(5,3)` with destination base `19`, which lies below the exact-zone threshold `28`, so the original source orbit shrinks."
     },
     {
-      "line": 14186,
+      "line": 16690,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time4_eject1_base_lt_21",
       "short_name": "src_shrinks_of_dst_time4_eject1_base_lt_21",
@@ -6683,7 +7511,7 @@
       "doc_summary": "The first higher-time destination slice `(4,1)` already feeds the exact `832` zone once its intrinsic base lies below `21`, so the original source orbit shrinks."
     },
     {
-      "line": 14198,
+      "line": 16702,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time4_eject2_base_lt_42",
       "short_name": "src_shrinks_of_dst_time4_eject2_base_lt_42",
@@ -6692,7 +7520,7 @@
       "doc_summary": "The first higher-time destination slice `(4,2)` already feeds the exact `832` zone once its intrinsic base lies below `42`, so the original source orbit shrinks."
     },
     {
-      "line": 14210,
+      "line": 16714,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time4_eject3_base_lt_83",
       "short_name": "src_shrinks_of_dst_time4_eject3_base_lt_83",
@@ -6701,7 +7529,7 @@
       "doc_summary": "The first higher-time destination slice `(4,3)` already feeds the exact `832` zone once its intrinsic base lies below `83`, so the original source orbit shrinks."
     },
     {
-      "line": 14222,
+      "line": 16726,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time4_eject4_base_lt_165",
       "short_name": "src_shrinks_of_dst_time4_eject4_base_lt_165",
@@ -6710,7 +7538,7 @@
       "doc_summary": "The first higher-time destination slice `(4,4)` already feeds the exact `832` zone once its intrinsic base lies below `165`, so the original source orbit shrinks."
     },
     {
-      "line": 14234,
+      "line": 16738,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time5_eject1_base_lt_7",
       "short_name": "src_shrinks_of_dst_time5_eject1_base_lt_7",
@@ -6719,7 +7547,7 @@
       "doc_summary": "The next higher-time destination slice `(5,1)` already feeds the exact `832` zone once its intrinsic base lies below `7`, so the original source orbit shrinks."
     },
     {
-      "line": 14246,
+      "line": 16750,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time5_eject2_base_lt_14",
       "short_name": "src_shrinks_of_dst_time5_eject2_base_lt_14",
@@ -6728,7 +7556,7 @@
       "doc_summary": "The next higher-time destination slice `(5,2)` already feeds the exact `832` zone once its intrinsic base lies below `14`, so the original source orbit shrinks."
     },
     {
-      "line": 14258,
+      "line": 16762,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time5_eject3_base_lt_28",
       "short_name": "src_shrinks_of_dst_time5_eject3_base_lt_28",
@@ -6737,7 +7565,7 @@
       "doc_summary": "The next higher-time destination slice `(5,3)` already feeds the exact `832` zone once its intrinsic base lies below `28`, so the original source orbit shrinks."
     },
     {
-      "line": 14274,
+      "line": 16778,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_shrinks_or_hits_exact_zone",
       "short_name": "regimeII_shrinks_or_hits_exact_zone",
@@ -6746,7 +7574,7 @@
       "doc_summary": "Generic Regime-II return-map dichotomy into any exact finite zone."
     },
     {
-      "line": 14299,
+      "line": 16803,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_shrinks_or_hits_k6_zone",
       "short_name": "regimeII_shrinks_or_hits_k6_zone",
@@ -6755,7 +7583,7 @@
       "doc_summary": "Regime-II return-map dichotomy at the `k=6` exact scale."
     },
     {
-      "line": 14329,
+      "line": 16833,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.spectral_gap_predicts_crt",
       "short_name": "spectral_gap_predicts_crt",
@@ -6764,7 +7592,7 @@
       "doc_summary": "**Bridge 4: The carry automaton's spectral gap predicts the CRT structure.** The automaton has 2 active states with P(continue) = 1/2 each."
     },
     {
-      "line": 14373,
+      "line": 16877,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.surplus_recovery_bound",
       "short_name": "surplus_recovery_bound",
@@ -6773,7 +7601,7 @@
       "doc_summary": "**The unified picture**: all three threads meet at one identity."
     },
     {
-      "line": 14427,
+      "line": 16931,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_3x7",
       "short_name": "harmonize_3x7",
@@ -6782,7 +7610,7 @@
       "doc_summary": "**Clock 3\u00d77 = 21**: all 10 odd residues contract in 8 steps."
     },
     {
-      "line": 14433,
+      "line": 16937,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x7",
       "short_name": "harmonize_5x7",
@@ -6791,7 +7619,7 @@
       "doc_summary": "**Clock 5\u00d77 = 35**: all 17 odd residues contract in 10 steps."
     },
     {
-      "line": 14439,
+      "line": 16943,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x11",
       "short_name": "harmonize_5x11",
@@ -6800,7 +7628,7 @@
       "doc_summary": "**Clock 5\u00d711 = 55**: all 27 odd residues contract in 12 steps."
     },
     {
-      "line": 14445,
+      "line": 16949,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_7x11",
       "short_name": "harmonize_7x11",
@@ -6809,7 +7637,7 @@
       "doc_summary": "**Clock 7\u00d711 = 77**: all 38 odd residues contract in 16 steps."
     },
     {
-      "line": 14451,
+      "line": 16955,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_7x13",
       "short_name": "harmonize_7x13",
@@ -6818,7 +7646,7 @@
       "doc_summary": "**Clock 7\u00d713 = 91**: all 45 odd residues contract in 20 steps."
     },
     {
-      "line": 14463,
+      "line": 16967,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_3x5x13",
       "short_name": "harmonize_3x5x13",
@@ -6827,7 +7655,7 @@
       "doc_summary": "**Clock 3\u00d75\u00d713 = 195**: resolves the 3\u00d75 and 5\u00d713 traps."
     },
     {
-      "line": 14472,
+      "line": 16976,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x7x13",
       "short_name": "harmonize_5x7x13",
@@ -6836,7 +7664,7 @@
       "doc_summary": "**Clock 5\u00d77\u00d713 = 455**: resolves the 5\u00d713 trap."
     },
     {
-      "line": 14478,
+      "line": 16982,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x11x13",
       "short_name": "harmonize_5x11x13",
@@ -6845,7 +7673,7 @@
       "doc_summary": "**Clock 5\u00d711\u00d713 = 715**: all 357 odd residues contract in 64 steps."
     },
     {
-      "line": 14491,
+      "line": 16995,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x7x11x13",
       "short_name": "harmonize_5x7x11x13",
@@ -6854,7 +7682,7 @@
       "doc_summary": "**Clock 5\u00d77\u00d711\u00d713 = 5005**: resolves ALL 2-clock and 3-clock traps involving these primes (5\u00d713, 7\u00d711\u00d713, 5\u00d77\u00d711 are all STUCK individually)."
     },
     {
-      "line": 14498,
+      "line": 17002,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_3x5x7x11x13",
       "short_name": "harmonize_3x5x7x11x13",
@@ -6863,7 +7691,7 @@
       "doc_summary": "**Clock 3\u00d75\u00d77\u00d711\u00d713 = 15015**: all five odd primes \u2264 13 as concurrent clocks."
     },
     {
-      "line": 14508,
+      "line": 17012,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x7x11x13x17",
       "short_name": "harmonize_5x7x11x13x17",
@@ -6872,7 +7700,7 @@
       "doc_summary": "**Clock 5\u00d77\u00d711\u00d713\u00d717 = 85085**: adding the p=17 clock."
     },
     {
-      "line": 14520,
+      "line": 17024,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonization_ratio_decreasing",
       "short_name": "harmonization_ratio_decreasing",
@@ -6881,7 +7709,7 @@
       "doc_summary": "**Harmonization W/M ratio decreases across prime products.** The contraction window W grows sub-linearly relative to modulus M."
     },
     {
-      "line": 14545,
+      "line": 17049,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.stuck_then_resolved",
       "short_name": "stuck_then_resolved",
@@ -6890,7 +7718,7 @@
       "doc_summary": "**Stuck pairs and their resolution.** Certain CRT products have permanently trapped modular orbits."
     },
     {
-      "line": 14565,
+      "line": 17069,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.mod3_degenerate",
       "short_name": "mod3_degenerate",
@@ -6899,7 +7727,7 @@
       "doc_summary": "**Mod-3 degeneracy**: 3n+1 \u2261 1 mod 3 for all n, so the p=3 clock carries ZERO dynamical information."
     },
     {
-      "line": 14573,
+      "line": 17077,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.trap_cycle_mod15",
       "short_name": "trap_cycle_mod15",
@@ -6908,7 +7736,7 @@
       "doc_summary": "**Mod-15 trap cycle**: at mod 15 = 3\u00d75, residues 7\u219211\u21922\u21927 form a 3-cycle that passes through EVEN residue 2."
     },
     {
-      "line": 14583,
+      "line": 17087,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.trap_cycle_mod65",
       "short_name": "trap_cycle_mod65",
@@ -6917,7 +7745,7 @@
       "doc_summary": "**Mod-65 trap cycle**: at mod 65 = 5\u00d713, residue 55 forms a 2-cycle 55\u219218\u219255 through EVEN residue 18."
     },
     {
-      "line": 14593,
+      "line": 17097,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.stuck_certificate_mod65",
       "short_name": "stuck_certificate_mod65",
@@ -6926,7 +7754,7 @@
       "doc_summary": "**Stuck certificate for mod 65**: the trapped residue r=55 has v\u2082 sum far below the contraction threshold even after 200 steps."
     },
     {
-      "line": 14598,
+      "line": 17102,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.stuck_certificate_mod15",
       "short_name": "stuck_certificate_mod15",
@@ -6935,7 +7763,7 @@
       "doc_summary": "**Stuck certificate for mod 15**: r=7 has v\u2082 sum far below threshold."
     },
     {
-      "line": 14609,
+      "line": 17113,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.observer_class_A",
       "short_name": "observer_class_A",
@@ -6944,7 +7772,7 @@
       "doc_summary": "**Observer classification by p mod 6.** For odd primes > 3, the Syracuse observer r = -1/3 mod p satisfies: - p \u2261 1 mod 6 (Class A): observer is EVEN \u2192 survives Syracuse - p \u2261 5 mod 6 (Class B): observer is ODD \u2192 annihilates to 0 Cross-class CRT products (A\u00d7B) always create traps because the joint observer annihilates."
     },
     {
-      "line": 14621,
+      "line": 17125,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.observer_class_B",
       "short_name": "observer_class_B",

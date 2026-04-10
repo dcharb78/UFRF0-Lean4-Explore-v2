@@ -153,10 +153,103 @@ Latest intrinsic gain:
         `dst.base = 54*r + 53`
       - `base = 2048*r + 493` gives `dst.time = 9` and
         `dst.base = 54*r + 13`
-    - the remaining residual shell is now `base = 2048*r + 1517`
-      - it satisfies `dst.time ≥ 10`
+    - the remaining residual shell `base = 2048*r + 1517` is now split into
+      its first three exact higher-time cases:
+      - `base = 4096*r + 3565` gives `dst.time = 10` and
+        `dst.base = 54*r + 47`
+      - `base = 8192*r + 5613` gives `dst.time = 11` and
+        `dst.base = 54*r + 37`
+      - `base = 16384*r + 1517` gives `dst.time = 12` and
+        `dst.base = 54*r + 5`
+    - the remaining residual shell `base = 16384*r + 9709` is now split into
+      its first five exact higher-time cases:
+      - `base = 32768*r + 26093` gives `dst.time = 13` and
+        `dst.base = 54*r + 43`
+      - `base = 65536*r + 42477` gives `dst.time = 14` and
+        `dst.base = 54*r + 35`
+      - `base = 131072*r + 75245` gives `dst.time = 15` and
+        `dst.base = 54*r + 31`
+      - `base = 262144*r + 140781` gives `dst.time = 16` and
+        `dst.base = 54*r + 29`
+      - `base = 524288*r + 9709` gives `dst.time = 17` and
+        `dst.base = 54*r + 1`
+    - the remaining residual shell `base = 524288*r + 271853` is now split
+      into its first four exact higher-time cases:
+      - `base = 1048576*r + 796141` gives `dst.time = 18` and
+        `dst.base = 54*r + 41`
+      - `base = 2097152*r + 271853` gives `dst.time = 19` and
+        `dst.base = 54*r + 7`
+      - `base = 4194304*r + 1320429` gives `dst.time = 20` and
+        `dst.base = 54*r + 17`
+      - `base = 8388608*r + 7611885` gives `dst.time = 21` and
+        `dst.base = 54*r + 49`
+    - the remaining residual shell `base = 8388608*r + 3417581` is now split
+      into its first four exact higher-time cases:
+      - `base = 16777216*r + 3417581` gives `dst.time = 22` and
+        `dst.base = 54*r + 11`
+      - `base = 33554432*r + 11806189` gives `dst.time = 23` and
+        `dst.base = 54*r + 19`
+      - `base = 67108864*r + 28583405` gives `dst.time = 24` and
+        `dst.base = 54*r + 23`
+      - `base = 134217728*r + 62137837` gives `dst.time = 25` and
+        `dst.base = 54*r + 25`
+    - the remaining residual shell `base = 134217728*r + 129246701` is now
+      split into its first two exact higher-time cases:
+      - `base = 268435456*r + 263464429` gives `dst.time = 26` and
+        `dst.base = 54*r + 53`
+      - `base = 536870912*r + 129246701` gives `dst.time = 27` and
+        `dst.base = 54*r + 13`
+    - the remaining residual shell `base = 536870912*r + 397682157` is now
+      split into its first three exact higher-time cases:
+      - `base = 1073741824*r + 934553069` gives `dst.time = 28` and
+        `dst.base = 54*r + 47`
+      - `base = 2147483648*r + 1471423981` gives `dst.time = 29` and
+        `dst.base = 54*r + 37`
+      - `base = 4294967296*r + 397682157` gives `dst.time = 30` and
+        `dst.base = 54*r + 5`
+    - the remaining residual shell `base = 4294967296*r + 2545165805` is now
+      split into its first five exact higher-time cases:
+      - `base = 8589934592*r + 6840133101` gives `dst.time = 31` and
+        `dst.base = 54*r + 43`
+      - `base = 17179869184*r + 11135100397` gives `dst.time = 32` and
+        `dst.base = 54*r + 35`
+      - `base = 34359738368*r + 19725034989` gives `dst.time = 33` and
+        `dst.base = 54*r + 31`
+      - `base = 68719476736*r + 36904904173` gives `dst.time = 34` and
+        `dst.base = 54*r + 29`
+      - `base = 137438953472*r + 2545165805` gives `dst.time = 35` and
+        `dst.base = 54*r + 1`
+    - the remaining residual shell `base = 137438953472*r + 71264642541` is
+      now split into its first four exact higher-time cases:
+      - `base = 274877906944*r + 208703596013` gives `dst.time = 36` and
+        `dst.base = 54*r + 41`
+      - `base = 549755813888*r + 71264642541` gives `dst.time = 37` and
+        `dst.base = 54*r + 7`
+      - `base = 1099511627776*r + 346142549485` gives `dst.time = 38` and
+        `dst.base = 54*r + 17`
+      - `base = 2199023255552*r + 1995409991149` gives `dst.time = 39` and
+        `dst.base = 54*r + 49`
+    - the remaining residual shell `base = 2199023255552*r + 895898363373` is
+      now split into its first four exact higher-time cases:
+      - `base = 4398046511104*r + 895898363373` gives `dst.time = 40` and
+        `dst.base = 54*r + 11`
+      - `base = 8796093022208*r + 3094921618925` gives `dst.time = 41` and
+        `dst.base = 54*r + 19`
+      - `base = 17592186044416*r + 7492968130029` gives `dst.time = 42` and
+        `dst.base = 54*r + 23`
+      - `base = 35184372088832*r + 16289061152237` gives `dst.time = 43` and
+        `dst.base = 54*r + 25`
+    - the remaining residual shell `base = 35184372088832*r + 33881247196653` is
+      now split into its first two exact higher-time cases:
+      - `base = 70368744177664*r + 69065619285485` gives `dst.time = 44` and
+        `dst.base = 54*r + 53`
+      - `base = 140737488355328*r + 33881247196653` gives `dst.time = 45` and
+        `dst.base = 54*r + 13`
+    - the remaining residual shell is now
+      `base = 140737488355328*r + 104249991374317`
+      - it satisfies `dst.time ≥ 46`
       - it carries the transport law
-        `2^(dst.time - 10) * dst.base = 27*r + 20`
+        `2^(dst.time - 46) * dst.base = 27*r + 20`
   - these exact destination-slice theorems now feed direct shrink corollaries
     at concrete source bases
     - `src.base = 13`
@@ -168,25 +261,40 @@ Latest intrinsic gain:
 
 Meaning: the `(2,1)` and `time >= 4` exits are no longer opaque symbolic
 cases; they now carry reusable intrinsic transport laws, and the higher-time
-exit is reduced to an explicit shell ladder through exact `time = 9`, leaving
-only one thinner non-self-return residual shell `base = 2048*r + 1517`
-together with its intrinsic transport law. The `% 64 = 29` branch remains the
-only thin self-return branch, while the non-self-return higher-time side is now
-almost entirely a finite list of explicit destination slices.
+exit is reduced to an explicit shell ladder through exact `time = 45`, leaving
+only one thinner non-self-return residual shell
+`base = 140737488355328*r + 104249991374317` together with its intrinsic
+transport law. The `% 64 = 29` branch remains the only thin self-return
+branch, while the non-self-return higher-time side is now almost entirely a
+finite list of explicit destination slices. More structurally, the residual
+transport law first returned to the earlier `27*r + 26` shape from the old
+`base = 512*r + 493` shell, then re-entered the older `27*r + 20` stage, then
+mirrored the older `27*r + 16` stage completely, then mirrored the older
+`27*r + 14` stage, then mirrored the older `27*r + 11` stage, and has now
+returned again to the older `27*r + 20` stage. This is strong evidence for a
+genuine source-state renormalization cycle rather than an endless stream of
+novel higher-time obstructions.
 
 ## Best Next Step
 
 The next theorem family should use those verified shell laws to:
 
-- split the last non-self-return higher-time shell `base = 2048*r + 1517` by
-  the dyadic valuation of `27*r + 20`
-  - the first expected subfamilies are:
-    - `base = 4096*r + 3565`, which should give `dst.time = 10` and
-      `dst.base = 54*r + 47`
-    - `base = 8192*r + 5613`, which should give `dst.time = 11` and
-      `dst.base = 54*r + 37`
-    - `base = 8192*r + 1517`, which should give `dst.time = 12` and
-      `dst.base = 27*r + 5`
+- exploit the verified return to the older residual transport law
+  `2^(dst.time - 46) * dst.base = 27*r + 20` on
+  `base = 140737488355328*r + 104249991374317`
+  - the first direct mirrored subfamilies should be:
+    - `base = 281474976710656*r + 244987479729645`, which should give
+      `dst.time = 46` and `dst.base = 54*r + 47`
+    - `base = 562949953421312*r + 385724968084973`, which should give
+      `dst.time = 47` and `dst.base = 54*r + 37`
+    - `base = 1125899906842624*r + 104249991374317`, which should give
+      `dst.time = 48` and `dst.base = 54*r + 5`
+    - the thinner residual `base = 1125899906842624*r + 667199944795629`
+      should satisfy `dst.time ≥ 49` with transport law
+      `2^(dst.time - 49) * dst.base = 27*r + 16`
+  - after that, formulate the exact source-state recurrence that identifies
+    this returning `27*r + 20` law with the earlier verified `time ≥ 28`
+    shell, so future shell splits can be reused instead of reproved ad hoc
 - keep composing any concrete destination slices with the existing `832`
   exact-zone / dead-slice theorems whenever the threshold is strong enough to
   produce actual source shrink
