@@ -75,8 +75,64 @@ shift the exact line, but this theorem remains the global target.
 Current checkpoint:
 
 - Branch: `codex/collatz-memory-loop`
-- Commit: `860e158`
-- Message: `Split hard (3,1) bad-frontier branch at 832`
+- Base commit: `25f6130`
+- Message: `Extend residual higher-time shell split through time 45`
+- Current worktree state: targeted `lake build UFRF.CollatzConcurrentScales`
+  is green after extending the mirrored higher-time family through exact
+  `time = 129` with residual `time ≥ 130`
+
+## Resume State
+
+On fresh or compacted threads, separate the verified checkpoint from any newer
+source edits before describing the frontier.
+
+- Last green checkpoint:
+  - targeted `lake build UFRF.CollatzConcurrentScales` is green through exact
+    `time = 129`
+  - the verified residual shell is
+    `base = 2722258935367507707706996859454145691648*r + 1109068455149725362399146868666503800301`
+  - the verified residual transport law is
+    `dst.time ≥ 130` together with
+    `2^(dst.time - 130) * dst.base = 27*r + 11`
+  - the verified recurrence theorem is
+    `returned_forty_shell_transport_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301`
+    identifying that returned `27*r + 11` law with the older `time ≥ 40`
+    shell after renormalization
+    `m ↦ 1237940039285380274899124224*m + 504345941931080852736680239`
+  - Rover curated memory is synced through that checkpoint
+  - the generated declaration index has been regenerated to reflect the
+    current Lean source, including any active WIP beyond the checkpoint
+- Active WIP beyond the checkpoint:
+  - Lean source now drafts the mirrored `130/131/132/133/≥134` family
+    beyond the last green checkpoint
+  - the drafted exact shells are:
+    - `base = 5444517870735015415413993718908291383296*r + 1109068455149725362399146868666503800301`
+      with `dst.time = 130` and `dst.base = 54*r + 11`
+    - `base = 10889035741470030830827987437816582766592*r + 3831327390517233070106143728120649491949`
+      with `dst.time = 131` and `dst.base = 54*r + 19`
+    - `base = 21778071482940061661655974875633165533184*r + 9275845261252248485520137447028940875245`
+      with `dst.time = 132` and `dst.base = 54*r + 23`
+    - `base = 43556142965880123323311949751266331066368*r + 20164881002722279316348124884845523641837`
+      with `dst.time = 133` and `dst.base = 54*r + 25`
+  - the drafted residual shell is
+    `base = 43556142965880123323311949751266331066368*r + 41942952485662340978004099760478689175021`
+    with drafted transport law
+    `dst.time ≥ 134` together with
+    `2^(dst.time - 134) * dst.base = 27*r + 26`
+  - Lean source also drafts the recurrence theorem
+    `returned_forty_four_shell_transport_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021`
+    identifying that returned `27*r + 26` law with the older `time ≥ 44`
+    shell after renormalization
+    `m ↦ 1237940039285380274899124224*m + 1192090408200736561013971474`
+  - this WIP source block is not yet part of the last green checkpoint, so
+    Rover curated memory remains synced only through the verified
+    `129 / ≥130` boundary, while the generated declaration index already
+    reflects the drafted source names
+- Resume rule:
+  - when chat memory, Rover, and source disagree, trust Lean source plus the
+    latest green build boundary
+  - when reporting status, name both boundaries explicitly:
+    `last green checkpoint` and `current WIP in source`
 
 Latest intrinsic gain:
 
@@ -245,11 +301,286 @@ Latest intrinsic gain:
         `dst.base = 54*r + 53`
       - `base = 140737488355328*r + 33881247196653` gives `dst.time = 45` and
         `dst.base = 54*r + 13`
+    - the remaining residual shell `base = 140737488355328*r + 104249991374317`
+      is now split into its first three exact higher-time cases:
+      - `base = 281474976710656*r + 244987479729645` gives `dst.time = 46`
+        and `dst.base = 54*r + 47`
+      - `base = 562949953421312*r + 385724968084973` gives `dst.time = 47`
+        and `dst.base = 54*r + 37`
+      - `base = 1125899906842624*r + 104249991374317` gives `dst.time = 48`
+        and `dst.base = 54*r + 5`
+    - the remaining residual shell `base = 1125899906842624*r + 667199944795629`
+      is now split into its first five exact higher-time cases:
+      - `base = 2251799813685248*r + 1793099851638253` gives `dst.time = 49`
+        and `dst.base = 54*r + 43`
+      - `base = 4503599627370496*r + 2918999758480877` gives `dst.time = 50`
+        and `dst.base = 54*r + 35`
+      - `base = 9007199254740992*r + 5170799572166125` gives `dst.time = 51`
+        and `dst.base = 54*r + 31`
+      - `base = 18014398509481984*r + 9674399199536621` gives `dst.time = 52`
+        and `dst.base = 54*r + 29`
+      - `base = 36028797018963968*r + 667199944795629` gives `dst.time = 53`
+        and `dst.base = 54*r + 1`
+    - the remaining residual shell `base = 36028797018963968*r + 18681598454277613`
+      is now split into its first four exact higher-time cases:
+      - `base = 72057594037927936*r + 54710395473241581` gives `dst.time = 54`
+        and `dst.base = 54*r + 41`
+      - `base = 144115188075855872*r + 18681598454277613` gives `dst.time = 55`
+        and `dst.base = 54*r + 7`
+      - `base = 288230376151711744*r + 90739192492205549` gives `dst.time = 56`
+        and `dst.base = 54*r + 17`
+      - `base = 576460752303423488*r + 523084756719773165` gives `dst.time = 57`
+        and `dst.base = 54*r + 49`
     - the remaining residual shell is now
-      `base = 140737488355328*r + 104249991374317`
-      - it satisfies `dst.time ≥ 46`
+      `base = 576460752303423488*r + 234854380568061421`
+      is now split into its first four exact higher-time cases:
+      - `base = 1152921504606846976*r + 234854380568061421` gives
+        `dst.time = 58` and `dst.base = 54*r + 11`
+      - `base = 2305843009213693952*r + 811315132871484909` gives
+        `dst.time = 59` and `dst.base = 54*r + 19`
+      - `base = 4611686018427387904*r + 1964236637478331885` gives
+        `dst.time = 60` and `dst.base = 54*r + 23`
+      - `base = 9223372036854775808*r + 4270079646692025837` gives
+        `dst.time = 61` and `dst.base = 54*r + 25`
+    - the remaining residual shell is now
+      `base = 9223372036854775808*r + 8881765665119413741`
+      is now split into its first two exact higher-time cases:
+      - `base = 18446744073709551616*r + 18105137701974189549` gives
+        `dst.time = 62` and `dst.base = 54*r + 53`
+      - `base = 36893488147419103232*r + 8881765665119413741` gives
+        `dst.time = 63` and `dst.base = 54*r + 13`
+    - the remaining residual shell is now
+      `base = 36893488147419103232*r + 27328509738828965357`
+      is now split into its first three exact higher-time cases:
+      - `base = 73786976294838206464*r + 64221997886248068589` gives
+        `dst.time = 64` and `dst.base = 54*r + 47`
+      - `base = 147573952589676412928*r + 101115486033667171821` gives
+        `dst.time = 65` and `dst.base = 54*r + 37`
+      - `base = 295147905179352825856*r + 27328509738828965357` gives
+        `dst.time = 66` and `dst.base = 54*r + 5`
+    - the remaining residual shell is now
+      `base = 295147905179352825856*r + 174902462328505378285`
+      is now split into its first five exact higher-time cases:
+      - `base = 590295810358705651712*r + 470050367507858204141` gives
+        `dst.time = 67` and `dst.base = 54*r + 43`
+      - `base = 1180591620717411303424*r + 765198272687211029997` gives
+        `dst.time = 68` and `dst.base = 54*r + 35`
+      - `base = 2361183241434822606848*r + 1355494083045916681709` gives
+        `dst.time = 69` and `dst.base = 54*r + 31`
+      - `base = 4722366482869645213696*r + 2536085703763327985133` gives
+        `dst.time = 70` and `dst.base = 54*r + 29`
+      - `base = 9444732965739290427392*r + 174902462328505378285` gives
+        `dst.time = 71` and `dst.base = 54*r + 1`
+    - the remaining residual shell is now
+      `base = 9444732965739290427392*r + 4897268945198150591981`
+      is now split into its first four exact higher-time cases:
+      - `base = 18889465931478580854784*r + 14342001910937441019373` gives
+        `dst.time = 72` and `dst.base = 54*r + 41`
+      - `base = 37778931862957161709568*r + 4897268945198150591981` gives
+        `dst.time = 73` and `dst.base = 54*r + 7`
+      - `base = 75557863725914323419136*r + 23786734876676731446765` gives
+        `dst.time = 74` and `dst.base = 54*r + 17`
+      - `base = 151115727451828646838272*r + 137123530465548216575469` gives
+        `dst.time = 75` and `dst.base = 54*r + 49`
+    - the remaining residual shell is now
+      `base = 151115727451828646838272*r + 61565666739633893156333`
+      is now split into its first four exact higher-time cases:
+      - `base = 302231454903657293676544*r + 61565666739633893156333` gives
+        `dst.time = 76` and `dst.base = 54*r + 11`
+      - `base = 604462909807314587353088*r + 212681394191462539994605` gives
+        `dst.time = 77` and `dst.base = 54*r + 19`
+      - `base = 1208925819614629174706176*r + 514912849095119833671149` gives
+        `dst.time = 78` and `dst.base = 54*r + 23`
+      - `base = 2417851639229258349412352*r + 1119375758902434421024237` gives
+        `dst.time = 79` and `dst.base = 54*r + 25`
+    - the remaining residual shell is now
+      `base = 2417851639229258349412352*r + 2328301578517063595730413`
+      is now split into its first two exact higher-time cases:
+      - `base = 4835703278458516698824704*r + 4746153217746321945142765` gives
+        `dst.time = 80` and `dst.base = 54*r + 53`
+      - `base = 9671406556917033397649408*r + 2328301578517063595730413` gives
+        `dst.time = 81` and `dst.base = 54*r + 13`
+    - the remaining residual shell is now
+      `base = 9671406556917033397649408*r + 7164004856975580294555117`
+      is now split into its first three exact higher-time cases:
+      - `base = 19342813113834066795298816*r + 16835411413892613692204525` gives
+        `dst.time = 82` and `dst.base = 54*r + 47`
+      - `base = 38685626227668133590597632*r + 26506817970809647089853933` gives
+        `dst.time = 83` and `dst.base = 54*r + 37`
+      - `base = 77371252455336267181195264*r + 7164004856975580294555117` gives
+        `dst.time = 84` and `dst.base = 54*r + 5`
+    - the remaining residual shell is now
+      `base = 77371252455336267181195264*r + 45849631084643713885152749`
+      is now split into its first five exact higher-time cases:
+      - `base = 154742504910672534362390528*r + 123220883539979981066348013` gives
+        `dst.time = 85` and `dst.base = 54*r + 43`
+      - `base = 309485009821345068724781056*r + 200592135995316248247543277` gives
+        `dst.time = 86` and `dst.base = 54*r + 35`
+      - `base = 618970019642690137449562112*r + 355334640905988782609933805` gives
+        `dst.time = 87` and `dst.base = 54*r + 31`
+      - `base = 1237940039285380274899124224*r + 664819650727333851334714861` gives
+        `dst.time = 88` and `dst.base = 54*r + 29`
+      - `base = 2475880078570760549798248448*r + 45849631084643713885152749` gives
+        `dst.time = 89` and `dst.base = 54*r + 1`
+    - the remaining residual shell is now
+      `base = 2475880078570760549798248448*r + 1283789670370023988784276973`
+      is now split into its first four exact higher-time cases:
+      - `base = 4951760157141521099596496896*r + 3759669748940784538582525421` gives
+        `dst.time = 90` and `dst.base = 54*r + 41`
+      - `base = 9903520314283042199192993792*r + 1283789670370023988784276973` gives
+        `dst.time = 91` and `dst.base = 54*r + 7`
+      - `base = 19807040628566084398385987584*r + 6235549827511545088380773869` gives
+        `dst.time = 92` and `dst.base = 54*r + 17`
+      - `base = 39614081257132168796771975168*r + 35946110770360671685959755245` gives
+        `dst.time = 93` and `dst.base = 54*r + 49`
+    - the remaining residual shell is now
+      `base = 39614081257132168796771975168*r + 16139070141794587287573767661`
+      is now split into its first four exact higher-time cases:
+      - `base = 79228162514264337593543950336*r + 16139070141794587287573767661` gives
+        `dst.time = 94` and `dst.base = 54*r + 11`
+      - `base = 158456325028528675187087900672*r + 55753151398926756084345742829` gives
+        `dst.time = 95` and `dst.base = 54*r + 19`
+      - `base = 316912650057057350374175801344*r + 134981313913191093677889693165` gives
+        `dst.time = 96` and `dst.base = 54*r + 23`
+      - `base = 633825300114114700748351602688*r + 293437638941719768864977593837` gives
+        `dst.time = 97` and `dst.base = 54*r + 25`
+    - the remaining residual shell is now
+      `base = 633825300114114700748351602688*r + 610350288998777119239153395181`
+      - it satisfies `dst.time ≥ 98`
       - it carries the transport law
-        `2^(dst.time - 46) * dst.base = 27*r + 20`
+        `2^(dst.time - 98) * dst.base = 27*r + 26`
+      - `base = 1267650600228229401496703205376*r + 1244175589112891819987504997869` gives
+        `dst.time = 98` and `dst.base = 54*r + 53`
+      - `base = 2535301200456458802993406410752*r + 610350288998777119239153395181` gives
+        `dst.time = 99` and `dst.base = 54*r + 13`
+    - the remaining residual shell is now
+      `base = 2535301200456458802993406410752*r + 1878000889227006520735856600557`
+      - it satisfies `dst.time ≥ 100`
+      - it carries the transport law
+        `2^(dst.time - 100) * dst.base = 27*r + 20`
+      - `base = 5070602400912917605986812821504*r + 4413302089683465323729263011309` gives
+        `dst.time = 100` and `dst.base = 54*r + 47`
+      - `base = 10141204801825835211973625643008*r + 6948603290139924126722669422061` gives
+        `dst.time = 101` and `dst.base = 54*r + 37`
+      - `base = 20282409603651670423947251286016*r + 1878000889227006520735856600557` gives
+        `dst.time = 102` and `dst.base = 54*r + 5`
+    - the remaining residual shell is now
+      `base = 20282409603651670423947251286016*r + 12019205691052841732709482243565`
+      - it satisfies `dst.time ≥ 103`
+      - it carries the transport law
+        `2^(dst.time - 103) * dst.base = 27*r + 16`
+      - `base = 40564819207303340847894502572032*r + 32301615294704512156656733529581` gives
+        `dst.time = 103` and `dst.base = 54*r + 43`
+      - `base = 81129638414606681695789005144064*r + 52584024898356182580603984815597` gives
+        `dst.time = 104` and `dst.base = 54*r + 35`
+      - `base = 162259276829213363391578010288128*r + 93148844105659523428498487387629` gives
+        `dst.time = 105` and `dst.base = 54*r + 31`
+      - `base = 324518553658426726783156020576256*r + 174278482520266205124287492531693` gives
+        `dst.time = 106` and `dst.base = 54*r + 29`
+      - `base = 649037107316853453566312041152512*r + 12019205691052841732709482243565` gives
+        `dst.time = 107` and `dst.base = 54*r + 1`
+    - the remaining residual shell is now
+      `base = 649037107316853453566312041152512*r + 336537759349479568515865502819821`
+      - it satisfies `dst.time ≥ 108`
+      - it carries the transport law
+        `2^(dst.time - 108) * dst.base = 27*r + 14`
+      - `base = 1298074214633706907132624082305024*r + 985574866666333022082177543972333` gives
+        `dst.time = 108` and `dst.base = 54*r + 41`
+      - `base = 2596148429267413814265248164610048*r + 336537759349479568515865502819821` gives
+        `dst.time = 109` and `dst.base = 54*r + 7`
+      - `base = 5192296858534827628530496329220096*r + 1634611973983186475648489585124845` gives
+        `dst.time = 110` and `dst.base = 54*r + 17`
+      - `base = 10384593717069655257060992658440192*r + 9423057261785427918444234078954989` gives
+        `dst.time = 111` and `dst.base = 54*r + 49`
+    - the remaining residual shell is now
+      `base = 10384593717069655257060992658440192*r + 4230760403250600289913737749734893`
+      - it satisfies `dst.time ≥ 112`
+      - it carries the transport law
+        `2^(dst.time - 112) * dst.base = 27*r + 11`
+      - `base = 20769187434139310514121985316880384*r + 4230760403250600289913737749734893` gives
+        `dst.time = 112` and `dst.base = 54*r + 11`
+      - `base = 41538374868278621028243970633760768*r + 14615354120320255546974730408175085` gives
+        `dst.time = 113` and `dst.base = 54*r + 19`
+      - `base = 83076749736557242056487941267521536*r + 35384541554459566061096715725055469` gives
+        `dst.time = 114` and `dst.base = 54*r + 23`
+      - `base = 166153499473114484112975882535043072*r + 76922916422738187089340686358816237` gives
+        `dst.time = 115` and `dst.base = 54*r + 25`
+    - the returned `27*r + 20` transport is now also identified explicitly
+      with the earlier verified `time ≥ 28` shell after renormalizing the
+      shell parameter by `m ↦ 262144*m + 194180`
+    - the returned `27*r + 16` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 31` shell after renormalizing
+      the shell parameter by `m ↦ 68719476736*m + 40722652880`
+    - the returned `27*r + 14` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 36` shell after renormalizing
+      the shell parameter by `m ↦ 68719476736*m + 35632321270`
+    - the returned `27*r + 11` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 40` shell after renormalizing
+      the shell parameter by `m ↦ 68719476736*m + 27996823855`
+    - the returned `27*r + 26` transport is now also identified explicitly
+      with the earlier verified `time ≥ 44` shell after renormalizing the
+      shell parameter by `m ↦ 262144*m + 252434`
+    - the returned `27*r + 26` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 44` shell after renormalizing
+      the shell parameter by `m ↦ 68719476736*m + 66174310930`
+    - the returned `27*r + 20` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 28` shell after renormalizing
+      the shell parameter by `m ↦ 18014398509481984*m + 13343998895912580`
+    - the returned `27*r + 16` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 31` shell after renormalizing
+      the shell parameter by `m ↦ 18014398509481984*m + 10675199116730064`
+    - the returned `27*r + 14` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 36` shell after renormalizing
+      the shell parameter by `m ↦ 18014398509481984*m + 9340799227138806`
+    - the returned `27*r + 11` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 40` shell after renormalizing
+      the shell parameter by `m ↦ 18014398509481984*m + 7339199392751919`
+    - the returned `27*r + 26` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 44` shell after renormalizing
+      the shell parameter by `m ↦ 18014398509481984*m + 17347198564686354`
+    - the returned `27*r + 16` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 31` shell after renormalizing
+      the shell parameter by `m ↦ 4722366482869645213696*m + 2798439397256086052560`
+    - the returned `27*r + 14` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 36` shell after renormalizing
+      the shell parameter by `m ↦ 4722366482869645213696*m + 2448634472599075295990`
+    - the returned `27*r + 11` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 40` shell after renormalizing
+      the shell parameter by `m ↦ 4722366482869645213696*m + 1923927085613559161135`
+    - the remaining residual shell is now
+      `base = 166153499473114484112975882535043072*r + 159999666159295429145828627626337773`
+      - it satisfies `dst.time ≥ 116`
+      - it carries the transport law
+        `2^(dst.time - 116) * dst.base = 27*r + 26`
+    - the returned `27*r + 26` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 44` shell after renormalizing
+      the shell parameter by `m ↦ 4722366482869645213696*m + 4547464020541139835410`
+      - `base = 332306998946228968225951765070086144*r + 326153165632409913258804510161380845` gives
+        `dst.time = 116` and `dst.base = 54*r + 53`
+      - `base = 664613997892457936451903530140172288*r + 159999666159295429145828627626337773` gives
+        `dst.time = 117` and `dst.base = 54*r + 13`
+    - the remaining residual shell is now
+      `base = 664613997892457936451903530140172288*r + 492306665105524397371780392696423917`
+      - it satisfies `dst.time ≥ 118`
+      - it carries the transport law
+        `2^(dst.time - 118) * dst.base = 27*r + 20`
+    - the returned `27*r + 20` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 28` shell after renormalizing
+      the shell parameter by `m ↦ 4722366482869645213696*m + 3498049246570107565700`
+      - `base = 1329227995784915872903807060280344576*r + 1156920662997982333823683922836596205` gives
+        `dst.time = 118` and `dst.base = 54*r + 47`
+      - `base = 2658455991569831745807614120560689152*r + 1821534660890440270275587452976768493` gives
+        `dst.time = 119` and `dst.base = 54*r + 37`
+      - `base = 5316911983139663491615228241121378304*r + 492306665105524397371780392696423917` gives
+        `dst.time = 120` and `dst.base = 54*r + 5`
+    - the remaining residual shell is now
+      `base = 5316911983139663491615228241121378304*r + 3150762656675356143179394513257113069`
+      - it satisfies `dst.time ≥ 121`
+      - it carries the transport law
+        `2^(dst.time - 121) * dst.base = 27*r + 16`
+    - the returned `27*r + 16` transport is now also identified explicitly
+      again with the earlier verified `time ≥ 31` shell after renormalizing
+      the shell parameter by `m ↦ 1237940039285380274899124224*m + 733594097354299422162443984`
   - these exact destination-slice theorems now feed direct shrink corollaries
     at concrete source bases
     - `src.base = 13`
@@ -261,40 +592,45 @@ Latest intrinsic gain:
 
 Meaning: the `(2,1)` and `time >= 4` exits are no longer opaque symbolic
 cases; they now carry reusable intrinsic transport laws, and the higher-time
-exit is reduced to an explicit shell ladder through exact `time = 45`, leaving
+exit is reduced to an explicit shell ladder through exact `time = 120`, leaving
 only one thinner non-self-return residual shell
-`base = 140737488355328*r + 104249991374317` together with its intrinsic
-transport law. The `% 64 = 29` branch remains the only thin self-return
-branch, while the non-self-return higher-time side is now almost entirely a
-finite list of explicit destination slices. More structurally, the residual
-transport law first returned to the earlier `27*r + 26` shape from the old
-`base = 512*r + 493` shell, then re-entered the older `27*r + 20` stage, then
-mirrored the older `27*r + 16` stage completely, then mirrored the older
-`27*r + 14` stage, then mirrored the older `27*r + 11` stage, and has now
-returned again to the older `27*r + 20` stage. This is strong evidence for a
-genuine source-state renormalization cycle rather than an endless stream of
-novel higher-time obstructions.
+`base = 5316911983139663491615228241121378304*r + 3150762656675356143179394513257113069`
+together with its intrinsic transport law
+`2^(dst.time - 121) * dst.base = 27*r + 16`. The
+`% 64 = 29` branch remains the only thin self-return branch, while the
+non-self-return higher-time side is now almost entirely a finite list of
+explicit destination slices. More structurally, the residual transport law has
+now run the verified source-state cycle
+`27*r + 26 → 27*r + 20 → 27*r + 16 → 27*r + 14 → 27*r + 11 → 27*r + 26 → 27*r + 20 → 27*r + 16 → 27*r + 14 → 27*r + 11 → 27*r + 26 → 27*r + 20 → 27*r + 16 → 27*r + 14 → 27*r + 11 → 27*r + 26 → 27*r + 20 → 27*r + 16 → 27*r + 14 → 27*r + 11 → 27*r + 26 → 27*r + 20 → 27*r + 16`.
+The source now contains explicit theorems showing that returned `27*r + 20`,
+`27*r + 16`, `27*r + 14`, and `27*r + 11` laws re-enter the earlier
+`time ≥ 28`, `time ≥ 31`, `time ≥ 36`, and `time ≥ 40` shells, and that both
+earlier and current returned `27*r + 26`, `27*r + 20`, `27*r + 16`, and
+`27*r + 14`, and `27*r + 11` stages re-enter the older `time ≥ 44`,
+`time ≥ 28`, `time ≥ 31`, `time ≥ 36`, and `time ≥ 40` shells in
+renormalized coordinates. This is stronger evidence for a genuine
+source-state renormalization cycle rather than an endless stream of novel
+higher-time obstructions.
 
 ## Best Next Step
 
-The next theorem family should use those verified shell laws to:
+The immediate next step is to confirm the currently drafted source block by a
+targeted `lake build UFRF.CollatzConcurrentScales`.
 
-- exploit the verified return to the older residual transport law
-  `2^(dst.time - 46) * dst.base = 27*r + 20` on
-  `base = 140737488355328*r + 104249991374317`
-  - the first direct mirrored subfamilies should be:
-    - `base = 281474976710656*r + 244987479729645`, which should give
-      `dst.time = 46` and `dst.base = 54*r + 47`
-    - `base = 562949953421312*r + 385724968084973`, which should give
-      `dst.time = 47` and `dst.base = 54*r + 37`
-    - `base = 1125899906842624*r + 104249991374317`, which should give
-      `dst.time = 48` and `dst.base = 54*r + 5`
-    - the thinner residual `base = 1125899906842624*r + 667199944795629`
-      should satisfy `dst.time ≥ 49` with transport law
-      `2^(dst.time - 49) * dst.base = 27*r + 16`
-  - after that, formulate the exact source-state recurrence that identifies
-    this returning `27*r + 20` law with the earlier verified `time ≥ 28`
-    shell, so future shell splits can be reused instead of reproved ad hoc
+- if that build is green, promote the checkpoint through exact `time = 133`
+  with residual `time ≥ 134`
+- if that build is green, the new verified residual shell becomes
+  `base = 43556142965880123323311949751266331066368*r + 41942952485662340978004099760478689175021`
+  with verified transport law
+  `dst.time ≥ 134` and
+  `2^(dst.time - 134) * dst.base = 27*r + 26`
+- if that build is green, regenerate the declaration index and sync Rover
+  curated memory so the memory layer catches up to the already drafted source
+- the source already drafts the matching recurrence theorem back to the older
+  `time ≥ 44` shell via the renormalization
+  `m ↦ 1237940039285380274899124224*m + 1192090408200736561013971474`, so the
+  next post-build move should be to continue from the returned `27*r + 26`
+  stage rather than reopening the old `27*r + 11` shell
 - keep composing any concrete destination slices with the existing `832`
   exact-zone / dead-slice theorems whenever the threshold is strong enough to
   produce actual source shrink

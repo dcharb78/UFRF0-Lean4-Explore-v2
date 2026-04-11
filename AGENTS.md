@@ -43,6 +43,12 @@ before changing proofs.
   - what it means
   - what it rules out
   - the best next step
+- If Lean source moves ahead of the last green build boundary, update
+  `docs/proofs/COLLATZ_CONCURRENT_FRONTIER.md` immediately so it names both
+  the `last green checkpoint` and the `current WIP in source`.
+- Do not let compacted-thread handoffs flatten unverified source edits into
+  verified checkpoint status. Keep WIP theorem families explicitly marked as
+  unverified until the corresponding build is confirmed green.
 - Keep memory notes theorem-centered and short. Avoid long reflective prose
   unless strategy truly changes.
 

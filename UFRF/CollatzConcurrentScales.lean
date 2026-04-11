@@ -15034,6 +15034,6771 @@ theorem two_pow_dst_time_sub_forty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq
         ring_nf
   exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 2) hmul
 
+/-- The returned `time ≥ 46` transport is exactly the older `time ≥ 28` shell
+    after renormalizing the shell parameter by `m ↦ 262144*m + 194180`. -/
+theorem returned_twenty_eight_shell_transport_of_src_base_eq_140737488355328m_add_104249991374317
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 140737488355328 * m + 104249991374317) :
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base = 2 ^ 18 * (27 * m + 20) := by
+  have hm' : τ.src.src.base = 536870912 * (262144 * m + 194180) + 397682157 := by
+    calc
+      τ.src.src.base = 140737488355328 * m + 104249991374317 := hm
+      _ = 536870912 * (262144 * m + 194180) + 397682157 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base
+        = 27 * (262144 * m + 194180) + 20 := by
+            exact two_pow_dst_time_sub_twenty_eight_mul_dst_base_eq_27m_add_20_of_src_base_eq_536870912m_add_397682157
+              τ ht he hm'
+    _ = 2 ^ 18 * (27 * m + 20) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 46` branch:
+    `base = 281474976710656*m + 244987479729645` is exactly the `time = 46`
+    case. -/
+theorem dst_time_eq_forty_six_of_src_base_eq_281474976710656m_add_244987479729645
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 281474976710656 * m + 244987479729645) :
+    τ.dst.src.time = 46 := by
+  have hk : τ.src.src.base = 32 * (8796093022208 * m + 7655858741551) + 13 := by
+    calc
+      τ.src.src.base = 281474976710656 * m + 244987479729645 := hm
+      _ = 32 * (8796093022208 * m + 7655858741551) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 47) := by
+    omega
+  have hv2 : v2 (27 * (8796093022208 * m + 7655858741551) + 11) = 42 := by
+    calc
+      v2 (27 * (8796093022208 * m + 7655858741551) + 11) =
+          v2 (2 ^ 42 * (54 * m + 47)) := by
+            ring_nf
+      _ = 42 := by
+        simpa using v2_pow_mul_of_not_two_dvd 42 (54 * m + 47) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (8796093022208 * m + 7655858741551) + 11) := htime
+    _ = 4 + 42 := by rw [hv2]
+    _ = 46 := by norm_num
+
+/-- On the first dyadic shell `base = 281474976710656*m + 244987479729645`,
+    the higher-time destination base is exactly `54*m + 47`. -/
+theorem dst_base_eq_54m_add_47_of_src_base_eq_281474976710656m_add_244987479729645
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 281474976710656 * m + 244987479729645) :
+    τ.dst.src.base = 54 * m + 47 := by
+  have hm' : τ.src.src.base = 140737488355328 * (2 * m + 1) + 104249991374317 := by
+    calc
+      τ.src.src.base = 281474976710656 * m + 244987479729645 := hm
+      _ = 140737488355328 * (2 * m + 1) + 104249991374317 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 46) * τ.dst.src.base = 54 * m + 47 := by
+    calc
+      2 ^ (τ.dst.src.time - 46) * τ.dst.src.base = 27 * (2 * m + 1) + 20 := by
+        exact two_pow_dst_time_sub_forty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq_140737488355328m_add_104249991374317
+          τ ht he hm'
+      _ = 54 * m + 47 := by
+        ring
+  have htime : τ.dst.src.time = 46 :=
+    dst_time_eq_forty_six_of_src_base_eq_281474976710656m_add_244987479729645 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 46` branch:
+    `base = 562949953421312*m + 385724968084973` is exactly the `time = 47`
+    case. -/
+theorem dst_time_eq_forty_seven_of_src_base_eq_562949953421312m_add_385724968084973
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 562949953421312 * m + 385724968084973) :
+    τ.dst.src.time = 47 := by
+  have hk : τ.src.src.base = 32 * (17592186044416 * m + 12053905252655) + 13 := by
+    calc
+      τ.src.src.base = 562949953421312 * m + 385724968084973 := hm
+      _ = 32 * (17592186044416 * m + 12053905252655) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 37) := by
+    omega
+  have hv2 : v2 (27 * (17592186044416 * m + 12053905252655) + 11) = 43 := by
+    calc
+      v2 (27 * (17592186044416 * m + 12053905252655) + 11) =
+          v2 (2 ^ 43 * (54 * m + 37)) := by
+            ring_nf
+      _ = 43 := by
+        simpa using v2_pow_mul_of_not_two_dvd 43 (54 * m + 37) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (17592186044416 * m + 12053905252655) + 11) := htime
+    _ = 4 + 43 := by rw [hv2]
+    _ = 47 := by norm_num
+
+/-- On the second dyadic shell `base = 562949953421312*m + 385724968084973`,
+    the higher-time destination base is exactly `54*m + 37`. -/
+theorem dst_base_eq_54m_add_37_of_src_base_eq_562949953421312m_add_385724968084973
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 562949953421312 * m + 385724968084973) :
+    τ.dst.src.base = 54 * m + 37 := by
+  have hm' : τ.src.src.base = 140737488355328 * (4 * m + 2) + 104249991374317 := by
+    calc
+      τ.src.src.base = 562949953421312 * m + 385724968084973 := hm
+      _ = 140737488355328 * (4 * m + 2) + 104249991374317 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 46) * τ.dst.src.base = 108 * m + 74 := by
+    calc
+      2 ^ (τ.dst.src.time - 46) * τ.dst.src.base = 27 * (4 * m + 2) + 20 := by
+        exact two_pow_dst_time_sub_forty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq_140737488355328m_add_104249991374317
+          τ ht he hm'
+      _ = 108 * m + 74 := by
+        ring
+  have htime : τ.dst.src.time = 47 :=
+    dst_time_eq_forty_seven_of_src_base_eq_562949953421312m_add_385724968084973 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 46` branch:
+    `base = 1125899906842624*m + 104249991374317` is exactly the `time = 48`
+    case. -/
+theorem dst_time_eq_forty_eight_of_src_base_eq_1125899906842624m_add_104249991374317
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1125899906842624 * m + 104249991374317) :
+    τ.dst.src.time = 48 := by
+  have hk : τ.src.src.base = 32 * (35184372088832 * m + 3257812230447) + 13 := by
+    calc
+      τ.src.src.base = 1125899906842624 * m + 104249991374317 := hm
+      _ = 32 * (35184372088832 * m + 3257812230447) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 5) := by
+    omega
+  have hv2 : v2 (27 * (35184372088832 * m + 3257812230447) + 11) = 44 := by
+    calc
+      v2 (27 * (35184372088832 * m + 3257812230447) + 11) =
+          v2 (2 ^ 44 * (54 * m + 5)) := by
+            ring_nf
+      _ = 44 := by
+        simpa using v2_pow_mul_of_not_two_dvd 44 (54 * m + 5) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (35184372088832 * m + 3257812230447) + 11) := htime
+    _ = 4 + 44 := by rw [hv2]
+    _ = 48 := by norm_num
+
+/-- On the third dyadic shell `base = 1125899906842624*m + 104249991374317`,
+    the higher-time destination base is exactly `54*m + 5`. -/
+theorem dst_base_eq_54m_add_5_of_src_base_eq_1125899906842624m_add_104249991374317
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1125899906842624 * m + 104249991374317) :
+    τ.dst.src.base = 54 * m + 5 := by
+  have hm' : τ.src.src.base = 140737488355328 * (8 * m) + 104249991374317 := by
+    calc
+      τ.src.src.base = 1125899906842624 * m + 104249991374317 := hm
+      _ = 140737488355328 * (8 * m) + 104249991374317 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 46) * τ.dst.src.base = 216 * m + 20 := by
+    calc
+      2 ^ (τ.dst.src.time - 46) * τ.dst.src.base = 27 * (8 * m) + 20 := by
+        exact two_pow_dst_time_sub_forty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq_140737488355328m_add_104249991374317
+          τ ht he hm'
+      _ = 216 * m + 20 := by
+        ring
+  have htime : τ.dst.src.time = 48 :=
+    dst_time_eq_forty_eight_of_src_base_eq_1125899906842624m_add_104249991374317 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first three dyadic cases of the `time ≥ 46`
+    branch: `base = 1125899906842624*m + 667199944795629` still forces
+    destination time at least `49`. -/
+theorem forty_nine_le_dst_time_of_src_base_eq_1125899906842624m_add_667199944795629
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1125899906842624 * m + 667199944795629) :
+    49 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (35184372088832 * m + 20849998274863) + 13 := by
+    calc
+      τ.src.src.base = 1125899906842624 * m + 667199944795629 := hm
+      _ = 32 * (35184372088832 * m + 20849998274863) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (35184372088832 * m + 20849998274863) + 11 = 2 ^ 45 * (27 * m + 16) := by
+    ring_nf
+  have hpos : 0 < 27 * (35184372088832 * m + 20849998274863) + 11 := by
+    omega
+  have hdvd : 2 ^ 45 ∣ 27 * (35184372088832 * m + 20849998274863) + 11 := by
+    refine ⟨27 * m + 16, ?_⟩
+    exact hfac
+  have hv2_ge45 : 45 ≤ v2 (27 * (35184372088832 * m + 20849998274863) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (35184372088832 * m + 20849998274863) + 11) + 1 ≤ 45 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (35184372088832 * m + 20849998274863) + 11) + 1) ∣
+          27 * (35184372088832 * m + 20849998274863) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (35184372088832 * m + 20849998274863) + 11) hpos) hdiv
+  have htime_ge : 49 ≤ 4 + v2 (27 * (35184372088832 * m + 20849998274863) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first three dyadic shells of the
+    `time ≥ 46` branch. -/
+theorem two_pow_dst_time_sub_forty_nine_mul_dst_base_eq_27m_add_16_of_src_base_eq_1125899906842624m_add_667199944795629
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1125899906842624 * m + 667199944795629) :
+    2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 27 * m + 16 := by
+  have hm' : τ.src.src.base = 140737488355328 * (8 * m + 4) + 104249991374317 := by
+    calc
+      τ.src.src.base = 1125899906842624 * m + 667199944795629 := hm
+      _ = 140737488355328 * (8 * m + 4) + 104249991374317 := by ring
+  have htime_ge49 : 49 ≤ τ.dst.src.time :=
+    forty_nine_le_dst_time_of_src_base_eq_1125899906842624m_add_667199944795629 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 46) * τ.dst.src.base = 27 * (8 * m + 4) + 20 :=
+    two_pow_dst_time_sub_forty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq_140737488355328m_add_104249991374317
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 46) = 2 ^ (τ.dst.src.time - 49) * 2 ^ 3 := by
+    have hsub : τ.dst.src.time - 46 = (τ.dst.src.time - 49) + 3 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 49) * τ.dst.src.base) =
+        2 ^ 3 * (27 * m + 16) := by
+    calc
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 49) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 49) * 2 ^ 3) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 46) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (8 * m + 4) + 20 := htransport
+      _ = 2 ^ 3 * (27 * m + 16) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 3) hmul
+
+/-- The returned `time ≥ 49` transport is exactly the older `time ≥ 31` shell
+    after renormalizing the shell parameter by `m ↦ 262144*m + 155344`. -/
+theorem returned_thirty_one_shell_transport_of_src_base_eq_1125899906842624m_add_667199944795629
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1125899906842624 * m + 667199944795629) :
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base = 2 ^ 18 * (27 * m + 16) := by
+  have hm' : τ.src.src.base = 4294967296 * (262144 * m + 155344) + 2545165805 := by
+    calc
+      τ.src.src.base = 1125899906842624 * m + 667199944795629 := hm
+      _ = 4294967296 * (262144 * m + 155344) + 2545165805 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base
+        = 27 * (262144 * m + 155344) + 16 := by
+            exact two_pow_dst_time_sub_thirty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_4294967296m_add_2545165805
+              τ ht he hm'
+    _ = 2 ^ 18 * (27 * m + 16) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 49` branch:
+    `base = 2251799813685248*m + 1793099851638253` is exactly the `time = 49`
+    case. -/
+theorem dst_time_eq_forty_nine_of_src_base_eq_2251799813685248m_add_1793099851638253
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2251799813685248 * m + 1793099851638253) :
+    τ.dst.src.time = 49 := by
+  have hk : τ.src.src.base = 32 * (70368744177664 * m + 56034370363695) + 13 := by
+    calc
+      τ.src.src.base = 2251799813685248 * m + 1793099851638253 := hm
+      _ = 32 * (70368744177664 * m + 56034370363695) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 43) := by
+    omega
+  have hv2 : v2 (27 * (70368744177664 * m + 56034370363695) + 11) = 45 := by
+    calc
+      v2 (27 * (70368744177664 * m + 56034370363695) + 11) =
+          v2 (2 ^ 45 * (54 * m + 43)) := by
+            ring_nf
+      _ = 45 := by
+        simpa using v2_pow_mul_of_not_two_dvd 45 (54 * m + 43) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (70368744177664 * m + 56034370363695) + 11) := htime
+    _ = 4 + 45 := by rw [hv2]
+    _ = 49 := by norm_num
+
+/-- On the first dyadic shell `base = 2251799813685248*m + 1793099851638253`,
+    the higher-time destination base is exactly `54*m + 43`. -/
+theorem dst_base_eq_54m_add_43_of_src_base_eq_2251799813685248m_add_1793099851638253
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2251799813685248 * m + 1793099851638253) :
+    τ.dst.src.base = 54 * m + 43 := by
+  have hm' : τ.src.src.base = 1125899906842624 * (2 * m + 1) + 667199944795629 := by
+    calc
+      τ.src.src.base = 2251799813685248 * m + 1793099851638253 := hm
+      _ = 1125899906842624 * (2 * m + 1) + 667199944795629 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 54 * m + 43 := by
+    calc
+      2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 27 * (2 * m + 1) + 16 := by
+        exact two_pow_dst_time_sub_forty_nine_mul_dst_base_eq_27m_add_16_of_src_base_eq_1125899906842624m_add_667199944795629
+          τ ht he hm'
+      _ = 54 * m + 43 := by
+        ring
+  have htime : τ.dst.src.time = 49 :=
+    dst_time_eq_forty_nine_of_src_base_eq_2251799813685248m_add_1793099851638253 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 49` branch:
+    `base = 4503599627370496*m + 2918999758480877` is exactly the `time = 50`
+    case. -/
+theorem dst_time_eq_fifty_of_src_base_eq_4503599627370496m_add_2918999758480877
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4503599627370496 * m + 2918999758480877) :
+    τ.dst.src.time = 50 := by
+  have hk : τ.src.src.base = 32 * (140737488355328 * m + 91218742452527) + 13 := by
+    calc
+      τ.src.src.base = 4503599627370496 * m + 2918999758480877 := hm
+      _ = 32 * (140737488355328 * m + 91218742452527) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 35) := by
+    omega
+  have hv2 : v2 (27 * (140737488355328 * m + 91218742452527) + 11) = 46 := by
+    calc
+      v2 (27 * (140737488355328 * m + 91218742452527) + 11) =
+          v2 (2 ^ 46 * (54 * m + 35)) := by
+            ring_nf
+      _ = 46 := by
+        simpa using v2_pow_mul_of_not_two_dvd 46 (54 * m + 35) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (140737488355328 * m + 91218742452527) + 11) := htime
+    _ = 4 + 46 := by rw [hv2]
+    _ = 50 := by norm_num
+
+/-- On the second dyadic shell `base = 4503599627370496*m + 2918999758480877`,
+    the higher-time destination base is exactly `54*m + 35`. -/
+theorem dst_base_eq_54m_add_35_of_src_base_eq_4503599627370496m_add_2918999758480877
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4503599627370496 * m + 2918999758480877) :
+    τ.dst.src.base = 54 * m + 35 := by
+  have hm' : τ.src.src.base = 1125899906842624 * (4 * m + 2) + 667199944795629 := by
+    calc
+      τ.src.src.base = 4503599627370496 * m + 2918999758480877 := hm
+      _ = 1125899906842624 * (4 * m + 2) + 667199944795629 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 108 * m + 70 := by
+    calc
+      2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 27 * (4 * m + 2) + 16 := by
+        exact two_pow_dst_time_sub_forty_nine_mul_dst_base_eq_27m_add_16_of_src_base_eq_1125899906842624m_add_667199944795629
+          τ ht he hm'
+      _ = 108 * m + 70 := by
+        ring
+  have htime : τ.dst.src.time = 50 :=
+    dst_time_eq_fifty_of_src_base_eq_4503599627370496m_add_2918999758480877 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 49` branch:
+    `base = 9007199254740992*m + 5170799572166125` is exactly the `time = 51`
+    case. -/
+theorem dst_time_eq_fifty_one_of_src_base_eq_9007199254740992m_add_5170799572166125
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9007199254740992 * m + 5170799572166125) :
+    τ.dst.src.time = 51 := by
+  have hk : τ.src.src.base = 32 * (281474976710656 * m + 161587486630191) + 13 := by
+    calc
+      τ.src.src.base = 9007199254740992 * m + 5170799572166125 := hm
+      _ = 32 * (281474976710656 * m + 161587486630191) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 31) := by
+    omega
+  have hv2 : v2 (27 * (281474976710656 * m + 161587486630191) + 11) = 47 := by
+    calc
+      v2 (27 * (281474976710656 * m + 161587486630191) + 11) =
+          v2 (2 ^ 47 * (54 * m + 31)) := by
+            ring_nf
+      _ = 47 := by
+        simpa using v2_pow_mul_of_not_two_dvd 47 (54 * m + 31) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (281474976710656 * m + 161587486630191) + 11) := htime
+    _ = 4 + 47 := by rw [hv2]
+    _ = 51 := by norm_num
+
+/-- On the third dyadic shell `base = 9007199254740992*m + 5170799572166125`,
+    the higher-time destination base is exactly `54*m + 31`. -/
+theorem dst_base_eq_54m_add_31_of_src_base_eq_9007199254740992m_add_5170799572166125
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9007199254740992 * m + 5170799572166125) :
+    τ.dst.src.base = 54 * m + 31 := by
+  have hm' : τ.src.src.base = 1125899906842624 * (8 * m + 4) + 667199944795629 := by
+    calc
+      τ.src.src.base = 9007199254740992 * m + 5170799572166125 := hm
+      _ = 1125899906842624 * (8 * m + 4) + 667199944795629 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 216 * m + 124 := by
+    calc
+      2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 27 * (8 * m + 4) + 16 := by
+        exact two_pow_dst_time_sub_forty_nine_mul_dst_base_eq_27m_add_16_of_src_base_eq_1125899906842624m_add_667199944795629
+          τ ht he hm'
+      _ = 216 * m + 124 := by
+        ring
+  have htime : τ.dst.src.time = 51 :=
+    dst_time_eq_fifty_one_of_src_base_eq_9007199254740992m_add_5170799572166125 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 49` branch:
+    `base = 18014398509481984*m + 9674399199536621` is exactly the `time = 52`
+    case. -/
+theorem dst_time_eq_fifty_two_of_src_base_eq_18014398509481984m_add_9674399199536621
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 18014398509481984 * m + 9674399199536621) :
+    τ.dst.src.time = 52 := by
+  have hk : τ.src.src.base = 32 * (562949953421312 * m + 302324974985519) + 13 := by
+    calc
+      τ.src.src.base = 18014398509481984 * m + 9674399199536621 := hm
+      _ = 32 * (562949953421312 * m + 302324974985519) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 29) := by
+    omega
+  have hv2 : v2 (27 * (562949953421312 * m + 302324974985519) + 11) = 48 := by
+    calc
+      v2 (27 * (562949953421312 * m + 302324974985519) + 11) =
+          v2 (2 ^ 48 * (54 * m + 29)) := by
+            ring_nf
+      _ = 48 := by
+        simpa using v2_pow_mul_of_not_two_dvd 48 (54 * m + 29) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (562949953421312 * m + 302324974985519) + 11) := htime
+    _ = 4 + 48 := by rw [hv2]
+    _ = 52 := by norm_num
+
+/-- On the fourth dyadic shell `base = 18014398509481984*m + 9674399199536621`,
+    the higher-time destination base is exactly `54*m + 29`. -/
+theorem dst_base_eq_54m_add_29_of_src_base_eq_18014398509481984m_add_9674399199536621
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 18014398509481984 * m + 9674399199536621) :
+    τ.dst.src.base = 54 * m + 29 := by
+  have hm' : τ.src.src.base = 1125899906842624 * (16 * m + 8) + 667199944795629 := by
+    calc
+      τ.src.src.base = 18014398509481984 * m + 9674399199536621 := hm
+      _ = 1125899906842624 * (16 * m + 8) + 667199944795629 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 432 * m + 232 := by
+    calc
+      2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 27 * (16 * m + 8) + 16 := by
+        exact two_pow_dst_time_sub_forty_nine_mul_dst_base_eq_27m_add_16_of_src_base_eq_1125899906842624m_add_667199944795629
+          τ ht he hm'
+      _ = 432 * m + 232 := by
+        ring
+  have htime : τ.dst.src.time = 52 :=
+    dst_time_eq_fifty_two_of_src_base_eq_18014398509481984m_add_9674399199536621 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fifth dyadic shell inside the residual `time ≥ 49` branch:
+    `base = 36028797018963968*m + 667199944795629` is exactly the `time = 53`
+    case. -/
+theorem dst_time_eq_fifty_three_of_src_base_eq_36028797018963968m_add_667199944795629
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36028797018963968 * m + 667199944795629) :
+    τ.dst.src.time = 53 := by
+  have hk : τ.src.src.base = 32 * (1125899906842624 * m + 20849998274863) + 13 := by
+    calc
+      τ.src.src.base = 36028797018963968 * m + 667199944795629 := hm
+      _ = 32 * (1125899906842624 * m + 20849998274863) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 1) := by
+    omega
+  have hv2 : v2 (27 * (1125899906842624 * m + 20849998274863) + 11) = 49 := by
+    calc
+      v2 (27 * (1125899906842624 * m + 20849998274863) + 11) =
+          v2 (2 ^ 49 * (54 * m + 1)) := by
+            ring_nf
+      _ = 49 := by
+        simpa using v2_pow_mul_of_not_two_dvd 49 (54 * m + 1) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (1125899906842624 * m + 20849998274863) + 11) := htime
+    _ = 4 + 49 := by rw [hv2]
+    _ = 53 := by norm_num
+
+/-- On the fifth dyadic shell `base = 36028797018963968*m + 667199944795629`,
+    the higher-time destination base is exactly `54*m + 1`. -/
+theorem dst_base_eq_54m_add_1_of_src_base_eq_36028797018963968m_add_667199944795629
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36028797018963968 * m + 667199944795629) :
+    τ.dst.src.base = 54 * m + 1 := by
+  have hm' : τ.src.src.base = 1125899906842624 * (32 * m) + 667199944795629 := by
+    calc
+      τ.src.src.base = 36028797018963968 * m + 667199944795629 := hm
+      _ = 1125899906842624 * (32 * m) + 667199944795629 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 864 * m + 16 := by
+    calc
+      2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 27 * (32 * m) + 16 := by
+        exact two_pow_dst_time_sub_forty_nine_mul_dst_base_eq_27m_add_16_of_src_base_eq_1125899906842624m_add_667199944795629
+          τ ht he hm'
+      _ = 864 * m + 16 := by
+        ring
+  have htime : τ.dst.src.time = 53 :=
+    dst_time_eq_fifty_three_of_src_base_eq_36028797018963968m_add_667199944795629 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first five dyadic cases of the `time ≥ 49`
+    branch: `base = 36028797018963968*m + 18681598454277613` still forces
+    destination time at least `54`. -/
+theorem fifty_four_le_dst_time_of_src_base_eq_36028797018963968m_add_18681598454277613
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36028797018963968 * m + 18681598454277613) :
+    54 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (1125899906842624 * m + 583799951696175) + 13 := by
+    calc
+      τ.src.src.base = 36028797018963968 * m + 18681598454277613 := hm
+      _ = 32 * (1125899906842624 * m + 583799951696175) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (1125899906842624 * m + 583799951696175) + 11 = 2 ^ 50 * (27 * m + 14) := by
+    ring_nf
+  have hpos : 0 < 27 * (1125899906842624 * m + 583799951696175) + 11 := by
+    omega
+  have hdvd : 2 ^ 50 ∣ 27 * (1125899906842624 * m + 583799951696175) + 11 := by
+    refine ⟨27 * m + 14, ?_⟩
+    exact hfac
+  have hv2_ge50 : 50 ≤ v2 (27 * (1125899906842624 * m + 583799951696175) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (1125899906842624 * m + 583799951696175) + 11) + 1 ≤ 50 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (1125899906842624 * m + 583799951696175) + 11) + 1) ∣
+          27 * (1125899906842624 * m + 583799951696175) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (1125899906842624 * m + 583799951696175) + 11) hpos) hdiv
+  have htime_ge : 54 ≤ 4 + v2 (27 * (1125899906842624 * m + 583799951696175) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first five dyadic shells of the
+    `time ≥ 49` branch. -/
+theorem two_pow_dst_time_sub_fifty_four_mul_dst_base_eq_27m_add_14_of_src_base_eq_36028797018963968m_add_18681598454277613
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36028797018963968 * m + 18681598454277613) :
+    2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 27 * m + 14 := by
+  have hm' : τ.src.src.base = 1125899906842624 * (32 * m + 16) + 667199944795629 := by
+    calc
+      τ.src.src.base = 36028797018963968 * m + 18681598454277613 := hm
+      _ = 1125899906842624 * (32 * m + 16) + 667199944795629 := by ring
+  have htime_ge54 : 54 ≤ τ.dst.src.time :=
+    fifty_four_le_dst_time_of_src_base_eq_36028797018963968m_add_18681598454277613 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 49) * τ.dst.src.base = 27 * (32 * m + 16) + 16 :=
+    two_pow_dst_time_sub_forty_nine_mul_dst_base_eq_27m_add_16_of_src_base_eq_1125899906842624m_add_667199944795629
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 49) = 2 ^ (τ.dst.src.time - 54) * 2 ^ 5 := by
+    have hsub : τ.dst.src.time - 49 = (τ.dst.src.time - 54) + 5 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 54) * τ.dst.src.base) =
+        2 ^ 5 * (27 * m + 14) := by
+    calc
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 54) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 54) * 2 ^ 5) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 49) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (32 * m + 16) + 16 := htransport
+      _ = 2 ^ 5 * (27 * m + 14) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 5) hmul
+
+/-- The returned `time ≥ 54` transport is exactly the older `time ≥ 36` shell
+    after renormalizing the shell parameter by `m ↦ 262144*m + 135926`. -/
+theorem returned_thirty_six_shell_transport_of_src_base_eq_36028797018963968m_add_18681598454277613
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36028797018963968 * m + 18681598454277613) :
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base = 2 ^ 18 * (27 * m + 14) := by
+  have hm' : τ.src.src.base = 137438953472 * (262144 * m + 135926) + 71264642541 := by
+    calc
+      τ.src.src.base = 36028797018963968 * m + 18681598454277613 := hm
+      _ = 137438953472 * (262144 * m + 135926) + 71264642541 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base
+        = 27 * (262144 * m + 135926) + 14 := by
+            exact two_pow_dst_time_sub_thirty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_137438953472m_add_71264642541
+              τ ht he hm'
+    _ = 2 ^ 18 * (27 * m + 14) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 54` branch:
+    `base = 72057594037927936*m + 54710395473241581` is exactly the `time = 54`
+    case. -/
+theorem dst_time_eq_fifty_four_of_src_base_eq_72057594037927936m_add_54710395473241581
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 72057594037927936 * m + 54710395473241581) :
+    τ.dst.src.time = 54 := by
+  have hk : τ.src.src.base = 32 * (2251799813685248 * m + 1709699858538799) + 13 := by
+    calc
+      τ.src.src.base = 72057594037927936 * m + 54710395473241581 := hm
+      _ = 32 * (2251799813685248 * m + 1709699858538799) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 41) := by
+    omega
+  have hv2 : v2 (27 * (2251799813685248 * m + 1709699858538799) + 11) = 50 := by
+    calc
+      v2 (27 * (2251799813685248 * m + 1709699858538799) + 11) =
+          v2 (2 ^ 50 * (54 * m + 41)) := by
+            ring_nf
+      _ = 50 := by
+        simpa using v2_pow_mul_of_not_two_dvd 50 (54 * m + 41) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (2251799813685248 * m + 1709699858538799) + 11) := htime
+    _ = 4 + 50 := by rw [hv2]
+    _ = 54 := by norm_num
+
+/-- On the first dyadic shell `base = 72057594037927936*m + 54710395473241581`,
+    the higher-time destination base is exactly `54*m + 41`. -/
+theorem dst_base_eq_54m_add_41_of_src_base_eq_72057594037927936m_add_54710395473241581
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 72057594037927936 * m + 54710395473241581) :
+    τ.dst.src.base = 54 * m + 41 := by
+  have hm' : τ.src.src.base = 36028797018963968 * (2 * m + 1) + 18681598454277613 := by
+    calc
+      τ.src.src.base = 72057594037927936 * m + 54710395473241581 := hm
+      _ = 36028797018963968 * (2 * m + 1) + 18681598454277613 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 54 * m + 41 := by
+    calc
+      2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 27 * (2 * m + 1) + 14 := by
+        exact two_pow_dst_time_sub_fifty_four_mul_dst_base_eq_27m_add_14_of_src_base_eq_36028797018963968m_add_18681598454277613
+          τ ht he hm'
+      _ = 54 * m + 41 := by
+        ring
+  have htime : τ.dst.src.time = 54 :=
+    dst_time_eq_fifty_four_of_src_base_eq_72057594037927936m_add_54710395473241581 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 54` branch:
+    `base = 144115188075855872*m + 18681598454277613` is exactly the `time = 55`
+    case. -/
+theorem dst_time_eq_fifty_five_of_src_base_eq_144115188075855872m_add_18681598454277613
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 144115188075855872 * m + 18681598454277613) :
+    τ.dst.src.time = 55 := by
+  have hk : τ.src.src.base = 32 * (4503599627370496 * m + 583799951696175) + 13 := by
+    calc
+      τ.src.src.base = 144115188075855872 * m + 18681598454277613 := hm
+      _ = 32 * (4503599627370496 * m + 583799951696175) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 7) := by
+    omega
+  have hv2 : v2 (27 * (4503599627370496 * m + 583799951696175) + 11) = 51 := by
+    calc
+      v2 (27 * (4503599627370496 * m + 583799951696175) + 11) =
+          v2 (2 ^ 51 * (54 * m + 7)) := by
+            ring_nf
+      _ = 51 := by
+        simpa using v2_pow_mul_of_not_two_dvd 51 (54 * m + 7) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (4503599627370496 * m + 583799951696175) + 11) := htime
+    _ = 4 + 51 := by rw [hv2]
+    _ = 55 := by norm_num
+
+/-- On the second dyadic shell `base = 144115188075855872*m + 18681598454277613`,
+    the higher-time destination base is exactly `54*m + 7`. -/
+theorem dst_base_eq_54m_add_7_of_src_base_eq_144115188075855872m_add_18681598454277613
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 144115188075855872 * m + 18681598454277613) :
+    τ.dst.src.base = 54 * m + 7 := by
+  have hm' : τ.src.src.base = 36028797018963968 * (4 * m) + 18681598454277613 := by
+    calc
+      τ.src.src.base = 144115188075855872 * m + 18681598454277613 := hm
+      _ = 36028797018963968 * (4 * m) + 18681598454277613 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 108 * m + 14 := by
+    calc
+      2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 27 * (4 * m) + 14 := by
+        exact two_pow_dst_time_sub_fifty_four_mul_dst_base_eq_27m_add_14_of_src_base_eq_36028797018963968m_add_18681598454277613
+          τ ht he hm'
+      _ = 108 * m + 14 := by
+        ring
+  have htime : τ.dst.src.time = 55 :=
+    dst_time_eq_fifty_five_of_src_base_eq_144115188075855872m_add_18681598454277613 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 54` branch:
+    `base = 288230376151711744*m + 90739192492205549` is exactly the `time = 56`
+    case. -/
+theorem dst_time_eq_fifty_six_of_src_base_eq_288230376151711744m_add_90739192492205549
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 288230376151711744 * m + 90739192492205549) :
+    τ.dst.src.time = 56 := by
+  have hk : τ.src.src.base = 32 * (9007199254740992 * m + 2835599765381423) + 13 := by
+    calc
+      τ.src.src.base = 288230376151711744 * m + 90739192492205549 := hm
+      _ = 32 * (9007199254740992 * m + 2835599765381423) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 17) := by
+    omega
+  have hv2 : v2 (27 * (9007199254740992 * m + 2835599765381423) + 11) = 52 := by
+    calc
+      v2 (27 * (9007199254740992 * m + 2835599765381423) + 11) =
+          v2 (2 ^ 52 * (54 * m + 17)) := by
+            ring_nf
+      _ = 52 := by
+        simpa using v2_pow_mul_of_not_two_dvd 52 (54 * m + 17) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (9007199254740992 * m + 2835599765381423) + 11) := htime
+    _ = 4 + 52 := by rw [hv2]
+    _ = 56 := by norm_num
+
+/-- On the third dyadic shell `base = 288230376151711744*m + 90739192492205549`,
+    the higher-time destination base is exactly `54*m + 17`. -/
+theorem dst_base_eq_54m_add_17_of_src_base_eq_288230376151711744m_add_90739192492205549
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 288230376151711744 * m + 90739192492205549) :
+    τ.dst.src.base = 54 * m + 17 := by
+  have hm' : τ.src.src.base = 36028797018963968 * (8 * m + 2) + 18681598454277613 := by
+    calc
+      τ.src.src.base = 288230376151711744 * m + 90739192492205549 := hm
+      _ = 36028797018963968 * (8 * m + 2) + 18681598454277613 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 216 * m + 68 := by
+    calc
+      2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 27 * (8 * m + 2) + 14 := by
+        exact two_pow_dst_time_sub_fifty_four_mul_dst_base_eq_27m_add_14_of_src_base_eq_36028797018963968m_add_18681598454277613
+          τ ht he hm'
+      _ = 216 * m + 68 := by
+        ring
+  have htime : τ.dst.src.time = 56 :=
+    dst_time_eq_fifty_six_of_src_base_eq_288230376151711744m_add_90739192492205549 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 54` branch:
+    `base = 576460752303423488*m + 523084756719773165` is exactly the
+    `time = 57` case. -/
+theorem dst_time_eq_fifty_seven_of_src_base_eq_576460752303423488m_add_523084756719773165
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 576460752303423488 * m + 523084756719773165) :
+    τ.dst.src.time = 57 := by
+  have hk : τ.src.src.base = 32 * (18014398509481984 * m + 16346398647492911) + 13 := by
+    calc
+      τ.src.src.base = 576460752303423488 * m + 523084756719773165 := hm
+      _ = 32 * (18014398509481984 * m + 16346398647492911) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 49) := by
+    omega
+  have hv2 : v2 (27 * (18014398509481984 * m + 16346398647492911) + 11) = 53 := by
+    calc
+      v2 (27 * (18014398509481984 * m + 16346398647492911) + 11) =
+          v2 (2 ^ 53 * (54 * m + 49)) := by
+            ring_nf
+      _ = 53 := by
+        simpa using v2_pow_mul_of_not_two_dvd 53 (54 * m + 49) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (18014398509481984 * m + 16346398647492911) + 11) := htime
+    _ = 4 + 53 := by rw [hv2]
+    _ = 57 := by norm_num
+
+/-- On the fourth dyadic shell `base = 576460752303423488*m + 523084756719773165`,
+    the higher-time destination base is exactly `54*m + 49`. -/
+theorem dst_base_eq_54m_add_49_of_src_base_eq_576460752303423488m_add_523084756719773165
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 576460752303423488 * m + 523084756719773165) :
+    τ.dst.src.base = 54 * m + 49 := by
+  have hm' : τ.src.src.base = 36028797018963968 * (16 * m + 14) + 18681598454277613 := by
+    calc
+      τ.src.src.base = 576460752303423488 * m + 523084756719773165 := hm
+      _ = 36028797018963968 * (16 * m + 14) + 18681598454277613 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 432 * m + 392 := by
+    calc
+      2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 27 * (16 * m + 14) + 14 := by
+        exact two_pow_dst_time_sub_fifty_four_mul_dst_base_eq_27m_add_14_of_src_base_eq_36028797018963968m_add_18681598454277613
+          τ ht he hm'
+      _ = 432 * m + 392 := by
+        ring
+  have htime : τ.dst.src.time = 57 :=
+    dst_time_eq_fifty_seven_of_src_base_eq_576460752303423488m_add_523084756719773165 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 54`
+    branch: `base = 576460752303423488*m + 234854380568061421` still forces
+    destination time at least `58`. -/
+theorem fifty_eight_le_dst_time_of_src_base_eq_576460752303423488m_add_234854380568061421
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 576460752303423488 * m + 234854380568061421) :
+    58 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (18014398509481984 * m + 7339199392751919) + 13 := by
+    calc
+      τ.src.src.base = 576460752303423488 * m + 234854380568061421 := hm
+      _ = 32 * (18014398509481984 * m + 7339199392751919) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (18014398509481984 * m + 7339199392751919) + 11 = 2 ^ 54 * (27 * m + 11) := by
+    ring_nf
+  have hpos : 0 < 27 * (18014398509481984 * m + 7339199392751919) + 11 := by
+    omega
+  have hdvd : 2 ^ 54 ∣ 27 * (18014398509481984 * m + 7339199392751919) + 11 := by
+    refine ⟨27 * m + 11, ?_⟩
+    exact hfac
+  have hv2_ge54 : 54 ≤ v2 (27 * (18014398509481984 * m + 7339199392751919) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (18014398509481984 * m + 7339199392751919) + 11) + 1 ≤ 54 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (18014398509481984 * m + 7339199392751919) + 11) + 1) ∣
+          27 * (18014398509481984 * m + 7339199392751919) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (18014398509481984 * m + 7339199392751919) + 11) hpos) hdiv
+  have htime_ge : 58 ≤ 4 + v2 (27 * (18014398509481984 * m + 7339199392751919) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 54` branch. -/
+theorem two_pow_dst_time_sub_fifty_eight_mul_dst_base_eq_27m_add_11_of_src_base_eq_576460752303423488m_add_234854380568061421
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 576460752303423488 * m + 234854380568061421) :
+    2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 27 * m + 11 := by
+  have hm' : τ.src.src.base = 36028797018963968 * (16 * m + 6) + 18681598454277613 := by
+    calc
+      τ.src.src.base = 576460752303423488 * m + 234854380568061421 := hm
+      _ = 36028797018963968 * (16 * m + 6) + 18681598454277613 := by ring
+  have htime_ge58 : 58 ≤ τ.dst.src.time :=
+    fifty_eight_le_dst_time_of_src_base_eq_576460752303423488m_add_234854380568061421 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 54) * τ.dst.src.base = 27 * (16 * m + 6) + 14 :=
+    two_pow_dst_time_sub_fifty_four_mul_dst_base_eq_27m_add_14_of_src_base_eq_36028797018963968m_add_18681598454277613
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 54) = 2 ^ (τ.dst.src.time - 58) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 54 = (τ.dst.src.time - 58) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 58) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 11) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 58) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 58) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 54) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 6) + 14 := htransport
+      _ = 2 ^ 4 * (27 * m + 11) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 58` transport is exactly the older `time ≥ 40` shell
+    after renormalizing the shell parameter by `m ↦ 262144*m + 106799`. -/
+theorem returned_forty_shell_transport_of_src_base_eq_576460752303423488m_add_234854380568061421
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 576460752303423488 * m + 234854380568061421) :
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base = 2 ^ 18 * (27 * m + 11) := by
+  have hm' : τ.src.src.base = 2199023255552 * (262144 * m + 106799) + 895898363373 := by
+    calc
+      τ.src.src.base = 576460752303423488 * m + 234854380568061421 := hm
+      _ = 2199023255552 * (262144 * m + 106799) + 895898363373 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base
+        = 27 * (262144 * m + 106799) + 11 := by
+            exact two_pow_dst_time_sub_forty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2199023255552m_add_895898363373
+              τ ht he hm'
+    _ = 2 ^ 18 * (27 * m + 11) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 58` branch:
+    `base = 1152921504606846976*m + 234854380568061421` is exactly the
+    `time = 58` case. -/
+theorem dst_time_eq_fifty_eight_of_src_base_eq_1152921504606846976m_add_234854380568061421
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1152921504606846976 * m + 234854380568061421) :
+    τ.dst.src.time = 58 := by
+  have hk : τ.src.src.base = 32 * (36028797018963968 * m + 7339199392751919) + 13 := by
+    calc
+      τ.src.src.base = 1152921504606846976 * m + 234854380568061421 := hm
+      _ = 32 * (36028797018963968 * m + 7339199392751919) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 11) := by
+    omega
+  have hv2 : v2 (27 * (36028797018963968 * m + 7339199392751919) + 11) = 54 := by
+    calc
+      v2 (27 * (36028797018963968 * m + 7339199392751919) + 11) =
+          v2 (2 ^ 54 * (54 * m + 11)) := by
+            ring_nf
+      _ = 54 := by
+        simpa using v2_pow_mul_of_not_two_dvd 54 (54 * m + 11) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (36028797018963968 * m + 7339199392751919) + 11) := htime
+    _ = 4 + 54 := by rw [hv2]
+    _ = 58 := by norm_num
+
+/-- On the first dyadic shell `base = 1152921504606846976*m + 234854380568061421`,
+    the higher-time destination base is exactly `54*m + 11`. -/
+theorem dst_base_eq_54m_add_11_of_src_base_eq_1152921504606846976m_add_234854380568061421
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1152921504606846976 * m + 234854380568061421) :
+    τ.dst.src.base = 54 * m + 11 := by
+  have hm' : τ.src.src.base = 576460752303423488 * (2 * m) + 234854380568061421 := by
+    calc
+      τ.src.src.base = 1152921504606846976 * m + 234854380568061421 := hm
+      _ = 576460752303423488 * (2 * m) + 234854380568061421 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 54 * m + 11 := by
+    calc
+      2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 27 * (2 * m) + 11 := by
+        exact two_pow_dst_time_sub_fifty_eight_mul_dst_base_eq_27m_add_11_of_src_base_eq_576460752303423488m_add_234854380568061421
+          τ ht he hm'
+      _ = 54 * m + 11 := by
+        ring
+  have htime : τ.dst.src.time = 58 :=
+    dst_time_eq_fifty_eight_of_src_base_eq_1152921504606846976m_add_234854380568061421 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 58` branch:
+    `base = 2305843009213693952*m + 811315132871484909` is exactly the
+    `time = 59` case. -/
+theorem dst_time_eq_fifty_nine_of_src_base_eq_2305843009213693952m_add_811315132871484909
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2305843009213693952 * m + 811315132871484909) :
+    τ.dst.src.time = 59 := by
+  have hk : τ.src.src.base = 32 * (72057594037927936 * m + 25353597902233903) + 13 := by
+    calc
+      τ.src.src.base = 2305843009213693952 * m + 811315132871484909 := hm
+      _ = 32 * (72057594037927936 * m + 25353597902233903) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 19) := by
+    omega
+  have hv2 : v2 (27 * (72057594037927936 * m + 25353597902233903) + 11) = 55 := by
+    calc
+      v2 (27 * (72057594037927936 * m + 25353597902233903) + 11) =
+          v2 (2 ^ 55 * (54 * m + 19)) := by
+            ring_nf
+      _ = 55 := by
+        simpa using v2_pow_mul_of_not_two_dvd 55 (54 * m + 19) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (72057594037927936 * m + 25353597902233903) + 11) := htime
+    _ = 4 + 55 := by rw [hv2]
+    _ = 59 := by norm_num
+
+/-- On the second dyadic shell `base = 2305843009213693952*m + 811315132871484909`,
+    the higher-time destination base is exactly `54*m + 19`. -/
+theorem dst_base_eq_54m_add_19_of_src_base_eq_2305843009213693952m_add_811315132871484909
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2305843009213693952 * m + 811315132871484909) :
+    τ.dst.src.base = 54 * m + 19 := by
+  have hm' : τ.src.src.base = 576460752303423488 * (4 * m + 1) + 234854380568061421 := by
+    calc
+      τ.src.src.base = 2305843009213693952 * m + 811315132871484909 := hm
+      _ = 576460752303423488 * (4 * m + 1) + 234854380568061421 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 108 * m + 38 := by
+    calc
+      2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 27 * (4 * m + 1) + 11 := by
+        exact two_pow_dst_time_sub_fifty_eight_mul_dst_base_eq_27m_add_11_of_src_base_eq_576460752303423488m_add_234854380568061421
+          τ ht he hm'
+      _ = 108 * m + 38 := by
+        ring
+  have htime : τ.dst.src.time = 59 :=
+    dst_time_eq_fifty_nine_of_src_base_eq_2305843009213693952m_add_811315132871484909 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 58` branch:
+    `base = 4611686018427387904*m + 1964236637478331885` is exactly the
+    `time = 60` case. -/
+theorem dst_time_eq_sixty_of_src_base_eq_4611686018427387904m_add_1964236637478331885
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4611686018427387904 * m + 1964236637478331885) :
+    τ.dst.src.time = 60 := by
+  have hk : τ.src.src.base = 32 * (144115188075855872 * m + 61382394921197871) + 13 := by
+    calc
+      τ.src.src.base = 4611686018427387904 * m + 1964236637478331885 := hm
+      _ = 32 * (144115188075855872 * m + 61382394921197871) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 23) := by
+    omega
+  have hv2 : v2 (27 * (144115188075855872 * m + 61382394921197871) + 11) = 56 := by
+    calc
+      v2 (27 * (144115188075855872 * m + 61382394921197871) + 11) =
+          v2 (2 ^ 56 * (54 * m + 23)) := by
+            ring_nf
+      _ = 56 := by
+        simpa using v2_pow_mul_of_not_two_dvd 56 (54 * m + 23) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (144115188075855872 * m + 61382394921197871) + 11) := htime
+    _ = 4 + 56 := by rw [hv2]
+    _ = 60 := by norm_num
+
+/-- On the third dyadic shell `base = 4611686018427387904*m + 1964236637478331885`,
+    the higher-time destination base is exactly `54*m + 23`. -/
+theorem dst_base_eq_54m_add_23_of_src_base_eq_4611686018427387904m_add_1964236637478331885
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4611686018427387904 * m + 1964236637478331885) :
+    τ.dst.src.base = 54 * m + 23 := by
+  have hm' : τ.src.src.base = 576460752303423488 * (8 * m + 3) + 234854380568061421 := by
+    calc
+      τ.src.src.base = 4611686018427387904 * m + 1964236637478331885 := hm
+      _ = 576460752303423488 * (8 * m + 3) + 234854380568061421 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 216 * m + 92 := by
+    calc
+      2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 27 * (8 * m + 3) + 11 := by
+        exact two_pow_dst_time_sub_fifty_eight_mul_dst_base_eq_27m_add_11_of_src_base_eq_576460752303423488m_add_234854380568061421
+          τ ht he hm'
+      _ = 216 * m + 92 := by
+        ring
+  have htime : τ.dst.src.time = 60 :=
+    dst_time_eq_sixty_of_src_base_eq_4611686018427387904m_add_1964236637478331885 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 58` branch:
+    `base = 9223372036854775808*m + 4270079646692025837` is exactly the
+    `time = 61` case. -/
+theorem dst_time_eq_sixty_one_of_src_base_eq_9223372036854775808m_add_4270079646692025837
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9223372036854775808 * m + 4270079646692025837) :
+    τ.dst.src.time = 61 := by
+  have hk : τ.src.src.base = 32 * (288230376151711744 * m + 133439988959125807) + 13 := by
+    calc
+      τ.src.src.base = 9223372036854775808 * m + 4270079646692025837 := hm
+      _ = 32 * (288230376151711744 * m + 133439988959125807) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 25) := by
+    omega
+  have hv2 : v2 (27 * (288230376151711744 * m + 133439988959125807) + 11) = 57 := by
+    calc
+      v2 (27 * (288230376151711744 * m + 133439988959125807) + 11) =
+          v2 (2 ^ 57 * (54 * m + 25)) := by
+            ring_nf
+      _ = 57 := by
+        simpa using v2_pow_mul_of_not_two_dvd 57 (54 * m + 25) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (288230376151711744 * m + 133439988959125807) + 11) := htime
+    _ = 4 + 57 := by rw [hv2]
+    _ = 61 := by norm_num
+
+/-- On the fourth dyadic shell `base = 9223372036854775808*m + 4270079646692025837`,
+    the higher-time destination base is exactly `54*m + 25`. -/
+theorem dst_base_eq_54m_add_25_of_src_base_eq_9223372036854775808m_add_4270079646692025837
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9223372036854775808 * m + 4270079646692025837) :
+    τ.dst.src.base = 54 * m + 25 := by
+  have hm' : τ.src.src.base = 576460752303423488 * (16 * m + 7) + 234854380568061421 := by
+    calc
+      τ.src.src.base = 9223372036854775808 * m + 4270079646692025837 := hm
+      _ = 576460752303423488 * (16 * m + 7) + 234854380568061421 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 432 * m + 200 := by
+    calc
+      2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 27 * (16 * m + 7) + 11 := by
+        exact two_pow_dst_time_sub_fifty_eight_mul_dst_base_eq_27m_add_11_of_src_base_eq_576460752303423488m_add_234854380568061421
+          τ ht he hm'
+      _ = 432 * m + 200 := by
+        ring
+  have htime : τ.dst.src.time = 61 :=
+    dst_time_eq_sixty_one_of_src_base_eq_9223372036854775808m_add_4270079646692025837 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 58`
+    branch: `base = 9223372036854775808*m + 8881765665119413741` still forces
+    destination time at least `62`. -/
+theorem sixty_two_le_dst_time_of_src_base_eq_9223372036854775808m_add_8881765665119413741
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9223372036854775808 * m + 8881765665119413741) :
+    62 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (288230376151711744 * m + 277555177034981679) + 13 := by
+    calc
+      τ.src.src.base = 9223372036854775808 * m + 8881765665119413741 := hm
+      _ = 32 * (288230376151711744 * m + 277555177034981679) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (288230376151711744 * m + 277555177034981679) + 11 = 2 ^ 58 * (27 * m + 26) := by
+    ring_nf
+  have hpos : 0 < 27 * (288230376151711744 * m + 277555177034981679) + 11 := by
+    omega
+  have hdvd : 2 ^ 58 ∣ 27 * (288230376151711744 * m + 277555177034981679) + 11 := by
+    refine ⟨27 * m + 26, ?_⟩
+    exact hfac
+  have hv2_ge58 : 58 ≤ v2 (27 * (288230376151711744 * m + 277555177034981679) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (288230376151711744 * m + 277555177034981679) + 11) + 1 ≤ 58 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (288230376151711744 * m + 277555177034981679) + 11) + 1) ∣
+          27 * (288230376151711744 * m + 277555177034981679) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (288230376151711744 * m + 277555177034981679) + 11) hpos) hdiv
+  have htime_ge : 62 ≤ 4 + v2 (27 * (288230376151711744 * m + 277555177034981679) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 58` branch. -/
+theorem two_pow_dst_time_sub_sixty_two_mul_dst_base_eq_27m_add_26_of_src_base_eq_9223372036854775808m_add_8881765665119413741
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9223372036854775808 * m + 8881765665119413741) :
+    2 ^ (τ.dst.src.time - 62) * τ.dst.src.base = 27 * m + 26 := by
+  have hm' : τ.src.src.base = 576460752303423488 * (16 * m + 15) + 234854380568061421 := by
+    calc
+      τ.src.src.base = 9223372036854775808 * m + 8881765665119413741 := hm
+      _ = 576460752303423488 * (16 * m + 15) + 234854380568061421 := by ring
+  have htime_ge62 : 62 ≤ τ.dst.src.time :=
+    sixty_two_le_dst_time_of_src_base_eq_9223372036854775808m_add_8881765665119413741 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 58) * τ.dst.src.base = 27 * (16 * m + 15) + 11 :=
+    two_pow_dst_time_sub_fifty_eight_mul_dst_base_eq_27m_add_11_of_src_base_eq_576460752303423488m_add_234854380568061421
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 58) = 2 ^ (τ.dst.src.time - 62) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 58 = (τ.dst.src.time - 62) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 62) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 26) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 62) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 62) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 58) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 15) + 11 := htransport
+      _ = 2 ^ 4 * (27 * m + 26) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 62` transport is exactly the older `time ≥ 44` shell
+    after renormalizing the shell parameter by `m ↦ 262144*m + 252434`. -/
+theorem returned_forty_four_shell_transport_of_src_base_eq_9223372036854775808m_add_8881765665119413741
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9223372036854775808 * m + 8881765665119413741) :
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base = 2 ^ 18 * (27 * m + 26) := by
+  have hm' : τ.src.src.base = 35184372088832 * (262144 * m + 252434) + 33881247196653 := by
+    calc
+      τ.src.src.base = 9223372036854775808 * m + 8881765665119413741 := hm
+      _ = 35184372088832 * (262144 * m + 252434) + 33881247196653 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base
+        = 27 * (262144 * m + 252434) + 26 := by
+            exact two_pow_dst_time_sub_forty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_35184372088832m_add_33881247196653
+              τ ht he hm'
+    _ = 2 ^ 18 * (27 * m + 26) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 62` branch:
+    `base = 18446744073709551616*m + 18105137701974189549` is exactly the
+    `time = 62` case. -/
+theorem dst_time_eq_sixty_two_of_src_base_eq_18446744073709551616m_add_18105137701974189549
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 18446744073709551616 * m + 18105137701974189549) :
+    τ.dst.src.time = 62 := by
+  have hk : τ.src.src.base = 32 * (576460752303423488 * m + 565785553186693423) + 13 := by
+    calc
+      τ.src.src.base = 18446744073709551616 * m + 18105137701974189549 := hm
+      _ = 32 * (576460752303423488 * m + 565785553186693423) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 53) := by
+    omega
+  have hv2 : v2 (27 * (576460752303423488 * m + 565785553186693423) + 11) = 58 := by
+    calc
+      v2 (27 * (576460752303423488 * m + 565785553186693423) + 11) =
+          v2 (2 ^ 58 * (54 * m + 53)) := by
+            ring_nf
+      _ = 58 := by
+        simpa using v2_pow_mul_of_not_two_dvd 58 (54 * m + 53) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (576460752303423488 * m + 565785553186693423) + 11) := htime
+    _ = 4 + 58 := by rw [hv2]
+    _ = 62 := by norm_num
+
+/-- On the first dyadic shell `base = 18446744073709551616*m + 18105137701974189549`,
+    the higher-time destination base is exactly `54*m + 53`. -/
+theorem dst_base_eq_54m_add_53_of_src_base_eq_18446744073709551616m_add_18105137701974189549
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 18446744073709551616 * m + 18105137701974189549) :
+    τ.dst.src.base = 54 * m + 53 := by
+  have hm' : τ.src.src.base = 9223372036854775808 * (2 * m + 1) + 8881765665119413741 := by
+    calc
+      τ.src.src.base = 18446744073709551616 * m + 18105137701974189549 := hm
+      _ = 9223372036854775808 * (2 * m + 1) + 8881765665119413741 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 62) * τ.dst.src.base = 54 * m + 53 := by
+    calc
+      2 ^ (τ.dst.src.time - 62) * τ.dst.src.base = 27 * (2 * m + 1) + 26 := by
+        exact two_pow_dst_time_sub_sixty_two_mul_dst_base_eq_27m_add_26_of_src_base_eq_9223372036854775808m_add_8881765665119413741
+          τ ht he hm'
+      _ = 54 * m + 53 := by
+        ring
+  have htime : τ.dst.src.time = 62 :=
+    dst_time_eq_sixty_two_of_src_base_eq_18446744073709551616m_add_18105137701974189549 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 62` branch:
+    `base = 36893488147419103232*m + 8881765665119413741` is exactly the
+    `time = 63` case. -/
+theorem dst_time_eq_sixty_three_of_src_base_eq_36893488147419103232m_add_8881765665119413741
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36893488147419103232 * m + 8881765665119413741) :
+    τ.dst.src.time = 63 := by
+  have hk : τ.src.src.base = 32 * (1152921504606846976 * m + 277555177034981679) + 13 := by
+    calc
+      τ.src.src.base = 36893488147419103232 * m + 8881765665119413741 := hm
+      _ = 32 * (1152921504606846976 * m + 277555177034981679) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 13) := by
+    omega
+  have hv2 : v2 (27 * (1152921504606846976 * m + 277555177034981679) + 11) = 59 := by
+    calc
+      v2 (27 * (1152921504606846976 * m + 277555177034981679) + 11) =
+          v2 (2 ^ 59 * (54 * m + 13)) := by
+            ring_nf
+      _ = 59 := by
+        simpa using v2_pow_mul_of_not_two_dvd 59 (54 * m + 13) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (1152921504606846976 * m + 277555177034981679) + 11) := htime
+    _ = 4 + 59 := by rw [hv2]
+    _ = 63 := by norm_num
+
+/-- On the second dyadic shell `base = 36893488147419103232*m + 8881765665119413741`,
+    the higher-time destination base is exactly `54*m + 13`. -/
+theorem dst_base_eq_54m_add_13_of_src_base_eq_36893488147419103232m_add_8881765665119413741
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36893488147419103232 * m + 8881765665119413741) :
+    τ.dst.src.base = 54 * m + 13 := by
+  have hm' : τ.src.src.base = 9223372036854775808 * (4 * m) + 8881765665119413741 := by
+    calc
+      τ.src.src.base = 36893488147419103232 * m + 8881765665119413741 := hm
+      _ = 9223372036854775808 * (4 * m) + 8881765665119413741 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 62) * τ.dst.src.base = 108 * m + 26 := by
+    calc
+      2 ^ (τ.dst.src.time - 62) * τ.dst.src.base = 27 * (4 * m) + 26 := by
+        exact two_pow_dst_time_sub_sixty_two_mul_dst_base_eq_27m_add_26_of_src_base_eq_9223372036854775808m_add_8881765665119413741
+          τ ht he hm'
+      _ = 108 * m + 26 := by
+        ring
+  have htime : τ.dst.src.time = 63 :=
+    dst_time_eq_sixty_three_of_src_base_eq_36893488147419103232m_add_8881765665119413741 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first two dyadic cases of the `time ≥ 62`
+    branch: `base = 36893488147419103232*m + 27328509738828965357` still forces
+    destination time at least `64`. -/
+theorem sixty_four_le_dst_time_of_src_base_eq_36893488147419103232m_add_27328509738828965357
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36893488147419103232 * m + 27328509738828965357) :
+    64 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (1152921504606846976 * m + 854015929338405167) + 13 := by
+    calc
+      τ.src.src.base = 36893488147419103232 * m + 27328509738828965357 := hm
+      _ = 32 * (1152921504606846976 * m + 854015929338405167) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (1152921504606846976 * m + 854015929338405167) + 11 = 2 ^ 60 * (27 * m + 20) := by
+    ring_nf
+  have hpos : 0 < 27 * (1152921504606846976 * m + 854015929338405167) + 11 := by
+    omega
+  have hdvd : 2 ^ 60 ∣ 27 * (1152921504606846976 * m + 854015929338405167) + 11 := by
+    refine ⟨27 * m + 20, ?_⟩
+    exact hfac
+  have hv2_ge60 : 60 ≤ v2 (27 * (1152921504606846976 * m + 854015929338405167) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (1152921504606846976 * m + 854015929338405167) + 11) + 1 ≤ 60 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (1152921504606846976 * m + 854015929338405167) + 11) + 1) ∣
+          27 * (1152921504606846976 * m + 854015929338405167) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (1152921504606846976 * m + 854015929338405167) + 11) hpos) hdiv
+  have htime_ge : 64 ≤ 4 + v2 (27 * (1152921504606846976 * m + 854015929338405167) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first two dyadic shells of the
+    `time ≥ 62` branch. -/
+theorem two_pow_dst_time_sub_sixty_four_mul_dst_base_eq_27m_add_20_of_src_base_eq_36893488147419103232m_add_27328509738828965357
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36893488147419103232 * m + 27328509738828965357) :
+    2 ^ (τ.dst.src.time - 64) * τ.dst.src.base = 27 * m + 20 := by
+  have hm' : τ.src.src.base = 9223372036854775808 * (4 * m + 2) + 8881765665119413741 := by
+    calc
+      τ.src.src.base = 36893488147419103232 * m + 27328509738828965357 := hm
+      _ = 9223372036854775808 * (4 * m + 2) + 8881765665119413741 := by ring
+  have htime_ge64 : 64 ≤ τ.dst.src.time :=
+    sixty_four_le_dst_time_of_src_base_eq_36893488147419103232m_add_27328509738828965357 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 62) * τ.dst.src.base = 27 * (4 * m + 2) + 26 :=
+    two_pow_dst_time_sub_sixty_two_mul_dst_base_eq_27m_add_26_of_src_base_eq_9223372036854775808m_add_8881765665119413741
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 62) = 2 ^ (τ.dst.src.time - 64) * 2 ^ 2 := by
+    have hsub : τ.dst.src.time - 62 = (τ.dst.src.time - 64) + 2 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 64) * τ.dst.src.base) =
+        2 ^ 2 * (27 * m + 20) := by
+    calc
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 64) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 64) * 2 ^ 2) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 62) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (4 * m + 2) + 26 := htransport
+      _ = 2 ^ 2 * (27 * m + 20) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 2) hmul
+
+/-- The returned `time ≥ 64` transport is exactly the older `time ≥ 28` shell
+    after renormalizing the shell parameter by `m ↦ 262144*m + 194180`. -/
+theorem returned_twenty_eight_shell_transport_of_src_base_eq_36893488147419103232m_add_27328509738828965357
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 36893488147419103232 * m + 27328509738828965357) :
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base = 2 ^ 36 * (27 * m + 20) := by
+  have hm' : τ.src.src.base = 140737488355328 * (262144 * m + 194180) + 104249991374317 := by
+    calc
+      τ.src.src.base = 36893488147419103232 * m + 27328509738828965357 := hm
+      _ = 140737488355328 * (262144 * m + 194180) + 104249991374317 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base
+        = 2 ^ 18 * (27 * (262144 * m + 194180) + 20) := by
+            exact returned_twenty_eight_shell_transport_of_src_base_eq_140737488355328m_add_104249991374317
+              τ ht he hm'
+    _ = 2 ^ 36 * (27 * m + 20) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 64` branch:
+    `base = 73786976294838206464*m + 64221997886248068589` is exactly the
+    `time = 64` case. -/
+theorem dst_time_eq_sixty_four_of_src_base_eq_73786976294838206464m_add_64221997886248068589
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 73786976294838206464 * m + 64221997886248068589) :
+    τ.dst.src.time = 64 := by
+  have hk : τ.src.src.base = 32 * (2305843009213693952 * m + 2006937433945252143) + 13 := by
+    calc
+      τ.src.src.base = 73786976294838206464 * m + 64221997886248068589 := hm
+      _ = 32 * (2305843009213693952 * m + 2006937433945252143) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 47) := by
+    omega
+  have hv2 : v2 (27 * (2305843009213693952 * m + 2006937433945252143) + 11) = 60 := by
+    calc
+      v2 (27 * (2305843009213693952 * m + 2006937433945252143) + 11) =
+          v2 (2 ^ 60 * (54 * m + 47)) := by
+            ring_nf
+      _ = 60 := by
+        simpa using v2_pow_mul_of_not_two_dvd 60 (54 * m + 47) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (2305843009213693952 * m + 2006937433945252143) + 11) := htime
+    _ = 4 + 60 := by rw [hv2]
+    _ = 64 := by norm_num
+
+/-- On the first dyadic shell `base = 73786976294838206464*m + 64221997886248068589`,
+    the higher-time destination base is exactly `54*m + 47`. -/
+theorem dst_base_eq_54m_add_47_of_src_base_eq_73786976294838206464m_add_64221997886248068589
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 73786976294838206464 * m + 64221997886248068589) :
+    τ.dst.src.base = 54 * m + 47 := by
+  have hm' : τ.src.src.base = 36893488147419103232 * (2 * m + 1) + 27328509738828965357 := by
+    calc
+      τ.src.src.base = 73786976294838206464 * m + 64221997886248068589 := hm
+      _ = 36893488147419103232 * (2 * m + 1) + 27328509738828965357 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 64) * τ.dst.src.base = 54 * m + 47 := by
+    calc
+      2 ^ (τ.dst.src.time - 64) * τ.dst.src.base = 27 * (2 * m + 1) + 20 := by
+        exact two_pow_dst_time_sub_sixty_four_mul_dst_base_eq_27m_add_20_of_src_base_eq_36893488147419103232m_add_27328509738828965357
+          τ ht he hm'
+      _ = 54 * m + 47 := by
+        ring
+  have htime : τ.dst.src.time = 64 :=
+    dst_time_eq_sixty_four_of_src_base_eq_73786976294838206464m_add_64221997886248068589 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 64` branch:
+    `base = 147573952589676412928*m + 101115486033667171821` is exactly the
+    `time = 65` case. -/
+theorem dst_time_eq_sixty_five_of_src_base_eq_147573952589676412928m_add_101115486033667171821
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 147573952589676412928 * m + 101115486033667171821) :
+    τ.dst.src.time = 65 := by
+  have hk : τ.src.src.base = 32 * (4611686018427387904 * m + 3159858938552099119) + 13 := by
+    calc
+      τ.src.src.base = 147573952589676412928 * m + 101115486033667171821 := hm
+      _ = 32 * (4611686018427387904 * m + 3159858938552099119) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 37) := by
+    omega
+  have hv2 : v2 (27 * (4611686018427387904 * m + 3159858938552099119) + 11) = 61 := by
+    calc
+      v2 (27 * (4611686018427387904 * m + 3159858938552099119) + 11) =
+          v2 (2 ^ 61 * (54 * m + 37)) := by
+            ring_nf
+      _ = 61 := by
+        simpa using v2_pow_mul_of_not_two_dvd 61 (54 * m + 37) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (4611686018427387904 * m + 3159858938552099119) + 11) := htime
+    _ = 4 + 61 := by rw [hv2]
+    _ = 65 := by norm_num
+
+/-- On the second dyadic shell `base = 147573952589676412928*m + 101115486033667171821`,
+    the higher-time destination base is exactly `54*m + 37`. -/
+theorem dst_base_eq_54m_add_37_of_src_base_eq_147573952589676412928m_add_101115486033667171821
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 147573952589676412928 * m + 101115486033667171821) :
+    τ.dst.src.base = 54 * m + 37 := by
+  have hm' : τ.src.src.base = 36893488147419103232 * (4 * m + 2) + 27328509738828965357 := by
+    calc
+      τ.src.src.base = 147573952589676412928 * m + 101115486033667171821 := hm
+      _ = 36893488147419103232 * (4 * m + 2) + 27328509738828965357 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 64) * τ.dst.src.base = 108 * m + 74 := by
+    calc
+      2 ^ (τ.dst.src.time - 64) * τ.dst.src.base = 27 * (4 * m + 2) + 20 := by
+        exact two_pow_dst_time_sub_sixty_four_mul_dst_base_eq_27m_add_20_of_src_base_eq_36893488147419103232m_add_27328509738828965357
+          τ ht he hm'
+      _ = 108 * m + 74 := by
+        ring
+  have htime : τ.dst.src.time = 65 :=
+    dst_time_eq_sixty_five_of_src_base_eq_147573952589676412928m_add_101115486033667171821 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 64` branch:
+    `base = 295147905179352825856*m + 27328509738828965357` is exactly the
+    `time = 66` case. -/
+theorem dst_time_eq_sixty_six_of_src_base_eq_295147905179352825856m_add_27328509738828965357
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 295147905179352825856 * m + 27328509738828965357) :
+    τ.dst.src.time = 66 := by
+  have hk : τ.src.src.base = 32 * (9223372036854775808 * m + 854015929338405167) + 13 := by
+    calc
+      τ.src.src.base = 295147905179352825856 * m + 27328509738828965357 := hm
+      _ = 32 * (9223372036854775808 * m + 854015929338405167) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 5) := by
+    omega
+  have hv2 : v2 (27 * (9223372036854775808 * m + 854015929338405167) + 11) = 62 := by
+    calc
+      v2 (27 * (9223372036854775808 * m + 854015929338405167) + 11) =
+          v2 (2 ^ 62 * (54 * m + 5)) := by
+            ring_nf
+      _ = 62 := by
+        simpa using v2_pow_mul_of_not_two_dvd 62 (54 * m + 5) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (9223372036854775808 * m + 854015929338405167) + 11) := htime
+    _ = 4 + 62 := by rw [hv2]
+    _ = 66 := by norm_num
+
+/-- On the third dyadic shell `base = 295147905179352825856*m + 27328509738828965357`,
+    the higher-time destination base is exactly `54*m + 5`. -/
+theorem dst_base_eq_54m_add_5_of_src_base_eq_295147905179352825856m_add_27328509738828965357
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 295147905179352825856 * m + 27328509738828965357) :
+    τ.dst.src.base = 54 * m + 5 := by
+  have hm' : τ.src.src.base = 36893488147419103232 * (8 * m) + 27328509738828965357 := by
+    calc
+      τ.src.src.base = 295147905179352825856 * m + 27328509738828965357 := hm
+      _ = 36893488147419103232 * (8 * m) + 27328509738828965357 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 64) * τ.dst.src.base = 216 * m + 20 := by
+    calc
+      2 ^ (τ.dst.src.time - 64) * τ.dst.src.base = 27 * (8 * m) + 20 := by
+        exact two_pow_dst_time_sub_sixty_four_mul_dst_base_eq_27m_add_20_of_src_base_eq_36893488147419103232m_add_27328509738828965357
+          τ ht he hm'
+      _ = 216 * m + 20 := by
+        ring
+  have htime : τ.dst.src.time = 66 :=
+    dst_time_eq_sixty_six_of_src_base_eq_295147905179352825856m_add_27328509738828965357 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first three dyadic cases of the `time ≥ 64`
+    branch: `base = 295147905179352825856*m + 174902462328505378285` still forces
+    destination time at least `67`. -/
+theorem sixty_seven_le_dst_time_of_src_base_eq_295147905179352825856m_add_174902462328505378285
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 295147905179352825856 * m + 174902462328505378285) :
+    67 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (9223372036854775808 * m + 5465701947765793071) + 13 := by
+    calc
+      τ.src.src.base = 295147905179352825856 * m + 174902462328505378285 := hm
+      _ = 32 * (9223372036854775808 * m + 5465701947765793071) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (9223372036854775808 * m + 5465701947765793071) + 11 = 2 ^ 63 * (27 * m + 16) := by
+    ring_nf
+  have hpos : 0 < 27 * (9223372036854775808 * m + 5465701947765793071) + 11 := by
+    omega
+  have hdvd : 2 ^ 63 ∣ 27 * (9223372036854775808 * m + 5465701947765793071) + 11 := by
+    refine ⟨27 * m + 16, ?_⟩
+    exact hfac
+  have hv2_ge63 : 63 ≤ v2 (27 * (9223372036854775808 * m + 5465701947765793071) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (9223372036854775808 * m + 5465701947765793071) + 11) + 1 ≤ 63 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (9223372036854775808 * m + 5465701947765793071) + 11) + 1) ∣
+          27 * (9223372036854775808 * m + 5465701947765793071) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (9223372036854775808 * m + 5465701947765793071) + 11) hpos) hdiv
+  have htime_ge : 67 ≤ 4 + v2 (27 * (9223372036854775808 * m + 5465701947765793071) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first three dyadic shells of the
+    `time ≥ 64` branch. -/
+theorem two_pow_dst_time_sub_sixty_seven_mul_dst_base_eq_27m_add_16_of_src_base_eq_295147905179352825856m_add_174902462328505378285
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 295147905179352825856 * m + 174902462328505378285) :
+    2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 27 * m + 16 := by
+  have hm' : τ.src.src.base = 36893488147419103232 * (8 * m + 4) + 27328509738828965357 := by
+    calc
+      τ.src.src.base = 295147905179352825856 * m + 174902462328505378285 := hm
+      _ = 36893488147419103232 * (8 * m + 4) + 27328509738828965357 := by ring
+  have htime_ge67 : 67 ≤ τ.dst.src.time :=
+    sixty_seven_le_dst_time_of_src_base_eq_295147905179352825856m_add_174902462328505378285 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 64) * τ.dst.src.base = 27 * (8 * m + 4) + 20 :=
+    two_pow_dst_time_sub_sixty_four_mul_dst_base_eq_27m_add_20_of_src_base_eq_36893488147419103232m_add_27328509738828965357
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 64) = 2 ^ (τ.dst.src.time - 67) * 2 ^ 3 := by
+    have hsub : τ.dst.src.time - 64 = (τ.dst.src.time - 67) + 3 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 67) * τ.dst.src.base) =
+        2 ^ 3 * (27 * m + 16) := by
+    calc
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 67) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 67) * 2 ^ 3) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 64) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (8 * m + 4) + 20 := htransport
+      _ = 2 ^ 3 * (27 * m + 16) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 3) hmul
+
+/-- The returned `time ≥ 67` transport is exactly the older `time ≥ 31` shell
+    after renormalizing the shell parameter by `m ↦ 68719476736*m + 40722652880`. -/
+theorem returned_thirty_one_shell_transport_of_src_base_eq_295147905179352825856m_add_174902462328505378285
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 295147905179352825856 * m + 174902462328505378285) :
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base = 2 ^ 36 * (27 * m + 16) := by
+  have hm' : τ.src.src.base = 4294967296 * (68719476736 * m + 40722652880) + 2545165805 := by
+    calc
+      τ.src.src.base = 295147905179352825856 * m + 174902462328505378285 := hm
+      _ = 4294967296 * (68719476736 * m + 40722652880) + 2545165805 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base
+        = 27 * (68719476736 * m + 40722652880) + 16 := by
+            exact two_pow_dst_time_sub_thirty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_4294967296m_add_2545165805
+              τ ht he hm'
+    _ = 2 ^ 36 * (27 * m + 16) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 67` branch:
+    `base = 590295810358705651712*m + 470050367507858204141` is exactly the
+    `time = 67` case. -/
+theorem dst_time_eq_sixty_seven_of_src_base_eq_590295810358705651712m_add_470050367507858204141
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 590295810358705651712 * m + 470050367507858204141) :
+    τ.dst.src.time = 67 := by
+  have hk : τ.src.src.base = 32 * (18446744073709551616 * m + 14689073984620568879) + 13 := by
+    calc
+      τ.src.src.base = 590295810358705651712 * m + 470050367507858204141 := hm
+      _ = 32 * (18446744073709551616 * m + 14689073984620568879) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 43) := by
+    omega
+  have hv2 : v2 (27 * (18446744073709551616 * m + 14689073984620568879) + 11) = 63 := by
+    calc
+      v2 (27 * (18446744073709551616 * m + 14689073984620568879) + 11) =
+          v2 (2 ^ 63 * (54 * m + 43)) := by
+            ring_nf
+      _ = 63 := by
+        simpa using v2_pow_mul_of_not_two_dvd 63 (54 * m + 43) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (18446744073709551616 * m + 14689073984620568879) + 11) := htime
+    _ = 4 + 63 := by rw [hv2]
+    _ = 67 := by norm_num
+
+/-- On the first dyadic shell `base = 590295810358705651712*m + 470050367507858204141`,
+    the higher-time destination base is exactly `54*m + 43`. -/
+theorem dst_base_eq_54m_add_43_of_src_base_eq_590295810358705651712m_add_470050367507858204141
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 590295810358705651712 * m + 470050367507858204141) :
+    τ.dst.src.base = 54 * m + 43 := by
+  have hm' : τ.src.src.base = 295147905179352825856 * (2 * m + 1) + 174902462328505378285 := by
+    calc
+      τ.src.src.base = 590295810358705651712 * m + 470050367507858204141 := hm
+      _ = 295147905179352825856 * (2 * m + 1) + 174902462328505378285 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 54 * m + 43 := by
+    calc
+      2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 27 * (2 * m + 1) + 16 := by
+        exact two_pow_dst_time_sub_sixty_seven_mul_dst_base_eq_27m_add_16_of_src_base_eq_295147905179352825856m_add_174902462328505378285
+          τ ht he hm'
+      _ = 54 * m + 43 := by
+        ring
+  have htime : τ.dst.src.time = 67 :=
+    dst_time_eq_sixty_seven_of_src_base_eq_590295810358705651712m_add_470050367507858204141 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 67` branch:
+    `base = 1180591620717411303424*m + 765198272687211029997` is exactly the
+    `time = 68` case. -/
+theorem dst_time_eq_sixty_eight_of_src_base_eq_1180591620717411303424m_add_765198272687211029997
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1180591620717411303424 * m + 765198272687211029997) :
+    τ.dst.src.time = 68 := by
+  have hk : τ.src.src.base = 32 * (36893488147419103232 * m + 23912446021475344687) + 13 := by
+    calc
+      τ.src.src.base = 1180591620717411303424 * m + 765198272687211029997 := hm
+      _ = 32 * (36893488147419103232 * m + 23912446021475344687) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 35) := by
+    omega
+  have hv2 : v2 (27 * (36893488147419103232 * m + 23912446021475344687) + 11) = 64 := by
+    calc
+      v2 (27 * (36893488147419103232 * m + 23912446021475344687) + 11) =
+          v2 (2 ^ 64 * (54 * m + 35)) := by
+            ring_nf
+      _ = 64 := by
+        simpa using v2_pow_mul_of_not_two_dvd 64 (54 * m + 35) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (36893488147419103232 * m + 23912446021475344687) + 11) := htime
+    _ = 4 + 64 := by rw [hv2]
+    _ = 68 := by norm_num
+
+/-- On the second dyadic shell `base = 1180591620717411303424*m + 765198272687211029997`,
+    the higher-time destination base is exactly `54*m + 35`. -/
+theorem dst_base_eq_54m_add_35_of_src_base_eq_1180591620717411303424m_add_765198272687211029997
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1180591620717411303424 * m + 765198272687211029997) :
+    τ.dst.src.base = 54 * m + 35 := by
+  have hm' : τ.src.src.base = 295147905179352825856 * (4 * m + 2) + 174902462328505378285 := by
+    calc
+      τ.src.src.base = 1180591620717411303424 * m + 765198272687211029997 := hm
+      _ = 295147905179352825856 * (4 * m + 2) + 174902462328505378285 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 108 * m + 70 := by
+    calc
+      2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 27 * (4 * m + 2) + 16 := by
+        exact two_pow_dst_time_sub_sixty_seven_mul_dst_base_eq_27m_add_16_of_src_base_eq_295147905179352825856m_add_174902462328505378285
+          τ ht he hm'
+      _ = 108 * m + 70 := by
+        ring
+  have htime : τ.dst.src.time = 68 :=
+    dst_time_eq_sixty_eight_of_src_base_eq_1180591620717411303424m_add_765198272687211029997 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 67` branch:
+    `base = 2361183241434822606848*m + 1355494083045916681709` is exactly the
+    `time = 69` case. -/
+theorem dst_time_eq_sixty_nine_of_src_base_eq_2361183241434822606848m_add_1355494083045916681709
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2361183241434822606848 * m + 1355494083045916681709) :
+    τ.dst.src.time = 69 := by
+  have hk : τ.src.src.base = 32 * (73786976294838206464 * m + 42359190095184896303) + 13 := by
+    calc
+      τ.src.src.base = 2361183241434822606848 * m + 1355494083045916681709 := hm
+      _ = 32 * (73786976294838206464 * m + 42359190095184896303) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 31) := by
+    omega
+  have hv2 : v2 (27 * (73786976294838206464 * m + 42359190095184896303) + 11) = 65 := by
+    calc
+      v2 (27 * (73786976294838206464 * m + 42359190095184896303) + 11) =
+          v2 (2 ^ 65 * (54 * m + 31)) := by
+            ring_nf
+      _ = 65 := by
+        simpa using v2_pow_mul_of_not_two_dvd 65 (54 * m + 31) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (73786976294838206464 * m + 42359190095184896303) + 11) := htime
+    _ = 4 + 65 := by rw [hv2]
+    _ = 69 := by norm_num
+
+/-- On the third dyadic shell `base = 2361183241434822606848*m + 1355494083045916681709`,
+    the higher-time destination base is exactly `54*m + 31`. -/
+theorem dst_base_eq_54m_add_31_of_src_base_eq_2361183241434822606848m_add_1355494083045916681709
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2361183241434822606848 * m + 1355494083045916681709) :
+    τ.dst.src.base = 54 * m + 31 := by
+  have hm' : τ.src.src.base = 295147905179352825856 * (8 * m + 4) + 174902462328505378285 := by
+    calc
+      τ.src.src.base = 2361183241434822606848 * m + 1355494083045916681709 := hm
+      _ = 295147905179352825856 * (8 * m + 4) + 174902462328505378285 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 216 * m + 124 := by
+    calc
+      2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 27 * (8 * m + 4) + 16 := by
+        exact two_pow_dst_time_sub_sixty_seven_mul_dst_base_eq_27m_add_16_of_src_base_eq_295147905179352825856m_add_174902462328505378285
+          τ ht he hm'
+      _ = 216 * m + 124 := by
+        ring
+  have htime : τ.dst.src.time = 69 :=
+    dst_time_eq_sixty_nine_of_src_base_eq_2361183241434822606848m_add_1355494083045916681709 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 67` branch:
+    `base = 4722366482869645213696*m + 2536085703763327985133` is exactly the
+    `time = 70` case. -/
+theorem dst_time_eq_seventy_of_src_base_eq_4722366482869645213696m_add_2536085703763327985133
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4722366482869645213696 * m + 2536085703763327985133) :
+    τ.dst.src.time = 70 := by
+  have hk : τ.src.src.base = 32 * (147573952589676412928 * m + 79252678242603999535) + 13 := by
+    calc
+      τ.src.src.base = 4722366482869645213696 * m + 2536085703763327985133 := hm
+      _ = 32 * (147573952589676412928 * m + 79252678242603999535) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 29) := by
+    omega
+  have hv2 : v2 (27 * (147573952589676412928 * m + 79252678242603999535) + 11) = 66 := by
+    calc
+      v2 (27 * (147573952589676412928 * m + 79252678242603999535) + 11) =
+          v2 (2 ^ 66 * (54 * m + 29)) := by
+            ring_nf
+      _ = 66 := by
+        simpa using v2_pow_mul_of_not_two_dvd 66 (54 * m + 29) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (147573952589676412928 * m + 79252678242603999535) + 11) := htime
+    _ = 4 + 66 := by rw [hv2]
+    _ = 70 := by norm_num
+
+/-- On the fourth dyadic shell `base = 4722366482869645213696*m + 2536085703763327985133`,
+    the higher-time destination base is exactly `54*m + 29`. -/
+theorem dst_base_eq_54m_add_29_of_src_base_eq_4722366482869645213696m_add_2536085703763327985133
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4722366482869645213696 * m + 2536085703763327985133) :
+    τ.dst.src.base = 54 * m + 29 := by
+  have hm' : τ.src.src.base = 295147905179352825856 * (16 * m + 8) + 174902462328505378285 := by
+    calc
+      τ.src.src.base = 4722366482869645213696 * m + 2536085703763327985133 := hm
+      _ = 295147905179352825856 * (16 * m + 8) + 174902462328505378285 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 432 * m + 232 := by
+    calc
+      2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 27 * (16 * m + 8) + 16 := by
+        exact two_pow_dst_time_sub_sixty_seven_mul_dst_base_eq_27m_add_16_of_src_base_eq_295147905179352825856m_add_174902462328505378285
+          τ ht he hm'
+      _ = 432 * m + 232 := by
+        ring
+  have htime : τ.dst.src.time = 70 :=
+    dst_time_eq_seventy_of_src_base_eq_4722366482869645213696m_add_2536085703763327985133 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fifth dyadic shell inside the residual `time ≥ 67` branch:
+    `base = 9444732965739290427392*m + 174902462328505378285` is exactly the
+    `time = 71` case. -/
+theorem dst_time_eq_seventy_one_of_src_base_eq_9444732965739290427392m_add_174902462328505378285
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9444732965739290427392 * m + 174902462328505378285) :
+    τ.dst.src.time = 71 := by
+  have hk : τ.src.src.base = 32 * (295147905179352825856 * m + 5465701947765793071) + 13 := by
+    calc
+      τ.src.src.base = 9444732965739290427392 * m + 174902462328505378285 := hm
+      _ = 32 * (295147905179352825856 * m + 5465701947765793071) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 1) := by
+    omega
+  have hv2 : v2 (27 * (295147905179352825856 * m + 5465701947765793071) + 11) = 67 := by
+    calc
+      v2 (27 * (295147905179352825856 * m + 5465701947765793071) + 11) =
+          v2 (2 ^ 67 * (54 * m + 1)) := by
+            ring_nf
+      _ = 67 := by
+        simpa using v2_pow_mul_of_not_two_dvd 67 (54 * m + 1) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (295147905179352825856 * m + 5465701947765793071) + 11) := htime
+    _ = 4 + 67 := by rw [hv2]
+    _ = 71 := by norm_num
+
+/-- On the fifth dyadic shell `base = 9444732965739290427392*m + 174902462328505378285`,
+    the higher-time destination base is exactly `54*m + 1`. -/
+theorem dst_base_eq_54m_add_1_of_src_base_eq_9444732965739290427392m_add_174902462328505378285
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9444732965739290427392 * m + 174902462328505378285) :
+    τ.dst.src.base = 54 * m + 1 := by
+  have hm' : τ.src.src.base = 295147905179352825856 * (32 * m) + 174902462328505378285 := by
+    calc
+      τ.src.src.base = 9444732965739290427392 * m + 174902462328505378285 := hm
+      _ = 295147905179352825856 * (32 * m) + 174902462328505378285 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 864 * m + 16 := by
+    calc
+      2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 27 * (32 * m) + 16 := by
+        exact two_pow_dst_time_sub_sixty_seven_mul_dst_base_eq_27m_add_16_of_src_base_eq_295147905179352825856m_add_174902462328505378285
+          τ ht he hm'
+      _ = 864 * m + 16 := by
+        ring
+  have htime : τ.dst.src.time = 71 :=
+    dst_time_eq_seventy_one_of_src_base_eq_9444732965739290427392m_add_174902462328505378285 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first five dyadic cases of the `time ≥ 67`
+    branch: `base = 9444732965739290427392*m + 4897268945198150591981` still forces
+    destination time at least `72`. -/
+theorem seventy_two_le_dst_time_of_src_base_eq_9444732965739290427392m_add_4897268945198150591981
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9444732965739290427392 * m + 4897268945198150591981) :
+    72 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (295147905179352825856 * m + 153039654537442205999) + 13 := by
+    calc
+      τ.src.src.base = 9444732965739290427392 * m + 4897268945198150591981 := hm
+      _ = 32 * (295147905179352825856 * m + 153039654537442205999) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (295147905179352825856 * m + 153039654537442205999) + 11 = 2 ^ 68 * (27 * m + 14) := by
+    ring_nf
+  have hpos : 0 < 27 * (295147905179352825856 * m + 153039654537442205999) + 11 := by
+    omega
+  have hdvd : 2 ^ 68 ∣ 27 * (295147905179352825856 * m + 153039654537442205999) + 11 := by
+    refine ⟨27 * m + 14, ?_⟩
+    exact hfac
+  have hv2_ge68 : 68 ≤ v2 (27 * (295147905179352825856 * m + 153039654537442205999) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (295147905179352825856 * m + 153039654537442205999) + 11) + 1 ≤ 68 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (295147905179352825856 * m + 153039654537442205999) + 11) + 1) ∣
+          27 * (295147905179352825856 * m + 153039654537442205999) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (295147905179352825856 * m + 153039654537442205999) + 11) hpos) hdiv
+  have htime_ge : 72 ≤ 4 + v2 (27 * (295147905179352825856 * m + 153039654537442205999) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first five dyadic shells of the
+    `time ≥ 67` branch. -/
+theorem two_pow_dst_time_sub_seventy_two_mul_dst_base_eq_27m_add_14_of_src_base_eq_9444732965739290427392m_add_4897268945198150591981
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9444732965739290427392 * m + 4897268945198150591981) :
+    2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 27 * m + 14 := by
+  have hm' : τ.src.src.base = 295147905179352825856 * (32 * m + 16) + 174902462328505378285 := by
+    calc
+      τ.src.src.base = 9444732965739290427392 * m + 4897268945198150591981 := hm
+      _ = 295147905179352825856 * (32 * m + 16) + 174902462328505378285 := by ring
+  have htime_ge72 : 72 ≤ τ.dst.src.time :=
+    seventy_two_le_dst_time_of_src_base_eq_9444732965739290427392m_add_4897268945198150591981 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 67) * τ.dst.src.base = 27 * (32 * m + 16) + 16 :=
+    two_pow_dst_time_sub_sixty_seven_mul_dst_base_eq_27m_add_16_of_src_base_eq_295147905179352825856m_add_174902462328505378285
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 67) = 2 ^ (τ.dst.src.time - 72) * 2 ^ 5 := by
+    have hsub : τ.dst.src.time - 67 = (τ.dst.src.time - 72) + 5 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 72) * τ.dst.src.base) =
+        2 ^ 5 * (27 * m + 14) := by
+    calc
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 72) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 72) * 2 ^ 5) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 67) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (32 * m + 16) + 16 := htransport
+      _ = 2 ^ 5 * (27 * m + 14) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 5) hmul
+
+/-- The returned `time ≥ 72` transport is exactly the older `time ≥ 36` shell
+    after renormalizing the shell parameter by `m ↦ 68719476736*m + 35632321270`. -/
+theorem returned_thirty_six_shell_transport_of_src_base_eq_9444732965739290427392m_add_4897268945198150591981
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9444732965739290427392 * m + 4897268945198150591981) :
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base = 2 ^ 36 * (27 * m + 14) := by
+  have hm' : τ.src.src.base = 137438953472 * (68719476736 * m + 35632321270) + 71264642541 := by
+    calc
+      τ.src.src.base = 9444732965739290427392 * m + 4897268945198150591981 := hm
+      _ = 137438953472 * (68719476736 * m + 35632321270) + 71264642541 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base
+        = 27 * (68719476736 * m + 35632321270) + 14 := by
+            exact two_pow_dst_time_sub_thirty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_137438953472m_add_71264642541
+              τ ht he hm'
+    _ = 2 ^ 36 * (27 * m + 14) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 72` branch:
+    `base = 18889465931478580854784*m + 14342001910937441019373` is exactly the `time = 72`
+    case. -/
+theorem dst_time_eq_seventy_two_of_src_base_eq_18889465931478580854784m_add_14342001910937441019373
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 18889465931478580854784 * m + 14342001910937441019373) :
+    τ.dst.src.time = 72 := by
+  have hk : τ.src.src.base = 32 * (590295810358705651712 * m + 448187559716795031855) + 13 := by
+    calc
+      τ.src.src.base = 18889465931478580854784 * m + 14342001910937441019373 := hm
+      _ = 32 * (590295810358705651712 * m + 448187559716795031855) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 41) := by
+    omega
+  have hv2 : v2 (27 * (590295810358705651712 * m + 448187559716795031855) + 11) = 68 := by
+    calc
+      v2 (27 * (590295810358705651712 * m + 448187559716795031855) + 11) =
+          v2 (2 ^ 68 * (54 * m + 41)) := by
+            ring_nf
+      _ = 68 := by
+        simpa using v2_pow_mul_of_not_two_dvd 68 (54 * m + 41) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (590295810358705651712 * m + 448187559716795031855) + 11) := htime
+    _ = 4 + 68 := by rw [hv2]
+    _ = 72 := by norm_num
+
+/-- On the first dyadic shell `base = 18889465931478580854784*m + 14342001910937441019373`,
+    the higher-time destination base is exactly `54*m + 41`. -/
+theorem dst_base_eq_54m_add_41_of_src_base_eq_18889465931478580854784m_add_14342001910937441019373
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 18889465931478580854784 * m + 14342001910937441019373) :
+    τ.dst.src.base = 54 * m + 41 := by
+  have hm' : τ.src.src.base = 9444732965739290427392 * (2 * m + 1) + 4897268945198150591981 := by
+    calc
+      τ.src.src.base = 18889465931478580854784 * m + 14342001910937441019373 := hm
+      _ = 9444732965739290427392 * (2 * m + 1) + 4897268945198150591981 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 54 * m + 41 := by
+    calc
+      2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 27 * (2 * m + 1) + 14 := by
+        exact two_pow_dst_time_sub_seventy_two_mul_dst_base_eq_27m_add_14_of_src_base_eq_9444732965739290427392m_add_4897268945198150591981
+          τ ht he hm'
+      _ = 54 * m + 41 := by
+        ring
+  have htime : τ.dst.src.time = 72 :=
+    dst_time_eq_seventy_two_of_src_base_eq_18889465931478580854784m_add_14342001910937441019373 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 72` branch:
+    `base = 37778931862957161709568*m + 4897268945198150591981` is exactly the `time = 73`
+    case. -/
+theorem dst_time_eq_seventy_three_of_src_base_eq_37778931862957161709568m_add_4897268945198150591981
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 37778931862957161709568 * m + 4897268945198150591981) :
+    τ.dst.src.time = 73 := by
+  have hk : τ.src.src.base = 32 * (1180591620717411303424 * m + 153039654537442205999) + 13 := by
+    calc
+      τ.src.src.base = 37778931862957161709568 * m + 4897268945198150591981 := hm
+      _ = 32 * (1180591620717411303424 * m + 153039654537442205999) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 7) := by
+    omega
+  have hv2 : v2 (27 * (1180591620717411303424 * m + 153039654537442205999) + 11) = 69 := by
+    calc
+      v2 (27 * (1180591620717411303424 * m + 153039654537442205999) + 11) =
+          v2 (2 ^ 69 * (54 * m + 7)) := by
+            ring_nf
+      _ = 69 := by
+        simpa using v2_pow_mul_of_not_two_dvd 69 (54 * m + 7) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (1180591620717411303424 * m + 153039654537442205999) + 11) := htime
+    _ = 4 + 69 := by rw [hv2]
+    _ = 73 := by norm_num
+
+/-- On the second dyadic shell `base = 37778931862957161709568*m + 4897268945198150591981`,
+    the higher-time destination base is exactly `54*m + 7`. -/
+theorem dst_base_eq_54m_add_7_of_src_base_eq_37778931862957161709568m_add_4897268945198150591981
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 37778931862957161709568 * m + 4897268945198150591981) :
+    τ.dst.src.base = 54 * m + 7 := by
+  have hm' : τ.src.src.base = 9444732965739290427392 * (4 * m) + 4897268945198150591981 := by
+    calc
+      τ.src.src.base = 37778931862957161709568 * m + 4897268945198150591981 := hm
+      _ = 9444732965739290427392 * (4 * m) + 4897268945198150591981 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 108 * m + 14 := by
+    calc
+      2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 27 * (4 * m) + 14 := by
+        exact two_pow_dst_time_sub_seventy_two_mul_dst_base_eq_27m_add_14_of_src_base_eq_9444732965739290427392m_add_4897268945198150591981
+          τ ht he hm'
+      _ = 108 * m + 14 := by
+        ring
+  have htime : τ.dst.src.time = 73 :=
+    dst_time_eq_seventy_three_of_src_base_eq_37778931862957161709568m_add_4897268945198150591981 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 72` branch:
+    `base = 75557863725914323419136*m + 23786734876676731446765` is exactly the `time = 74`
+    case. -/
+theorem dst_time_eq_seventy_four_of_src_base_eq_75557863725914323419136m_add_23786734876676731446765
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 75557863725914323419136 * m + 23786734876676731446765) :
+    τ.dst.src.time = 74 := by
+  have hk : τ.src.src.base = 32 * (2361183241434822606848 * m + 743335464896147857711) + 13 := by
+    calc
+      τ.src.src.base = 75557863725914323419136 * m + 23786734876676731446765 := hm
+      _ = 32 * (2361183241434822606848 * m + 743335464896147857711) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 17) := by
+    omega
+  have hv2 : v2 (27 * (2361183241434822606848 * m + 743335464896147857711) + 11) = 70 := by
+    calc
+      v2 (27 * (2361183241434822606848 * m + 743335464896147857711) + 11) =
+          v2 (2 ^ 70 * (54 * m + 17)) := by
+            ring_nf
+      _ = 70 := by
+        simpa using v2_pow_mul_of_not_two_dvd 70 (54 * m + 17) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (2361183241434822606848 * m + 743335464896147857711) + 11) := htime
+    _ = 4 + 70 := by rw [hv2]
+    _ = 74 := by norm_num
+
+/-- On the third dyadic shell `base = 75557863725914323419136*m + 23786734876676731446765`,
+    the higher-time destination base is exactly `54*m + 17`. -/
+theorem dst_base_eq_54m_add_17_of_src_base_eq_75557863725914323419136m_add_23786734876676731446765
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 75557863725914323419136 * m + 23786734876676731446765) :
+    τ.dst.src.base = 54 * m + 17 := by
+  have hm' : τ.src.src.base = 9444732965739290427392 * (8 * m + 2) + 4897268945198150591981 := by
+    calc
+      τ.src.src.base = 75557863725914323419136 * m + 23786734876676731446765 := hm
+      _ = 9444732965739290427392 * (8 * m + 2) + 4897268945198150591981 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 216 * m + 68 := by
+    calc
+      2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 27 * (8 * m + 2) + 14 := by
+        exact two_pow_dst_time_sub_seventy_two_mul_dst_base_eq_27m_add_14_of_src_base_eq_9444732965739290427392m_add_4897268945198150591981
+          τ ht he hm'
+      _ = 216 * m + 68 := by
+        ring
+  have htime : τ.dst.src.time = 74 :=
+    dst_time_eq_seventy_four_of_src_base_eq_75557863725914323419136m_add_23786734876676731446765 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 72` branch:
+    `base = 151115727451828646838272*m + 137123530465548216575469` is exactly the `time = 75`
+    case. -/
+theorem dst_time_eq_seventy_five_of_src_base_eq_151115727451828646838272m_add_137123530465548216575469
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 151115727451828646838272 * m + 137123530465548216575469) :
+    τ.dst.src.time = 75 := by
+  have hk : τ.src.src.base = 32 * (4722366482869645213696 * m + 4285110327048381767983) + 13 := by
+    calc
+      τ.src.src.base = 151115727451828646838272 * m + 137123530465548216575469 := hm
+      _ = 32 * (4722366482869645213696 * m + 4285110327048381767983) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 49) := by
+    omega
+  have hv2 : v2 (27 * (4722366482869645213696 * m + 4285110327048381767983) + 11) = 71 := by
+    calc
+      v2 (27 * (4722366482869645213696 * m + 4285110327048381767983) + 11) =
+          v2 (2 ^ 71 * (54 * m + 49)) := by
+            ring_nf
+      _ = 71 := by
+        simpa using v2_pow_mul_of_not_two_dvd 71 (54 * m + 49) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (4722366482869645213696 * m + 4285110327048381767983) + 11) := htime
+    _ = 4 + 71 := by rw [hv2]
+    _ = 75 := by norm_num
+
+/-- On the fourth dyadic shell `base = 151115727451828646838272*m + 137123530465548216575469`,
+    the higher-time destination base is exactly `54*m + 49`. -/
+theorem dst_base_eq_54m_add_49_of_src_base_eq_151115727451828646838272m_add_137123530465548216575469
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 151115727451828646838272 * m + 137123530465548216575469) :
+    τ.dst.src.base = 54 * m + 49 := by
+  have hm' : τ.src.src.base = 9444732965739290427392 * (16 * m + 14) + 4897268945198150591981 := by
+    calc
+      τ.src.src.base = 151115727451828646838272 * m + 137123530465548216575469 := hm
+      _ = 9444732965739290427392 * (16 * m + 14) + 4897268945198150591981 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 432 * m + 392 := by
+    calc
+      2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 27 * (16 * m + 14) + 14 := by
+        exact two_pow_dst_time_sub_seventy_two_mul_dst_base_eq_27m_add_14_of_src_base_eq_9444732965739290427392m_add_4897268945198150591981
+          τ ht he hm'
+      _ = 432 * m + 392 := by
+        ring
+  have htime : τ.dst.src.time = 75 :=
+    dst_time_eq_seventy_five_of_src_base_eq_151115727451828646838272m_add_137123530465548216575469 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 72`
+    branch: `base = 151115727451828646838272*m + 61565666739633893156333` still forces
+    destination time at least `76`. -/
+theorem seventy_six_le_dst_time_of_src_base_eq_151115727451828646838272m_add_61565666739633893156333
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 151115727451828646838272 * m + 61565666739633893156333) :
+    76 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (4722366482869645213696 * m + 1923927085613559161135) + 13 := by
+    calc
+      τ.src.src.base = 151115727451828646838272 * m + 61565666739633893156333 := hm
+      _ = 32 * (4722366482869645213696 * m + 1923927085613559161135) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (4722366482869645213696 * m + 1923927085613559161135) + 11 = 2 ^ 72 * (27 * m + 11) := by
+    ring_nf
+  have hpos : 0 < 27 * (4722366482869645213696 * m + 1923927085613559161135) + 11 := by
+    omega
+  have hdvd : 2 ^ 72 ∣ 27 * (4722366482869645213696 * m + 1923927085613559161135) + 11 := by
+    refine ⟨27 * m + 11, ?_⟩
+    exact hfac
+  have hv2_ge72 : 72 ≤ v2 (27 * (4722366482869645213696 * m + 1923927085613559161135) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (4722366482869645213696 * m + 1923927085613559161135) + 11) + 1 ≤ 72 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (4722366482869645213696 * m + 1923927085613559161135) + 11) + 1) ∣
+          27 * (4722366482869645213696 * m + 1923927085613559161135) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (4722366482869645213696 * m + 1923927085613559161135) + 11) hpos) hdiv
+  have htime_ge : 76 ≤ 4 + v2 (27 * (4722366482869645213696 * m + 1923927085613559161135) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 72` branch. -/
+theorem two_pow_dst_time_sub_seventy_six_mul_dst_base_eq_27m_add_11_of_src_base_eq_151115727451828646838272m_add_61565666739633893156333
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 151115727451828646838272 * m + 61565666739633893156333) :
+    2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 27 * m + 11 := by
+  have hm' : τ.src.src.base = 9444732965739290427392 * (16 * m + 6) + 4897268945198150591981 := by
+    calc
+      τ.src.src.base = 151115727451828646838272 * m + 61565666739633893156333 := hm
+      _ = 9444732965739290427392 * (16 * m + 6) + 4897268945198150591981 := by ring
+  have htime_ge76 : 76 ≤ τ.dst.src.time :=
+    seventy_six_le_dst_time_of_src_base_eq_151115727451828646838272m_add_61565666739633893156333 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 72) * τ.dst.src.base = 27 * (16 * m + 6) + 14 :=
+    two_pow_dst_time_sub_seventy_two_mul_dst_base_eq_27m_add_14_of_src_base_eq_9444732965739290427392m_add_4897268945198150591981
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 72) = 2 ^ (τ.dst.src.time - 76) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 72 = (τ.dst.src.time - 76) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 76) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 11) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 76) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 76) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 72) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 6) + 14 := htransport
+      _ = 2 ^ 4 * (27 * m + 11) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 76` transport is exactly the older `time ≥ 40` shell
+    after renormalizing the shell parameter by `m ↦ 68719476736*m + 27996823855`. -/
+theorem returned_forty_shell_transport_of_src_base_eq_151115727451828646838272m_add_61565666739633893156333
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 151115727451828646838272 * m + 61565666739633893156333) :
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base = 2 ^ 36 * (27 * m + 11) := by
+  have hm' : τ.src.src.base = 2199023255552 * (68719476736 * m + 27996823855) + 895898363373 := by
+    calc
+      τ.src.src.base = 151115727451828646838272 * m + 61565666739633893156333 := hm
+      _ = 2199023255552 * (68719476736 * m + 27996823855) + 895898363373 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base
+        = 27 * (68719476736 * m + 27996823855) + 11 := by
+            exact two_pow_dst_time_sub_forty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2199023255552m_add_895898363373
+              τ ht he hm'
+    _ = 2 ^ 36 * (27 * m + 11) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 76` branch:
+    `base = 302231454903657293676544*m + 61565666739633893156333` is exactly the `time = 76`
+    case. -/
+theorem dst_time_eq_seventy_six_of_src_base_eq_302231454903657293676544m_add_61565666739633893156333
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 302231454903657293676544 * m + 61565666739633893156333) :
+    τ.dst.src.time = 76 := by
+  have hk : τ.src.src.base = 32 * (9444732965739290427392 * m + 1923927085613559161135) + 13 := by
+    calc
+      τ.src.src.base = 302231454903657293676544 * m + 61565666739633893156333 := hm
+      _ = 32 * (9444732965739290427392 * m + 1923927085613559161135) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 11) := by
+    omega
+  have hv2 : v2 (27 * (9444732965739290427392 * m + 1923927085613559161135) + 11) = 72 := by
+    calc
+      v2 (27 * (9444732965739290427392 * m + 1923927085613559161135) + 11) =
+          v2 (2 ^ 72 * (54 * m + 11)) := by
+            ring_nf
+      _ = 72 := by
+        simpa using v2_pow_mul_of_not_two_dvd 72 (54 * m + 11) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (9444732965739290427392 * m + 1923927085613559161135) + 11) := htime
+    _ = 4 + 72 := by rw [hv2]
+    _ = 76 := by norm_num
+
+/-- On the first dyadic shell `base = 302231454903657293676544*m + 61565666739633893156333`,
+    the higher-time destination base is exactly `54*m + 11`. -/
+theorem dst_base_eq_54m_add_11_of_src_base_eq_302231454903657293676544m_add_61565666739633893156333
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 302231454903657293676544 * m + 61565666739633893156333) :
+    τ.dst.src.base = 54 * m + 11 := by
+  have hm' : τ.src.src.base = 151115727451828646838272 * (2 * m) + 61565666739633893156333 := by
+    calc
+      τ.src.src.base = 302231454903657293676544 * m + 61565666739633893156333 := hm
+      _ = 151115727451828646838272 * (2 * m) + 61565666739633893156333 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 54 * m + 11 := by
+    calc
+      2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 27 * (2 * m) + 11 := by
+        exact two_pow_dst_time_sub_seventy_six_mul_dst_base_eq_27m_add_11_of_src_base_eq_151115727451828646838272m_add_61565666739633893156333
+          τ ht he hm'
+      _ = 54 * m + 11 := by
+        ring
+  have htime : τ.dst.src.time = 76 :=
+    dst_time_eq_seventy_six_of_src_base_eq_302231454903657293676544m_add_61565666739633893156333 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 76` branch:
+    `base = 604462909807314587353088*m + 212681394191462539994605` is exactly the `time = 77`
+    case. -/
+theorem dst_time_eq_seventy_seven_of_src_base_eq_604462909807314587353088m_add_212681394191462539994605
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 604462909807314587353088 * m + 212681394191462539994605) :
+    τ.dst.src.time = 77 := by
+  have hk : τ.src.src.base = 32 * (18889465931478580854784 * m + 6646293568483204374831) + 13 := by
+    calc
+      τ.src.src.base = 604462909807314587353088 * m + 212681394191462539994605 := hm
+      _ = 32 * (18889465931478580854784 * m + 6646293568483204374831) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 19) := by
+    omega
+  have hv2 : v2 (27 * (18889465931478580854784 * m + 6646293568483204374831) + 11) = 73 := by
+    calc
+      v2 (27 * (18889465931478580854784 * m + 6646293568483204374831) + 11) =
+          v2 (2 ^ 73 * (54 * m + 19)) := by
+            ring_nf
+      _ = 73 := by
+        simpa using v2_pow_mul_of_not_two_dvd 73 (54 * m + 19) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (18889465931478580854784 * m + 6646293568483204374831) + 11) := htime
+    _ = 4 + 73 := by rw [hv2]
+    _ = 77 := by norm_num
+
+/-- On the second dyadic shell `base = 604462909807314587353088*m + 212681394191462539994605`,
+    the higher-time destination base is exactly `54*m + 19`. -/
+theorem dst_base_eq_54m_add_19_of_src_base_eq_604462909807314587353088m_add_212681394191462539994605
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 604462909807314587353088 * m + 212681394191462539994605) :
+    τ.dst.src.base = 54 * m + 19 := by
+  have hm' : τ.src.src.base = 151115727451828646838272 * (4 * m + 1) + 61565666739633893156333 := by
+    calc
+      τ.src.src.base = 604462909807314587353088 * m + 212681394191462539994605 := hm
+      _ = 151115727451828646838272 * (4 * m + 1) + 61565666739633893156333 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 108 * m + 38 := by
+    calc
+      2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 27 * (4 * m + 1) + 11 := by
+        exact two_pow_dst_time_sub_seventy_six_mul_dst_base_eq_27m_add_11_of_src_base_eq_151115727451828646838272m_add_61565666739633893156333
+          τ ht he hm'
+      _ = 108 * m + 38 := by
+        ring
+  have htime : τ.dst.src.time = 77 :=
+    dst_time_eq_seventy_seven_of_src_base_eq_604462909807314587353088m_add_212681394191462539994605 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 76` branch:
+    `base = 1208925819614629174706176*m + 514912849095119833671149` is exactly the `time = 78`
+    case. -/
+theorem dst_time_eq_seventy_eight_of_src_base_eq_1208925819614629174706176m_add_514912849095119833671149
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1208925819614629174706176 * m + 514912849095119833671149) :
+    τ.dst.src.time = 78 := by
+  have hk : τ.src.src.base = 32 * (37778931862957161709568 * m + 16091026534222494802223) + 13 := by
+    calc
+      τ.src.src.base = 1208925819614629174706176 * m + 514912849095119833671149 := hm
+      _ = 32 * (37778931862957161709568 * m + 16091026534222494802223) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 23) := by
+    omega
+  have hv2 : v2 (27 * (37778931862957161709568 * m + 16091026534222494802223) + 11) = 74 := by
+    calc
+      v2 (27 * (37778931862957161709568 * m + 16091026534222494802223) + 11) =
+          v2 (2 ^ 74 * (54 * m + 23)) := by
+            ring_nf
+      _ = 74 := by
+        simpa using v2_pow_mul_of_not_two_dvd 74 (54 * m + 23) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (37778931862957161709568 * m + 16091026534222494802223) + 11) := htime
+    _ = 4 + 74 := by rw [hv2]
+    _ = 78 := by norm_num
+
+/-- On the third dyadic shell `base = 1208925819614629174706176*m + 514912849095119833671149`,
+    the higher-time destination base is exactly `54*m + 23`. -/
+theorem dst_base_eq_54m_add_23_of_src_base_eq_1208925819614629174706176m_add_514912849095119833671149
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1208925819614629174706176 * m + 514912849095119833671149) :
+    τ.dst.src.base = 54 * m + 23 := by
+  have hm' : τ.src.src.base = 151115727451828646838272 * (8 * m + 3) + 61565666739633893156333 := by
+    calc
+      τ.src.src.base = 1208925819614629174706176 * m + 514912849095119833671149 := hm
+      _ = 151115727451828646838272 * (8 * m + 3) + 61565666739633893156333 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 216 * m + 92 := by
+    calc
+      2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 27 * (8 * m + 3) + 11 := by
+        exact two_pow_dst_time_sub_seventy_six_mul_dst_base_eq_27m_add_11_of_src_base_eq_151115727451828646838272m_add_61565666739633893156333
+          τ ht he hm'
+      _ = 216 * m + 92 := by
+        ring
+  have htime : τ.dst.src.time = 78 :=
+    dst_time_eq_seventy_eight_of_src_base_eq_1208925819614629174706176m_add_514912849095119833671149 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 76` branch:
+    `base = 2417851639229258349412352*m + 1119375758902434421024237` is exactly the `time = 79`
+    case. -/
+theorem dst_time_eq_seventy_nine_of_src_base_eq_2417851639229258349412352m_add_1119375758902434421024237
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2417851639229258349412352 * m + 1119375758902434421024237) :
+    τ.dst.src.time = 79 := by
+  have hk : τ.src.src.base = 32 * (75557863725914323419136 * m + 34980492465701075657007) + 13 := by
+    calc
+      τ.src.src.base = 2417851639229258349412352 * m + 1119375758902434421024237 := hm
+      _ = 32 * (75557863725914323419136 * m + 34980492465701075657007) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 25) := by
+    omega
+  have hv2 : v2 (27 * (75557863725914323419136 * m + 34980492465701075657007) + 11) = 75 := by
+    calc
+      v2 (27 * (75557863725914323419136 * m + 34980492465701075657007) + 11) =
+          v2 (2 ^ 75 * (54 * m + 25)) := by
+            ring_nf
+      _ = 75 := by
+        simpa using v2_pow_mul_of_not_two_dvd 75 (54 * m + 25) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (75557863725914323419136 * m + 34980492465701075657007) + 11) := htime
+    _ = 4 + 75 := by rw [hv2]
+    _ = 79 := by norm_num
+
+/-- On the fourth dyadic shell `base = 2417851639229258349412352*m + 1119375758902434421024237`,
+    the higher-time destination base is exactly `54*m + 25`. -/
+theorem dst_base_eq_54m_add_25_of_src_base_eq_2417851639229258349412352m_add_1119375758902434421024237
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2417851639229258349412352 * m + 1119375758902434421024237) :
+    τ.dst.src.base = 54 * m + 25 := by
+  have hm' : τ.src.src.base = 151115727451828646838272 * (16 * m + 7) + 61565666739633893156333 := by
+    calc
+      τ.src.src.base = 2417851639229258349412352 * m + 1119375758902434421024237 := hm
+      _ = 151115727451828646838272 * (16 * m + 7) + 61565666739633893156333 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 432 * m + 200 := by
+    calc
+      2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 27 * (16 * m + 7) + 11 := by
+        exact two_pow_dst_time_sub_seventy_six_mul_dst_base_eq_27m_add_11_of_src_base_eq_151115727451828646838272m_add_61565666739633893156333
+          τ ht he hm'
+      _ = 432 * m + 200 := by
+        ring
+  have htime : τ.dst.src.time = 79 :=
+    dst_time_eq_seventy_nine_of_src_base_eq_2417851639229258349412352m_add_1119375758902434421024237 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 76`
+    branch: `base = 2417851639229258349412352*m + 2328301578517063595730413` still forces
+    destination time at least `80`. -/
+theorem eighty_le_dst_time_of_src_base_eq_2417851639229258349412352m_add_2328301578517063595730413
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2417851639229258349412352 * m + 2328301578517063595730413) :
+    80 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (75557863725914323419136 * m + 72759424328658237366575) + 13 := by
+    calc
+      τ.src.src.base = 2417851639229258349412352 * m + 2328301578517063595730413 := hm
+      _ = 32 * (75557863725914323419136 * m + 72759424328658237366575) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (75557863725914323419136 * m + 72759424328658237366575) + 11 = 2 ^ 76 * (27 * m + 26) := by
+    ring_nf
+  have hpos : 0 < 27 * (75557863725914323419136 * m + 72759424328658237366575) + 11 := by
+    omega
+  have hdvd : 2 ^ 76 ∣ 27 * (75557863725914323419136 * m + 72759424328658237366575) + 11 := by
+    refine ⟨27 * m + 26, ?_⟩
+    exact hfac
+  have hv2_ge76 : 76 ≤ v2 (27 * (75557863725914323419136 * m + 72759424328658237366575) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (75557863725914323419136 * m + 72759424328658237366575) + 11) + 1 ≤ 76 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (75557863725914323419136 * m + 72759424328658237366575) + 11) + 1) ∣
+          27 * (75557863725914323419136 * m + 72759424328658237366575) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (75557863725914323419136 * m + 72759424328658237366575) + 11) hpos) hdiv
+  have htime_ge : 80 ≤ 4 + v2 (27 * (75557863725914323419136 * m + 72759424328658237366575) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 76` branch. -/
+theorem two_pow_dst_time_sub_eighty_mul_dst_base_eq_27m_add_26_of_src_base_eq_2417851639229258349412352m_add_2328301578517063595730413
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2417851639229258349412352 * m + 2328301578517063595730413) :
+    2 ^ (τ.dst.src.time - 80) * τ.dst.src.base = 27 * m + 26 := by
+  have hm' : τ.src.src.base = 151115727451828646838272 * (16 * m + 15) + 61565666739633893156333 := by
+    calc
+      τ.src.src.base = 2417851639229258349412352 * m + 2328301578517063595730413 := hm
+      _ = 151115727451828646838272 * (16 * m + 15) + 61565666739633893156333 := by ring
+  have htime_ge80 : 80 ≤ τ.dst.src.time :=
+    eighty_le_dst_time_of_src_base_eq_2417851639229258349412352m_add_2328301578517063595730413 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 76) * τ.dst.src.base = 27 * (16 * m + 15) + 11 :=
+    two_pow_dst_time_sub_seventy_six_mul_dst_base_eq_27m_add_11_of_src_base_eq_151115727451828646838272m_add_61565666739633893156333
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 76) = 2 ^ (τ.dst.src.time - 80) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 76 = (τ.dst.src.time - 80) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 80) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 26) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 80) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 80) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 76) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 15) + 11 := htransport
+      _ = 2 ^ 4 * (27 * m + 26) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 80` transport is exactly the older `time ≥ 44` shell
+    after renormalizing the shell parameter by `m ↦ 68719476736*m + 66174310930`. -/
+theorem returned_forty_four_shell_transport_of_src_base_eq_2417851639229258349412352m_add_2328301578517063595730413
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2417851639229258349412352 * m + 2328301578517063595730413) :
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base = 2 ^ 36 * (27 * m + 26) := by
+  have hm' : τ.src.src.base = 35184372088832 * (68719476736 * m + 66174310930) + 33881247196653 := by
+    calc
+      τ.src.src.base = 2417851639229258349412352 * m + 2328301578517063595730413 := hm
+      _ = 35184372088832 * (68719476736 * m + 66174310930) + 33881247196653 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base
+        = 27 * (68719476736 * m + 66174310930) + 26 := by
+            exact two_pow_dst_time_sub_forty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_35184372088832m_add_33881247196653
+              τ ht he hm'
+    _ = 2 ^ 36 * (27 * m + 26) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 80` branch:
+    `base = 4835703278458516698824704*m + 4746153217746321945142765` is exactly the
+    `time = 80` case. -/
+theorem dst_time_eq_eighty_of_src_base_eq_4835703278458516698824704m_add_4746153217746321945142765
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4835703278458516698824704 * m + 4746153217746321945142765) :
+    τ.dst.src.time = 80 := by
+  have hk : τ.src.src.base = 32 * (151115727451828646838272 * m + 148317288054572560785711) + 13 := by
+    calc
+      τ.src.src.base = 4835703278458516698824704 * m + 4746153217746321945142765 := hm
+      _ = 32 * (151115727451828646838272 * m + 148317288054572560785711) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 53) := by
+    omega
+  have hv2 : v2 (27 * (151115727451828646838272 * m + 148317288054572560785711) + 11) = 76 := by
+    calc
+      v2 (27 * (151115727451828646838272 * m + 148317288054572560785711) + 11) =
+          v2 (2 ^ 76 * (54 * m + 53)) := by
+            ring_nf
+      _ = 76 := by
+        simpa using v2_pow_mul_of_not_two_dvd 76 (54 * m + 53) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (151115727451828646838272 * m + 148317288054572560785711) + 11) := htime
+    _ = 4 + 76 := by rw [hv2]
+    _ = 80 := by norm_num
+
+/-- On the first dyadic shell `base = 4835703278458516698824704*m + 4746153217746321945142765`,
+    the higher-time destination base is exactly `54*m + 53`. -/
+theorem dst_base_eq_54m_add_53_of_src_base_eq_4835703278458516698824704m_add_4746153217746321945142765
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4835703278458516698824704 * m + 4746153217746321945142765) :
+    τ.dst.src.base = 54 * m + 53 := by
+  have hm' : τ.src.src.base = 2417851639229258349412352 * (2 * m + 1) + 2328301578517063595730413 := by
+    calc
+      τ.src.src.base = 4835703278458516698824704 * m + 4746153217746321945142765 := hm
+      _ = 2417851639229258349412352 * (2 * m + 1) + 2328301578517063595730413 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 80) * τ.dst.src.base = 54 * m + 53 := by
+    calc
+      2 ^ (τ.dst.src.time - 80) * τ.dst.src.base = 27 * (2 * m + 1) + 26 := by
+        exact two_pow_dst_time_sub_eighty_mul_dst_base_eq_27m_add_26_of_src_base_eq_2417851639229258349412352m_add_2328301578517063595730413
+          τ ht he hm'
+      _ = 54 * m + 53 := by
+        ring
+  have htime : τ.dst.src.time = 80 :=
+    dst_time_eq_eighty_of_src_base_eq_4835703278458516698824704m_add_4746153217746321945142765 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 80` branch:
+    `base = 9671406556917033397649408*m + 2328301578517063595730413` is exactly the
+    `time = 81` case. -/
+theorem dst_time_eq_eighty_one_of_src_base_eq_9671406556917033397649408m_add_2328301578517063595730413
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9671406556917033397649408 * m + 2328301578517063595730413) :
+    τ.dst.src.time = 81 := by
+  have hk : τ.src.src.base = 32 * (302231454903657293676544 * m + 72759424328658237366575) + 13 := by
+    calc
+      τ.src.src.base = 9671406556917033397649408 * m + 2328301578517063595730413 := hm
+      _ = 32 * (302231454903657293676544 * m + 72759424328658237366575) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 13) := by
+    omega
+  have hv2 : v2 (27 * (302231454903657293676544 * m + 72759424328658237366575) + 11) = 77 := by
+    calc
+      v2 (27 * (302231454903657293676544 * m + 72759424328658237366575) + 11) =
+          v2 (2 ^ 77 * (54 * m + 13)) := by
+            ring_nf
+      _ = 77 := by
+        simpa using v2_pow_mul_of_not_two_dvd 77 (54 * m + 13) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (302231454903657293676544 * m + 72759424328658237366575) + 11) := htime
+    _ = 4 + 77 := by rw [hv2]
+    _ = 81 := by norm_num
+
+/-- On the second dyadic shell `base = 9671406556917033397649408*m + 2328301578517063595730413`,
+    the higher-time destination base is exactly `54*m + 13`. -/
+theorem dst_base_eq_54m_add_13_of_src_base_eq_9671406556917033397649408m_add_2328301578517063595730413
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9671406556917033397649408 * m + 2328301578517063595730413) :
+    τ.dst.src.base = 54 * m + 13 := by
+  have hm' : τ.src.src.base = 2417851639229258349412352 * (4 * m) + 2328301578517063595730413 := by
+    calc
+      τ.src.src.base = 9671406556917033397649408 * m + 2328301578517063595730413 := hm
+      _ = 2417851639229258349412352 * (4 * m) + 2328301578517063595730413 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 80) * τ.dst.src.base = 108 * m + 26 := by
+    calc
+      2 ^ (τ.dst.src.time - 80) * τ.dst.src.base = 27 * (4 * m) + 26 := by
+        exact two_pow_dst_time_sub_eighty_mul_dst_base_eq_27m_add_26_of_src_base_eq_2417851639229258349412352m_add_2328301578517063595730413
+          τ ht he hm'
+      _ = 108 * m + 26 := by
+        ring
+  have htime : τ.dst.src.time = 81 :=
+    dst_time_eq_eighty_one_of_src_base_eq_9671406556917033397649408m_add_2328301578517063595730413 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first two dyadic cases of the `time ≥ 80`
+    branch: `base = 9671406556917033397649408*m + 7164004856975580294555117` still forces
+    destination time at least `82`. -/
+theorem eighty_two_le_dst_time_of_src_base_eq_9671406556917033397649408m_add_7164004856975580294555117
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9671406556917033397649408 * m + 7164004856975580294555117) :
+    82 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (302231454903657293676544 * m + 223875151780486884204847) + 13 := by
+    calc
+      τ.src.src.base = 9671406556917033397649408 * m + 7164004856975580294555117 := hm
+      _ = 32 * (302231454903657293676544 * m + 223875151780486884204847) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (302231454903657293676544 * m + 223875151780486884204847) + 11 = 2 ^ 78 * (27 * m + 20) := by
+    ring_nf
+  have hpos : 0 < 27 * (302231454903657293676544 * m + 223875151780486884204847) + 11 := by
+    omega
+  have hdvd : 2 ^ 78 ∣ 27 * (302231454903657293676544 * m + 223875151780486884204847) + 11 := by
+    refine ⟨27 * m + 20, ?_⟩
+    exact hfac
+  have hv2_ge78 : 78 ≤ v2 (27 * (302231454903657293676544 * m + 223875151780486884204847) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (302231454903657293676544 * m + 223875151780486884204847) + 11) + 1 ≤ 78 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (302231454903657293676544 * m + 223875151780486884204847) + 11) + 1) ∣
+          27 * (302231454903657293676544 * m + 223875151780486884204847) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (302231454903657293676544 * m + 223875151780486884204847) + 11) hpos) hdiv
+  have htime_ge : 82 ≤ 4 + v2 (27 * (302231454903657293676544 * m + 223875151780486884204847) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first two dyadic shells of the
+    `time ≥ 80` branch. -/
+theorem two_pow_dst_time_sub_eighty_two_mul_dst_base_eq_27m_add_20_of_src_base_eq_9671406556917033397649408m_add_7164004856975580294555117
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9671406556917033397649408 * m + 7164004856975580294555117) :
+    2 ^ (τ.dst.src.time - 82) * τ.dst.src.base = 27 * m + 20 := by
+  have hm' : τ.src.src.base = 2417851639229258349412352 * (4 * m + 2) + 2328301578517063595730413 := by
+    calc
+      τ.src.src.base = 9671406556917033397649408 * m + 7164004856975580294555117 := hm
+      _ = 2417851639229258349412352 * (4 * m + 2) + 2328301578517063595730413 := by ring
+  have htime_ge82 : 82 ≤ τ.dst.src.time :=
+    eighty_two_le_dst_time_of_src_base_eq_9671406556917033397649408m_add_7164004856975580294555117 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 80) * τ.dst.src.base = 27 * (4 * m + 2) + 26 :=
+    two_pow_dst_time_sub_eighty_mul_dst_base_eq_27m_add_26_of_src_base_eq_2417851639229258349412352m_add_2328301578517063595730413
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 80) = 2 ^ (τ.dst.src.time - 82) * 2 ^ 2 := by
+    have hsub : τ.dst.src.time - 80 = (τ.dst.src.time - 82) + 2 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 82) * τ.dst.src.base) =
+        2 ^ 2 * (27 * m + 20) := by
+    calc
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 82) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 82) * 2 ^ 2) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 80) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (4 * m + 2) + 26 := htransport
+      _ = 2 ^ 2 * (27 * m + 20) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 2) hmul
+
+/-- The returned `time ≥ 82` transport is exactly the older `time ≥ 28` shell
+    after renormalizing the shell parameter by `m ↦ 18014398509481984*m + 13343998895912580`. -/
+theorem returned_twenty_eight_shell_transport_of_src_base_eq_9671406556917033397649408m_add_7164004856975580294555117
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9671406556917033397649408 * m + 7164004856975580294555117) :
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base = 2 ^ 54 * (27 * m + 20) := by
+  have hm' : τ.src.src.base = 536870912 * (18014398509481984 * m + 13343998895912580) + 397682157 := by
+    calc
+      τ.src.src.base = 9671406556917033397649408 * m + 7164004856975580294555117 := hm
+      _ = 536870912 * (18014398509481984 * m + 13343998895912580) + 397682157 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base
+        = 27 * (18014398509481984 * m + 13343998895912580) + 20 := by
+            exact two_pow_dst_time_sub_twenty_eight_mul_dst_base_eq_27m_add_20_of_src_base_eq_536870912m_add_397682157
+              τ ht he hm'
+    _ = 2 ^ 54 * (27 * m + 20) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 82` branch:
+    `base = 19342813113834066795298816*m + 16835411413892613692204525` is exactly the
+    `time = 82` case. -/
+theorem dst_time_eq_eighty_two_of_src_base_eq_19342813113834066795298816m_add_16835411413892613692204525
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 19342813113834066795298816 * m + 16835411413892613692204525) :
+    τ.dst.src.time = 82 := by
+  have hk : τ.src.src.base = 32 * (604462909807314587353088 * m + 526106606684144177881391) + 13 := by
+    calc
+      τ.src.src.base = 19342813113834066795298816 * m + 16835411413892613692204525 := hm
+      _ = 32 * (604462909807314587353088 * m + 526106606684144177881391) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 47) := by
+    omega
+  have hv2 : v2 (27 * (604462909807314587353088 * m + 526106606684144177881391) + 11) = 78 := by
+    calc
+      v2 (27 * (604462909807314587353088 * m + 526106606684144177881391) + 11) =
+          v2 (2 ^ 78 * (54 * m + 47)) := by
+            ring_nf
+      _ = 78 := by
+        simpa using v2_pow_mul_of_not_two_dvd 78 (54 * m + 47) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (604462909807314587353088 * m + 526106606684144177881391) + 11) := htime
+    _ = 4 + 78 := by rw [hv2]
+    _ = 82 := by norm_num
+
+/-- On the first dyadic shell `base = 19342813113834066795298816*m + 16835411413892613692204525`,
+    the higher-time destination base is exactly `54*m + 47`. -/
+theorem dst_base_eq_54m_add_47_of_src_base_eq_19342813113834066795298816m_add_16835411413892613692204525
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 19342813113834066795298816 * m + 16835411413892613692204525) :
+    τ.dst.src.base = 54 * m + 47 := by
+  have hm' : τ.src.src.base = 9671406556917033397649408 * (2 * m + 1) + 7164004856975580294555117 := by
+    calc
+      τ.src.src.base = 19342813113834066795298816 * m + 16835411413892613692204525 := hm
+      _ = 9671406556917033397649408 * (2 * m + 1) + 7164004856975580294555117 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 82) * τ.dst.src.base = 54 * m + 47 := by
+    calc
+      2 ^ (τ.dst.src.time - 82) * τ.dst.src.base = 27 * (2 * m + 1) + 20 := by
+        exact two_pow_dst_time_sub_eighty_two_mul_dst_base_eq_27m_add_20_of_src_base_eq_9671406556917033397649408m_add_7164004856975580294555117
+          τ ht he hm'
+      _ = 54 * m + 47 := by
+        ring
+  have htime : τ.dst.src.time = 82 :=
+    dst_time_eq_eighty_two_of_src_base_eq_19342813113834066795298816m_add_16835411413892613692204525 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 82` branch:
+    `base = 38685626227668133590597632*m + 26506817970809647089853933` is exactly the
+    `time = 83` case. -/
+theorem dst_time_eq_eighty_three_of_src_base_eq_38685626227668133590597632m_add_26506817970809647089853933
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 38685626227668133590597632 * m + 26506817970809647089853933) :
+    τ.dst.src.time = 83 := by
+  have hk : τ.src.src.base = 32 * (1208925819614629174706176 * m + 828338061587801471557935) + 13 := by
+    calc
+      τ.src.src.base = 38685626227668133590597632 * m + 26506817970809647089853933 := hm
+      _ = 32 * (1208925819614629174706176 * m + 828338061587801471557935) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 37) := by
+    omega
+  have hv2 : v2 (27 * (1208925819614629174706176 * m + 828338061587801471557935) + 11) = 79 := by
+    calc
+      v2 (27 * (1208925819614629174706176 * m + 828338061587801471557935) + 11) =
+          v2 (2 ^ 79 * (54 * m + 37)) := by
+            ring_nf
+      _ = 79 := by
+        simpa using v2_pow_mul_of_not_two_dvd 79 (54 * m + 37) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (1208925819614629174706176 * m + 828338061587801471557935) + 11) := htime
+    _ = 4 + 79 := by rw [hv2]
+    _ = 83 := by norm_num
+
+/-- On the second dyadic shell `base = 38685626227668133590597632*m + 26506817970809647089853933`,
+    the higher-time destination base is exactly `54*m + 37`. -/
+theorem dst_base_eq_54m_add_37_of_src_base_eq_38685626227668133590597632m_add_26506817970809647089853933
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 38685626227668133590597632 * m + 26506817970809647089853933) :
+    τ.dst.src.base = 54 * m + 37 := by
+  have hm' : τ.src.src.base = 9671406556917033397649408 * (4 * m + 2) + 7164004856975580294555117 := by
+    calc
+      τ.src.src.base = 38685626227668133590597632 * m + 26506817970809647089853933 := hm
+      _ = 9671406556917033397649408 * (4 * m + 2) + 7164004856975580294555117 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 82) * τ.dst.src.base = 108 * m + 74 := by
+    calc
+      2 ^ (τ.dst.src.time - 82) * τ.dst.src.base = 27 * (4 * m + 2) + 20 := by
+        exact two_pow_dst_time_sub_eighty_two_mul_dst_base_eq_27m_add_20_of_src_base_eq_9671406556917033397649408m_add_7164004856975580294555117
+          τ ht he hm'
+      _ = 108 * m + 74 := by
+        ring
+  have htime : τ.dst.src.time = 83 :=
+    dst_time_eq_eighty_three_of_src_base_eq_38685626227668133590597632m_add_26506817970809647089853933 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 82` branch:
+    `base = 77371252455336267181195264*m + 7164004856975580294555117` is exactly the
+    `time = 84` case. -/
+theorem dst_time_eq_eighty_four_of_src_base_eq_77371252455336267181195264m_add_7164004856975580294555117
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 77371252455336267181195264 * m + 7164004856975580294555117) :
+    τ.dst.src.time = 84 := by
+  have hk : τ.src.src.base = 32 * (2417851639229258349412352 * m + 223875151780486884204847) + 13 := by
+    calc
+      τ.src.src.base = 77371252455336267181195264 * m + 7164004856975580294555117 := hm
+      _ = 32 * (2417851639229258349412352 * m + 223875151780486884204847) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 5) := by
+    omega
+  have hv2 : v2 (27 * (2417851639229258349412352 * m + 223875151780486884204847) + 11) = 80 := by
+    calc
+      v2 (27 * (2417851639229258349412352 * m + 223875151780486884204847) + 11) =
+          v2 (2 ^ 80 * (54 * m + 5)) := by
+            ring_nf
+      _ = 80 := by
+        simpa using v2_pow_mul_of_not_two_dvd 80 (54 * m + 5) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (2417851639229258349412352 * m + 223875151780486884204847) + 11) := htime
+    _ = 4 + 80 := by rw [hv2]
+    _ = 84 := by norm_num
+
+/-- On the third dyadic shell `base = 77371252455336267181195264*m + 7164004856975580294555117`,
+    the higher-time destination base is exactly `54*m + 5`. -/
+theorem dst_base_eq_54m_add_5_of_src_base_eq_77371252455336267181195264m_add_7164004856975580294555117
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 77371252455336267181195264 * m + 7164004856975580294555117) :
+    τ.dst.src.base = 54 * m + 5 := by
+  have hm' : τ.src.src.base = 9671406556917033397649408 * (8 * m) + 7164004856975580294555117 := by
+    calc
+      τ.src.src.base = 77371252455336267181195264 * m + 7164004856975580294555117 := hm
+      _ = 9671406556917033397649408 * (8 * m) + 7164004856975580294555117 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 82) * τ.dst.src.base = 216 * m + 20 := by
+    calc
+      2 ^ (τ.dst.src.time - 82) * τ.dst.src.base = 27 * (8 * m) + 20 := by
+        exact two_pow_dst_time_sub_eighty_two_mul_dst_base_eq_27m_add_20_of_src_base_eq_9671406556917033397649408m_add_7164004856975580294555117
+          τ ht he hm'
+      _ = 216 * m + 20 := by
+        ring
+  have htime : τ.dst.src.time = 84 :=
+    dst_time_eq_eighty_four_of_src_base_eq_77371252455336267181195264m_add_7164004856975580294555117 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first three dyadic cases of the `time ≥ 82`
+    branch: `base = 77371252455336267181195264*m + 45849631084643713885152749` still forces
+    destination time at least `85`. -/
+theorem eighty_five_le_dst_time_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 77371252455336267181195264 * m + 45849631084643713885152749) :
+    85 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (2417851639229258349412352 * m + 1432800971395116058911023) + 13 := by
+    calc
+      τ.src.src.base = 77371252455336267181195264 * m + 45849631084643713885152749 := hm
+      _ = 32 * (2417851639229258349412352 * m + 1432800971395116058911023) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (2417851639229258349412352 * m + 1432800971395116058911023) + 11 = 2 ^ 81 * (27 * m + 16) := by
+    ring_nf
+  have hpos : 0 < 27 * (2417851639229258349412352 * m + 1432800971395116058911023) + 11 := by
+    omega
+  have hdvd : 2 ^ 81 ∣ 27 * (2417851639229258349412352 * m + 1432800971395116058911023) + 11 := by
+    refine ⟨27 * m + 16, ?_⟩
+    exact hfac
+  have hv2_ge81 : 81 ≤ v2 (27 * (2417851639229258349412352 * m + 1432800971395116058911023) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (2417851639229258349412352 * m + 1432800971395116058911023) + 11) + 1 ≤ 81 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (2417851639229258349412352 * m + 1432800971395116058911023) + 11) + 1) ∣
+          27 * (2417851639229258349412352 * m + 1432800971395116058911023) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (2417851639229258349412352 * m + 1432800971395116058911023) + 11) hpos) hdiv
+  have htime_ge : 85 ≤ 4 + v2 (27 * (2417851639229258349412352 * m + 1432800971395116058911023) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first three dyadic shells of the
+    `time ≥ 82` branch. -/
+theorem two_pow_dst_time_sub_eighty_five_mul_dst_base_eq_27m_add_16_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 77371252455336267181195264 * m + 45849631084643713885152749) :
+    2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 27 * m + 16 := by
+  have hm' : τ.src.src.base = 9671406556917033397649408 * (8 * m + 4) + 7164004856975580294555117 := by
+    calc
+      τ.src.src.base = 77371252455336267181195264 * m + 45849631084643713885152749 := hm
+      _ = 9671406556917033397649408 * (8 * m + 4) + 7164004856975580294555117 := by ring
+  have htime_ge85 : 85 ≤ τ.dst.src.time :=
+    eighty_five_le_dst_time_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 82) * τ.dst.src.base = 27 * (8 * m + 4) + 20 :=
+    two_pow_dst_time_sub_eighty_two_mul_dst_base_eq_27m_add_20_of_src_base_eq_9671406556917033397649408m_add_7164004856975580294555117
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 82) = 2 ^ (τ.dst.src.time - 85) * 2 ^ 3 := by
+    have hsub : τ.dst.src.time - 82 = (τ.dst.src.time - 85) + 3 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 85) * τ.dst.src.base) =
+        2 ^ 3 * (27 * m + 16) := by
+    calc
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 85) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 85) * 2 ^ 3) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 82) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (8 * m + 4) + 20 := htransport
+      _ = 2 ^ 3 * (27 * m + 16) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 3) hmul
+
+/-- The returned `time ≥ 85` transport is exactly the older `time ≥ 31` shell
+    after renormalizing the shell parameter by `m ↦ 18014398509481984*m + 10675199116730064`. -/
+theorem returned_thirty_one_shell_transport_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 77371252455336267181195264 * m + 45849631084643713885152749) :
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base = 2 ^ 54 * (27 * m + 16) := by
+  have hm' : τ.src.src.base = 4294967296 * (18014398509481984 * m + 10675199116730064) + 2545165805 := by
+    calc
+      τ.src.src.base = 77371252455336267181195264 * m + 45849631084643713885152749 := hm
+      _ = 4294967296 * (18014398509481984 * m + 10675199116730064) + 2545165805 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base
+        = 27 * (18014398509481984 * m + 10675199116730064) + 16 := by
+            exact two_pow_dst_time_sub_thirty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_4294967296m_add_2545165805
+              τ ht he hm'
+    _ = 2 ^ 54 * (27 * m + 16) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 85` branch:
+    `base = 154742504910672534362390528*m + 123220883539979981066348013` is exactly the
+    `time = 85` case. -/
+theorem dst_time_eq_eighty_five_of_src_base_eq_154742504910672534362390528m_add_123220883539979981066348013
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 154742504910672534362390528 * m + 123220883539979981066348013) :
+    τ.dst.src.time = 85 := by
+  have hk : τ.src.src.base = 32 * (4835703278458516698824704 * m + 3850652610624374408323375) + 13 := by
+    calc
+      τ.src.src.base = 154742504910672534362390528 * m + 123220883539979981066348013 := hm
+      _ = 32 * (4835703278458516698824704 * m + 3850652610624374408323375) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 43) := by
+    omega
+  have hv2 : v2 (27 * (4835703278458516698824704 * m + 3850652610624374408323375) + 11) = 81 := by
+    calc
+      v2 (27 * (4835703278458516698824704 * m + 3850652610624374408323375) + 11) =
+          v2 (2 ^ 81 * (54 * m + 43)) := by
+            ring_nf
+      _ = 81 := by
+        simpa using v2_pow_mul_of_not_two_dvd 81 (54 * m + 43) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (4835703278458516698824704 * m + 3850652610624374408323375) + 11) := htime
+    _ = 4 + 81 := by rw [hv2]
+    _ = 85 := by norm_num
+
+/-- On the first dyadic shell `base = 154742504910672534362390528*m + 123220883539979981066348013`,
+    the higher-time destination base is exactly `54*m + 43`. -/
+theorem dst_base_eq_54m_add_43_of_src_base_eq_154742504910672534362390528m_add_123220883539979981066348013
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 154742504910672534362390528 * m + 123220883539979981066348013) :
+    τ.dst.src.base = 54 * m + 43 := by
+  have hm' : τ.src.src.base = 77371252455336267181195264 * (2 * m + 1) + 45849631084643713885152749 := by
+    calc
+      τ.src.src.base = 154742504910672534362390528 * m + 123220883539979981066348013 := hm
+      _ = 77371252455336267181195264 * (2 * m + 1) + 45849631084643713885152749 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 54 * m + 43 := by
+    calc
+      2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 27 * (2 * m + 1) + 16 := by
+        exact two_pow_dst_time_sub_eighty_five_mul_dst_base_eq_27m_add_16_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749
+          τ ht he hm'
+      _ = 54 * m + 43 := by
+        ring
+  have htime : τ.dst.src.time = 85 :=
+    dst_time_eq_eighty_five_of_src_base_eq_154742504910672534362390528m_add_123220883539979981066348013 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Second dyadic shell inside the residual `time ≥ 85` branch:
+    `base = 309485009821345068724781056*m + 200592135995316248247543277` is exactly the
+    `time = 86` case. -/
+theorem dst_time_eq_eighty_six_of_src_base_eq_309485009821345068724781056m_add_200592135995316248247543277
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 309485009821345068724781056 * m + 200592135995316248247543277) :
+    τ.dst.src.time = 86 := by
+  have hk : τ.src.src.base = 32 * (9671406556917033397649408 * m + 6268504249853632757735727) + 13 := by
+    calc
+      τ.src.src.base = 309485009821345068724781056 * m + 200592135995316248247543277 := hm
+      _ = 32 * (9671406556917033397649408 * m + 6268504249853632757735727) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 35) := by
+    omega
+  have hv2 : v2 (27 * (9671406556917033397649408 * m + 6268504249853632757735727) + 11) = 82 := by
+    calc
+      v2 (27 * (9671406556917033397649408 * m + 6268504249853632757735727) + 11) =
+          v2 (2 ^ 82 * (54 * m + 35)) := by
+            ring_nf
+      _ = 82 := by
+        simpa using v2_pow_mul_of_not_two_dvd 82 (54 * m + 35) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (9671406556917033397649408 * m + 6268504249853632757735727) + 11) := htime
+    _ = 4 + 82 := by rw [hv2]
+    _ = 86 := by norm_num
+
+/-- On the second dyadic shell `base = 309485009821345068724781056*m + 200592135995316248247543277`,
+    the higher-time destination base is exactly `54*m + 35`. -/
+theorem dst_base_eq_54m_add_35_of_src_base_eq_309485009821345068724781056m_add_200592135995316248247543277
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 309485009821345068724781056 * m + 200592135995316248247543277) :
+    τ.dst.src.base = 54 * m + 35 := by
+  have hm' : τ.src.src.base = 77371252455336267181195264 * (4 * m + 2) + 45849631084643713885152749 := by
+    calc
+      τ.src.src.base = 309485009821345068724781056 * m + 200592135995316248247543277 := hm
+      _ = 77371252455336267181195264 * (4 * m + 2) + 45849631084643713885152749 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 108 * m + 70 := by
+    calc
+      2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 27 * (4 * m + 2) + 16 := by
+        exact two_pow_dst_time_sub_eighty_five_mul_dst_base_eq_27m_add_16_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749
+          τ ht he hm'
+      _ = 108 * m + 70 := by
+        ring
+  have htime : τ.dst.src.time = 86 :=
+    dst_time_eq_eighty_six_of_src_base_eq_309485009821345068724781056m_add_200592135995316248247543277 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 85` branch:
+    `base = 618970019642690137449562112*m + 355334640905988782609933805` is exactly the
+    `time = 87` case. -/
+theorem dst_time_eq_eighty_seven_of_src_base_eq_618970019642690137449562112m_add_355334640905988782609933805
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 618970019642690137449562112 * m + 355334640905988782609933805) :
+    τ.dst.src.time = 87 := by
+  have hk : τ.src.src.base = 32 * (19342813113834066795298816 * m + 11104207528312149456560431) + 13 := by
+    calc
+      τ.src.src.base = 618970019642690137449562112 * m + 355334640905988782609933805 := hm
+      _ = 32 * (19342813113834066795298816 * m + 11104207528312149456560431) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 31) := by
+    omega
+  have hv2 : v2 (27 * (19342813113834066795298816 * m + 11104207528312149456560431) + 11) = 83 := by
+    calc
+      v2 (27 * (19342813113834066795298816 * m + 11104207528312149456560431) + 11) =
+          v2 (2 ^ 83 * (54 * m + 31)) := by
+            ring_nf
+      _ = 83 := by
+        simpa using v2_pow_mul_of_not_two_dvd 83 (54 * m + 31) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (19342813113834066795298816 * m + 11104207528312149456560431) + 11) := htime
+    _ = 4 + 83 := by rw [hv2]
+    _ = 87 := by norm_num
+
+/-- On the third dyadic shell `base = 618970019642690137449562112*m + 355334640905988782609933805`,
+    the higher-time destination base is exactly `54*m + 31`. -/
+theorem dst_base_eq_54m_add_31_of_src_base_eq_618970019642690137449562112m_add_355334640905988782609933805
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 618970019642690137449562112 * m + 355334640905988782609933805) :
+    τ.dst.src.base = 54 * m + 31 := by
+  have hm' : τ.src.src.base = 77371252455336267181195264 * (8 * m + 4) + 45849631084643713885152749 := by
+    calc
+      τ.src.src.base = 618970019642690137449562112 * m + 355334640905988782609933805 := hm
+      _ = 77371252455336267181195264 * (8 * m + 4) + 45849631084643713885152749 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 216 * m + 124 := by
+    calc
+      2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 27 * (8 * m + 4) + 16 := by
+        exact two_pow_dst_time_sub_eighty_five_mul_dst_base_eq_27m_add_16_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749
+          τ ht he hm'
+      _ = 216 * m + 124 := by
+        ring
+  have htime : τ.dst.src.time = 87 :=
+    dst_time_eq_eighty_seven_of_src_base_eq_618970019642690137449562112m_add_355334640905988782609933805 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 85` branch:
+    `base = 1237940039285380274899124224*m + 664819650727333851334714861` is exactly the
+    `time = 88` case. -/
+theorem dst_time_eq_eighty_eight_of_src_base_eq_1237940039285380274899124224m_add_664819650727333851334714861
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1237940039285380274899124224 * m + 664819650727333851334714861) :
+    τ.dst.src.time = 88 := by
+  have hk : τ.src.src.base = 32 * (38685626227668133590597632 * m + 20775614085229182854209839) + 13 := by
+    calc
+      τ.src.src.base = 1237940039285380274899124224 * m + 664819650727333851334714861 := hm
+      _ = 32 * (38685626227668133590597632 * m + 20775614085229182854209839) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 29) := by
+    omega
+  have hv2 : v2 (27 * (38685626227668133590597632 * m + 20775614085229182854209839) + 11) = 84 := by
+    calc
+      v2 (27 * (38685626227668133590597632 * m + 20775614085229182854209839) + 11) =
+          v2 (2 ^ 84 * (54 * m + 29)) := by
+            ring_nf
+      _ = 84 := by
+        simpa using v2_pow_mul_of_not_two_dvd 84 (54 * m + 29) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (38685626227668133590597632 * m + 20775614085229182854209839) + 11) := htime
+    _ = 4 + 84 := by rw [hv2]
+    _ = 88 := by norm_num
+
+/-- On the fourth dyadic shell `base = 1237940039285380274899124224*m + 664819650727333851334714861`,
+    the higher-time destination base is exactly `54*m + 29`. -/
+theorem dst_base_eq_54m_add_29_of_src_base_eq_1237940039285380274899124224m_add_664819650727333851334714861
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1237940039285380274899124224 * m + 664819650727333851334714861) :
+    τ.dst.src.base = 54 * m + 29 := by
+  have hm' : τ.src.src.base = 77371252455336267181195264 * (16 * m + 8) + 45849631084643713885152749 := by
+    calc
+      τ.src.src.base = 1237940039285380274899124224 * m + 664819650727333851334714861 := hm
+      _ = 77371252455336267181195264 * (16 * m + 8) + 45849631084643713885152749 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 432 * m + 232 := by
+    calc
+      2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 27 * (16 * m + 8) + 16 := by
+        exact two_pow_dst_time_sub_eighty_five_mul_dst_base_eq_27m_add_16_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749
+          τ ht he hm'
+      _ = 432 * m + 232 := by
+        ring
+  have htime : τ.dst.src.time = 88 :=
+    dst_time_eq_eighty_eight_of_src_base_eq_1237940039285380274899124224m_add_664819650727333851334714861 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fifth dyadic shell inside the residual `time ≥ 85` branch:
+    `base = 2475880078570760549798248448*m + 45849631084643713885152749` is exactly the
+    `time = 89` case. -/
+theorem dst_time_eq_eighty_nine_of_src_base_eq_2475880078570760549798248448m_add_45849631084643713885152749
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2475880078570760549798248448 * m + 45849631084643713885152749) :
+    τ.dst.src.time = 89 := by
+  have hk : τ.src.src.base = 32 * (77371252455336267181195264 * m + 1432800971395116058911023) + 13 := by
+    calc
+      τ.src.src.base = 2475880078570760549798248448 * m + 45849631084643713885152749 := hm
+      _ = 32 * (77371252455336267181195264 * m + 1432800971395116058911023) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 1) := by
+    omega
+  have hv2 : v2 (27 * (77371252455336267181195264 * m + 1432800971395116058911023) + 11) = 85 := by
+    calc
+      v2 (27 * (77371252455336267181195264 * m + 1432800971395116058911023) + 11) =
+          v2 (2 ^ 85 * (54 * m + 1)) := by
+            ring_nf
+      _ = 85 := by
+        simpa using v2_pow_mul_of_not_two_dvd 85 (54 * m + 1) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (77371252455336267181195264 * m + 1432800971395116058911023) + 11) := htime
+    _ = 4 + 85 := by rw [hv2]
+    _ = 89 := by norm_num
+
+/-- On the fifth dyadic shell `base = 2475880078570760549798248448*m + 45849631084643713885152749`,
+    the higher-time destination base is exactly `54*m + 1`. -/
+theorem dst_base_eq_54m_add_1_of_src_base_eq_2475880078570760549798248448m_add_45849631084643713885152749
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2475880078570760549798248448 * m + 45849631084643713885152749) :
+    τ.dst.src.base = 54 * m + 1 := by
+  have hm' : τ.src.src.base = 77371252455336267181195264 * (32 * m) + 45849631084643713885152749 := by
+    calc
+      τ.src.src.base = 2475880078570760549798248448 * m + 45849631084643713885152749 := hm
+      _ = 77371252455336267181195264 * (32 * m) + 45849631084643713885152749 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 864 * m + 16 := by
+    calc
+      2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 27 * (32 * m) + 16 := by
+        exact two_pow_dst_time_sub_eighty_five_mul_dst_base_eq_27m_add_16_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749
+          τ ht he hm'
+      _ = 864 * m + 16 := by
+        ring
+  have htime : τ.dst.src.time = 89 :=
+    dst_time_eq_eighty_nine_of_src_base_eq_2475880078570760549798248448m_add_45849631084643713885152749 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first five dyadic cases of the `time ≥ 85`
+    branch: `base = 2475880078570760549798248448*m + 1283789670370023988784276973` still forces
+    destination time at least `90`. -/
+theorem ninety_le_dst_time_of_src_base_eq_2475880078570760549798248448m_add_1283789670370023988784276973
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2475880078570760549798248448 * m + 1283789670370023988784276973) :
+    90 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (77371252455336267181195264 * m + 40118427199063249649508655) + 13 := by
+    calc
+      τ.src.src.base = 2475880078570760549798248448 * m + 1283789670370023988784276973 := hm
+      _ = 32 * (77371252455336267181195264 * m + 40118427199063249649508655) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (77371252455336267181195264 * m + 40118427199063249649508655) + 11 = 2 ^ 86 * (27 * m + 14) := by
+    ring_nf
+  have hpos : 0 < 27 * (77371252455336267181195264 * m + 40118427199063249649508655) + 11 := by
+    omega
+  have hdvd : 2 ^ 86 ∣ 27 * (77371252455336267181195264 * m + 40118427199063249649508655) + 11 := by
+    refine ⟨27 * m + 14, ?_⟩
+    exact hfac
+  have hv2_ge86 : 86 ≤ v2 (27 * (77371252455336267181195264 * m + 40118427199063249649508655) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (77371252455336267181195264 * m + 40118427199063249649508655) + 11) + 1 ≤ 86 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (77371252455336267181195264 * m + 40118427199063249649508655) + 11) + 1) ∣
+          27 * (77371252455336267181195264 * m + 40118427199063249649508655) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (77371252455336267181195264 * m + 40118427199063249649508655) + 11) hpos) hdiv
+  have htime_ge : 90 ≤ 4 + v2 (27 * (77371252455336267181195264 * m + 40118427199063249649508655) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first five dyadic shells of the
+    `time ≥ 85` branch. -/
+theorem two_pow_dst_time_sub_ninety_mul_dst_base_eq_27m_add_14_of_src_base_eq_2475880078570760549798248448m_add_1283789670370023988784276973
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2475880078570760549798248448 * m + 1283789670370023988784276973) :
+    2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 27 * m + 14 := by
+  have hm' : τ.src.src.base = 77371252455336267181195264 * (32 * m + 16) + 45849631084643713885152749 := by
+    calc
+      τ.src.src.base = 2475880078570760549798248448 * m + 1283789670370023988784276973 := hm
+      _ = 77371252455336267181195264 * (32 * m + 16) + 45849631084643713885152749 := by ring
+  have htime_ge90 : 90 ≤ τ.dst.src.time :=
+    ninety_le_dst_time_of_src_base_eq_2475880078570760549798248448m_add_1283789670370023988784276973 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 85) * τ.dst.src.base = 27 * (32 * m + 16) + 16 :=
+    two_pow_dst_time_sub_eighty_five_mul_dst_base_eq_27m_add_16_of_src_base_eq_77371252455336267181195264m_add_45849631084643713885152749
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 85) = 2 ^ (τ.dst.src.time - 90) * 2 ^ 5 := by
+    have hsub : τ.dst.src.time - 85 = (τ.dst.src.time - 90) + 5 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 90) * τ.dst.src.base) =
+        2 ^ 5 * (27 * m + 14) := by
+    calc
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 90) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 90) * 2 ^ 5) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 85) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (32 * m + 16) + 16 := htransport
+      _ = 2 ^ 5 * (27 * m + 14) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 5) hmul
+
+/-- The returned `time ≥ 90` transport is exactly the older `time ≥ 36` shell
+    after renormalizing the shell parameter by `m ↦ 18014398509481984*m + 9340799227138806`. -/
+theorem returned_thirty_six_shell_transport_of_src_base_eq_2475880078570760549798248448m_add_1283789670370023988784276973
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2475880078570760549798248448 * m + 1283789670370023988784276973) :
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base = 2 ^ 54 * (27 * m + 14) := by
+  have hm' : τ.src.src.base = 137438953472 * (18014398509481984 * m + 9340799227138806) + 71264642541 := by
+    calc
+      τ.src.src.base = 2475880078570760549798248448 * m + 1283789670370023988784276973 := hm
+      _ = 137438953472 * (18014398509481984 * m + 9340799227138806) + 71264642541 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base
+        = 27 * (18014398509481984 * m + 9340799227138806) + 14 := by
+            exact two_pow_dst_time_sub_thirty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_137438953472m_add_71264642541
+              τ ht he hm'
+    _ = 2 ^ 54 * (27 * m + 14) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 90` branch:
+    `base = 4951760157141521099596496896*m + 3759669748940784538582525421` is exactly the
+    `time = 90` case. -/
+theorem dst_time_eq_ninety_of_src_base_eq_4951760157141521099596496896m_add_3759669748940784538582525421
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4951760157141521099596496896 * m + 3759669748940784538582525421) :
+    τ.dst.src.time = 90 := by
+  have hk : τ.src.src.base = 32 * (154742504910672534362390528 * m + 117489679654399516830703919) + 13 := by
+    calc
+      τ.src.src.base = 4951760157141521099596496896 * m + 3759669748940784538582525421 := hm
+      _ = 32 * (154742504910672534362390528 * m + 117489679654399516830703919) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 41) := by
+    omega
+  have hv2 : v2 (27 * (154742504910672534362390528 * m + 117489679654399516830703919) + 11) = 86 := by
+    calc
+      v2 (27 * (154742504910672534362390528 * m + 117489679654399516830703919) + 11) =
+          v2 (2 ^ 86 * (54 * m + 41)) := by
+            ring_nf
+      _ = 86 := by
+        simpa using v2_pow_mul_of_not_two_dvd 86 (54 * m + 41) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (154742504910672534362390528 * m + 117489679654399516830703919) + 11) := htime
+    _ = 4 + 86 := by rw [hv2]
+    _ = 90 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 4951760157141521099596496896*m + 3759669748940784538582525421`,
+    the higher-time destination base is exactly `54*m + 41`. -/
+theorem dst_base_eq_54m_add_41_of_src_base_eq_4951760157141521099596496896m_add_3759669748940784538582525421
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 4951760157141521099596496896 * m + 3759669748940784538582525421) :
+    τ.dst.src.base = 54 * m + 41 := by
+  have hm' : τ.src.src.base = 2475880078570760549798248448 * (2 * m + 1) + 1283789670370023988784276973 := by
+    calc
+      τ.src.src.base = 4951760157141521099596496896 * m + 3759669748940784538582525421 := hm
+      _ = 2475880078570760549798248448 * (2 * m + 1) + 1283789670370023988784276973 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 54 * m + 41 := by
+    calc
+      2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 27 * (2 * m + 1) + 14 := by
+        exact two_pow_dst_time_sub_ninety_mul_dst_base_eq_27m_add_14_of_src_base_eq_2475880078570760549798248448m_add_1283789670370023988784276973
+          τ ht he hm'
+      _ = 54 * m + 41 := by
+        ring
+  have htime : τ.dst.src.time = 90 :=
+    dst_time_eq_ninety_of_src_base_eq_4951760157141521099596496896m_add_3759669748940784538582525421 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 90` branch:
+    `base = 9903520314283042199192993792*m + 1283789670370023988784276973` is exactly the
+    `time = 91` case. -/
+theorem dst_time_eq_ninety_one_of_src_base_eq_9903520314283042199192993792m_add_1283789670370023988784276973
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9903520314283042199192993792 * m + 1283789670370023988784276973) :
+    τ.dst.src.time = 91 := by
+  have hk : τ.src.src.base = 32 * (309485009821345068724781056 * m + 40118427199063249649508655) + 13 := by
+    calc
+      τ.src.src.base = 9903520314283042199192993792 * m + 1283789670370023988784276973 := hm
+      _ = 32 * (309485009821345068724781056 * m + 40118427199063249649508655) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 7) := by
+    omega
+  have hv2 : v2 (27 * (309485009821345068724781056 * m + 40118427199063249649508655) + 11) = 87 := by
+    calc
+      v2 (27 * (309485009821345068724781056 * m + 40118427199063249649508655) + 11) =
+          v2 (2 ^ 87 * (54 * m + 7)) := by
+            ring_nf
+      _ = 87 := by
+        simpa using v2_pow_mul_of_not_two_dvd 87 (54 * m + 7) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (309485009821345068724781056 * m + 40118427199063249649508655) + 11) := htime
+    _ = 4 + 87 := by rw [hv2]
+    _ = 91 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 9903520314283042199192993792*m + 1283789670370023988784276973`,
+    the higher-time destination base is exactly `54*m + 7`. -/
+theorem dst_base_eq_54m_add_7_of_src_base_eq_9903520314283042199192993792m_add_1283789670370023988784276973
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 9903520314283042199192993792 * m + 1283789670370023988784276973) :
+    τ.dst.src.base = 54 * m + 7 := by
+  have hm' : τ.src.src.base = 2475880078570760549798248448 * (4 * m) + 1283789670370023988784276973 := by
+    calc
+      τ.src.src.base = 9903520314283042199192993792 * m + 1283789670370023988784276973 := hm
+      _ = 2475880078570760549798248448 * (4 * m) + 1283789670370023988784276973 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 108 * m + 14 := by
+    calc
+      2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 27 * (4 * m) + 14 := by
+        exact two_pow_dst_time_sub_ninety_mul_dst_base_eq_27m_add_14_of_src_base_eq_2475880078570760549798248448m_add_1283789670370023988784276973
+          τ ht he hm'
+      _ = 108 * m + 14 := by
+        ring
+  have htime : τ.dst.src.time = 91 :=
+    dst_time_eq_ninety_one_of_src_base_eq_9903520314283042199192993792m_add_1283789670370023988784276973 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 90` branch:
+    `base = 19807040628566084398385987584*m + 6235549827511545088380773869` is exactly the
+    `time = 92` case. -/
+theorem dst_time_eq_ninety_two_of_src_base_eq_19807040628566084398385987584m_add_6235549827511545088380773869
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 19807040628566084398385987584 * m + 6235549827511545088380773869) :
+    τ.dst.src.time = 92 := by
+  have hk : τ.src.src.base = 32 * (618970019642690137449562112 * m + 194860932109735784011899183) + 13 := by
+    calc
+      τ.src.src.base = 19807040628566084398385987584 * m + 6235549827511545088380773869 := hm
+      _ = 32 * (618970019642690137449562112 * m + 194860932109735784011899183) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 17) := by
+    omega
+  have hv2 : v2 (27 * (618970019642690137449562112 * m + 194860932109735784011899183) + 11) = 88 := by
+    calc
+      v2 (27 * (618970019642690137449562112 * m + 194860932109735784011899183) + 11) =
+          v2 (2 ^ 88 * (54 * m + 17)) := by
+            ring_nf
+      _ = 88 := by
+        simpa using v2_pow_mul_of_not_two_dvd 88 (54 * m + 17) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (618970019642690137449562112 * m + 194860932109735784011899183) + 11) := htime
+    _ = 4 + 88 := by rw [hv2]
+    _ = 92 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 19807040628566084398385987584*m + 6235549827511545088380773869`,
+    the higher-time destination base is exactly `54*m + 17`. -/
+theorem dst_base_eq_54m_add_17_of_src_base_eq_19807040628566084398385987584m_add_6235549827511545088380773869
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 19807040628566084398385987584 * m + 6235549827511545088380773869) :
+    τ.dst.src.base = 54 * m + 17 := by
+  have hm' : τ.src.src.base = 2475880078570760549798248448 * (8 * m + 2) + 1283789670370023988784276973 := by
+    calc
+      τ.src.src.base = 19807040628566084398385987584 * m + 6235549827511545088380773869 := hm
+      _ = 2475880078570760549798248448 * (8 * m + 2) + 1283789670370023988784276973 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 216 * m + 68 := by
+    calc
+      2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 27 * (8 * m + 2) + 14 := by
+        exact two_pow_dst_time_sub_ninety_mul_dst_base_eq_27m_add_14_of_src_base_eq_2475880078570760549798248448m_add_1283789670370023988784276973
+          τ ht he hm'
+      _ = 216 * m + 68 := by
+        ring
+  have htime : τ.dst.src.time = 92 :=
+    dst_time_eq_ninety_two_of_src_base_eq_19807040628566084398385987584m_add_6235549827511545088380773869 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 90` branch:
+    `base = 39614081257132168796771975168*m + 35946110770360671685959755245` is exactly the
+    `time = 93` case. -/
+theorem dst_time_eq_ninety_three_of_src_base_eq_39614081257132168796771975168m_add_35946110770360671685959755245
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 39614081257132168796771975168 * m + 35946110770360671685959755245) :
+    τ.dst.src.time = 93 := by
+  have hk : τ.src.src.base = 32 * (1237940039285380274899124224 * m + 1123315961573770990186242351) + 13 := by
+    calc
+      τ.src.src.base = 39614081257132168796771975168 * m + 35946110770360671685959755245 := hm
+      _ = 32 * (1237940039285380274899124224 * m + 1123315961573770990186242351) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 49) := by
+    omega
+  have hv2 : v2 (27 * (1237940039285380274899124224 * m + 1123315961573770990186242351) + 11) = 89 := by
+    calc
+      v2 (27 * (1237940039285380274899124224 * m + 1123315961573770990186242351) + 11) =
+          v2 (2 ^ 89 * (54 * m + 49)) := by
+            ring_nf
+      _ = 89 := by
+        simpa using v2_pow_mul_of_not_two_dvd 89 (54 * m + 49) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (1237940039285380274899124224 * m + 1123315961573770990186242351) + 11) := htime
+    _ = 4 + 89 := by rw [hv2]
+    _ = 93 := by norm_num
+
+/-- On the fourth dyadic shell
+    `base = 39614081257132168796771975168*m + 35946110770360671685959755245`,
+    the higher-time destination base is exactly `54*m + 49`. -/
+theorem dst_base_eq_54m_add_49_of_src_base_eq_39614081257132168796771975168m_add_35946110770360671685959755245
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 39614081257132168796771975168 * m + 35946110770360671685959755245) :
+    τ.dst.src.base = 54 * m + 49 := by
+  have hm' : τ.src.src.base = 2475880078570760549798248448 * (16 * m + 14) + 1283789670370023988784276973 := by
+    calc
+      τ.src.src.base = 39614081257132168796771975168 * m + 35946110770360671685959755245 := hm
+      _ = 2475880078570760549798248448 * (16 * m + 14) + 1283789670370023988784276973 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 432 * m + 392 := by
+    calc
+      2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 27 * (16 * m + 14) + 14 := by
+        exact two_pow_dst_time_sub_ninety_mul_dst_base_eq_27m_add_14_of_src_base_eq_2475880078570760549798248448m_add_1283789670370023988784276973
+          τ ht he hm'
+      _ = 432 * m + 392 := by
+        ring
+  have htime : τ.dst.src.time = 93 :=
+    dst_time_eq_ninety_three_of_src_base_eq_39614081257132168796771975168m_add_35946110770360671685959755245 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 90`
+    branch: `base = 39614081257132168796771975168*m + 16139070141794587287573767661` still forces
+    destination time at least `94`. -/
+theorem ninety_four_le_dst_time_of_src_base_eq_39614081257132168796771975168m_add_16139070141794587287573767661
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 39614081257132168796771975168 * m + 16139070141794587287573767661) :
+    94 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 13 := by
+    calc
+      τ.src.src.base = 39614081257132168796771975168 * m + 16139070141794587287573767661 := hm
+      _ = 32 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11 = 2 ^ 90 * (27 * m + 11) := by
+    ring_nf
+  have hpos : 0 < 27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11 := by
+    omega
+  have hdvd : 2 ^ 90 ∣ 27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11 := by
+    refine ⟨27 * m + 11, ?_⟩
+    exact hfac
+  have hv2_ge90 : 90 ≤ v2 (27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11) + 1 ≤ 90 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11) + 1) ∣
+          27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11) hpos) hdiv
+  have htime_ge : 94 ≤ 4 + v2 (27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 90` branch. -/
+theorem two_pow_dst_time_sub_ninety_four_mul_dst_base_eq_27m_add_11_of_src_base_eq_39614081257132168796771975168m_add_16139070141794587287573767661
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 39614081257132168796771975168 * m + 16139070141794587287573767661) :
+    2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 27 * m + 11 := by
+  have hm' : τ.src.src.base = 2475880078570760549798248448 * (16 * m + 6) + 1283789670370023988784276973 := by
+    calc
+      τ.src.src.base = 39614081257132168796771975168 * m + 16139070141794587287573767661 := hm
+      _ = 2475880078570760549798248448 * (16 * m + 6) + 1283789670370023988784276973 := by ring
+  have htime_ge94 : 94 ≤ τ.dst.src.time :=
+    ninety_four_le_dst_time_of_src_base_eq_39614081257132168796771975168m_add_16139070141794587287573767661 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 90) * τ.dst.src.base = 27 * (16 * m + 6) + 14 :=
+    two_pow_dst_time_sub_ninety_mul_dst_base_eq_27m_add_14_of_src_base_eq_2475880078570760549798248448m_add_1283789670370023988784276973
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 90) = 2 ^ (τ.dst.src.time - 94) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 90 = (τ.dst.src.time - 94) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 94) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 11) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 94) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 94) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 90) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 6) + 14 := htransport
+      _ = 2 ^ 4 * (27 * m + 11) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 94` transport is exactly the older `time ≥ 40` shell
+    after renormalizing the shell parameter by `m ↦ 18014398509481984*m + 7339199392751919`. -/
+theorem returned_forty_shell_transport_of_src_base_eq_39614081257132168796771975168m_add_16139070141794587287573767661
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 39614081257132168796771975168 * m + 16139070141794587287573767661) :
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base = 2 ^ 54 * (27 * m + 11) := by
+  have hm' : τ.src.src.base = 2199023255552 * (18014398509481984 * m + 7339199392751919) + 895898363373 := by
+    calc
+      τ.src.src.base = 39614081257132168796771975168 * m + 16139070141794587287573767661 := hm
+      _ = 2199023255552 * (18014398509481984 * m + 7339199392751919) + 895898363373 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base
+        = 27 * (18014398509481984 * m + 7339199392751919) + 11 := by
+            exact two_pow_dst_time_sub_forty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2199023255552m_add_895898363373
+              τ ht he hm'
+    _ = 2 ^ 54 * (27 * m + 11) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 94` branch:
+    `base = 79228162514264337593543950336*m + 16139070141794587287573767661` is exactly the
+    `time = 94` case. -/
+theorem dst_time_eq_ninety_four_of_src_base_eq_79228162514264337593543950336m_add_16139070141794587287573767661
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 79228162514264337593543950336 * m + 16139070141794587287573767661) :
+    τ.dst.src.time = 94 := by
+  have hk : τ.src.src.base = 32 * (2475880078570760549798248448 * m + 504345941931080852736680239) + 13 := by
+    calc
+      τ.src.src.base = 79228162514264337593543950336 * m + 16139070141794587287573767661 := hm
+      _ = 32 * (2475880078570760549798248448 * m + 504345941931080852736680239) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 11) := by
+    omega
+  have hv2 : v2 (27 * (2475880078570760549798248448 * m + 504345941931080852736680239) + 11) = 90 := by
+    calc
+      v2 (27 * (2475880078570760549798248448 * m + 504345941931080852736680239) + 11) =
+          v2 (2 ^ 90 * (54 * m + 11)) := by
+            ring_nf
+      _ = 90 := by
+        simpa using v2_pow_mul_of_not_two_dvd 90 (54 * m + 11) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (2475880078570760549798248448 * m + 504345941931080852736680239) + 11) := htime
+    _ = 4 + 90 := by rw [hv2]
+    _ = 94 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 79228162514264337593543950336*m + 16139070141794587287573767661`,
+    the higher-time destination base is exactly `54*m + 11`. -/
+theorem dst_base_eq_54m_add_11_of_src_base_eq_79228162514264337593543950336m_add_16139070141794587287573767661
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 79228162514264337593543950336 * m + 16139070141794587287573767661) :
+    τ.dst.src.base = 54 * m + 11 := by
+  have hm' : τ.src.src.base = 39614081257132168796771975168 * (2 * m) + 16139070141794587287573767661 := by
+    calc
+      τ.src.src.base = 79228162514264337593543950336 * m + 16139070141794587287573767661 := hm
+      _ = 39614081257132168796771975168 * (2 * m) + 16139070141794587287573767661 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 54 * m + 11 := by
+    calc
+      2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 27 * (2 * m) + 11 := by
+        exact two_pow_dst_time_sub_ninety_four_mul_dst_base_eq_27m_add_11_of_src_base_eq_39614081257132168796771975168m_add_16139070141794587287573767661
+          τ ht he hm'
+      _ = 54 * m + 11 := by
+        ring
+  have htime : τ.dst.src.time = 94 :=
+    dst_time_eq_ninety_four_of_src_base_eq_79228162514264337593543950336m_add_16139070141794587287573767661 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 94` branch:
+    `base = 158456325028528675187087900672*m + 55753151398926756084345742829` is exactly the
+    `time = 95` case. -/
+theorem dst_time_eq_ninety_five_of_src_base_eq_158456325028528675187087900672m_add_55753151398926756084345742829
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 158456325028528675187087900672 * m + 55753151398926756084345742829) :
+    τ.dst.src.time = 95 := by
+  have hk : τ.src.src.base = 32 * (4951760157141521099596496896 * m + 1742285981216461127635804463) + 13 := by
+    calc
+      τ.src.src.base = 158456325028528675187087900672 * m + 55753151398926756084345742829 := hm
+      _ = 32 * (4951760157141521099596496896 * m + 1742285981216461127635804463) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 19) := by
+    omega
+  have hv2 : v2 (27 * (4951760157141521099596496896 * m + 1742285981216461127635804463) + 11) = 91 := by
+    calc
+      v2 (27 * (4951760157141521099596496896 * m + 1742285981216461127635804463) + 11) =
+          v2 (2 ^ 91 * (54 * m + 19)) := by
+            ring_nf
+      _ = 91 := by
+        simpa using v2_pow_mul_of_not_two_dvd 91 (54 * m + 19) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (4951760157141521099596496896 * m + 1742285981216461127635804463) + 11) := htime
+    _ = 4 + 91 := by rw [hv2]
+    _ = 95 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 158456325028528675187087900672*m + 55753151398926756084345742829`,
+    the higher-time destination base is exactly `54*m + 19`. -/
+theorem dst_base_eq_54m_add_19_of_src_base_eq_158456325028528675187087900672m_add_55753151398926756084345742829
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 158456325028528675187087900672 * m + 55753151398926756084345742829) :
+    τ.dst.src.base = 54 * m + 19 := by
+  have hm' : τ.src.src.base = 39614081257132168796771975168 * (4 * m + 1) + 16139070141794587287573767661 := by
+    calc
+      τ.src.src.base = 158456325028528675187087900672 * m + 55753151398926756084345742829 := hm
+      _ = 39614081257132168796771975168 * (4 * m + 1) + 16139070141794587287573767661 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 108 * m + 38 := by
+    calc
+      2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 27 * (4 * m + 1) + 11 := by
+        exact two_pow_dst_time_sub_ninety_four_mul_dst_base_eq_27m_add_11_of_src_base_eq_39614081257132168796771975168m_add_16139070141794587287573767661
+          τ ht he hm'
+      _ = 108 * m + 38 := by
+        ring
+  have htime : τ.dst.src.time = 95 :=
+    dst_time_eq_ninety_five_of_src_base_eq_158456325028528675187087900672m_add_55753151398926756084345742829 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 94` branch:
+    `base = 316912650057057350374175801344*m + 134981313913191093677889693165` is exactly the
+    `time = 96` case. -/
+theorem dst_time_eq_ninety_six_of_src_base_eq_316912650057057350374175801344m_add_134981313913191093677889693165
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 316912650057057350374175801344 * m + 134981313913191093677889693165) :
+    τ.dst.src.time = 96 := by
+  have hk : τ.src.src.base = 32 * (9903520314283042199192993792 * m + 4218166059787221677434052911) + 13 := by
+    calc
+      τ.src.src.base = 316912650057057350374175801344 * m + 134981313913191093677889693165 := hm
+      _ = 32 * (9903520314283042199192993792 * m + 4218166059787221677434052911) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 23) := by
+    omega
+  have hv2 : v2 (27 * (9903520314283042199192993792 * m + 4218166059787221677434052911) + 11) = 92 := by
+    calc
+      v2 (27 * (9903520314283042199192993792 * m + 4218166059787221677434052911) + 11) =
+          v2 (2 ^ 92 * (54 * m + 23)) := by
+            ring_nf
+      _ = 92 := by
+        simpa using v2_pow_mul_of_not_two_dvd 92 (54 * m + 23) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (9903520314283042199192993792 * m + 4218166059787221677434052911) + 11) := htime
+    _ = 4 + 92 := by rw [hv2]
+    _ = 96 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 316912650057057350374175801344*m + 134981313913191093677889693165`,
+    the higher-time destination base is exactly `54*m + 23`. -/
+theorem dst_base_eq_54m_add_23_of_src_base_eq_316912650057057350374175801344m_add_134981313913191093677889693165
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 316912650057057350374175801344 * m + 134981313913191093677889693165) :
+    τ.dst.src.base = 54 * m + 23 := by
+  have hm' : τ.src.src.base = 39614081257132168796771975168 * (8 * m + 3) + 16139070141794587287573767661 := by
+    calc
+      τ.src.src.base = 316912650057057350374175801344 * m + 134981313913191093677889693165 := hm
+      _ = 39614081257132168796771975168 * (8 * m + 3) + 16139070141794587287573767661 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 216 * m + 92 := by
+    calc
+      2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 27 * (8 * m + 3) + 11 := by
+        exact two_pow_dst_time_sub_ninety_four_mul_dst_base_eq_27m_add_11_of_src_base_eq_39614081257132168796771975168m_add_16139070141794587287573767661
+          τ ht he hm'
+      _ = 216 * m + 92 := by
+        ring
+  have htime : τ.dst.src.time = 96 :=
+    dst_time_eq_ninety_six_of_src_base_eq_316912650057057350374175801344m_add_134981313913191093677889693165 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 94` branch:
+    `base = 633825300114114700748351602688*m + 293437638941719768864977593837` is exactly the
+    `time = 97` case. -/
+theorem dst_time_eq_ninety_seven_of_src_base_eq_633825300114114700748351602688m_add_293437638941719768864977593837
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 633825300114114700748351602688 * m + 293437638941719768864977593837) :
+    τ.dst.src.time = 97 := by
+  have hk : τ.src.src.base = 32 * (19807040628566084398385987584 * m + 9169926216928742777030549807) + 13 := by
+    calc
+      τ.src.src.base = 633825300114114700748351602688 * m + 293437638941719768864977593837 := hm
+      _ = 32 * (19807040628566084398385987584 * m + 9169926216928742777030549807) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 25) := by
+    omega
+  have hv2 : v2 (27 * (19807040628566084398385987584 * m + 9169926216928742777030549807) + 11) = 93 := by
+    calc
+      v2 (27 * (19807040628566084398385987584 * m + 9169926216928742777030549807) + 11) =
+          v2 (2 ^ 93 * (54 * m + 25)) := by
+            ring_nf
+      _ = 93 := by
+        simpa using v2_pow_mul_of_not_two_dvd 93 (54 * m + 25) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (19807040628566084398385987584 * m + 9169926216928742777030549807) + 11) := htime
+    _ = 4 + 93 := by rw [hv2]
+    _ = 97 := by norm_num
+
+/-- On the fourth dyadic shell
+    `base = 633825300114114700748351602688*m + 293437638941719768864977593837`,
+    the higher-time destination base is exactly `54*m + 25`. -/
+theorem dst_base_eq_54m_add_25_of_src_base_eq_633825300114114700748351602688m_add_293437638941719768864977593837
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 633825300114114700748351602688 * m + 293437638941719768864977593837) :
+    τ.dst.src.base = 54 * m + 25 := by
+  have hm' : τ.src.src.base = 39614081257132168796771975168 * (16 * m + 7) + 16139070141794587287573767661 := by
+    calc
+      τ.src.src.base = 633825300114114700748351602688 * m + 293437638941719768864977593837 := hm
+      _ = 39614081257132168796771975168 * (16 * m + 7) + 16139070141794587287573767661 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 432 * m + 200 := by
+    calc
+      2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 27 * (16 * m + 7) + 11 := by
+        exact two_pow_dst_time_sub_ninety_four_mul_dst_base_eq_27m_add_11_of_src_base_eq_39614081257132168796771975168m_add_16139070141794587287573767661
+          τ ht he hm'
+      _ = 432 * m + 200 := by
+        ring
+  have htime : τ.dst.src.time = 97 :=
+    dst_time_eq_ninety_seven_of_src_base_eq_633825300114114700748351602688m_add_293437638941719768864977593837 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 94`
+    branch: `base = 633825300114114700748351602688*m + 610350288998777119239153395181` still forces
+    destination time at least `98`. -/
+theorem ninety_eight_le_dst_time_of_src_base_eq_633825300114114700748351602688m_add_610350288998777119239153395181
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 633825300114114700748351602688 * m + 610350288998777119239153395181) :
+    98 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 13 := by
+    calc
+      τ.src.src.base = 633825300114114700748351602688 * m + 610350288998777119239153395181 := hm
+      _ = 32 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 11 = 2 ^ 94 * (27 * m + 26) := by
+    ring_nf
+  have hpos : 0 < 27 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 11 := by
+    omega
+  have hdvd : 2 ^ 94 ∣ 27 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 11 := by
+    refine ⟨27 * m + 26, ?_⟩
+    exact hfac
+  have hv2_ge94 : 94 ≤ v2 (27 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 11) + 1 ≤ 94 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 11) + 1) ∣
+          27 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 11) hpos) hdiv
+  have htime_ge : 98 ≤ 4 + v2 (27 * (19807040628566084398385987584 * m + 19073446531211784976223543599) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 94` branch. -/
+theorem two_pow_dst_time_sub_ninety_eight_mul_dst_base_eq_27m_add_26_of_src_base_eq_633825300114114700748351602688m_add_610350288998777119239153395181
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 633825300114114700748351602688 * m + 610350288998777119239153395181) :
+    2 ^ (τ.dst.src.time - 98) * τ.dst.src.base = 27 * m + 26 := by
+  have hm' : τ.src.src.base = 39614081257132168796771975168 * (16 * m + 15) + 16139070141794587287573767661 := by
+    calc
+      τ.src.src.base = 633825300114114700748351602688 * m + 610350288998777119239153395181 := hm
+      _ = 39614081257132168796771975168 * (16 * m + 15) + 16139070141794587287573767661 := by ring
+  have htime_ge98 : 98 ≤ τ.dst.src.time :=
+    ninety_eight_le_dst_time_of_src_base_eq_633825300114114700748351602688m_add_610350288998777119239153395181 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 94) * τ.dst.src.base = 27 * (16 * m + 15) + 11 :=
+    two_pow_dst_time_sub_ninety_four_mul_dst_base_eq_27m_add_11_of_src_base_eq_39614081257132168796771975168m_add_16139070141794587287573767661
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 94) = 2 ^ (τ.dst.src.time - 98) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 94 = (τ.dst.src.time - 98) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 98) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 26) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 98) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 98) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 94) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 15) + 11 := htransport
+      _ = 2 ^ 4 * (27 * m + 26) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 98` transport is exactly the older `time ≥ 44` shell
+    after renormalizing the shell parameter by `m ↦ 18014398509481984*m + 17347198564686354`. -/
+theorem returned_forty_four_shell_transport_of_src_base_eq_633825300114114700748351602688m_add_610350288998777119239153395181
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 633825300114114700748351602688 * m + 610350288998777119239153395181) :
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base = 2 ^ 54 * (27 * m + 26) := by
+  have hm' : τ.src.src.base = 35184372088832 * (18014398509481984 * m + 17347198564686354) + 33881247196653 := by
+    calc
+      τ.src.src.base = 633825300114114700748351602688 * m + 610350288998777119239153395181 := hm
+      _ = 35184372088832 * (18014398509481984 * m + 17347198564686354) + 33881247196653 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base
+        = 27 * (18014398509481984 * m + 17347198564686354) + 26 := by
+            exact two_pow_dst_time_sub_forty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_35184372088832m_add_33881247196653
+              τ ht he hm'
+    _ = 2 ^ 54 * (27 * m + 26) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 98` branch:
+    `base = 1267650600228229401496703205376*m + 1244175589112891819987504997869` is exactly the
+    `time = 98` case. -/
+theorem dst_time_eq_ninety_eight_of_src_base_eq_1267650600228229401496703205376m_add_1244175589112891819987504997869
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1267650600228229401496703205376 * m + 1244175589112891819987504997869) :
+    τ.dst.src.time = 98 := by
+  have hk : τ.src.src.base = 32 * (39614081257132168796771975168 * m + 38880487159777869374609531183) + 13 := by
+    calc
+      τ.src.src.base = 1267650600228229401496703205376 * m + 1244175589112891819987504997869 := hm
+      _ = 32 * (39614081257132168796771975168 * m + 38880487159777869374609531183) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 53) := by
+    omega
+  have hv2 : v2 (27 * (39614081257132168796771975168 * m + 38880487159777869374609531183) + 11) = 94 := by
+    calc
+      v2 (27 * (39614081257132168796771975168 * m + 38880487159777869374609531183) + 11) =
+          v2 (2 ^ 94 * (54 * m + 53)) := by
+            ring_nf
+      _ = 94 := by
+        simpa using v2_pow_mul_of_not_two_dvd 94 (54 * m + 53) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (39614081257132168796771975168 * m + 38880487159777869374609531183) + 11) := htime
+    _ = 4 + 94 := by rw [hv2]
+    _ = 98 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 1267650600228229401496703205376*m + 1244175589112891819987504997869`,
+    the higher-time destination base is exactly `54*m + 53`. -/
+theorem dst_base_eq_54m_add_53_of_src_base_eq_1267650600228229401496703205376m_add_1244175589112891819987504997869
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1267650600228229401496703205376 * m + 1244175589112891819987504997869) :
+    τ.dst.src.base = 54 * m + 53 := by
+  have hm' : τ.src.src.base = 633825300114114700748351602688 * (2 * m + 1) + 610350288998777119239153395181 := by
+    calc
+      τ.src.src.base = 1267650600228229401496703205376 * m + 1244175589112891819987504997869 := hm
+      _ = 633825300114114700748351602688 * (2 * m + 1) + 610350288998777119239153395181 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 98) * τ.dst.src.base = 54 * m + 53 := by
+    calc
+      2 ^ (τ.dst.src.time - 98) * τ.dst.src.base = 27 * (2 * m + 1) + 26 := by
+        exact two_pow_dst_time_sub_ninety_eight_mul_dst_base_eq_27m_add_26_of_src_base_eq_633825300114114700748351602688m_add_610350288998777119239153395181
+          τ ht he hm'
+      _ = 54 * m + 53 := by
+        ring
+  have htime : τ.dst.src.time = 98 :=
+    dst_time_eq_ninety_eight_of_src_base_eq_1267650600228229401496703205376m_add_1244175589112891819987504997869 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 98` branch:
+    `base = 2535301200456458802993406410752*m + 610350288998777119239153395181` is exactly the
+    `time = 99` case. -/
+theorem dst_time_eq_ninety_nine_of_src_base_eq_2535301200456458802993406410752m_add_610350288998777119239153395181
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2535301200456458802993406410752 * m + 610350288998777119239153395181) :
+    τ.dst.src.time = 99 := by
+  have hk : τ.src.src.base = 32 * (79228162514264337593543950336 * m + 19073446531211784976223543599) + 13 := by
+    calc
+      τ.src.src.base = 2535301200456458802993406410752 * m + 610350288998777119239153395181 := hm
+      _ = 32 * (79228162514264337593543950336 * m + 19073446531211784976223543599) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 13) := by
+    omega
+  have hv2 : v2 (27 * (79228162514264337593543950336 * m + 19073446531211784976223543599) + 11) = 95 := by
+    calc
+      v2 (27 * (79228162514264337593543950336 * m + 19073446531211784976223543599) + 11) =
+          v2 (2 ^ 95 * (54 * m + 13)) := by
+            ring_nf
+      _ = 95 := by
+        simpa using v2_pow_mul_of_not_two_dvd 95 (54 * m + 13) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (79228162514264337593543950336 * m + 19073446531211784976223543599) + 11) := htime
+    _ = 4 + 95 := by rw [hv2]
+    _ = 99 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 2535301200456458802993406410752*m + 610350288998777119239153395181`,
+    the higher-time destination base is exactly `54*m + 13`. -/
+theorem dst_base_eq_54m_add_13_of_src_base_eq_2535301200456458802993406410752m_add_610350288998777119239153395181
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2535301200456458802993406410752 * m + 610350288998777119239153395181) :
+    τ.dst.src.base = 54 * m + 13 := by
+  have hm' : τ.src.src.base = 633825300114114700748351602688 * (4 * m) + 610350288998777119239153395181 := by
+    calc
+      τ.src.src.base = 2535301200456458802993406410752 * m + 610350288998777119239153395181 := hm
+      _ = 633825300114114700748351602688 * (4 * m) + 610350288998777119239153395181 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 98) * τ.dst.src.base = 108 * m + 26 := by
+    calc
+      2 ^ (τ.dst.src.time - 98) * τ.dst.src.base = 27 * (4 * m) + 26 := by
+        exact two_pow_dst_time_sub_ninety_eight_mul_dst_base_eq_27m_add_26_of_src_base_eq_633825300114114700748351602688m_add_610350288998777119239153395181
+          τ ht he hm'
+      _ = 108 * m + 26 := by
+        ring
+  have htime : τ.dst.src.time = 99 :=
+    dst_time_eq_ninety_nine_of_src_base_eq_2535301200456458802993406410752m_add_610350288998777119239153395181 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first two dyadic cases of the `time ≥ 98`
+    branch: `base = 2535301200456458802993406410752*m + 1878000889227006520735856600557` still forces
+    destination time at least `100`. -/
+theorem one_hundred_le_dst_time_of_src_base_eq_2535301200456458802993406410752m_add_1878000889227006520735856600557
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2535301200456458802993406410752 * m + 1878000889227006520735856600557) :
+    100 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 13 := by
+    calc
+      τ.src.src.base = 2535301200456458802993406410752 * m + 1878000889227006520735856600557 := hm
+      _ = 32 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 11 = 2 ^ 96 * (27 * m + 20) := by
+    ring_nf
+  have hpos : 0 < 27 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 11 := by
+    omega
+  have hdvd : 2 ^ 96 ∣ 27 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 11 := by
+    refine ⟨27 * m + 20, ?_⟩
+    exact hfac
+  have hv2_ge96 : 96 ≤ v2 (27 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 11) + 1 ≤ 96 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 11) + 1) ∣
+          27 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 11) hpos) hdiv
+  have htime_ge : 100 ≤ 4 + v2 (27 * (79228162514264337593543950336 * m + 58687527788343953772995518767) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first two dyadic shells of the
+    `time ≥ 98` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_mul_dst_base_eq_27m_add_20_of_src_base_eq_2535301200456458802993406410752m_add_1878000889227006520735856600557
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2535301200456458802993406410752 * m + 1878000889227006520735856600557) :
+    2 ^ (τ.dst.src.time - 100) * τ.dst.src.base = 27 * m + 20 := by
+  have hm' : τ.src.src.base = 633825300114114700748351602688 * (4 * m + 2) + 610350288998777119239153395181 := by
+    calc
+      τ.src.src.base = 2535301200456458802993406410752 * m + 1878000889227006520735856600557 := hm
+      _ = 633825300114114700748351602688 * (4 * m + 2) + 610350288998777119239153395181 := by ring
+  have htime_ge100 : 100 ≤ τ.dst.src.time :=
+    one_hundred_le_dst_time_of_src_base_eq_2535301200456458802993406410752m_add_1878000889227006520735856600557 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 98) * τ.dst.src.base = 27 * (4 * m + 2) + 26 :=
+    two_pow_dst_time_sub_ninety_eight_mul_dst_base_eq_27m_add_26_of_src_base_eq_633825300114114700748351602688m_add_610350288998777119239153395181
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 98) = 2 ^ (τ.dst.src.time - 100) * 2 ^ 2 := by
+    have hsub : τ.dst.src.time - 98 = (τ.dst.src.time - 100) + 2 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 100) * τ.dst.src.base) =
+        2 ^ 2 * (27 * m + 20) := by
+    calc
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 100) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 100) * 2 ^ 2) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 98) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (4 * m + 2) + 26 := htransport
+      _ = 2 ^ 2 * (27 * m + 20) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 2) hmul
+
+/-- First dyadic shell inside the residual `time ≥ 100` branch:
+    `base = 5070602400912917605986812821504*m + 4413302089683465323729263011309` is exactly the
+    `time = 100` case. -/
+theorem dst_time_eq_one_hundred_of_src_base_eq_5070602400912917605986812821504m_add_4413302089683465323729263011309
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5070602400912917605986812821504 * m + 4413302089683465323729263011309) :
+    τ.dst.src.time = 100 := by
+  have hk : τ.src.src.base = 32 * (158456325028528675187087900672 * m + 137915690302608291366539469103) + 13 := by
+    calc
+      τ.src.src.base = 5070602400912917605986812821504 * m + 4413302089683465323729263011309 := hm
+      _ = 32 * (158456325028528675187087900672 * m + 137915690302608291366539469103) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 47) := by
+    omega
+  have hv2 : v2 (27 * (158456325028528675187087900672 * m + 137915690302608291366539469103) + 11) = 96 := by
+    calc
+      v2 (27 * (158456325028528675187087900672 * m + 137915690302608291366539469103) + 11) =
+          v2 (2 ^ 96 * (54 * m + 47)) := by
+            ring_nf
+      _ = 96 := by
+        simpa using v2_pow_mul_of_not_two_dvd 96 (54 * m + 47) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (158456325028528675187087900672 * m + 137915690302608291366539469103) + 11) := htime
+    _ = 4 + 96 := by rw [hv2]
+    _ = 100 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 5070602400912917605986812821504*m + 4413302089683465323729263011309`,
+    the higher-time destination base is exactly `54*m + 47`. -/
+theorem dst_base_eq_54m_add_47_of_src_base_eq_5070602400912917605986812821504m_add_4413302089683465323729263011309
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5070602400912917605986812821504 * m + 4413302089683465323729263011309) :
+    τ.dst.src.base = 54 * m + 47 := by
+  have hm' : τ.src.src.base = 2535301200456458802993406410752 * (2 * m + 1) + 1878000889227006520735856600557 := by
+    calc
+      τ.src.src.base = 5070602400912917605986812821504 * m + 4413302089683465323729263011309 := hm
+      _ = 2535301200456458802993406410752 * (2 * m + 1) + 1878000889227006520735856600557 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 100) * τ.dst.src.base = 54 * m + 47 := by
+    calc
+      2 ^ (τ.dst.src.time - 100) * τ.dst.src.base = 27 * (2 * m + 1) + 20 := by
+        exact two_pow_dst_time_sub_one_hundred_mul_dst_base_eq_27m_add_20_of_src_base_eq_2535301200456458802993406410752m_add_1878000889227006520735856600557
+          τ ht he hm'
+      _ = 54 * m + 47 := by
+        ring
+  have htime : τ.dst.src.time = 100 :=
+    dst_time_eq_one_hundred_of_src_base_eq_5070602400912917605986812821504m_add_4413302089683465323729263011309 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 100` branch:
+    `base = 10141204801825835211973625643008*m + 6948603290139924126722669422061` is exactly the
+    `time = 101` case. -/
+theorem dst_time_eq_one_hundred_one_of_src_base_eq_10141204801825835211973625643008m_add_6948603290139924126722669422061
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10141204801825835211973625643008 * m + 6948603290139924126722669422061) :
+    τ.dst.src.time = 101 := by
+  have hk : τ.src.src.base = 32 * (316912650057057350374175801344 * m + 217143852816872628960083419439) + 13 := by
+    calc
+      τ.src.src.base = 10141204801825835211973625643008 * m + 6948603290139924126722669422061 := hm
+      _ = 32 * (316912650057057350374175801344 * m + 217143852816872628960083419439) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 37) := by
+    omega
+  have hv2 : v2 (27 * (316912650057057350374175801344 * m + 217143852816872628960083419439) + 11) = 97 := by
+    calc
+      v2 (27 * (316912650057057350374175801344 * m + 217143852816872628960083419439) + 11) =
+          v2 (2 ^ 97 * (54 * m + 37)) := by
+            ring_nf
+      _ = 97 := by
+        simpa using v2_pow_mul_of_not_two_dvd 97 (54 * m + 37) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (316912650057057350374175801344 * m + 217143852816872628960083419439) + 11) := htime
+    _ = 4 + 97 := by rw [hv2]
+    _ = 101 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 10141204801825835211973625643008*m + 6948603290139924126722669422061`,
+    the higher-time destination base is exactly `54*m + 37`. -/
+theorem dst_base_eq_54m_add_37_of_src_base_eq_10141204801825835211973625643008m_add_6948603290139924126722669422061
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10141204801825835211973625643008 * m + 6948603290139924126722669422061) :
+    τ.dst.src.base = 54 * m + 37 := by
+  have hm' : τ.src.src.base = 2535301200456458802993406410752 * (4 * m + 2) + 1878000889227006520735856600557 := by
+    calc
+      τ.src.src.base = 10141204801825835211973625643008 * m + 6948603290139924126722669422061 := hm
+      _ = 2535301200456458802993406410752 * (4 * m + 2) + 1878000889227006520735856600557 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 100) * τ.dst.src.base = 108 * m + 74 := by
+    calc
+      2 ^ (τ.dst.src.time - 100) * τ.dst.src.base = 27 * (4 * m + 2) + 20 := by
+        exact two_pow_dst_time_sub_one_hundred_mul_dst_base_eq_27m_add_20_of_src_base_eq_2535301200456458802993406410752m_add_1878000889227006520735856600557
+          τ ht he hm'
+      _ = 108 * m + 74 := by
+        ring
+  have htime : τ.dst.src.time = 101 :=
+    dst_time_eq_one_hundred_one_of_src_base_eq_10141204801825835211973625643008m_add_6948603290139924126722669422061 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 100` branch:
+    `base = 20282409603651670423947251286016*m + 1878000889227006520735856600557` is exactly the
+    `time = 102` case. -/
+theorem dst_time_eq_one_hundred_two_of_src_base_eq_20282409603651670423947251286016m_add_1878000889227006520735856600557
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 20282409603651670423947251286016 * m + 1878000889227006520735856600557) :
+    τ.dst.src.time = 102 := by
+  have hk : τ.src.src.base = 32 * (633825300114114700748351602688 * m + 58687527788343953772995518767) + 13 := by
+    calc
+      τ.src.src.base = 20282409603651670423947251286016 * m + 1878000889227006520735856600557 := hm
+      _ = 32 * (633825300114114700748351602688 * m + 58687527788343953772995518767) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 5) := by
+    omega
+  have hv2 : v2 (27 * (633825300114114700748351602688 * m + 58687527788343953772995518767) + 11) = 98 := by
+    calc
+      v2 (27 * (633825300114114700748351602688 * m + 58687527788343953772995518767) + 11) =
+          v2 (2 ^ 98 * (54 * m + 5)) := by
+            ring_nf
+      _ = 98 := by
+        simpa using v2_pow_mul_of_not_two_dvd 98 (54 * m + 5) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (633825300114114700748351602688 * m + 58687527788343953772995518767) + 11) := htime
+    _ = 4 + 98 := by rw [hv2]
+    _ = 102 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 20282409603651670423947251286016*m + 1878000889227006520735856600557`,
+    the higher-time destination base is exactly `54*m + 5`. -/
+theorem dst_base_eq_54m_add_5_of_src_base_eq_20282409603651670423947251286016m_add_1878000889227006520735856600557
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 20282409603651670423947251286016 * m + 1878000889227006520735856600557) :
+    τ.dst.src.base = 54 * m + 5 := by
+  have hm' : τ.src.src.base = 2535301200456458802993406410752 * (8 * m) + 1878000889227006520735856600557 := by
+    calc
+      τ.src.src.base = 20282409603651670423947251286016 * m + 1878000889227006520735856600557 := hm
+      _ = 2535301200456458802993406410752 * (8 * m) + 1878000889227006520735856600557 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 100) * τ.dst.src.base = 216 * m + 20 := by
+    calc
+      2 ^ (τ.dst.src.time - 100) * τ.dst.src.base = 27 * (8 * m) + 20 := by
+        exact two_pow_dst_time_sub_one_hundred_mul_dst_base_eq_27m_add_20_of_src_base_eq_2535301200456458802993406410752m_add_1878000889227006520735856600557
+          τ ht he hm'
+      _ = 216 * m + 20 := by
+        ring
+  have htime : τ.dst.src.time = 102 :=
+    dst_time_eq_one_hundred_two_of_src_base_eq_20282409603651670423947251286016m_add_1878000889227006520735856600557 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first three dyadic cases of the `time ≥ 100`
+    branch: `base = 20282409603651670423947251286016*m + 12019205691052841732709482243565` still forces
+    destination time at least `103`. -/
+theorem one_hundred_three_le_dst_time_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 20282409603651670423947251286016 * m + 12019205691052841732709482243565) :
+    103 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 13 := by
+    calc
+      τ.src.src.base = 20282409603651670423947251286016 * m + 12019205691052841732709482243565 := hm
+      _ = 32 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 11 = 2 ^ 99 * (27 * m + 16) := by
+    ring_nf
+  have hpos : 0 < 27 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 11 := by
+    omega
+  have hdvd : 2 ^ 99 ∣ 27 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 11 := by
+    refine ⟨27 * m + 16, ?_⟩
+    exact hfac
+  have hv2_ge99 : 99 ≤ v2 (27 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 11) + 1 ≤ 99 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 11) + 1) ∣
+          27 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 11) hpos) hdiv
+  have htime_ge : 103 ≤ 4 + v2 (27 * (633825300114114700748351602688 * m + 375600177845401304147171320111) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first three dyadic shells of the
+    `time ≥ 100` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_three_mul_dst_base_eq_27m_add_16_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 20282409603651670423947251286016 * m + 12019205691052841732709482243565) :
+    2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 27 * m + 16 := by
+  have hm' : τ.src.src.base = 2535301200456458802993406410752 * (8 * m + 4) + 1878000889227006520735856600557 := by
+    calc
+      τ.src.src.base = 20282409603651670423947251286016 * m + 12019205691052841732709482243565 := hm
+      _ = 2535301200456458802993406410752 * (8 * m + 4) + 1878000889227006520735856600557 := by ring
+  have htime_ge103 : 103 ≤ τ.dst.src.time :=
+    one_hundred_three_le_dst_time_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 100) * τ.dst.src.base = 27 * (8 * m + 4) + 20 :=
+    two_pow_dst_time_sub_one_hundred_mul_dst_base_eq_27m_add_20_of_src_base_eq_2535301200456458802993406410752m_add_1878000889227006520735856600557
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 100) = 2 ^ (τ.dst.src.time - 103) * 2 ^ 3 := by
+    have hsub : τ.dst.src.time - 100 = (τ.dst.src.time - 103) + 3 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 103) * τ.dst.src.base) =
+        2 ^ 3 * (27 * m + 16) := by
+    calc
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 103) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 103) * 2 ^ 3) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 100) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (8 * m + 4) + 20 := htransport
+      _ = 2 ^ 3 * (27 * m + 16) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 3) hmul
+
+/-- The returned `time ≥ 103` transport is exactly the older `time ≥ 31`
+    shell after renormalizing the shell parameter by
+    `m ↦ 4722366482869645213696*m + 2798439397256086052560`. -/
+theorem returned_thirty_one_shell_transport_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 20282409603651670423947251286016 * m + 12019205691052841732709482243565) :
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base = 2 ^ 72 * (27 * m + 16) := by
+  have hm' : τ.src.src.base = 4294967296 * (4722366482869645213696 * m + 2798439397256086052560) + 2545165805 := by
+    calc
+      τ.src.src.base = 20282409603651670423947251286016 * m + 12019205691052841732709482243565 := hm
+      _ = 4294967296 * (4722366482869645213696 * m + 2798439397256086052560) + 2545165805 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base
+        = 27 * (4722366482869645213696 * m + 2798439397256086052560) + 16 := by
+            exact two_pow_dst_time_sub_thirty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_4294967296m_add_2545165805
+              τ ht he hm'
+    _ = 2 ^ 72 * (27 * m + 16) := by
+      ring_nf
+
+/-- The returned `time ≥ 108` transport is exactly the older `time ≥ 36`
+    shell after renormalizing the shell parameter by
+    `m ↦ 4722366482869645213696*m + 2448634472599075295990`. -/
+theorem returned_thirty_six_shell_transport_of_src_base_eq_649037107316853453566312041152512m_add_336537759349479568515865502819821
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 649037107316853453566312041152512 * m + 336537759349479568515865502819821) :
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base = 2 ^ 72 * (27 * m + 14) := by
+  have hm' : τ.src.src.base = 137438953472 * (4722366482869645213696 * m + 2448634472599075295990) + 71264642541 := by
+    calc
+      τ.src.src.base = 649037107316853453566312041152512 * m + 336537759349479568515865502819821 := hm
+      _ = 137438953472 * (4722366482869645213696 * m + 2448634472599075295990) + 71264642541 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base
+        = 27 * (4722366482869645213696 * m + 2448634472599075295990) + 14 := by
+            exact two_pow_dst_time_sub_thirty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_137438953472m_add_71264642541
+              τ ht he hm'
+    _ = 2 ^ 72 * (27 * m + 14) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 103` branch:
+    `base = 40564819207303340847894502572032*m + 32301615294704512156656733529581` is exactly the
+    `time = 103` case. -/
+theorem dst_time_eq_one_hundred_three_of_src_base_eq_40564819207303340847894502572032m_add_32301615294704512156656733529581
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 40564819207303340847894502572032 * m + 32301615294704512156656733529581) :
+    τ.dst.src.time = 103 := by
+  have hk : τ.src.src.base = 32 * (1267650600228229401496703205376 * m + 1009425477959516004895522922799) + 13 := by
+    calc
+      τ.src.src.base = 40564819207303340847894502572032 * m + 32301615294704512156656733529581 := hm
+      _ = 32 * (1267650600228229401496703205376 * m + 1009425477959516004895522922799) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 43) := by
+    omega
+  have hv2 : v2 (27 * (1267650600228229401496703205376 * m + 1009425477959516004895522922799) + 11) = 99 := by
+    calc
+      v2 (27 * (1267650600228229401496703205376 * m + 1009425477959516004895522922799) + 11) =
+          v2 (2 ^ 99 * (54 * m + 43)) := by
+            ring_nf
+      _ = 99 := by
+        simpa using v2_pow_mul_of_not_two_dvd 99 (54 * m + 43) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (1267650600228229401496703205376 * m + 1009425477959516004895522922799) + 11) := htime
+    _ = 4 + 99 := by rw [hv2]
+    _ = 103 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 40564819207303340847894502572032*m + 32301615294704512156656733529581`,
+    the higher-time destination base is exactly `54*m + 43`. -/
+theorem dst_base_eq_54m_add_43_of_src_base_eq_40564819207303340847894502572032m_add_32301615294704512156656733529581
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 40564819207303340847894502572032 * m + 32301615294704512156656733529581) :
+    τ.dst.src.base = 54 * m + 43 := by
+  have hm' : τ.src.src.base = 20282409603651670423947251286016 * (2 * m + 1) + 12019205691052841732709482243565 := by
+    calc
+      τ.src.src.base = 40564819207303340847894502572032 * m + 32301615294704512156656733529581 := hm
+      _ = 20282409603651670423947251286016 * (2 * m + 1) + 12019205691052841732709482243565 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 54 * m + 43 := by
+    calc
+      2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 27 * (2 * m + 1) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_three_mul_dst_base_eq_27m_add_16_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+          τ ht he hm'
+      _ = 54 * m + 43 := by
+        ring
+  have htime : τ.dst.src.time = 103 :=
+    dst_time_eq_one_hundred_three_of_src_base_eq_40564819207303340847894502572032m_add_32301615294704512156656733529581 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 103` branch:
+    `base = 81129638414606681695789005144064*m + 52584024898356182580603984815597` is exactly the
+    `time = 104` case. -/
+theorem dst_time_eq_one_hundred_four_of_src_base_eq_81129638414606681695789005144064m_add_52584024898356182580603984815597
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 81129638414606681695789005144064 * m + 52584024898356182580603984815597) :
+    τ.dst.src.time = 104 := by
+  have hk : τ.src.src.base = 32 * (2535301200456458802993406410752 * m + 1643250778073630705643874525487) + 13 := by
+    calc
+      τ.src.src.base = 81129638414606681695789005144064 * m + 52584024898356182580603984815597 := hm
+      _ = 32 * (2535301200456458802993406410752 * m + 1643250778073630705643874525487) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 35) := by
+    omega
+  have hv2 : v2 (27 * (2535301200456458802993406410752 * m + 1643250778073630705643874525487) + 11) = 100 := by
+    calc
+      v2 (27 * (2535301200456458802993406410752 * m + 1643250778073630705643874525487) + 11) =
+          v2 (2 ^ 100 * (54 * m + 35)) := by
+            ring_nf
+      _ = 100 := by
+        simpa using v2_pow_mul_of_not_two_dvd 100 (54 * m + 35) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (2535301200456458802993406410752 * m + 1643250778073630705643874525487) + 11) := htime
+    _ = 4 + 100 := by rw [hv2]
+    _ = 104 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 81129638414606681695789005144064*m + 52584024898356182580603984815597`,
+    the higher-time destination base is exactly `54*m + 35`. -/
+theorem dst_base_eq_54m_add_35_of_src_base_eq_81129638414606681695789005144064m_add_52584024898356182580603984815597
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 81129638414606681695789005144064 * m + 52584024898356182580603984815597) :
+    τ.dst.src.base = 54 * m + 35 := by
+  have hm' : τ.src.src.base = 20282409603651670423947251286016 * (4 * m + 2) + 12019205691052841732709482243565 := by
+    calc
+      τ.src.src.base = 81129638414606681695789005144064 * m + 52584024898356182580603984815597 := hm
+      _ = 20282409603651670423947251286016 * (4 * m + 2) + 12019205691052841732709482243565 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 108 * m + 70 := by
+    calc
+      2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 27 * (4 * m + 2) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_three_mul_dst_base_eq_27m_add_16_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+          τ ht he hm'
+      _ = 108 * m + 70 := by
+        ring
+  have htime : τ.dst.src.time = 104 :=
+    dst_time_eq_one_hundred_four_of_src_base_eq_81129638414606681695789005144064m_add_52584024898356182580603984815597 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 103` branch:
+    `base = 162259276829213363391578010288128*m + 93148844105659523428498487387629` is exactly the
+    `time = 105` case. -/
+theorem dst_time_eq_one_hundred_five_of_src_base_eq_162259276829213363391578010288128m_add_93148844105659523428498487387629
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 162259276829213363391578010288128 * m + 93148844105659523428498487387629) :
+    τ.dst.src.time = 105 := by
+  have hk : τ.src.src.base = 32 * (5070602400912917605986812821504 * m + 2910901378301860107140577730863) + 13 := by
+    calc
+      τ.src.src.base = 162259276829213363391578010288128 * m + 93148844105659523428498487387629 := hm
+      _ = 32 * (5070602400912917605986812821504 * m + 2910901378301860107140577730863) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 31) := by
+    omega
+  have hv2 : v2 (27 * (5070602400912917605986812821504 * m + 2910901378301860107140577730863) + 11) = 101 := by
+    calc
+      v2 (27 * (5070602400912917605986812821504 * m + 2910901378301860107140577730863) + 11) =
+          v2 (2 ^ 101 * (54 * m + 31)) := by
+            ring_nf
+      _ = 101 := by
+        simpa using v2_pow_mul_of_not_two_dvd 101 (54 * m + 31) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (5070602400912917605986812821504 * m + 2910901378301860107140577730863) + 11) := htime
+    _ = 4 + 101 := by rw [hv2]
+    _ = 105 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 162259276829213363391578010288128*m + 93148844105659523428498487387629`,
+    the higher-time destination base is exactly `54*m + 31`. -/
+theorem dst_base_eq_54m_add_31_of_src_base_eq_162259276829213363391578010288128m_add_93148844105659523428498487387629
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 162259276829213363391578010288128 * m + 93148844105659523428498487387629) :
+    τ.dst.src.base = 54 * m + 31 := by
+  have hm' : τ.src.src.base = 20282409603651670423947251286016 * (8 * m + 4) + 12019205691052841732709482243565 := by
+    calc
+      τ.src.src.base = 162259276829213363391578010288128 * m + 93148844105659523428498487387629 := hm
+      _ = 20282409603651670423947251286016 * (8 * m + 4) + 12019205691052841732709482243565 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 216 * m + 124 := by
+    calc
+      2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 27 * (8 * m + 4) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_three_mul_dst_base_eq_27m_add_16_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+          τ ht he hm'
+      _ = 216 * m + 124 := by
+        ring
+  have htime : τ.dst.src.time = 105 :=
+    dst_time_eq_one_hundred_five_of_src_base_eq_162259276829213363391578010288128m_add_93148844105659523428498487387629 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 103` branch:
+    `base = 324518553658426726783156020576256*m + 174278482520266205124287492531693` is exactly the
+    `time = 106` case. -/
+theorem dst_time_eq_one_hundred_six_of_src_base_eq_324518553658426726783156020576256m_add_174278482520266205124287492531693
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 324518553658426726783156020576256 * m + 174278482520266205124287492531693) :
+    τ.dst.src.time = 106 := by
+  have hk : τ.src.src.base = 32 * (10141204801825835211973625643008 * m + 5446202578758318910133984141615) + 13 := by
+    calc
+      τ.src.src.base = 324518553658426726783156020576256 * m + 174278482520266205124287492531693 := hm
+      _ = 32 * (10141204801825835211973625643008 * m + 5446202578758318910133984141615) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 29) := by
+    omega
+  have hv2 : v2 (27 * (10141204801825835211973625643008 * m + 5446202578758318910133984141615) + 11) = 102 := by
+    calc
+      v2 (27 * (10141204801825835211973625643008 * m + 5446202578758318910133984141615) + 11) =
+          v2 (2 ^ 102 * (54 * m + 29)) := by
+            ring_nf
+      _ = 102 := by
+        simpa using v2_pow_mul_of_not_two_dvd 102 (54 * m + 29) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (10141204801825835211973625643008 * m + 5446202578758318910133984141615) + 11) := htime
+    _ = 4 + 102 := by rw [hv2]
+    _ = 106 := by norm_num
+
+/-- On the fourth dyadic shell
+    `base = 324518553658426726783156020576256*m + 174278482520266205124287492531693`,
+    the higher-time destination base is exactly `54*m + 29`. -/
+theorem dst_base_eq_54m_add_29_of_src_base_eq_324518553658426726783156020576256m_add_174278482520266205124287492531693
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 324518553658426726783156020576256 * m + 174278482520266205124287492531693) :
+    τ.dst.src.base = 54 * m + 29 := by
+  have hm' : τ.src.src.base = 20282409603651670423947251286016 * (16 * m + 8) + 12019205691052841732709482243565 := by
+    calc
+      τ.src.src.base = 324518553658426726783156020576256 * m + 174278482520266205124287492531693 := hm
+      _ = 20282409603651670423947251286016 * (16 * m + 8) + 12019205691052841732709482243565 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 432 * m + 232 := by
+    calc
+      2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 27 * (16 * m + 8) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_three_mul_dst_base_eq_27m_add_16_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+          τ ht he hm'
+      _ = 432 * m + 232 := by
+        ring
+  have htime : τ.dst.src.time = 106 :=
+    dst_time_eq_one_hundred_six_of_src_base_eq_324518553658426726783156020576256m_add_174278482520266205124287492531693 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fifth dyadic shell inside the residual `time ≥ 103` branch:
+    `base = 649037107316853453566312041152512*m + 12019205691052841732709482243565` is exactly the
+    `time = 107` case. -/
+theorem dst_time_eq_one_hundred_seven_of_src_base_eq_649037107316853453566312041152512m_add_12019205691052841732709482243565
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 649037107316853453566312041152512 * m + 12019205691052841732709482243565) :
+    τ.dst.src.time = 107 := by
+  have hk : τ.src.src.base = 32 * (20282409603651670423947251286016 * m + 375600177845401304147171320111) + 13 := by
+    calc
+      τ.src.src.base = 649037107316853453566312041152512 * m + 12019205691052841732709482243565 := hm
+      _ = 32 * (20282409603651670423947251286016 * m + 375600177845401304147171320111) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 1) := by
+    omega
+  have hv2 : v2 (27 * (20282409603651670423947251286016 * m + 375600177845401304147171320111) + 11) = 103 := by
+    calc
+      v2 (27 * (20282409603651670423947251286016 * m + 375600177845401304147171320111) + 11) =
+          v2 (2 ^ 103 * (54 * m + 1)) := by
+            ring_nf
+      _ = 103 := by
+        simpa using v2_pow_mul_of_not_two_dvd 103 (54 * m + 1) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (20282409603651670423947251286016 * m + 375600177845401304147171320111) + 11) := htime
+    _ = 4 + 103 := by rw [hv2]
+    _ = 107 := by norm_num
+
+/-- On the fifth dyadic shell
+    `base = 649037107316853453566312041152512*m + 12019205691052841732709482243565`,
+    the higher-time destination base is exactly `54*m + 1`. -/
+theorem dst_base_eq_54m_add_1_of_src_base_eq_649037107316853453566312041152512m_add_12019205691052841732709482243565
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 649037107316853453566312041152512 * m + 12019205691052841732709482243565) :
+    τ.dst.src.base = 54 * m + 1 := by
+  have hm' : τ.src.src.base = 20282409603651670423947251286016 * (32 * m) + 12019205691052841732709482243565 := by
+    calc
+      τ.src.src.base = 649037107316853453566312041152512 * m + 12019205691052841732709482243565 := hm
+      _ = 20282409603651670423947251286016 * (32 * m) + 12019205691052841732709482243565 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 864 * m + 16 := by
+    calc
+      2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 27 * (32 * m) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_three_mul_dst_base_eq_27m_add_16_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+          τ ht he hm'
+      _ = 864 * m + 16 := by
+        ring
+  have htime : τ.dst.src.time = 107 :=
+    dst_time_eq_one_hundred_seven_of_src_base_eq_649037107316853453566312041152512m_add_12019205691052841732709482243565 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first five dyadic cases of the `time ≥ 103`
+    branch: `base = 649037107316853453566312041152512*m + 336537759349479568515865502819821` still forces
+    destination time at least `108`. -/
+theorem one_hundred_eight_le_dst_time_of_src_base_eq_649037107316853453566312041152512m_add_336537759349479568515865502819821
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 649037107316853453566312041152512 * m + 336537759349479568515865502819821) :
+    108 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 13 := by
+    calc
+      τ.src.src.base = 649037107316853453566312041152512 * m + 336537759349479568515865502819821 := hm
+      _ = 32 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 11 = 2 ^ 104 * (27 * m + 14) := by
+    ring_nf
+  have hpos : 0 < 27 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 11 := by
+    omega
+  have hdvd : 2 ^ 104 ∣ 27 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 11 := by
+    refine ⟨27 * m + 14, ?_⟩
+    exact hfac
+  have hv2_ge104 : 104 ≤ v2 (27 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 11) + 1 ≤ 104 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 11) + 1) ∣
+          27 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 11) hpos) hdiv
+  have htime_ge : 108 ≤ 4 + v2 (27 * (20282409603651670423947251286016 * m + 10516804979671236516120796963119) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first five dyadic shells of the
+    `time ≥ 103` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_eight_mul_dst_base_eq_27m_add_14_of_src_base_eq_649037107316853453566312041152512m_add_336537759349479568515865502819821
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 649037107316853453566312041152512 * m + 336537759349479568515865502819821) :
+    2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 27 * m + 14 := by
+  have hm' : τ.src.src.base = 20282409603651670423947251286016 * (32 * m + 16) + 12019205691052841732709482243565 := by
+    calc
+      τ.src.src.base = 649037107316853453566312041152512 * m + 336537759349479568515865502819821 := hm
+      _ = 20282409603651670423947251286016 * (32 * m + 16) + 12019205691052841732709482243565 := by ring
+  have htime_ge108 : 108 ≤ τ.dst.src.time :=
+    one_hundred_eight_le_dst_time_of_src_base_eq_649037107316853453566312041152512m_add_336537759349479568515865502819821 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 103) * τ.dst.src.base = 27 * (32 * m + 16) + 16 :=
+    two_pow_dst_time_sub_one_hundred_three_mul_dst_base_eq_27m_add_16_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 103) = 2 ^ (τ.dst.src.time - 108) * 2 ^ 5 := by
+    have hsub : τ.dst.src.time - 103 = (τ.dst.src.time - 108) + 5 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 108) * τ.dst.src.base) =
+        2 ^ 5 * (27 * m + 14) := by
+    calc
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 108) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 108) * 2 ^ 5) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 103) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (32 * m + 16) + 16 := htransport
+      _ = 2 ^ 5 * (27 * m + 14) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 5) hmul
+
+ /-- First dyadic shell inside the residual `time ≥ 108` branch:
+    `base = 1298074214633706907132624082305024*m + 985574866666333022082177543972333` is exactly the
+    `time = 108` case. -/
+theorem dst_time_eq_one_hundred_eight_of_src_base_eq_1298074214633706907132624082305024m_add_985574866666333022082177543972333
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1298074214633706907132624082305024 * m + 985574866666333022082177543972333) :
+    τ.dst.src.time = 108 := by
+  have hk : τ.src.src.base = 32 * (40564819207303340847894502572032 * m + 30799214583322906940068048249135) + 13 := by
+    calc
+      τ.src.src.base = 1298074214633706907132624082305024 * m + 985574866666333022082177543972333 := hm
+      _ = 32 * (40564819207303340847894502572032 * m + 30799214583322906940068048249135) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 41) := by
+    omega
+  have hv2 : v2 (27 * (40564819207303340847894502572032 * m + 30799214583322906940068048249135) + 11) = 104 := by
+    calc
+      v2 (27 * (40564819207303340847894502572032 * m + 30799214583322906940068048249135) + 11) =
+          v2 (2 ^ 104 * (54 * m + 41)) := by
+            ring_nf
+      _ = 104 := by
+        simpa using v2_pow_mul_of_not_two_dvd 104 (54 * m + 41) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (40564819207303340847894502572032 * m + 30799214583322906940068048249135) + 11) := htime
+    _ = 4 + 104 := by rw [hv2]
+    _ = 108 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 1298074214633706907132624082305024*m + 985574866666333022082177543972333`,
+    the higher-time destination base is exactly `54*m + 41`. -/
+theorem dst_base_eq_54m_add_41_of_src_base_eq_1298074214633706907132624082305024m_add_985574866666333022082177543972333
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1298074214633706907132624082305024 * m + 985574866666333022082177543972333) :
+    τ.dst.src.base = 54 * m + 41 := by
+  have hm' : τ.src.src.base = 649037107316853453566312041152512 * (2 * m + 1) + 336537759349479568515865502819821 := by
+    calc
+      τ.src.src.base = 1298074214633706907132624082305024 * m + 985574866666333022082177543972333 := hm
+      _ = 649037107316853453566312041152512 * (2 * m + 1) + 336537759349479568515865502819821 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 54 * m + 41 := by
+    calc
+      2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 27 * (2 * m + 1) + 14 := by
+        exact two_pow_dst_time_sub_one_hundred_eight_mul_dst_base_eq_27m_add_14_of_src_base_eq_649037107316853453566312041152512m_add_336537759349479568515865502819821
+          τ ht he hm'
+      _ = 54 * m + 41 := by
+        ring
+  have htime : τ.dst.src.time = 108 :=
+    dst_time_eq_one_hundred_eight_of_src_base_eq_1298074214633706907132624082305024m_add_985574866666333022082177543972333 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 108` branch:
+    `base = 2596148429267413814265248164610048*m + 336537759349479568515865502819821` is exactly the
+    `time = 109` case. -/
+theorem dst_time_eq_one_hundred_nine_of_src_base_eq_2596148429267413814265248164610048m_add_336537759349479568515865502819821
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2596148429267413814265248164610048 * m + 336537759349479568515865502819821) :
+    τ.dst.src.time = 109 := by
+  have hk : τ.src.src.base = 32 * (81129638414606681695789005144064 * m + 10516804979671236516120796963119) + 13 := by
+    calc
+      τ.src.src.base = 2596148429267413814265248164610048 * m + 336537759349479568515865502819821 := hm
+      _ = 32 * (81129638414606681695789005144064 * m + 10516804979671236516120796963119) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 7) := by
+    omega
+  have hv2 : v2 (27 * (81129638414606681695789005144064 * m + 10516804979671236516120796963119) + 11) = 105 := by
+    calc
+      v2 (27 * (81129638414606681695789005144064 * m + 10516804979671236516120796963119) + 11) =
+          v2 (2 ^ 105 * (54 * m + 7)) := by
+            ring_nf
+      _ = 105 := by
+        simpa using v2_pow_mul_of_not_two_dvd 105 (54 * m + 7) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (81129638414606681695789005144064 * m + 10516804979671236516120796963119) + 11) := htime
+    _ = 4 + 105 := by rw [hv2]
+    _ = 109 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 2596148429267413814265248164610048*m + 336537759349479568515865502819821`,
+    the higher-time destination base is exactly `54*m + 7`. -/
+theorem dst_base_eq_54m_add_7_of_src_base_eq_2596148429267413814265248164610048m_add_336537759349479568515865502819821
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2596148429267413814265248164610048 * m + 336537759349479568515865502819821) :
+    τ.dst.src.base = 54 * m + 7 := by
+  have hm' : τ.src.src.base = 649037107316853453566312041152512 * (4 * m) + 336537759349479568515865502819821 := by
+    calc
+      τ.src.src.base = 2596148429267413814265248164610048 * m + 336537759349479568515865502819821 := hm
+      _ = 649037107316853453566312041152512 * (4 * m) + 336537759349479568515865502819821 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 108 * m + 14 := by
+    calc
+      2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 27 * (4 * m) + 14 := by
+        exact two_pow_dst_time_sub_one_hundred_eight_mul_dst_base_eq_27m_add_14_of_src_base_eq_649037107316853453566312041152512m_add_336537759349479568515865502819821
+          τ ht he hm'
+      _ = 108 * m + 14 := by
+        ring
+  have htime : τ.dst.src.time = 109 :=
+    dst_time_eq_one_hundred_nine_of_src_base_eq_2596148429267413814265248164610048m_add_336537759349479568515865502819821 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 108` branch:
+    `base = 5192296858534827628530496329220096*m + 1634611973983186475648489585124845` is exactly the
+    `time = 110` case. -/
+theorem dst_time_eq_one_hundred_ten_of_src_base_eq_5192296858534827628530496329220096m_add_1634611973983186475648489585124845
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5192296858534827628530496329220096 * m + 1634611973983186475648489585124845) :
+    τ.dst.src.time = 110 := by
+  have hk : τ.src.src.base = 32 * (162259276829213363391578010288128 * m + 51081624186974577364015299535151) + 13 := by
+    calc
+      τ.src.src.base = 5192296858534827628530496329220096 * m + 1634611973983186475648489585124845 := hm
+      _ = 32 * (162259276829213363391578010288128 * m + 51081624186974577364015299535151) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 17) := by
+    omega
+  have hv2 : v2 (27 * (162259276829213363391578010288128 * m + 51081624186974577364015299535151) + 11) = 106 := by
+    calc
+      v2 (27 * (162259276829213363391578010288128 * m + 51081624186974577364015299535151) + 11) =
+          v2 (2 ^ 106 * (54 * m + 17)) := by
+            ring_nf
+      _ = 106 := by
+        simpa using v2_pow_mul_of_not_two_dvd 106 (54 * m + 17) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (162259276829213363391578010288128 * m + 51081624186974577364015299535151) + 11) := htime
+    _ = 4 + 106 := by rw [hv2]
+    _ = 110 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 5192296858534827628530496329220096*m + 1634611973983186475648489585124845`,
+    the higher-time destination base is exactly `54*m + 17`. -/
+theorem dst_base_eq_54m_add_17_of_src_base_eq_5192296858534827628530496329220096m_add_1634611973983186475648489585124845
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5192296858534827628530496329220096 * m + 1634611973983186475648489585124845) :
+    τ.dst.src.base = 54 * m + 17 := by
+  have hm' : τ.src.src.base = 649037107316853453566312041152512 * (8 * m + 2) + 336537759349479568515865502819821 := by
+    calc
+      τ.src.src.base = 5192296858534827628530496329220096 * m + 1634611973983186475648489585124845 := hm
+      _ = 649037107316853453566312041152512 * (8 * m + 2) + 336537759349479568515865502819821 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 216 * m + 68 := by
+    calc
+      2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 27 * (8 * m + 2) + 14 := by
+        exact two_pow_dst_time_sub_one_hundred_eight_mul_dst_base_eq_27m_add_14_of_src_base_eq_649037107316853453566312041152512m_add_336537759349479568515865502819821
+          τ ht he hm'
+      _ = 216 * m + 68 := by
+        ring
+  have htime : τ.dst.src.time = 110 :=
+    dst_time_eq_one_hundred_ten_of_src_base_eq_5192296858534827628530496329220096m_add_1634611973983186475648489585124845 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 108` branch:
+    `base = 10384593717069655257060992658440192*m + 9423057261785427918444234078954989` is exactly the
+    `time = 111` case. -/
+theorem dst_time_eq_one_hundred_eleven_of_src_base_eq_10384593717069655257060992658440192m_add_9423057261785427918444234078954989
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10384593717069655257060992658440192 * m + 9423057261785427918444234078954989) :
+    τ.dst.src.time = 111 := by
+  have hk : τ.src.src.base = 32 * (324518553658426726783156020576256 * m + 294470539430794622451382314967343) + 13 := by
+    calc
+      τ.src.src.base = 10384593717069655257060992658440192 * m + 9423057261785427918444234078954989 := hm
+      _ = 32 * (324518553658426726783156020576256 * m + 294470539430794622451382314967343) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 49) := by
+    omega
+  have hv2 : v2 (27 * (324518553658426726783156020576256 * m + 294470539430794622451382314967343) + 11) = 107 := by
+    calc
+      v2 (27 * (324518553658426726783156020576256 * m + 294470539430794622451382314967343) + 11) =
+          v2 (2 ^ 107 * (54 * m + 49)) := by
+            ring_nf
+      _ = 107 := by
+        simpa using v2_pow_mul_of_not_two_dvd 107 (54 * m + 49) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (324518553658426726783156020576256 * m + 294470539430794622451382314967343) + 11) := htime
+    _ = 4 + 107 := by rw [hv2]
+    _ = 111 := by norm_num
+
+/-- On the fourth dyadic shell
+    `base = 10384593717069655257060992658440192*m + 9423057261785427918444234078954989`,
+    the higher-time destination base is exactly `54*m + 49`. -/
+theorem dst_base_eq_54m_add_49_of_src_base_eq_10384593717069655257060992658440192m_add_9423057261785427918444234078954989
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10384593717069655257060992658440192 * m + 9423057261785427918444234078954989) :
+    τ.dst.src.base = 54 * m + 49 := by
+  have hm' : τ.src.src.base = 649037107316853453566312041152512 * (16 * m + 14) + 336537759349479568515865502819821 := by
+    calc
+      τ.src.src.base = 10384593717069655257060992658440192 * m + 9423057261785427918444234078954989 := hm
+      _ = 649037107316853453566312041152512 * (16 * m + 14) + 336537759349479568515865502819821 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 432 * m + 392 := by
+    calc
+      2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 27 * (16 * m + 14) + 14 := by
+        exact two_pow_dst_time_sub_one_hundred_eight_mul_dst_base_eq_27m_add_14_of_src_base_eq_649037107316853453566312041152512m_add_336537759349479568515865502819821
+          τ ht he hm'
+      _ = 432 * m + 392 := by
+        ring
+  have htime : τ.dst.src.time = 111 :=
+    dst_time_eq_one_hundred_eleven_of_src_base_eq_10384593717069655257060992658440192m_add_9423057261785427918444234078954989 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 108`
+    branch: `base = 10384593717069655257060992658440192*m + 4230760403250600289913737749734893` still forces
+    destination time at least `112`. -/
+theorem one_hundred_twelve_le_dst_time_of_src_base_eq_10384593717069655257060992658440192m_add_4230760403250600289913737749734893
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10384593717069655257060992658440192 * m + 4230760403250600289913737749734893) :
+    112 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 13 := by
+    calc
+      τ.src.src.base = 10384593717069655257060992658440192 * m + 4230760403250600289913737749734893 := hm
+      _ = 32 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 11 = 2 ^ 108 * (27 * m + 11) := by
+    ring_nf
+  have hpos : 0 < 27 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 11 := by
+    omega
+  have hdvd : 2 ^ 108 ∣ 27 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 11 := by
+    refine ⟨27 * m + 11, ?_⟩
+    exact hfac
+  have hv2_ge108 : 108 ≤ v2 (27 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 11) + 1 ≤ 108 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 11) + 1) ∣
+          27 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 11) hpos) hdiv
+  have htime_ge : 112 ≤ 4 + v2 (27 * (324518553658426726783156020576256 * m + 132211262601581259059804304679215) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 108` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_twelve_mul_dst_base_eq_27m_add_11_of_src_base_eq_10384593717069655257060992658440192m_add_4230760403250600289913737749734893
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10384593717069655257060992658440192 * m + 4230760403250600289913737749734893) :
+    2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 27 * m + 11 := by
+  have hm' : τ.src.src.base = 649037107316853453566312041152512 * (16 * m + 6) + 336537759349479568515865502819821 := by
+    calc
+      τ.src.src.base = 10384593717069655257060992658440192 * m + 4230760403250600289913737749734893 := hm
+      _ = 649037107316853453566312041152512 * (16 * m + 6) + 336537759349479568515865502819821 := by ring
+  have htime_ge112 : 112 ≤ τ.dst.src.time :=
+    one_hundred_twelve_le_dst_time_of_src_base_eq_10384593717069655257060992658440192m_add_4230760403250600289913737749734893 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 108) * τ.dst.src.base = 27 * (16 * m + 6) + 14 :=
+    two_pow_dst_time_sub_one_hundred_eight_mul_dst_base_eq_27m_add_14_of_src_base_eq_649037107316853453566312041152512m_add_336537759349479568515865502819821
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 108) = 2 ^ (τ.dst.src.time - 112) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 108 = (τ.dst.src.time - 112) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 112) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 11) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 112) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 112) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 108) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 6) + 14 := htransport
+      _ = 2 ^ 4 * (27 * m + 11) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 112` transport is exactly the older `time ≥ 40`
+    shell after renormalizing the shell parameter by
+    `m ↦ 4722366482869645213696*m + 1923927085613559161135`. -/
+theorem returned_forty_shell_transport_of_src_base_eq_10384593717069655257060992658440192m_add_4230760403250600289913737749734893
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10384593717069655257060992658440192 * m + 4230760403250600289913737749734893) :
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base = 2 ^ 72 * (27 * m + 11) := by
+  have hm' : τ.src.src.base = 2199023255552 * (4722366482869645213696 * m + 1923927085613559161135) + 895898363373 := by
+    calc
+      τ.src.src.base = 10384593717069655257060992658440192 * m + 4230760403250600289913737749734893 := hm
+      _ = 2199023255552 * (4722366482869645213696 * m + 1923927085613559161135) + 895898363373 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base
+        = 27 * (4722366482869645213696 * m + 1923927085613559161135) + 11 := by
+            exact two_pow_dst_time_sub_forty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2199023255552m_add_895898363373
+              τ ht he hm'
+    _ = 2 ^ 72 * (27 * m + 11) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 112` branch:
+    `base = 20769187434139310514121985316880384*m + 4230760403250600289913737749734893` is exactly the
+    `time = 112` case. -/
+theorem dst_time_eq_one_hundred_twelve_of_src_base_eq_20769187434139310514121985316880384m_add_4230760403250600289913737749734893
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 20769187434139310514121985316880384 * m + 4230760403250600289913737749734893) :
+    τ.dst.src.time = 112 := by
+  have hk : τ.src.src.base = 32 * (649037107316853453566312041152512 * m + 132211262601581259059804304679215) + 13 := by
+    calc
+      τ.src.src.base = 20769187434139310514121985316880384 * m + 4230760403250600289913737749734893 := hm
+      _ = 32 * (649037107316853453566312041152512 * m + 132211262601581259059804304679215) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 11) := by
+    omega
+  have hv2 : v2 (27 * (649037107316853453566312041152512 * m + 132211262601581259059804304679215) + 11) = 108 := by
+    calc
+      v2 (27 * (649037107316853453566312041152512 * m + 132211262601581259059804304679215) + 11) =
+          v2 (2 ^ 108 * (54 * m + 11)) := by
+            ring_nf
+      _ = 108 := by
+        simpa using v2_pow_mul_of_not_two_dvd 108 (54 * m + 11) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (649037107316853453566312041152512 * m + 132211262601581259059804304679215) + 11) := htime
+    _ = 4 + 108 := by rw [hv2]
+    _ = 112 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 20769187434139310514121985316880384*m + 4230760403250600289913737749734893`,
+    the higher-time destination base is exactly `54*m + 11`. -/
+theorem dst_base_eq_54m_add_11_of_src_base_eq_20769187434139310514121985316880384m_add_4230760403250600289913737749734893
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 20769187434139310514121985316880384 * m + 4230760403250600289913737749734893) :
+    τ.dst.src.base = 54 * m + 11 := by
+  have hm' : τ.src.src.base = 10384593717069655257060992658440192 * (2 * m) + 4230760403250600289913737749734893 := by
+    calc
+      τ.src.src.base = 20769187434139310514121985316880384 * m + 4230760403250600289913737749734893 := hm
+      _ = 10384593717069655257060992658440192 * (2 * m) + 4230760403250600289913737749734893 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 54 * m + 11 := by
+    calc
+      2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 27 * (2 * m) + 11 := by
+        exact two_pow_dst_time_sub_one_hundred_twelve_mul_dst_base_eq_27m_add_11_of_src_base_eq_10384593717069655257060992658440192m_add_4230760403250600289913737749734893
+          τ ht he hm'
+      _ = 54 * m + 11 := by
+        ring
+  have htime : τ.dst.src.time = 112 :=
+    dst_time_eq_one_hundred_twelve_of_src_base_eq_20769187434139310514121985316880384m_add_4230760403250600289913737749734893 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 112` branch:
+    `base = 41538374868278621028243970633760768*m + 14615354120320255546974730408175085` is exactly the
+    `time = 113` case. -/
+theorem dst_time_eq_one_hundred_thirteen_of_src_base_eq_41538374868278621028243970633760768m_add_14615354120320255546974730408175085
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 41538374868278621028243970633760768 * m + 14615354120320255546974730408175085) :
+    τ.dst.src.time = 113 := by
+  have hk : τ.src.src.base = 32 * (1298074214633706907132624082305024 * m + 456729816260007985842960325255471) + 13 := by
+    calc
+      τ.src.src.base = 41538374868278621028243970633760768 * m + 14615354120320255546974730408175085 := hm
+      _ = 32 * (1298074214633706907132624082305024 * m + 456729816260007985842960325255471) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 19) := by
+    omega
+  have hv2 : v2 (27 * (1298074214633706907132624082305024 * m + 456729816260007985842960325255471) + 11) = 109 := by
+    calc
+      v2 (27 * (1298074214633706907132624082305024 * m + 456729816260007985842960325255471) + 11) =
+          v2 (2 ^ 109 * (54 * m + 19)) := by
+            ring_nf
+      _ = 109 := by
+        simpa using v2_pow_mul_of_not_two_dvd 109 (54 * m + 19) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (1298074214633706907132624082305024 * m + 456729816260007985842960325255471) + 11) := htime
+    _ = 4 + 109 := by rw [hv2]
+    _ = 113 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 41538374868278621028243970633760768*m + 14615354120320255546974730408175085`,
+    the higher-time destination base is exactly `54*m + 19`. -/
+theorem dst_base_eq_54m_add_19_of_src_base_eq_41538374868278621028243970633760768m_add_14615354120320255546974730408175085
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 41538374868278621028243970633760768 * m + 14615354120320255546974730408175085) :
+    τ.dst.src.base = 54 * m + 19 := by
+  have hm' : τ.src.src.base = 10384593717069655257060992658440192 * (4 * m + 1) + 4230760403250600289913737749734893 := by
+    calc
+      τ.src.src.base = 41538374868278621028243970633760768 * m + 14615354120320255546974730408175085 := hm
+      _ = 10384593717069655257060992658440192 * (4 * m + 1) + 4230760403250600289913737749734893 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 108 * m + 38 := by
+    calc
+      2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 27 * (4 * m + 1) + 11 := by
+        exact two_pow_dst_time_sub_one_hundred_twelve_mul_dst_base_eq_27m_add_11_of_src_base_eq_10384593717069655257060992658440192m_add_4230760403250600289913737749734893
+          τ ht he hm'
+      _ = 108 * m + 38 := by
+        ring
+  have htime : τ.dst.src.time = 113 :=
+    dst_time_eq_one_hundred_thirteen_of_src_base_eq_41538374868278621028243970633760768m_add_14615354120320255546974730408175085 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 112` branch:
+    `base = 83076749736557242056487941267521536*m + 35384541554459566061096715725055469` is exactly the
+    `time = 114` case. -/
+theorem dst_time_eq_one_hundred_fourteen_of_src_base_eq_83076749736557242056487941267521536m_add_35384541554459566061096715725055469
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 83076749736557242056487941267521536 * m + 35384541554459566061096715725055469) :
+    τ.dst.src.time = 114 := by
+  have hk : τ.src.src.base = 32 * (2596148429267413814265248164610048 * m + 1105766923576861439409272366407983) + 13 := by
+    calc
+      τ.src.src.base = 83076749736557242056487941267521536 * m + 35384541554459566061096715725055469 := hm
+      _ = 32 * (2596148429267413814265248164610048 * m + 1105766923576861439409272366407983) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 23) := by
+    omega
+  have hv2 : v2 (27 * (2596148429267413814265248164610048 * m + 1105766923576861439409272366407983) + 11) = 110 := by
+    calc
+      v2 (27 * (2596148429267413814265248164610048 * m + 1105766923576861439409272366407983) + 11) =
+          v2 (2 ^ 110 * (54 * m + 23)) := by
+            ring_nf
+      _ = 110 := by
+        simpa using v2_pow_mul_of_not_two_dvd 110 (54 * m + 23) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (2596148429267413814265248164610048 * m + 1105766923576861439409272366407983) + 11) := htime
+    _ = 4 + 110 := by rw [hv2]
+    _ = 114 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 83076749736557242056487941267521536*m + 35384541554459566061096715725055469`,
+    the higher-time destination base is exactly `54*m + 23`. -/
+theorem dst_base_eq_54m_add_23_of_src_base_eq_83076749736557242056487941267521536m_add_35384541554459566061096715725055469
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 83076749736557242056487941267521536 * m + 35384541554459566061096715725055469) :
+    τ.dst.src.base = 54 * m + 23 := by
+  have hm' : τ.src.src.base = 10384593717069655257060992658440192 * (8 * m + 3) + 4230760403250600289913737749734893 := by
+    calc
+      τ.src.src.base = 83076749736557242056487941267521536 * m + 35384541554459566061096715725055469 := hm
+      _ = 10384593717069655257060992658440192 * (8 * m + 3) + 4230760403250600289913737749734893 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 216 * m + 92 := by
+    calc
+      2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 27 * (8 * m + 3) + 11 := by
+        exact two_pow_dst_time_sub_one_hundred_twelve_mul_dst_base_eq_27m_add_11_of_src_base_eq_10384593717069655257060992658440192m_add_4230760403250600289913737749734893
+          τ ht he hm'
+      _ = 216 * m + 92 := by
+        ring
+  have htime : τ.dst.src.time = 114 :=
+    dst_time_eq_one_hundred_fourteen_of_src_base_eq_83076749736557242056487941267521536m_add_35384541554459566061096715725055469 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 112` branch:
+    `base = 166153499473114484112975882535043072*m + 76922916422738187089340686358816237` is exactly the
+    `time = 115` case. -/
+theorem dst_time_eq_one_hundred_fifteen_of_src_base_eq_166153499473114484112975882535043072m_add_76922916422738187089340686358816237
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 166153499473114484112975882535043072 * m + 76922916422738187089340686358816237) :
+    τ.dst.src.time = 115 := by
+  have hk : τ.src.src.base = 32 * (5192296858534827628530496329220096 * m + 2403841138210568346541896448713007) + 13 := by
+    calc
+      τ.src.src.base = 166153499473114484112975882535043072 * m + 76922916422738187089340686358816237 := hm
+      _ = 32 * (5192296858534827628530496329220096 * m + 2403841138210568346541896448713007) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 25) := by
+    omega
+  have hv2 : v2 (27 * (5192296858534827628530496329220096 * m + 2403841138210568346541896448713007) + 11) = 111 := by
+    calc
+      v2 (27 * (5192296858534827628530496329220096 * m + 2403841138210568346541896448713007) + 11) =
+          v2 (2 ^ 111 * (54 * m + 25)) := by
+            ring_nf
+      _ = 111 := by
+        simpa using v2_pow_mul_of_not_two_dvd 111 (54 * m + 25) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (5192296858534827628530496329220096 * m + 2403841138210568346541896448713007) + 11) := htime
+    _ = 4 + 111 := by rw [hv2]
+    _ = 115 := by norm_num
+
+/-- On the fourth dyadic shell
+    `base = 166153499473114484112975882535043072*m + 76922916422738187089340686358816237`,
+    the higher-time destination base is exactly `54*m + 25`. -/
+theorem dst_base_eq_54m_add_25_of_src_base_eq_166153499473114484112975882535043072m_add_76922916422738187089340686358816237
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 166153499473114484112975882535043072 * m + 76922916422738187089340686358816237) :
+    τ.dst.src.base = 54 * m + 25 := by
+  have hm' : τ.src.src.base = 10384593717069655257060992658440192 * (16 * m + 7) + 4230760403250600289913737749734893 := by
+    calc
+      τ.src.src.base = 166153499473114484112975882535043072 * m + 76922916422738187089340686358816237 := hm
+      _ = 10384593717069655257060992658440192 * (16 * m + 7) + 4230760403250600289913737749734893 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 432 * m + 200 := by
+    calc
+      2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 27 * (16 * m + 7) + 11 := by
+        exact two_pow_dst_time_sub_one_hundred_twelve_mul_dst_base_eq_27m_add_11_of_src_base_eq_10384593717069655257060992658440192m_add_4230760403250600289913737749734893
+          τ ht he hm'
+      _ = 432 * m + 200 := by
+        ring
+  have htime : τ.dst.src.time = 115 :=
+    dst_time_eq_one_hundred_fifteen_of_src_base_eq_166153499473114484112975882535043072m_add_76922916422738187089340686358816237 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 112`
+    branch: `base = 166153499473114484112975882535043072*m + 159999666159295429145828627626337773` still forces
+    destination time at least `116`. -/
+theorem one_hundred_sixteen_le_dst_time_of_src_base_eq_166153499473114484112975882535043072m_add_159999666159295429145828627626337773
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 166153499473114484112975882535043072 * m + 159999666159295429145828627626337773) :
+    116 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 13 := by
+    calc
+      τ.src.src.base = 166153499473114484112975882535043072 * m + 159999666159295429145828627626337773 := hm
+      _ = 32 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 11 = 2 ^ 112 * (27 * m + 26) := by
+    ring_nf
+  have hpos : 0 < 27 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 11 := by
+    omega
+  have hdvd : 2 ^ 112 ∣ 27 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 11 := by
+    refine ⟨27 * m + 26, ?_⟩
+    exact hfac
+  have hv2_ge112 : 112 ≤ v2 (27 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 11) + 1 ≤ 112 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 11) + 1) ∣
+          27 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 11) hpos) hdiv
+  have htime_ge : 116 ≤ 4 + v2 (27 * (5192296858534827628530496329220096 * m + 4999989567477982160807144613323055) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 112` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_sixteen_mul_dst_base_eq_27m_add_26_of_src_base_eq_166153499473114484112975882535043072m_add_159999666159295429145828627626337773
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 166153499473114484112975882535043072 * m + 159999666159295429145828627626337773) :
+    2 ^ (τ.dst.src.time - 116) * τ.dst.src.base = 27 * m + 26 := by
+  have hm' : τ.src.src.base = 10384593717069655257060992658440192 * (16 * m + 15) + 4230760403250600289913737749734893 := by
+    calc
+      τ.src.src.base = 166153499473114484112975882535043072 * m + 159999666159295429145828627626337773 := hm
+      _ = 10384593717069655257060992658440192 * (16 * m + 15) + 4230760403250600289913737749734893 := by ring
+  have htime_ge116 : 116 ≤ τ.dst.src.time :=
+    one_hundred_sixteen_le_dst_time_of_src_base_eq_166153499473114484112975882535043072m_add_159999666159295429145828627626337773 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 112) * τ.dst.src.base = 27 * (16 * m + 15) + 11 :=
+    two_pow_dst_time_sub_one_hundred_twelve_mul_dst_base_eq_27m_add_11_of_src_base_eq_10384593717069655257060992658440192m_add_4230760403250600289913737749734893
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 112) = 2 ^ (τ.dst.src.time - 116) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 112 = (τ.dst.src.time - 116) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 116) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 26) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 116) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 116) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 112) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 15) + 11 := htransport
+      _ = 2 ^ 4 * (27 * m + 26) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 116` transport is exactly the older `time ≥ 44`
+    shell after renormalizing the shell parameter by
+    `m ↦ 4722366482869645213696*m + 4547464020541139835410`. -/
+theorem returned_forty_four_shell_transport_of_src_base_eq_166153499473114484112975882535043072m_add_159999666159295429145828627626337773
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 166153499473114484112975882535043072 * m + 159999666159295429145828627626337773) :
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base = 2 ^ 72 * (27 * m + 26) := by
+  have hm' : τ.src.src.base = 35184372088832 * (4722366482869645213696 * m + 4547464020541139835410) + 33881247196653 := by
+    calc
+      τ.src.src.base = 166153499473114484112975882535043072 * m + 159999666159295429145828627626337773 := hm
+      _ = 35184372088832 * (4722366482869645213696 * m + 4547464020541139835410) + 33881247196653 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base
+        = 27 * (4722366482869645213696 * m + 4547464020541139835410) + 26 := by
+            exact two_pow_dst_time_sub_forty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_35184372088832m_add_33881247196653
+              τ ht he hm'
+    _ = 2 ^ 72 * (27 * m + 26) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 116` branch:
+    `base = 332306998946228968225951765070086144*m + 326153165632409913258804510161380845` is exactly the
+    `time = 116` case. -/
+theorem dst_time_eq_one_hundred_sixteen_of_src_base_eq_332306998946228968225951765070086144m_add_326153165632409913258804510161380845
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 332306998946228968225951765070086144 * m + 326153165632409913258804510161380845) :
+    τ.dst.src.time = 116 := by
+  have hk : τ.src.src.base = 32 * (10384593717069655257060992658440192 * m + 10192286426012809789337640942543151) + 13 := by
+    calc
+      τ.src.src.base = 332306998946228968225951765070086144 * m + 326153165632409913258804510161380845 := hm
+      _ = 32 * (10384593717069655257060992658440192 * m + 10192286426012809789337640942543151) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 53) := by
+    omega
+  have hv2 : v2 (27 * (10384593717069655257060992658440192 * m + 10192286426012809789337640942543151) + 11) = 112 := by
+    calc
+      v2 (27 * (10384593717069655257060992658440192 * m + 10192286426012809789337640942543151) + 11) =
+          v2 (2 ^ 112 * (54 * m + 53)) := by
+            ring_nf
+      _ = 112 := by
+        simpa using v2_pow_mul_of_not_two_dvd 112 (54 * m + 53) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (10384593717069655257060992658440192 * m + 10192286426012809789337640942543151) + 11) := htime
+    _ = 4 + 112 := by rw [hv2]
+    _ = 116 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 332306998946228968225951765070086144*m + 326153165632409913258804510161380845`,
+    the higher-time destination base is exactly `54*m + 53`. -/
+theorem dst_base_eq_54m_add_53_of_src_base_eq_332306998946228968225951765070086144m_add_326153165632409913258804510161380845
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 332306998946228968225951765070086144 * m + 326153165632409913258804510161380845) :
+    τ.dst.src.base = 54 * m + 53 := by
+  have hm' : τ.src.src.base = 166153499473114484112975882535043072 * (2 * m + 1) + 159999666159295429145828627626337773 := by
+    calc
+      τ.src.src.base = 332306998946228968225951765070086144 * m + 326153165632409913258804510161380845 := hm
+      _ = 166153499473114484112975882535043072 * (2 * m + 1) + 159999666159295429145828627626337773 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 116) * τ.dst.src.base = 54 * m + 53 := by
+    calc
+      2 ^ (τ.dst.src.time - 116) * τ.dst.src.base = 27 * (2 * m + 1) + 26 := by
+        exact two_pow_dst_time_sub_one_hundred_sixteen_mul_dst_base_eq_27m_add_26_of_src_base_eq_166153499473114484112975882535043072m_add_159999666159295429145828627626337773
+          τ ht he hm'
+      _ = 54 * m + 53 := by
+        ring
+  have htime : τ.dst.src.time = 116 :=
+    dst_time_eq_one_hundred_sixteen_of_src_base_eq_332306998946228968225951765070086144m_add_326153165632409913258804510161380845 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 116` branch:
+    `base = 664613997892457936451903530140172288*m + 159999666159295429145828627626337773` is exactly the
+    `time = 117` case. -/
+theorem dst_time_eq_one_hundred_seventeen_of_src_base_eq_664613997892457936451903530140172288m_add_159999666159295429145828627626337773
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 664613997892457936451903530140172288 * m + 159999666159295429145828627626337773) :
+    τ.dst.src.time = 117 := by
+  have hk : τ.src.src.base = 32 * (20769187434139310514121985316880384 * m + 4999989567477982160807144613323055) + 13 := by
+    calc
+      τ.src.src.base = 664613997892457936451903530140172288 * m + 159999666159295429145828627626337773 := hm
+      _ = 32 * (20769187434139310514121985316880384 * m + 4999989567477982160807144613323055) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 13) := by
+    omega
+  have hv2 : v2 (27 * (20769187434139310514121985316880384 * m + 4999989567477982160807144613323055) + 11) = 113 := by
+    calc
+      v2 (27 * (20769187434139310514121985316880384 * m + 4999989567477982160807144613323055) + 11) =
+          v2 (2 ^ 113 * (54 * m + 13)) := by
+            ring_nf
+      _ = 113 := by
+        simpa using v2_pow_mul_of_not_two_dvd 113 (54 * m + 13) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (20769187434139310514121985316880384 * m + 4999989567477982160807144613323055) + 11) := htime
+    _ = 4 + 113 := by rw [hv2]
+    _ = 117 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 664613997892457936451903530140172288*m + 159999666159295429145828627626337773`,
+    the higher-time destination base is exactly `54*m + 13`. -/
+theorem dst_base_eq_54m_add_13_of_src_base_eq_664613997892457936451903530140172288m_add_159999666159295429145828627626337773
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 664613997892457936451903530140172288 * m + 159999666159295429145828627626337773) :
+    τ.dst.src.base = 54 * m + 13 := by
+  have hm' : τ.src.src.base = 166153499473114484112975882535043072 * (4 * m) + 159999666159295429145828627626337773 := by
+    calc
+      τ.src.src.base = 664613997892457936451903530140172288 * m + 159999666159295429145828627626337773 := hm
+      _ = 166153499473114484112975882535043072 * (4 * m) + 159999666159295429145828627626337773 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 116) * τ.dst.src.base = 108 * m + 26 := by
+    calc
+      2 ^ (τ.dst.src.time - 116) * τ.dst.src.base = 27 * (4 * m) + 26 := by
+        exact two_pow_dst_time_sub_one_hundred_sixteen_mul_dst_base_eq_27m_add_26_of_src_base_eq_166153499473114484112975882535043072m_add_159999666159295429145828627626337773
+          τ ht he hm'
+      _ = 108 * m + 26 := by
+        ring
+  have htime : τ.dst.src.time = 117 :=
+    dst_time_eq_one_hundred_seventeen_of_src_base_eq_664613997892457936451903530140172288m_add_159999666159295429145828627626337773 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first two dyadic cases of the `time ≥ 116`
+    branch: `base = 664613997892457936451903530140172288*m + 492306665105524397371780392696423917` still forces
+    destination time at least `118`. -/
+theorem one_hundred_eighteen_le_dst_time_of_src_base_eq_664613997892457936451903530140172288m_add_492306665105524397371780392696423917
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 664613997892457936451903530140172288 * m + 492306665105524397371780392696423917) :
+    118 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 13 := by
+    calc
+      τ.src.src.base = 664613997892457936451903530140172288 * m + 492306665105524397371780392696423917 := hm
+      _ = 32 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 11 = 2 ^ 114 * (27 * m + 20) := by
+    ring_nf
+  have hpos : 0 < 27 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 11 := by
+    omega
+  have hdvd : 2 ^ 114 ∣ 27 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 11 := by
+    refine ⟨27 * m + 20, ?_⟩
+    exact hfac
+  have hv2_ge114 : 114 ≤ v2 (27 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 11) + 1 ≤ 114 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 11) + 1) ∣
+          27 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 11) hpos) hdiv
+  have htime_ge : 118 ≤ 4 + v2 (27 * (20769187434139310514121985316880384 * m + 15384583284547637417868137271763247) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first two dyadic shells of the
+    `time ≥ 116` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_eighteen_mul_dst_base_eq_27m_add_20_of_src_base_eq_664613997892457936451903530140172288m_add_492306665105524397371780392696423917
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 664613997892457936451903530140172288 * m + 492306665105524397371780392696423917) :
+    2 ^ (τ.dst.src.time - 118) * τ.dst.src.base = 27 * m + 20 := by
+  have hm' : τ.src.src.base = 166153499473114484112975882535043072 * (4 * m + 2) + 159999666159295429145828627626337773 := by
+    calc
+      τ.src.src.base = 664613997892457936451903530140172288 * m + 492306665105524397371780392696423917 := hm
+      _ = 166153499473114484112975882535043072 * (4 * m + 2) + 159999666159295429145828627626337773 := by ring
+  have htime_ge118 : 118 ≤ τ.dst.src.time :=
+    one_hundred_eighteen_le_dst_time_of_src_base_eq_664613997892457936451903530140172288m_add_492306665105524397371780392696423917 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 116) * τ.dst.src.base = 27 * (4 * m + 2) + 26 :=
+    two_pow_dst_time_sub_one_hundred_sixteen_mul_dst_base_eq_27m_add_26_of_src_base_eq_166153499473114484112975882535043072m_add_159999666159295429145828627626337773
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 116) = 2 ^ (τ.dst.src.time - 118) * 2 ^ 2 := by
+    have hsub : τ.dst.src.time - 116 = (τ.dst.src.time - 118) + 2 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 118) * τ.dst.src.base) =
+        2 ^ 2 * (27 * m + 20) := by
+    calc
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 118) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 118) * 2 ^ 2) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 116) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (4 * m + 2) + 26 := htransport
+      _ = 2 ^ 2 * (27 * m + 20) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 2) hmul
+
+/-- The returned `time ≥ 118` transport is exactly the older `time ≥ 28`
+    shell after renormalizing the shell parameter by
+    `m ↦ 4722366482869645213696*m + 3498049246570107565700`. -/
+theorem returned_twenty_eight_shell_transport_of_src_base_eq_664613997892457936451903530140172288m_add_492306665105524397371780392696423917
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 664613997892457936451903530140172288 * m + 492306665105524397371780392696423917) :
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base = 2 ^ 90 * (27 * m + 20) := by
+  have hm' : τ.src.src.base = 140737488355328 * (4722366482869645213696 * m + 3498049246570107565700) + 104249991374317 := by
+    calc
+      τ.src.src.base = 664613997892457936451903530140172288 * m + 492306665105524397371780392696423917 := hm
+      _ = 140737488355328 * (4722366482869645213696 * m + 3498049246570107565700) + 104249991374317 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base
+        = 2 ^ 18 * (27 * (4722366482869645213696 * m + 3498049246570107565700) + 20) := by
+            exact returned_twenty_eight_shell_transport_of_src_base_eq_140737488355328m_add_104249991374317
+              τ ht he hm'
+    _ = 2 ^ 90 * (27 * m + 20) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 118` branch:
+    `base = 1329227995784915872903807060280344576*m + 1156920662997982333823683922836596205` is exactly the
+    `time = 118` case. -/
+theorem dst_time_eq_one_hundred_eighteen_of_src_base_eq_1329227995784915872903807060280344576m_add_1156920662997982333823683922836596205
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1329227995784915872903807060280344576 * m + 1156920662997982333823683922836596205) :
+    τ.dst.src.time = 118 := by
+  have hk : τ.src.src.base = 32 * (41538374868278621028243970633760768 * m + 36153770718686947931990122588643631) + 13 := by
+    calc
+      τ.src.src.base = 1329227995784915872903807060280344576 * m + 1156920662997982333823683922836596205 := hm
+      _ = 32 * (41538374868278621028243970633760768 * m + 36153770718686947931990122588643631) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 47) := by
+    omega
+  have hv2 : v2 (27 * (41538374868278621028243970633760768 * m + 36153770718686947931990122588643631) + 11) = 114 := by
+    calc
+      v2 (27 * (41538374868278621028243970633760768 * m + 36153770718686947931990122588643631) + 11) =
+          v2 (2 ^ 114 * (54 * m + 47)) := by
+            ring_nf
+      _ = 114 := by
+        simpa using v2_pow_mul_of_not_two_dvd 114 (54 * m + 47) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (41538374868278621028243970633760768 * m + 36153770718686947931990122588643631) + 11) := htime
+    _ = 4 + 114 := by rw [hv2]
+    _ = 118 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 1329227995784915872903807060280344576*m + 1156920662997982333823683922836596205`,
+    the higher-time destination base is exactly `54*m + 47`. -/
+theorem dst_base_eq_54m_add_47_of_src_base_eq_1329227995784915872903807060280344576m_add_1156920662997982333823683922836596205
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1329227995784915872903807060280344576 * m + 1156920662997982333823683922836596205) :
+    τ.dst.src.base = 54 * m + 47 := by
+  have hm' : τ.src.src.base = 664613997892457936451903530140172288 * (2 * m + 1) + 492306665105524397371780392696423917 := by
+    calc
+      τ.src.src.base = 1329227995784915872903807060280344576 * m + 1156920662997982333823683922836596205 := hm
+      _ = 664613997892457936451903530140172288 * (2 * m + 1) + 492306665105524397371780392696423917 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 118) * τ.dst.src.base = 54 * m + 47 := by
+    calc
+      2 ^ (τ.dst.src.time - 118) * τ.dst.src.base = 27 * (2 * m + 1) + 20 := by
+        exact two_pow_dst_time_sub_one_hundred_eighteen_mul_dst_base_eq_27m_add_20_of_src_base_eq_664613997892457936451903530140172288m_add_492306665105524397371780392696423917
+          τ ht he hm'
+      _ = 54 * m + 47 := by
+        ring
+  have htime : τ.dst.src.time = 118 :=
+    dst_time_eq_one_hundred_eighteen_of_src_base_eq_1329227995784915872903807060280344576m_add_1156920662997982333823683922836596205 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 118` branch:
+    `base = 2658455991569831745807614120560689152*m + 1821534660890440270275587452976768493` is exactly the
+    `time = 119` case. -/
+theorem dst_time_eq_one_hundred_nineteen_of_src_base_eq_2658455991569831745807614120560689152m_add_1821534660890440270275587452976768493
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2658455991569831745807614120560689152 * m + 1821534660890440270275587452976768493) :
+    τ.dst.src.time = 119 := by
+  have hk : τ.src.src.base = 32 * (83076749736557242056487941267521536 * m + 56922958152826258446112107905524015) + 13 := by
+    calc
+      τ.src.src.base = 2658455991569831745807614120560689152 * m + 1821534660890440270275587452976768493 := hm
+      _ = 32 * (83076749736557242056487941267521536 * m + 56922958152826258446112107905524015) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 37) := by
+    omega
+  have hv2 : v2 (27 * (83076749736557242056487941267521536 * m + 56922958152826258446112107905524015) + 11) = 115 := by
+    calc
+      v2 (27 * (83076749736557242056487941267521536 * m + 56922958152826258446112107905524015) + 11) =
+          v2 (2 ^ 115 * (54 * m + 37)) := by
+            ring_nf
+      _ = 115 := by
+        simpa using v2_pow_mul_of_not_two_dvd 115 (54 * m + 37) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (83076749736557242056487941267521536 * m + 56922958152826258446112107905524015) + 11) := htime
+    _ = 4 + 115 := by rw [hv2]
+    _ = 119 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 2658455991569831745807614120560689152*m + 1821534660890440270275587452976768493`,
+    the higher-time destination base is exactly `54*m + 37`. -/
+theorem dst_base_eq_54m_add_37_of_src_base_eq_2658455991569831745807614120560689152m_add_1821534660890440270275587452976768493
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2658455991569831745807614120560689152 * m + 1821534660890440270275587452976768493) :
+    τ.dst.src.base = 54 * m + 37 := by
+  have hm' : τ.src.src.base = 664613997892457936451903530140172288 * (4 * m + 2) + 492306665105524397371780392696423917 := by
+    calc
+      τ.src.src.base = 2658455991569831745807614120560689152 * m + 1821534660890440270275587452976768493 := hm
+      _ = 664613997892457936451903530140172288 * (4 * m + 2) + 492306665105524397371780392696423917 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 118) * τ.dst.src.base = 108 * m + 74 := by
+    calc
+      2 ^ (τ.dst.src.time - 118) * τ.dst.src.base = 27 * (4 * m + 2) + 20 := by
+        exact two_pow_dst_time_sub_one_hundred_eighteen_mul_dst_base_eq_27m_add_20_of_src_base_eq_664613997892457936451903530140172288m_add_492306665105524397371780392696423917
+          τ ht he hm'
+      _ = 108 * m + 74 := by
+        ring
+  have htime : τ.dst.src.time = 119 :=
+    dst_time_eq_one_hundred_nineteen_of_src_base_eq_2658455991569831745807614120560689152m_add_1821534660890440270275587452976768493 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 118` branch:
+    `base = 5316911983139663491615228241121378304*m + 492306665105524397371780392696423917` is exactly the
+    `time = 120` case. -/
+theorem dst_time_eq_one_hundred_twenty_of_src_base_eq_5316911983139663491615228241121378304m_add_492306665105524397371780392696423917
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5316911983139663491615228241121378304 * m + 492306665105524397371780392696423917) :
+    τ.dst.src.time = 120 := by
+  have hk : τ.src.src.base = 32 * (166153499473114484112975882535043072 * m + 15384583284547637417868137271763247) + 13 := by
+    calc
+      τ.src.src.base = 5316911983139663491615228241121378304 * m + 492306665105524397371780392696423917 := hm
+      _ = 32 * (166153499473114484112975882535043072 * m + 15384583284547637417868137271763247) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 5) := by
+    omega
+  have hv2 : v2 (27 * (166153499473114484112975882535043072 * m + 15384583284547637417868137271763247) + 11) = 116 := by
+    calc
+      v2 (27 * (166153499473114484112975882535043072 * m + 15384583284547637417868137271763247) + 11) =
+          v2 (2 ^ 116 * (54 * m + 5)) := by
+            ring_nf
+      _ = 116 := by
+        simpa using v2_pow_mul_of_not_two_dvd 116 (54 * m + 5) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (166153499473114484112975882535043072 * m + 15384583284547637417868137271763247) + 11) := htime
+    _ = 4 + 116 := by rw [hv2]
+    _ = 120 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 5316911983139663491615228241121378304*m + 492306665105524397371780392696423917`,
+    the higher-time destination base is exactly `54*m + 5`. -/
+theorem dst_base_eq_54m_add_5_of_src_base_eq_5316911983139663491615228241121378304m_add_492306665105524397371780392696423917
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5316911983139663491615228241121378304 * m + 492306665105524397371780392696423917) :
+    τ.dst.src.base = 54 * m + 5 := by
+  have hm' : τ.src.src.base = 664613997892457936451903530140172288 * (8 * m) + 492306665105524397371780392696423917 := by
+    calc
+      τ.src.src.base = 5316911983139663491615228241121378304 * m + 492306665105524397371780392696423917 := hm
+      _ = 664613997892457936451903530140172288 * (8 * m) + 492306665105524397371780392696423917 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 118) * τ.dst.src.base = 216 * m + 20 := by
+    calc
+      2 ^ (τ.dst.src.time - 118) * τ.dst.src.base = 27 * (8 * m) + 20 := by
+        exact two_pow_dst_time_sub_one_hundred_eighteen_mul_dst_base_eq_27m_add_20_of_src_base_eq_664613997892457936451903530140172288m_add_492306665105524397371780392696423917
+          τ ht he hm'
+      _ = 216 * m + 20 := by
+        ring
+  have htime : τ.dst.src.time = 120 :=
+    dst_time_eq_one_hundred_twenty_of_src_base_eq_5316911983139663491615228241121378304m_add_492306665105524397371780392696423917 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first three dyadic cases of the `time ≥ 118`
+    branch: `base = 5316911983139663491615228241121378304*m + 3150762656675356143179394513257113069` still forces
+    destination time at least `121`. -/
+theorem one_hundred_twenty_one_le_dst_time_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5316911983139663491615228241121378304 * m + 3150762656675356143179394513257113069) :
+    121 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 13 := by
+    calc
+      τ.src.src.base = 5316911983139663491615228241121378304 * m + 3150762656675356143179394513257113069 := hm
+      _ = 32 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 11 = 2 ^ 117 * (27 * m + 16) := by
+    ring_nf
+  have hpos : 0 < 27 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 11 := by
+    omega
+  have hdvd : 2 ^ 117 ∣ 27 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 11 := by
+    refine ⟨27 * m + 16, ?_⟩
+    exact hfac
+  have hv2_ge117 : 117 ≤ v2 (27 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 11) + 1 ≤ 117 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 11) + 1) ∣
+          27 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 11) hpos) hdiv
+  have htime_ge : 121 ≤ 4 + v2 (27 * (166153499473114484112975882535043072 * m + 98461333021104879474356078539284783) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first three dyadic shells of the
+    `time ≥ 118` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_twenty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5316911983139663491615228241121378304 * m + 3150762656675356143179394513257113069) :
+    2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 27 * m + 16 := by
+  have hm' : τ.src.src.base = 664613997892457936451903530140172288 * (8 * m + 4) + 492306665105524397371780392696423917 := by
+    calc
+      τ.src.src.base = 5316911983139663491615228241121378304 * m + 3150762656675356143179394513257113069 := hm
+      _ = 664613997892457936451903530140172288 * (8 * m + 4) + 492306665105524397371780392696423917 := by ring
+  have htime_ge121 : 121 ≤ τ.dst.src.time :=
+    one_hundred_twenty_one_le_dst_time_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 118) * τ.dst.src.base = 27 * (8 * m + 4) + 20 :=
+    two_pow_dst_time_sub_one_hundred_eighteen_mul_dst_base_eq_27m_add_20_of_src_base_eq_664613997892457936451903530140172288m_add_492306665105524397371780392696423917
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 118) = 2 ^ (τ.dst.src.time - 121) * 2 ^ 3 := by
+    have hsub : τ.dst.src.time - 118 = (τ.dst.src.time - 121) + 3 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 121) * τ.dst.src.base) =
+        2 ^ 3 * (27 * m + 16) := by
+    calc
+      2 ^ 3 * (2 ^ (τ.dst.src.time - 121) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 121) * 2 ^ 3) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 118) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (8 * m + 4) + 20 := htransport
+      _ = 2 ^ 3 * (27 * m + 16) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 3) hmul
+
+/-- The returned `time ≥ 121` transport is exactly the older `time ≥ 31`
+    shell after renormalizing the shell parameter by
+    `m ↦ 1237940039285380274899124224*m + 733594097354299422162443984`. -/
+theorem returned_thirty_one_shell_transport_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5316911983139663491615228241121378304 * m + 3150762656675356143179394513257113069) :
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base = 2 ^ 90 * (27 * m + 16) := by
+  have hm' : τ.src.src.base = 20282409603651670423947251286016 * (262144 * m + 155344) + 12019205691052841732709482243565 := by
+    calc
+      τ.src.src.base = 5316911983139663491615228241121378304 * m + 3150762656675356143179394513257113069 := hm
+      _ = 20282409603651670423947251286016 * (262144 * m + 155344) + 12019205691052841732709482243565 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 31) * τ.dst.src.base
+        = 2 ^ 72 * (27 * (262144 * m + 155344) + 16) := by
+            exact returned_thirty_one_shell_transport_of_src_base_eq_20282409603651670423947251286016m_add_12019205691052841732709482243565
+              τ ht he hm'
+    _ = 2 ^ 90 * (27 * m + 16) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 121` branch:
+    `base = 10633823966279326983230456482242756608*m + 8467674639815019634794622754378491373` is exactly the
+    `time = 121` case. -/
+theorem dst_time_eq_one_hundred_twenty_one_of_src_base_eq_10633823966279326983230456482242756608m_add_8467674639815019634794622754378491373
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10633823966279326983230456482242756608 * m + 8467674639815019634794622754378491373) :
+    τ.dst.src.time = 121 := by
+  have hk : τ.src.src.base = 32 * (332306998946228968225951765070086144 * m + 264614832494219363587331961074327855) + 13 := by
+    calc
+      τ.src.src.base = 10633823966279326983230456482242756608 * m + 8467674639815019634794622754378491373 := hm
+      _ = 32 * (332306998946228968225951765070086144 * m + 264614832494219363587331961074327855) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 43) := by
+    omega
+  have hv2 : v2 (27 * (332306998946228968225951765070086144 * m + 264614832494219363587331961074327855) + 11) = 117 := by
+    calc
+      v2 (27 * (332306998946228968225951765070086144 * m + 264614832494219363587331961074327855) + 11) =
+          v2 (2 ^ 117 * (54 * m + 43)) := by
+            ring_nf
+      _ = 117 := by
+        simpa using v2_pow_mul_of_not_two_dvd 117 (54 * m + 43) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (332306998946228968225951765070086144 * m + 264614832494219363587331961074327855) + 11) := htime
+    _ = 4 + 117 := by rw [hv2]
+    _ = 121 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 10633823966279326983230456482242756608*m + 8467674639815019634794622754378491373`,
+    the higher-time destination base is exactly `54*m + 43`. -/
+theorem dst_base_eq_54m_add_43_of_src_base_eq_10633823966279326983230456482242756608m_add_8467674639815019634794622754378491373
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10633823966279326983230456482242756608 * m + 8467674639815019634794622754378491373) :
+    τ.dst.src.base = 54 * m + 43 := by
+  have hm' : τ.src.src.base = 5316911983139663491615228241121378304 * (2 * m + 1) + 3150762656675356143179394513257113069 := by
+    calc
+      τ.src.src.base = 10633823966279326983230456482242756608 * m + 8467674639815019634794622754378491373 := hm
+      _ = 5316911983139663491615228241121378304 * (2 * m + 1) + 3150762656675356143179394513257113069 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 54 * m + 43 := by
+    calc
+      2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 27 * (2 * m + 1) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_twenty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+          τ ht he hm'
+      _ = 54 * m + 43 := by
+        ring
+  have htime : τ.dst.src.time = 121 :=
+    dst_time_eq_one_hundred_twenty_one_of_src_base_eq_10633823966279326983230456482242756608m_add_8467674639815019634794622754378491373 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 121` branch:
+    `base = 21267647932558653966460912964485513216*m + 13784586622954683126409850995499869677` is exactly the
+    `time = 122` case. -/
+theorem dst_time_eq_one_hundred_twenty_two_of_src_base_eq_21267647932558653966460912964485513216m_add_13784586622954683126409850995499869677
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 21267647932558653966460912964485513216 * m + 13784586622954683126409850995499869677) :
+    τ.dst.src.time = 122 := by
+  have hk : τ.src.src.base = 32 * (664613997892457936451903530140172288 * m + 430768331967333847700307843609370927) + 13 := by
+    calc
+      τ.src.src.base = 21267647932558653966460912964485513216 * m + 13784586622954683126409850995499869677 := hm
+      _ = 32 * (664613997892457936451903530140172288 * m + 430768331967333847700307843609370927) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 35) := by
+    omega
+  have hv2 : v2 (27 * (664613997892457936451903530140172288 * m + 430768331967333847700307843609370927) + 11) = 118 := by
+    calc
+      v2 (27 * (664613997892457936451903530140172288 * m + 430768331967333847700307843609370927) + 11) =
+          v2 (2 ^ 118 * (54 * m + 35)) := by
+            ring_nf
+      _ = 118 := by
+        simpa using v2_pow_mul_of_not_two_dvd 118 (54 * m + 35) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (664613997892457936451903530140172288 * m + 430768331967333847700307843609370927) + 11) := htime
+    _ = 4 + 118 := by rw [hv2]
+    _ = 122 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 21267647932558653966460912964485513216*m + 13784586622954683126409850995499869677`,
+    the higher-time destination base is exactly `54*m + 35`. -/
+theorem dst_base_eq_54m_add_35_of_src_base_eq_21267647932558653966460912964485513216m_add_13784586622954683126409850995499869677
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 21267647932558653966460912964485513216 * m + 13784586622954683126409850995499869677) :
+    τ.dst.src.base = 54 * m + 35 := by
+  have hm' : τ.src.src.base = 5316911983139663491615228241121378304 * (4 * m + 2) + 3150762656675356143179394513257113069 := by
+    calc
+      τ.src.src.base = 21267647932558653966460912964485513216 * m + 13784586622954683126409850995499869677 := hm
+      _ = 5316911983139663491615228241121378304 * (4 * m + 2) + 3150762656675356143179394513257113069 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 108 * m + 70 := by
+    calc
+      2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 27 * (4 * m + 2) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_twenty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+          τ ht he hm'
+      _ = 108 * m + 70 := by
+        ring
+  have htime : τ.dst.src.time = 122 :=
+    dst_time_eq_one_hundred_twenty_two_of_src_base_eq_21267647932558653966460912964485513216m_add_13784586622954683126409850995499869677 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 121` branch:
+    `base = 42535295865117307932921825928971026432*m + 24418410589234010109640307477742626285` is exactly the
+    `time = 123` case. -/
+theorem dst_time_eq_one_hundred_twenty_three_of_src_base_eq_42535295865117307932921825928971026432m_add_24418410589234010109640307477742626285
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 42535295865117307932921825928971026432 * m + 24418410589234010109640307477742626285) :
+    τ.dst.src.time = 123 := by
+  have hk : τ.src.src.base = 32 * (1329227995784915872903807060280344576 * m + 763075330913562815926259608679457071) + 13 := by
+    calc
+      τ.src.src.base = 42535295865117307932921825928971026432 * m + 24418410589234010109640307477742626285 := hm
+      _ = 32 * (1329227995784915872903807060280344576 * m + 763075330913562815926259608679457071) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 31) := by
+    omega
+  have hv2 : v2 (27 * (1329227995784915872903807060280344576 * m + 763075330913562815926259608679457071) + 11) = 119 := by
+    calc
+      v2 (27 * (1329227995784915872903807060280344576 * m + 763075330913562815926259608679457071) + 11) =
+          v2 (2 ^ 119 * (54 * m + 31)) := by
+            ring_nf
+      _ = 119 := by
+        simpa using v2_pow_mul_of_not_two_dvd 119 (54 * m + 31) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (1329227995784915872903807060280344576 * m + 763075330913562815926259608679457071) + 11) := htime
+    _ = 4 + 119 := by rw [hv2]
+    _ = 123 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 42535295865117307932921825928971026432*m + 24418410589234010109640307477742626285`,
+    the higher-time destination base is exactly `54*m + 31`. -/
+theorem dst_base_eq_54m_add_31_of_src_base_eq_42535295865117307932921825928971026432m_add_24418410589234010109640307477742626285
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 42535295865117307932921825928971026432 * m + 24418410589234010109640307477742626285) :
+    τ.dst.src.base = 54 * m + 31 := by
+  have hm' : τ.src.src.base = 5316911983139663491615228241121378304 * (8 * m + 4) + 3150762656675356143179394513257113069 := by
+    calc
+      τ.src.src.base = 42535295865117307932921825928971026432 * m + 24418410589234010109640307477742626285 := hm
+      _ = 5316911983139663491615228241121378304 * (8 * m + 4) + 3150762656675356143179394513257113069 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 216 * m + 124 := by
+    calc
+      2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 27 * (8 * m + 4) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_twenty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+          τ ht he hm'
+      _ = 216 * m + 124 := by
+        ring
+  have htime : τ.dst.src.time = 123 :=
+    dst_time_eq_one_hundred_twenty_three_of_src_base_eq_42535295865117307932921825928971026432m_add_24418410589234010109640307477742626285 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 121` branch:
+    `base = 85070591730234615865843651857942052864*m + 45686058521792664076101220442228139501` is exactly the
+    `time = 124` case. -/
+theorem dst_time_eq_one_hundred_twenty_four_of_src_base_eq_85070591730234615865843651857942052864m_add_45686058521792664076101220442228139501
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 85070591730234615865843651857942052864 * m + 45686058521792664076101220442228139501) :
+    τ.dst.src.time = 124 := by
+  have hk : τ.src.src.base = 32 * (2658455991569831745807614120560689152 * m + 1427689328806020752378163138819629359) + 13 := by
+    calc
+      τ.src.src.base = 85070591730234615865843651857942052864 * m + 45686058521792664076101220442228139501 := hm
+      _ = 32 * (2658455991569831745807614120560689152 * m + 1427689328806020752378163138819629359) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 29) := by
+    omega
+  have hv2 : v2 (27 * (2658455991569831745807614120560689152 * m + 1427689328806020752378163138819629359) + 11) = 120 := by
+    calc
+      v2 (27 * (2658455991569831745807614120560689152 * m + 1427689328806020752378163138819629359) + 11) =
+          v2 (2 ^ 120 * (54 * m + 29)) := by
+            ring_nf
+      _ = 120 := by
+        simpa using v2_pow_mul_of_not_two_dvd 120 (54 * m + 29) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (2658455991569831745807614120560689152 * m + 1427689328806020752378163138819629359) + 11) := htime
+    _ = 4 + 120 := by rw [hv2]
+    _ = 124 := by norm_num
+
+/-- On the fourth dyadic shell
+    `base = 85070591730234615865843651857942052864*m + 45686058521792664076101220442228139501`,
+    the higher-time destination base is exactly `54*m + 29`. -/
+theorem dst_base_eq_54m_add_29_of_src_base_eq_85070591730234615865843651857942052864m_add_45686058521792664076101220442228139501
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 85070591730234615865843651857942052864 * m + 45686058521792664076101220442228139501) :
+    τ.dst.src.base = 54 * m + 29 := by
+  have hm' : τ.src.src.base = 5316911983139663491615228241121378304 * (16 * m + 8) + 3150762656675356143179394513257113069 := by
+    calc
+      τ.src.src.base = 85070591730234615865843651857942052864 * m + 45686058521792664076101220442228139501 := hm
+      _ = 5316911983139663491615228241121378304 * (16 * m + 8) + 3150762656675356143179394513257113069 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 432 * m + 232 := by
+    calc
+      2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 27 * (16 * m + 8) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_twenty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+          τ ht he hm'
+      _ = 432 * m + 232 := by
+        ring
+  have htime : τ.dst.src.time = 124 :=
+    dst_time_eq_one_hundred_twenty_four_of_src_base_eq_85070591730234615865843651857942052864m_add_45686058521792664076101220442228139501 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fifth dyadic shell inside the residual `time ≥ 121` branch:
+    `base = 170141183460469231731687303715884105728*m + 3150762656675356143179394513257113069` is exactly the
+    `time = 125` case. -/
+theorem dst_time_eq_one_hundred_twenty_five_of_src_base_eq_170141183460469231731687303715884105728m_add_3150762656675356143179394513257113069
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 170141183460469231731687303715884105728 * m + 3150762656675356143179394513257113069) :
+    τ.dst.src.time = 125 := by
+  have hk : τ.src.src.base = 32 * (5316911983139663491615228241121378304 * m + 98461333021104879474356078539284783) + 13 := by
+    calc
+      τ.src.src.base = 170141183460469231731687303715884105728 * m + 3150762656675356143179394513257113069 := hm
+      _ = 32 * (5316911983139663491615228241121378304 * m + 98461333021104879474356078539284783) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 1) := by
+    omega
+  have hv2 : v2 (27 * (5316911983139663491615228241121378304 * m + 98461333021104879474356078539284783) + 11) = 121 := by
+    calc
+      v2 (27 * (5316911983139663491615228241121378304 * m + 98461333021104879474356078539284783) + 11) =
+          v2 (2 ^ 121 * (54 * m + 1)) := by
+            ring_nf
+      _ = 121 := by
+        simpa using v2_pow_mul_of_not_two_dvd 121 (54 * m + 1) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (5316911983139663491615228241121378304 * m + 98461333021104879474356078539284783) + 11) := htime
+    _ = 4 + 121 := by rw [hv2]
+    _ = 125 := by norm_num
+
+/-- On the fifth dyadic shell
+    `base = 170141183460469231731687303715884105728*m + 3150762656675356143179394513257113069`,
+    the higher-time destination base is exactly `54*m + 1`. -/
+theorem dst_base_eq_54m_add_1_of_src_base_eq_170141183460469231731687303715884105728m_add_3150762656675356143179394513257113069
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 170141183460469231731687303715884105728 * m + 3150762656675356143179394513257113069) :
+    τ.dst.src.base = 54 * m + 1 := by
+  have hm' : τ.src.src.base = 5316911983139663491615228241121378304 * (32 * m) + 3150762656675356143179394513257113069 := by
+    calc
+      τ.src.src.base = 170141183460469231731687303715884105728 * m + 3150762656675356143179394513257113069 := hm
+      _ = 5316911983139663491615228241121378304 * (32 * m) + 3150762656675356143179394513257113069 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 864 * m + 16 := by
+    calc
+      2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 27 * (32 * m) + 16 := by
+        exact two_pow_dst_time_sub_one_hundred_twenty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+          τ ht he hm'
+      _ = 864 * m + 16 := by
+        ring
+  have htime : τ.dst.src.time = 125 :=
+    dst_time_eq_one_hundred_twenty_five_of_src_base_eq_170141183460469231731687303715884105728m_add_3150762656675356143179394513257113069 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first five dyadic cases of the `time ≥ 121`
+    branch: `base = 170141183460469231731687303715884105728*m + 88221354386909972009023046371199165933` still forces
+    destination time at least `126`. -/
+theorem one_hundred_twenty_six_le_dst_time_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 170141183460469231731687303715884105728 * m + 88221354386909972009023046371199165933) :
+    126 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 13 := by
+    calc
+      τ.src.src.base = 170141183460469231731687303715884105728 * m + 88221354386909972009023046371199165933 := hm
+      _ = 32 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 11 = 2 ^ 122 * (27 * m + 14) := by
+    ring_nf
+  have hpos : 0 < 27 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 11 := by
+    omega
+  have hdvd : 2 ^ 122 ∣ 27 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 11 := by
+    refine ⟨27 * m + 14, ?_⟩
+    exact hfac
+  have hv2_ge122 : 122 ≤ v2 (27 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 11) + 1 ≤ 122 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 11) + 1) ∣
+          27 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 11) hpos) hdiv
+  have htime_ge : 126 ≤ 4 + v2 (27 * (5316911983139663491615228241121378304 * m + 2756917324590936625281970199099973935) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first five dyadic shells of the
+    `time ≥ 121` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_twenty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 170141183460469231731687303715884105728 * m + 88221354386909972009023046371199165933) :
+    2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 27 * m + 14 := by
+  have hm' : τ.src.src.base = 5316911983139663491615228241121378304 * (32 * m + 16) + 3150762656675356143179394513257113069 := by
+    calc
+      τ.src.src.base = 170141183460469231731687303715884105728 * m + 88221354386909972009023046371199165933 := hm
+      _ = 5316911983139663491615228241121378304 * (32 * m + 16) + 3150762656675356143179394513257113069 := by ring
+  have htime_ge126 : 126 ≤ τ.dst.src.time :=
+    one_hundred_twenty_six_le_dst_time_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 121) * τ.dst.src.base = 27 * (32 * m + 16) + 16 :=
+    two_pow_dst_time_sub_one_hundred_twenty_one_mul_dst_base_eq_27m_add_16_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 121) = 2 ^ (τ.dst.src.time - 126) * 2 ^ 5 := by
+    have hsub : τ.dst.src.time - 121 = (τ.dst.src.time - 126) + 5 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 126) * τ.dst.src.base) =
+        2 ^ 5 * (27 * m + 14) := by
+    calc
+      2 ^ 5 * (2 ^ (τ.dst.src.time - 126) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 126) * 2 ^ 5) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 121) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (32 * m + 16) + 16 := htransport
+      _ = 2 ^ 5 * (27 * m + 14) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 5) hmul
+
+/-- The returned `time ≥ 126` transport is exactly the older `time ≥ 36`
+    shell after renormalizing the shell parameter by
+    `m ↦ 1237940039285380274899124224*m + 641894835185011994392138486`. -/
+theorem returned_thirty_six_shell_transport_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 170141183460469231731687303715884105728 * m + 88221354386909972009023046371199165933) :
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base = 2 ^ 90 * (27 * m + 14) := by
+  have hm' : τ.src.src.base = 137438953472 * (1237940039285380274899124224 * m + 641894835185011994392138486) + 71264642541 := by
+    calc
+      τ.src.src.base = 170141183460469231731687303715884105728 * m + 88221354386909972009023046371199165933 := hm
+      _ = 137438953472 * (1237940039285380274899124224 * m + 641894835185011994392138486) + 71264642541 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 36) * τ.dst.src.base
+        = 27 * (1237940039285380274899124224 * m + 641894835185011994392138486) + 14 := by
+            exact two_pow_dst_time_sub_thirty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_137438953472m_add_71264642541
+              τ ht he hm'
+    _ = 2 ^ 90 * (27 * m + 14) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 126` branch:
+    `base = 340282366920938463463374607431768211456*m + 258362537847379203740710350087083271661` is exactly the
+    `time = 126` case. -/
+theorem dst_time_eq_one_hundred_twenty_six_of_src_base_eq_340282366920938463463374607431768211456m_add_258362537847379203740710350087083271661
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 340282366920938463463374607431768211456 * m + 258362537847379203740710350087083271661) :
+    τ.dst.src.time = 126 := by
+  have hk : τ.src.src.base = 32 * (10633823966279326983230456482242756608 * m + 8073829307730600116897198440221352239) + 13 := by
+    calc
+      τ.src.src.base = 340282366920938463463374607431768211456 * m + 258362537847379203740710350087083271661 := hm
+      _ = 32 * (10633823966279326983230456482242756608 * m + 8073829307730600116897198440221352239) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 41) := by
+    omega
+  have hv2 : v2 (27 * (10633823966279326983230456482242756608 * m + 8073829307730600116897198440221352239) + 11) = 122 := by
+    calc
+      v2 (27 * (10633823966279326983230456482242756608 * m + 8073829307730600116897198440221352239) + 11) =
+          v2 (2 ^ 122 * (54 * m + 41)) := by
+            ring_nf
+      _ = 122 := by
+        simpa using v2_pow_mul_of_not_two_dvd 122 (54 * m + 41) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (10633823966279326983230456482242756608 * m + 8073829307730600116897198440221352239) + 11) := htime
+    _ = 4 + 122 := by rw [hv2]
+    _ = 126 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 340282366920938463463374607431768211456*m + 258362537847379203740710350087083271661`,
+    the higher-time destination base is exactly `54*m + 41`. -/
+theorem dst_base_eq_54m_add_41_of_src_base_eq_340282366920938463463374607431768211456m_add_258362537847379203740710350087083271661
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 340282366920938463463374607431768211456 * m + 258362537847379203740710350087083271661) :
+    τ.dst.src.base = 54 * m + 41 := by
+  have hm' : τ.src.src.base = 170141183460469231731687303715884105728 * (2 * m + 1) + 88221354386909972009023046371199165933 := by
+    calc
+      τ.src.src.base = 340282366920938463463374607431768211456 * m + 258362537847379203740710350087083271661 := hm
+      _ = 170141183460469231731687303715884105728 * (2 * m + 1) + 88221354386909972009023046371199165933 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 54 * m + 41 := by
+    calc
+      2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 27 * (2 * m + 1) + 14 := by
+        exact two_pow_dst_time_sub_one_hundred_twenty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933
+          τ ht he hm'
+      _ = 54 * m + 41 := by
+        ring
+  have htime : τ.dst.src.time = 126 :=
+    dst_time_eq_one_hundred_twenty_six_of_src_base_eq_340282366920938463463374607431768211456m_add_258362537847379203740710350087083271661 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 126` branch:
+    `base = 680564733841876926926749214863536422912*m + 88221354386909972009023046371199165933` is exactly the
+    `time = 127` case. -/
+theorem dst_time_eq_one_hundred_twenty_seven_of_src_base_eq_680564733841876926926749214863536422912m_add_88221354386909972009023046371199165933
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 680564733841876926926749214863536422912 * m + 88221354386909972009023046371199165933) :
+    τ.dst.src.time = 127 := by
+  have hk : τ.src.src.base = 32 * (21267647932558653966460912964485513216 * m + 2756917324590936625281970199099973935) + 13 := by
+    calc
+      τ.src.src.base = 680564733841876926926749214863536422912 * m + 88221354386909972009023046371199165933 := hm
+      _ = 32 * (21267647932558653966460912964485513216 * m + 2756917324590936625281970199099973935) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 7) := by
+    omega
+  have hv2 : v2 (27 * (21267647932558653966460912964485513216 * m + 2756917324590936625281970199099973935) + 11) = 123 := by
+    calc
+      v2 (27 * (21267647932558653966460912964485513216 * m + 2756917324590936625281970199099973935) + 11) =
+          v2 (2 ^ 123 * (54 * m + 7)) := by
+            ring_nf
+      _ = 123 := by
+        simpa using v2_pow_mul_of_not_two_dvd 123 (54 * m + 7) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (21267647932558653966460912964485513216 * m + 2756917324590936625281970199099973935) + 11) := htime
+    _ = 4 + 123 := by rw [hv2]
+    _ = 127 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 680564733841876926926749214863536422912*m + 88221354386909972009023046371199165933`,
+    the higher-time destination base is exactly `54*m + 7`. -/
+theorem dst_base_eq_54m_add_7_of_src_base_eq_680564733841876926926749214863536422912m_add_88221354386909972009023046371199165933
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 680564733841876926926749214863536422912 * m + 88221354386909972009023046371199165933) :
+    τ.dst.src.base = 54 * m + 7 := by
+  have hm' : τ.src.src.base = 170141183460469231731687303715884105728 * (4 * m) + 88221354386909972009023046371199165933 := by
+    calc
+      τ.src.src.base = 680564733841876926926749214863536422912 * m + 88221354386909972009023046371199165933 := hm
+      _ = 170141183460469231731687303715884105728 * (4 * m) + 88221354386909972009023046371199165933 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 108 * m + 14 := by
+    calc
+      2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 27 * (4 * m) + 14 := by
+        exact two_pow_dst_time_sub_one_hundred_twenty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933
+          τ ht he hm'
+      _ = 108 * m + 14 := by
+        ring
+  have htime : τ.dst.src.time = 127 :=
+    dst_time_eq_one_hundred_twenty_seven_of_src_base_eq_680564733841876926926749214863536422912m_add_88221354386909972009023046371199165933 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 126` branch:
+    `base = 1361129467683753853853498429727072845824*m + 428503721307848435472397653802967377389` is exactly the
+    `time = 128` case. -/
+theorem dst_time_eq_one_hundred_twenty_eight_of_src_base_eq_1361129467683753853853498429727072845824m_add_428503721307848435472397653802967377389
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1361129467683753853853498429727072845824 * m + 428503721307848435472397653802967377389) :
+    τ.dst.src.time = 128 := by
+  have hk : τ.src.src.base = 32 * (42535295865117307932921825928971026432 * m + 13390741290870263608512426681342730543) + 13 := by
+    calc
+      τ.src.src.base = 1361129467683753853853498429727072845824 * m + 428503721307848435472397653802967377389 := hm
+      _ = 32 * (42535295865117307932921825928971026432 * m + 13390741290870263608512426681342730543) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 17) := by
+    omega
+  have hv2 : v2 (27 * (42535295865117307932921825928971026432 * m + 13390741290870263608512426681342730543) + 11) = 124 := by
+    calc
+      v2 (27 * (42535295865117307932921825928971026432 * m + 13390741290870263608512426681342730543) + 11) =
+          v2 (2 ^ 124 * (54 * m + 17)) := by
+            ring_nf
+      _ = 124 := by
+        simpa using v2_pow_mul_of_not_two_dvd 124 (54 * m + 17) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (42535295865117307932921825928971026432 * m + 13390741290870263608512426681342730543) + 11) := htime
+    _ = 4 + 124 := by rw [hv2]
+    _ = 128 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 1361129467683753853853498429727072845824*m + 428503721307848435472397653802967377389`,
+    the higher-time destination base is exactly `54*m + 17`. -/
+theorem dst_base_eq_54m_add_17_of_src_base_eq_1361129467683753853853498429727072845824m_add_428503721307848435472397653802967377389
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 1361129467683753853853498429727072845824 * m + 428503721307848435472397653802967377389) :
+    τ.dst.src.base = 54 * m + 17 := by
+  have hm' : τ.src.src.base = 170141183460469231731687303715884105728 * (8 * m + 2) + 88221354386909972009023046371199165933 := by
+    calc
+      τ.src.src.base = 1361129467683753853853498429727072845824 * m + 428503721307848435472397653802967377389 := hm
+      _ = 170141183460469231731687303715884105728 * (8 * m + 2) + 88221354386909972009023046371199165933 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 216 * m + 68 := by
+    calc
+      2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 27 * (8 * m + 2) + 14 := by
+        exact two_pow_dst_time_sub_one_hundred_twenty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933
+          τ ht he hm'
+      _ = 216 * m + 68 := by
+        ring
+  have htime : τ.dst.src.time = 128 :=
+    dst_time_eq_one_hundred_twenty_eight_of_src_base_eq_1361129467683753853853498429727072845824m_add_428503721307848435472397653802967377389 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 126` branch:
+    `base = 2722258935367507707706996859454145691648*m + 2470197922833479216252645298393576646125` is exactly the
+    `time = 129` case. -/
+theorem dst_time_eq_one_hundred_twenty_nine_of_src_base_eq_2722258935367507707706996859454145691648m_add_2470197922833479216252645298393576646125
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2722258935367507707706996859454145691648 * m + 2470197922833479216252645298393576646125) :
+    τ.dst.src.time = 129 := by
+  have hk : τ.src.src.base = 32 * (85070591730234615865843651857942052864 * m + 77193685088546225507895165574799270191) + 13 := by
+    calc
+      τ.src.src.base = 2722258935367507707706996859454145691648 * m + 2470197922833479216252645298393576646125 := hm
+      _ = 32 * (85070591730234615865843651857942052864 * m + 77193685088546225507895165574799270191) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 49) := by
+    omega
+  have hv2 : v2 (27 * (85070591730234615865843651857942052864 * m + 77193685088546225507895165574799270191) + 11) = 125 := by
+    calc
+      v2 (27 * (85070591730234615865843651857942052864 * m + 77193685088546225507895165574799270191) + 11) =
+          v2 (2 ^ 125 * (54 * m + 49)) := by
+            ring_nf
+      _ = 125 := by
+        simpa using v2_pow_mul_of_not_two_dvd 125 (54 * m + 49) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (85070591730234615865843651857942052864 * m + 77193685088546225507895165574799270191) + 11) := htime
+    _ = 4 + 125 := by rw [hv2]
+    _ = 129 := by norm_num
+
+/-- On the fourth dyadic shell
+    `base = 2722258935367507707706996859454145691648*m + 2470197922833479216252645298393576646125`,
+    the higher-time destination base is exactly `54*m + 49`. -/
+theorem dst_base_eq_54m_add_49_of_src_base_eq_2722258935367507707706996859454145691648m_add_2470197922833479216252645298393576646125
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2722258935367507707706996859454145691648 * m + 2470197922833479216252645298393576646125) :
+    τ.dst.src.base = 54 * m + 49 := by
+  have hm' : τ.src.src.base = 170141183460469231731687303715884105728 * (16 * m + 14) + 88221354386909972009023046371199165933 := by
+    calc
+      τ.src.src.base = 2722258935367507707706996859454145691648 * m + 2470197922833479216252645298393576646125 := hm
+      _ = 170141183460469231731687303715884105728 * (16 * m + 14) + 88221354386909972009023046371199165933 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 432 * m + 392 := by
+    calc
+      2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 27 * (16 * m + 14) + 14 := by
+        exact two_pow_dst_time_sub_one_hundred_twenty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933
+          τ ht he hm'
+      _ = 432 * m + 392 := by
+        ring
+  have htime : τ.dst.src.time = 129 :=
+    dst_time_eq_one_hundred_twenty_nine_of_src_base_eq_2722258935367507707706996859454145691648m_add_2470197922833479216252645298393576646125 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 126`
+    branch: `base = 2722258935367507707706996859454145691648*m + 1109068455149725362399146868666503800301` still forces destination
+    time at least `130`. -/
+theorem one_hundred_thirty_le_dst_time_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2722258935367507707706996859454145691648 * m + 1109068455149725362399146868666503800301) :
+    130 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 13 := by
+    calc
+      τ.src.src.base = 2722258935367507707706996859454145691648 * m + 1109068455149725362399146868666503800301 := hm
+      _ = 32 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 11 = 2 ^ 126 * (27 * m + 11) := by
+    ring_nf
+  have hpos : 0 < 27 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 11 := by
+    omega
+  have hdvd : 2 ^ 126 ∣ 27 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 11 := by
+    refine ⟨27 * m + 11, ?_⟩
+    exact hfac
+  have hv2_ge126 : 126 ≤ v2 (27 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 11) + 1 ≤ 126 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 11) + 1) ∣
+          27 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 11) hpos) hdiv
+  have htime_ge : 130 ≤ 4 + v2 (27 * (85070591730234615865843651857942052864 * m + 34658389223428917574973339645828243759) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 126` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_thirty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2722258935367507707706996859454145691648 * m + 1109068455149725362399146868666503800301) :
+    2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 27 * m + 11 := by
+  have hm' : τ.src.src.base = 170141183460469231731687303715884105728 * (16 * m + 6) + 88221354386909972009023046371199165933 := by
+    calc
+      τ.src.src.base = 2722258935367507707706996859454145691648 * m + 1109068455149725362399146868666503800301 := hm
+      _ = 170141183460469231731687303715884105728 * (16 * m + 6) + 88221354386909972009023046371199165933 := by ring
+  have htime_ge130 : 130 ≤ τ.dst.src.time :=
+    one_hundred_thirty_le_dst_time_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 126) * τ.dst.src.base = 27 * (16 * m + 6) + 14 :=
+    two_pow_dst_time_sub_one_hundred_twenty_six_mul_dst_base_eq_27m_add_14_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 126) = 2 ^ (τ.dst.src.time - 130) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 126 = (τ.dst.src.time - 130) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 130) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 11) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 130) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 130) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 126) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 6) + 14 := htransport
+      _ = 2 ^ 4 * (27 * m + 11) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 130` transport is exactly the older `time ≥ 40`
+    shell after renormalizing the shell parameter by
+    `m ↦ 1237940039285380274899124224*m + 504345941931080852736680239`. -/
+theorem returned_forty_shell_transport_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 2722258935367507707706996859454145691648 * m + 1109068455149725362399146868666503800301) :
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base = 2 ^ 90 * (27 * m + 11) := by
+  have hm' : τ.src.src.base = 2199023255552 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 895898363373 := by
+    calc
+      τ.src.src.base = 2722258935367507707706996859454145691648 * m + 1109068455149725362399146868666503800301 := hm
+      _ = 2199023255552 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 895898363373 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 40) * τ.dst.src.base
+        = 27 * (1237940039285380274899124224 * m + 504345941931080852736680239) + 11 := by
+            exact two_pow_dst_time_sub_forty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2199023255552m_add_895898363373
+              τ ht he hm'
+    _ = 2 ^ 90 * (27 * m + 11) := by
+      ring_nf
+
+/-- First dyadic shell inside the residual `time ≥ 130` branch:
+    `base = 5444517870735015415413993718908291383296*m + 1109068455149725362399146868666503800301` is exactly the
+    `time = 130` case. -/
+theorem dst_time_eq_one_hundred_thirty_of_src_base_eq_5444517870735015415413993718908291383296m_add_1109068455149725362399146868666503800301
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5444517870735015415413993718908291383296 * m + 1109068455149725362399146868666503800301) :
+    τ.dst.src.time = 130 := by
+  have hk : τ.src.src.base = 32 * (170141183460469231731687303715884105728 * m + 34658389223428917574973339645828243759) + 13 := by
+    calc
+      τ.src.src.base = 5444517870735015415413993718908291383296 * m + 1109068455149725362399146868666503800301 := hm
+      _ = 32 * (170141183460469231731687303715884105728 * m + 34658389223428917574973339645828243759) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 11) := by
+    omega
+  have hv2 : v2 (27 * (170141183460469231731687303715884105728 * m + 34658389223428917574973339645828243759) + 11) = 126 := by
+    calc
+      v2 (27 * (170141183460469231731687303715884105728 * m + 34658389223428917574973339645828243759) + 11) =
+          v2 (2 ^ 126 * (54 * m + 11)) := by
+            ring_nf
+      _ = 126 := by
+        simpa using v2_pow_mul_of_not_two_dvd 126 (54 * m + 11) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (170141183460469231731687303715884105728 * m + 34658389223428917574973339645828243759) + 11) := htime
+    _ = 4 + 126 := by rw [hv2]
+    _ = 130 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 5444517870735015415413993718908291383296*m + 1109068455149725362399146868666503800301`,
+    the higher-time destination base is exactly `54*m + 11`. -/
+theorem dst_base_eq_54m_add_11_of_src_base_eq_5444517870735015415413993718908291383296m_add_1109068455149725362399146868666503800301
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 5444517870735015415413993718908291383296 * m + 1109068455149725362399146868666503800301) :
+    τ.dst.src.base = 54 * m + 11 := by
+  have hm' : τ.src.src.base = 2722258935367507707706996859454145691648 * (2 * m) + 1109068455149725362399146868666503800301 := by
+    calc
+      τ.src.src.base = 5444517870735015415413993718908291383296 * m + 1109068455149725362399146868666503800301 := hm
+      _ = 2722258935367507707706996859454145691648 * (2 * m) + 1109068455149725362399146868666503800301 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 54 * m + 11 := by
+    calc
+      2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 27 * (2 * m) + 11 := by
+        exact two_pow_dst_time_sub_one_hundred_thirty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301
+          τ ht he hm'
+      _ = 54 * m + 11 := by
+        ring
+  have htime : τ.dst.src.time = 130 :=
+    dst_time_eq_one_hundred_thirty_of_src_base_eq_5444517870735015415413993718908291383296m_add_1109068455149725362399146868666503800301 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 130` branch:
+    `base = 10889035741470030830827987437816582766592*m + 3831327390517233070106143728120649491949` is exactly the
+    `time = 131` case. -/
+theorem dst_time_eq_one_hundred_thirty_one_of_src_base_eq_10889035741470030830827987437816582766592m_add_3831327390517233070106143728120649491949
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10889035741470030830827987437816582766592 * m + 3831327390517233070106143728120649491949) :
+    τ.dst.src.time = 131 := by
+  have hk : τ.src.src.base = 32 * (340282366920938463463374607431768211456 * m + 119728980953663533440816991503770296623) + 13 := by
+    calc
+      τ.src.src.base = 10889035741470030830827987437816582766592 * m + 3831327390517233070106143728120649491949 := hm
+      _ = 32 * (340282366920938463463374607431768211456 * m + 119728980953663533440816991503770296623) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 19) := by
+    omega
+  have hv2 : v2 (27 * (340282366920938463463374607431768211456 * m + 119728980953663533440816991503770296623) + 11) = 127 := by
+    calc
+      v2 (27 * (340282366920938463463374607431768211456 * m + 119728980953663533440816991503770296623) + 11) =
+          v2 (2 ^ 127 * (54 * m + 19)) := by
+            ring_nf
+      _ = 127 := by
+        simpa using v2_pow_mul_of_not_two_dvd 127 (54 * m + 19) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (340282366920938463463374607431768211456 * m + 119728980953663533440816991503770296623) + 11) := htime
+    _ = 4 + 127 := by rw [hv2]
+    _ = 131 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 10889035741470030830827987437816582766592*m + 3831327390517233070106143728120649491949`,
+    the higher-time destination base is exactly `54*m + 19`. -/
+theorem dst_base_eq_54m_add_19_of_src_base_eq_10889035741470030830827987437816582766592m_add_3831327390517233070106143728120649491949
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 10889035741470030830827987437816582766592 * m + 3831327390517233070106143728120649491949) :
+    τ.dst.src.base = 54 * m + 19 := by
+  have hm' : τ.src.src.base = 2722258935367507707706996859454145691648 * (4 * m + 1) + 1109068455149725362399146868666503800301 := by
+    calc
+      τ.src.src.base = 10889035741470030830827987437816582766592 * m + 3831327390517233070106143728120649491949 := hm
+      _ = 2722258935367507707706996859454145691648 * (4 * m + 1) + 1109068455149725362399146868666503800301 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 108 * m + 38 := by
+    calc
+      2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 27 * (4 * m + 1) + 11 := by
+        exact two_pow_dst_time_sub_one_hundred_thirty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301
+          τ ht he hm'
+      _ = 108 * m + 38 := by
+        ring
+  have htime : τ.dst.src.time = 131 :=
+    dst_time_eq_one_hundred_thirty_one_of_src_base_eq_10889035741470030830827987437816582766592m_add_3831327390517233070106143728120649491949 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Third dyadic shell inside the residual `time ≥ 130` branch:
+    `base = 21778071482940061661655974875633165533184*m + 9275845261252248485520137447028940875245` is exactly the
+    `time = 132` case. -/
+theorem dst_time_eq_one_hundred_thirty_two_of_src_base_eq_21778071482940061661655974875633165533184m_add_9275845261252248485520137447028940875245
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 21778071482940061661655974875633165533184 * m + 9275845261252248485520137447028940875245) :
+    τ.dst.src.time = 132 := by
+  have hk : τ.src.src.base = 32 * (680564733841876926926749214863536422912 * m + 289870164414132765172504295219654402351) + 13 := by
+    calc
+      τ.src.src.base = 21778071482940061661655974875633165533184 * m + 9275845261252248485520137447028940875245 := hm
+      _ = 32 * (680564733841876926926749214863536422912 * m + 289870164414132765172504295219654402351) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 23) := by
+    omega
+  have hv2 : v2 (27 * (680564733841876926926749214863536422912 * m + 289870164414132765172504295219654402351) + 11) = 128 := by
+    calc
+      v2 (27 * (680564733841876926926749214863536422912 * m + 289870164414132765172504295219654402351) + 11) =
+          v2 (2 ^ 128 * (54 * m + 23)) := by
+            ring_nf
+      _ = 128 := by
+        simpa using v2_pow_mul_of_not_two_dvd 128 (54 * m + 23) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (680564733841876926926749214863536422912 * m + 289870164414132765172504295219654402351) + 11) := htime
+    _ = 4 + 128 := by rw [hv2]
+    _ = 132 := by norm_num
+
+/-- On the third dyadic shell
+    `base = 21778071482940061661655974875633165533184*m + 9275845261252248485520137447028940875245`,
+    the higher-time destination base is exactly `54*m + 23`. -/
+theorem dst_base_eq_54m_add_23_of_src_base_eq_21778071482940061661655974875633165533184m_add_9275845261252248485520137447028940875245
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 21778071482940061661655974875633165533184 * m + 9275845261252248485520137447028940875245) :
+    τ.dst.src.base = 54 * m + 23 := by
+  have hm' : τ.src.src.base = 2722258935367507707706996859454145691648 * (8 * m + 3) + 1109068455149725362399146868666503800301 := by
+    calc
+      τ.src.src.base = 21778071482940061661655974875633165533184 * m + 9275845261252248485520137447028940875245 := hm
+      _ = 2722258935367507707706996859454145691648 * (8 * m + 3) + 1109068455149725362399146868666503800301 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 216 * m + 92 := by
+    calc
+      2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 27 * (8 * m + 3) + 11 := by
+        exact two_pow_dst_time_sub_one_hundred_thirty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301
+          τ ht he hm'
+      _ = 216 * m + 92 := by
+        ring
+  have htime : τ.dst.src.time = 132 :=
+    dst_time_eq_one_hundred_thirty_two_of_src_base_eq_21778071482940061661655974875633165533184m_add_9275845261252248485520137447028940875245 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Fourth dyadic shell inside the residual `time ≥ 130` branch:
+    `base = 43556142965880123323311949751266331066368*m + 20164881002722279316348124884845523641837` is exactly the
+    `time = 133` case. -/
+theorem dst_time_eq_one_hundred_thirty_three_of_src_base_eq_43556142965880123323311949751266331066368m_add_20164881002722279316348124884845523641837
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 43556142965880123323311949751266331066368 * m + 20164881002722279316348124884845523641837) :
+    τ.dst.src.time = 133 := by
+  have hk : τ.src.src.base = 32 * (1361129467683753853853498429727072845824 * m + 630152531335071228635878902651422613807) + 13 := by
+    calc
+      τ.src.src.base = 43556142965880123323311949751266331066368 * m + 20164881002722279316348124884845523641837 := hm
+      _ = 32 * (1361129467683753853853498429727072845824 * m + 630152531335071228635878902651422613807) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 25) := by
+    omega
+  have hv2 : v2 (27 * (1361129467683753853853498429727072845824 * m + 630152531335071228635878902651422613807) + 11) = 129 := by
+    calc
+      v2 (27 * (1361129467683753853853498429727072845824 * m + 630152531335071228635878902651422613807) + 11) =
+          v2 (2 ^ 129 * (54 * m + 25)) := by
+            ring_nf
+      _ = 129 := by
+        simpa using v2_pow_mul_of_not_two_dvd 129 (54 * m + 25) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (1361129467683753853853498429727072845824 * m + 630152531335071228635878902651422613807) + 11) := htime
+    _ = 4 + 129 := by rw [hv2]
+    _ = 133 := by norm_num
+
+/-- On the fourth dyadic shell
+    `base = 43556142965880123323311949751266331066368*m + 20164881002722279316348124884845523641837`,
+    the higher-time destination base is exactly `54*m + 25`. -/
+theorem dst_base_eq_54m_add_25_of_src_base_eq_43556142965880123323311949751266331066368m_add_20164881002722279316348124884845523641837
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 43556142965880123323311949751266331066368 * m + 20164881002722279316348124884845523641837) :
+    τ.dst.src.base = 54 * m + 25 := by
+  have hm' : τ.src.src.base = 2722258935367507707706996859454145691648 * (16 * m + 7) + 1109068455149725362399146868666503800301 := by
+    calc
+      τ.src.src.base = 43556142965880123323311949751266331066368 * m + 20164881002722279316348124884845523641837 := hm
+      _ = 2722258935367507707706996859454145691648 * (16 * m + 7) + 1109068455149725362399146868666503800301 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 432 * m + 200 := by
+    calc
+      2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 27 * (16 * m + 7) + 11 := by
+        exact two_pow_dst_time_sub_one_hundred_thirty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301
+          τ ht he hm'
+      _ = 432 * m + 200 := by
+        ring
+  have htime : τ.dst.src.time = 133 :=
+    dst_time_eq_one_hundred_thirty_three_of_src_base_eq_43556142965880123323311949751266331066368m_add_20164881002722279316348124884845523641837 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first four dyadic cases of the `time ≥ 130`
+    branch: `base = 43556142965880123323311949751266331066368*m + 41942952485662340978004099760478689175021` still forces destination
+    time at least `134`. -/
+theorem one_hundred_thirty_four_le_dst_time_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 43556142965880123323311949751266331066368 * m + 41942952485662340978004099760478689175021) :
+    134 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 13 := by
+    calc
+      τ.src.src.base = 43556142965880123323311949751266331066368 * m + 41942952485662340978004099760478689175021 := hm
+      _ = 32 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 11 = 2 ^ 130 * (27 * m + 26) := by
+    ring_nf
+  have hpos : 0 < 27 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 11 := by
+    omega
+  have hdvd : 2 ^ 130 ∣ 27 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 11 := by
+    refine ⟨27 * m + 26, ?_⟩
+    exact hfac
+  have hv2_ge130 : 130 ≤ v2 (27 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 11) + 1 ≤ 130 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 11) + 1) ∣
+          27 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 11) hpos) hdiv
+  have htime_ge : 134 ≤ 4 + v2 (27 * (1361129467683753853853498429727072845824 * m + 1310717265176948155562628117514959036719) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first four dyadic shells of the
+    `time ≥ 130` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_thirty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 43556142965880123323311949751266331066368 * m + 41942952485662340978004099760478689175021) :
+    2 ^ (τ.dst.src.time - 134) * τ.dst.src.base = 27 * m + 26 := by
+  have hm' : τ.src.src.base = 2722258935367507707706996859454145691648 * (16 * m + 15) + 1109068455149725362399146868666503800301 := by
+    calc
+      τ.src.src.base = 43556142965880123323311949751266331066368 * m + 41942952485662340978004099760478689175021 := hm
+      _ = 2722258935367507707706996859454145691648 * (16 * m + 15) + 1109068455149725362399146868666503800301 := by ring
+  have htime_ge134 : 134 ≤ τ.dst.src.time :=
+    one_hundred_thirty_four_le_dst_time_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 130) * τ.dst.src.base = 27 * (16 * m + 15) + 11 :=
+    two_pow_dst_time_sub_one_hundred_thirty_mul_dst_base_eq_27m_add_11_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 130) = 2 ^ (τ.dst.src.time - 134) * 2 ^ 4 := by
+    have hsub : τ.dst.src.time - 130 = (τ.dst.src.time - 134) + 4 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 134) * τ.dst.src.base) =
+        2 ^ 4 * (27 * m + 26) := by
+    calc
+      2 ^ 4 * (2 ^ (τ.dst.src.time - 134) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 134) * 2 ^ 4) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 130) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (16 * m + 15) + 11 := htransport
+      _ = 2 ^ 4 * (27 * m + 26) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 4) hmul
+
+/-- The returned `time ≥ 134` transport is exactly the older `time ≥ 44`
+    shell after renormalizing the shell parameter by
+    `m ↦ 1237940039285380274899124224*m + 1192090408200736561013971474`. -/
+theorem returned_forty_four_shell_transport_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 43556142965880123323311949751266331066368 * m + 41942952485662340978004099760478689175021) :
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base = 2 ^ 90 * (27 * m + 26) := by
+  have hm' : τ.src.src.base = 35184372088832 * (1237940039285380274899124224 * m + 1192090408200736561013971474) + 33881247196653 := by
+    calc
+      τ.src.src.base = 43556142965880123323311949751266331066368 * m + 41942952485662340978004099760478689175021 := hm
+      _ = 35184372088832 * (1237940039285380274899124224 * m + 1192090408200736561013971474) + 33881247196653 := by ring
+  calc
+    2 ^ (τ.dst.src.time - 44) * τ.dst.src.base
+        = 27 * (1237940039285380274899124224 * m + 1192090408200736561013971474) + 26 := by
+            exact two_pow_dst_time_sub_forty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_35184372088832m_add_33881247196653
+              τ ht he hm'
+    _ = 2 ^ 90 * (27 * m + 26) := by
+      ring_nf
+
 /-- First time-4 sub-shell inside the higher-time `13 mod 32` exit: once the
     source branch refines to `base = 128*r + 13`, the destination source slice
     is exactly `(4,1)`. -/
@@ -16462,7 +23227,7 @@ theorem regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_eq_1
     ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
   have hzone : regimeIINext n < 832 :=
     (regimeIINext_lt_832_iff_base_eq_1_of_time6_eject3 n hT hj).2 hbase
-  exact regimeII_next_hits_k6_zone_shrinks n hn1 hn (by simpa [hT] using (show 2 ≤ 6 by norm_num)) hzone
+  exact regimeII_next_hits_k6_zone_shrinks n hn1 hn (by omega) hzone
 
 /-- The exact singleton source state `(time, base, eject) = (7, 3, 5)` already
     certifies a shrinking window on the true integer orbit. -/
@@ -16473,7 +23238,7 @@ theorem regimeII_slice_shrinks_via_exact_zone_of_time7_eject5_base_eq_3
     ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
   have hzone : regimeIINext n < 832 :=
     (regimeIINext_lt_832_iff_base_eq_3_of_time7_eject5 n hT hj).2 hbase
-  exact regimeII_next_hits_k6_zone_shrinks n hn1 hn (by simpa [hT] using (show 2 ≤ 7 by norm_num)) hzone
+  exact regimeII_next_hits_k6_zone_shrinks n hn1 hn (by omega) hzone
 
 /-- The exact singleton source state `(time, base, eject) = (8, 1, 5)` already
     certifies a shrinking window on the true integer orbit. -/
@@ -16484,7 +23249,7 @@ theorem regimeII_slice_shrinks_via_exact_zone_of_time8_eject5_base_eq_1
     ∃ W : ℕ, 0 < W ∧ syracuseExact^[W] n < n := by
   have hzone : regimeIINext n < 832 :=
     (regimeIINext_lt_832_iff_base_eq_1_of_time8_eject5 n hT hj).2 hbase
-  exact regimeII_next_hits_k6_zone_shrinks n hn1 hn (by simpa [hT] using (show 2 ≤ 8 by norm_num)) hzone
+  exact regimeII_next_hits_k6_zone_shrinks n hn1 hn (by omega) hzone
 
 namespace RegimeIIBadFrontierTransition
 
