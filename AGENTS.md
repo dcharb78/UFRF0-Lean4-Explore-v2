@@ -34,6 +34,13 @@ before changing proofs.
 
 - If the `ufrf-memory-loop` skill is available in the environment, use it
   before substantial Collatz/UFRF proof work.
+- Before a new thread, compaction, or any status handoff, refresh
+  `docs/proofs/COLLATZ_COMPACT_HANDOFF.md` so it explicitly records:
+  - repo identity
+  - last green build boundary
+  - current newer source delta
+  - frontier/index/Rover sync status
+  - any active build that is still pending confirmation
 - Query recent curated notes before exploring widely. On the primary local
   workstation this curation directory is:
   `/Users/dcharb/.codex/tools/ufrf-rover/.ufrf_rover/curations/`
@@ -46,6 +53,9 @@ before changing proofs.
 - If Lean source moves ahead of the last green build boundary, update
   `docs/proofs/COLLATZ_CONCURRENT_FRONTIER.md` immediately so it names both
   the `last green checkpoint` and the `current WIP in source`.
+- Before flattening status into a single summary after compaction, run
+  `python3 scripts/collatz_compact_status.py`. If it reports warnings, do not
+  merge the green boundary and newer source edits into one checkpoint.
 - Do not let compacted-thread handoffs flatten unverified source edits into
   verified checkpoint status. Keep WIP theorem families explicitly marked as
   unverified until the corresponding build is confirmed green.

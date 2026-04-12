@@ -6,6 +6,12 @@ multiscale Collatz program centered on
 
 Read this note before starting new proof work in a fresh conversation.
 
+For compact-safe resume on fresh threads, also read
+`docs/proofs/COLLATZ_COMPACT_HANDOFF.md` first. That file is the short
+operational layer that must keep the last green boundary separate from any
+newer unverified source edits, active build sessions, or unsynced
+index/Rover state.
+
 ## Local Name Workflow
 
 For this frontier file, use two layers together:
@@ -19,6 +25,14 @@ For this frontier file, use two layers together:
 Regenerate the index after declaration movement with:
 
 `python3 scripts/generate_decl_index.py --input UFRF/CollatzConcurrentScales.lean --json docs/proofs/COLLATZ_CONCURRENT_SYMBOL_INDEX.json --markdown docs/proofs/COLLATZ_CONCURRENT_SYMBOL_INDEX.md --title "Collatz Concurrent Scales Symbol Index"`
+
+Before compacting or opening a new thread, run:
+
+`python3 scripts/collatz_compact_status.py`
+
+If that script reports warnings, do not flatten the current state into one
+verified summary. Report the `last green checkpoint` and `current WIP in
+source` separately.
 
 If memory, the index, and source disagree about an exact identifier, Lean
 source wins.
@@ -75,13 +89,15 @@ shift the exact line, but this theorem remains the global target.
 Current checkpoint:
 
 - Branch: `codex/collatz-memory-loop`
-- Base commit: `25f6130`
-- Message: `Extend residual higher-time shell split through time 45`
+- Base commit: `054e0b3`
+- Message: `Package affine five-step return-machine self-map`
 - Current worktree state: targeted `lake build UFRF.CollatzConcurrentScales`
-  is green after extending the mirrored higher-time family through exact
-  `time = 135` with residual `time ≥ 136`, and after packaging the recurring
-  higher-time return laws and their live residual re-entry as one explicit
-  finite-state source machine
+  is green after adding the higher-time `32*k + 13` source self-threshold /
+  value / radial package, the shared `9387` observer-line bridge to the older
+  repeat-core package, the bounded observer-gap coordinate on that common
+  line, the immediate two-step observer-gap chain wrapper, and the new carrier
+  theorem
+  `exists_observerGap9387_832_carrier_of_repeatCore832Transition_chain`
 
 ## Resume State
 
@@ -231,11 +247,81 @@ source edits before describing the frontier.
   - the generated declaration index has been regenerated to reflect the
     current Lean source, including any active WIP beyond the checkpoint
 - Active WIP beyond the checkpoint:
-  - no newer unverified shell-family block is currently drafted beyond the
-    verified closed residual machine
-    `VerifiedHigherTimeReturnClock.residual_reenters_next_of_eq_src_base`
-  - beyond that closure packaging, no newer unverified structural recurrence
-    theorem is currently drafted
+  - local green WIP beyond commit `054e0b3` now includes the source-state
+    theorem
+    `regimeIIState_selfThresholdDefect_eq_14k_add_6_sub_div27_of_time3_eject1_of_base_eq_32k_add_13`
+    and its transition wrapper
+    `src_selfThresholdDefect_eq_14k_add_6_sub_div27_of_src_base_eq_32k_add_13`
+  - local green WIP beyond that now also includes the `32*k + 13` branch
+    value/radial package
+    `src_stateValue_eq_256k_add_103_of_src_base_eq_32k_add_13`,
+    `src_radialGap_832_eq_256k_sub_729_of_src_base_eq_32k_add_13`,
+    `dst_radialGap_832_eq_432k_sub_657_of_src_base_eq_32k_add_13`,
+    and `src_radialGap_832_lt_dst_radialGap_832_of_src_base_eq_32k_add_13`
+  - most importantly, local green WIP now includes the first explicit
+    recurrence-style transport laws on that branch:
+    `sixteen_mul_dst_stateValue_eq_twentySeven_mul_src_stateValue_add_19_of_src_base_eq_32k_add_13`
+    and the guarded radial-gap analogue
+    `sixteen_mul_dst_radialGap_832_eq_twentySeven_mul_src_radialGap_832_add_9171_of_src_base_eq_32k_add_13`
+  - local green WIP now also includes the intrinsic congruence-form wrappers
+    that the global `(3,1)` split will actually want to consume:
+    `sixteen_mul_dst_stateValue_eq_twentySeven_mul_src_stateValue_add_19_of_src_base_mod32_eq13`,
+    `src_radialGap_832_lt_dst_radialGap_832_of_src_base_mod32_eq13`, and
+    `sixteen_mul_dst_radialGap_832_eq_twentySeven_mul_src_radialGap_832_add_9171_of_src_base_mod32_eq13`
+  - local green WIP now also includes a bounded self-threshold/source-value
+    ray package on that same higher-time source branch:
+    `twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_stateValue_add_twentySeven_add_eight_mul_residue_of_src_base_eq_32k_add_13`,
+    `twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_stateValue_add_235_of_src_base_eq_32k_add_13`,
+    and the intrinsic wrapper
+    `twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_stateValue_add_235_of_src_base_mod32_eq13`
+  - local green WIP now also includes the target-facing `832` radial version of
+    that same bounded ray:
+    `twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_radialGap_832_add_9179_add_eight_mul_residue_of_src_base_eq_32k_add_13`,
+    `twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_radialGap_832_add_9387_of_src_base_eq_32k_add_13`,
+    and the intrinsic wrapper
+    `twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_radialGap_832_add_9387_of_src_base_mod32_eq13`
+  - local green WIP now also includes the first explicit bridge back into the
+    older repeat-core observer package:
+    `twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_radialGap_832_add_9387_of_repeatCore832Transition_chain10`
+    showing that the first true cycle-return state lies on the exact same
+    `832`-radial affine observer constant `9387` as the newer `32*k + 13`
+    higher-time branch bound
+  - local green WIP now also includes the exact finite gap-to-line package on
+    the newer higher-time branch above `832`:
+    `eleven_mul_src_radialGap_832_add_9387_eq_twoHundredSixteen_mul_src_selfThresholdDefect_add_eight_mul_twentySix_sub_residue_of_src_base_eq_32k_add_13`
+    and
+    `eleven_mul_src_radialGap_832_add_9387_le_twoHundredSixteen_mul_src_selfThresholdDefect_add_208_of_src_base_eq_32k_add_13`
+    showing that the newer branch misses the shared `9387` line by an exact
+    bounded finite residue, uniformly at most `208`
+  - local green WIP now also includes the actual common observer coordinate
+    `RegimeIIBadFrontierState.observerGap9387_832` together with theorems
+    `observerGap9387_832_eq_zero_of_repeatCore832Transition_chain10`,
+    `observerGap9387_832_eq_eight_mul_twentySix_sub_residue_of_src_base_eq_32k_add_13`,
+    `zero_le_observerGap9387_832_of_src_base_eq_32k_add_13`,
+    `observerGap9387_832_le_208_of_src_base_mod32_eq13`, and
+    `exists_observerGap9387_832_eq_eight_mul_of_src_base_mod32_eq13`
+    packaging the shared `9387` line as a genuine finite observer-gap
+    coordinate with values in `8 * {0, ..., 26}`
+  - local green WIP now also includes the normalization bridge
+    `observerGap9387_832_eq_normalizedRepeatRadialGap832_sub_twoHundredSixteen_mul_normalizedRepeatSelfThresholdDefect832`,
+    its target-facing value form
+    `observerGap9387_832_eq_normalizedRepeatValue832_sub_twoHundredSixteen_mul_normalizedRepeatSelfThresholdDefect832_of_target_le`,
+    and the inherited pure-phase transport law
+    `sixteen_mul_dst_observerGap9387_832_eq_twentySeven_mul_src_observerGap9387_832_of_src_repeatThresholdSeedResidue832_eq_zero`
+    so the older repeat-core normalization machinery now acts on the new
+    common observer-gap coordinate directly on the pure affine phase
+  - current source WIP beyond that green observer-gap normalization checkpoint
+    now includes the immediate two-step persistence wrapper
+    `sixteen_mul_dst_observerGap9387_832_eq_twentySeven_mul_src_observerGap9387_832_of_repeatCore832Transition_chain`
+    so the observer-gap transport is available directly on repeat-core
+    persistence chains without reopening the pure-phase gate by hand
+  - local green WIP now also includes the carrier form
+    `exists_observerGap9387_832_carrier_of_repeatCore832Transition_chain`
+    packaging the same two-step observer-gap transport through one common
+    integer `u` with source gap `16*u` and destination gap `27*u`
+  - there is no newer unverified shell-family block drafted beyond this
+    guarded recurrence, carrier packaging, and bounded self-threshold
+    packaging
 - Resume rule:
   - when chat memory, Rover, and source disagree, trust Lean source plus the
     latest green build boundary
@@ -258,6 +344,41 @@ Latest intrinsic gain:
   - on `base = 32*k + 13`, the higher-time exit satisfies
     `2^(dst.time - 4) * dst.base = 27*k + 11`, hence
     `dst.base ≤ 27*k + 11`
+  - on that same higher-time source chart, the source self-threshold defect is
+    now packaged intrinsically as
+    `regimeIISelfThresholdDefect src = 14*k + 6 - (26*k + 17)/27`
+  - that same source chart now also has intrinsic value/radial readouts:
+    `src.value = 256*k + 103`,
+    `src.radialGap_832 = 256*k - 729`,
+    `dst.radialGap_832 = 432*k - 657`
+  - combining those two source-side formulas now yields a bounded projective
+    source ray on the same higher-time branch:
+    `216 * src.selfThresholdDefect =
+      11 * src.value + 27 + 8 * ((26*k + 17) % 27)`,
+    hence uniformly
+    `216 * src.selfThresholdDefect ≤ 11 * src.value + 235`
+  - once that same source branch is itself already above `832`, the bounded
+    residue package can now be read directly in target-facing radial form:
+    `216 * src.selfThresholdDefect =
+      11 * src.radialGap_832 + 9179 + 8 * ((26*k + 17) % 27)`,
+    hence uniformly
+    `216 * src.selfThresholdDefect ≤ 11 * src.radialGap_832 + 9387`
+  - the older repeat-core return package now also has an explicit chain-level
+    target-facing radial ray theorem on the first true cycle-return state:
+    `216 * src.selfThresholdDefect = 11 * src.radialGap_832 + 9387`
+    so the newer higher-time branch and the older repeat-core package are now
+    provably meeting in the same `832`-radial observer coordinate, not merely
+    displaying numerically similar affine behavior
+  - the newer higher-time branch now goes one notch beyond that comparison:
+    relative to the same shared `9387` observer line, its exact miss is
+    itself a bounded finite residue
+    `8 * (26 - ((26*k + 17) % 27))`,
+    hence the shared line sits at most `208` above the actual branch readout
+  - that same comparison is now packaged as an actual source-state coordinate
+    `RegimeIIBadFrontierState.observerGap9387_832`:
+    it is exactly `0` on the first true repeat-core cycle-return state, and on
+    the higher-time `base ≡ 13 (mod 32)` branch above `832` it lies in the
+    finite set `8 * {0, ..., 26}`, so in particular `0 ≤ observerGap ≤ 208`
   - that higher-time branch is now parameterized exactly by
     `dst.time = 4 + v2(27*k + 11)` and
     `dst.base = (27*k + 11) / 2^v2(27*k + 11)`
@@ -857,6 +978,50 @@ source is already green through the verified `135 / ≥136` boundary.
   this verified closed machine plus its explicit renormalization map to
   compress the global bad-frontier argument, rather than continuing to
   accumulate parallel restatements
+- the immediate source-side bridge into that next question is now stronger
+  than it was at commit `054e0b3`: the higher-time `base = 32*k + 13` branch
+  no longer has only transport/value formulas, but also its own intrinsic
+  source self-threshold defect law. The next good structural move is to pair
+  that defect formula with the already-verified higher-time transport/clock
+  package and look for a monotone projective inequality, recurrence, or other
+  compressed bad-frontier functional, rather than reopening ad hoc shell
+  splitting first.
+- that recurrence search has now crossed its first real threshold: the
+  `32*k + 13` branch itself satisfies the same exact affine `27/16` transport
+  law on source/destination reconstructed value as the older repeat-core
+  package, and on `832` radial gap once the source is itself already above the
+  `832` cutoff. This is the clearest verified evidence so far that the newer
+  higher-time branch is not just producing isolated shell identities, but is
+  re-entering the same finite affine transport geometry.
+- the newest source-side gain is that the same branch no longer carries only a
+  raw floor-expression self-threshold law. That floor term is now repackaged as
+  an explicit bounded mod-27 residue on the projective ray
+  `216 * selfThresholdDefect` versus `11 * value`, exactly the same style of
+  observer repackaging that made the old repeat-core self-threshold transport
+  usable. This is the best current bridge from the newer higher-time branch
+  into a reusable finite-observer package, rather than an isolated affine chart.
+- the latest sharpening is that this bounded residue observer is now also
+  available directly against `src.radialGap_832`, not just `src.value`. That is
+  a materially better interface for the live bad-frontier work, because the
+  global target already lives at `832` and the new branch can now be compared in
+  the same target-facing coordinate family as the older repeat-core package.
+- the newest structural gain is stronger still: the old repeat-core chain now
+  has an explicit theorem on that same target-facing affine ray with the same
+  constant `9387`. This is the first clean theorem-level meeting point between
+  the older return package and the newer higher-time `13 mod 32` branch inside
+  one shared `832`-radial observer coordinate.
+- the latest sharpening turns that shared line into an actual finite observer
+  remainder on the newer branch: its distance to the common `9387` radial line
+  is exactly `8 * (26 - residue)` with residue `((26*k + 17) % 27)`, hence
+  uniformly bounded by `208`. That is the strongest current candidate for a
+  common “observer-gap” coordinate spanning both packages.
+- that same recurrence package is no longer only available in explicit
+  `base = 32*k + 13` chart form. The source now also has intrinsic
+  `base % 32 = 13` wrapper theorems for the state-value transport, strict
+  radial-gap increase, guarded radial-gap transport law, and bounded
+  self-threshold/source-value ray, which is a much better interface for
+  feeding the global bad-frontier split without reopening the affine chart
+  parameter by hand.
 - if that recurrence packaging is postponed, the fallback next local shell
   split is the mirrored `136/137/138/≥139` family from the verified residual
   `27*r + 20` stage

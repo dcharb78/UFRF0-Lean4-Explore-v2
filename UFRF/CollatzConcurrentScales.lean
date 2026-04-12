@@ -4813,6 +4813,14 @@ def selfThresholdDefect {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
 def zoneThresholdDefect {B : ℕ} (x : RegimeIIBadFrontierState B) : ℕ :=
   regimeIIZoneThresholdDefect B x.src
 
+/-- Signed gap from the source state's actual `832` target-facing self-threshold
+    readout to the shared affine observer line `11 * radialGap + 9387`. This is
+    the common coordinate where the newer higher-time branch and the older
+    repeat-core package now meet. -/
+def observerGap9387_832
+    (x : RegimeIIBadFrontierState 832) : ℤ :=
+  (11 * regimeIIRadialGap 832 x.src + 9387 : ℤ) - 216 * x.selfThresholdDefect
+
 theorem admissible {B : ℕ} (x : RegimeIIBadFrontierState B) :
     regimeIIStateAdmissible x.src :=
   x.isBad.1
@@ -7269,6 +7277,49 @@ theorem regimeIIState_selfThresholdDefect_eq_26k_add_12_add_div27_of_time3_eject
   apply (Nat.sub_eq_iff_eq_add hle).2
   omega
 
+/-- On the intrinsic source slice `(time, eject) = (3, 1)`, the higher-time
+    source chart `base = 32*k + 13` gives an explicit source self-threshold
+    defect: an affine term minus the finer staircase correction
+    `⌊(26*k+17)/27⌋`. -/
+theorem regimeIIState_selfThresholdDefect_eq_14k_add_6_sub_div27_of_time3_eject1_of_base_eq_32k_add_13
+    (s : RegimeIIState)
+    (ht : s.time = 3) (he : s.eject = 1)
+    {k : ℕ} (hk : s.base = 32 * k + 13) :
+    regimeIISelfThresholdDefect s = 14 * k + 6 - (26 * k + 17) / 27 := by
+  set q : ℕ := (26 * k + 17) / 27
+  set r : ℕ := (26 * k + 17) % 27
+  have hqr : r + 27 * q = 26 * k + 17 := by
+    simpa [q, r] using Nat.mod_add_div (26 * k + 17) 27
+  have hrlt : r < 27 := by
+    simpa [r] using Nat.mod_lt (26 * k + 17) (by norm_num : 0 < 27)
+  have hdiv : (512 * k + 206) / 27 = 18 * k + 7 + q := by
+    have hdecomp :
+        512 * k + 206 = r + 27 * (18 * k + 7 + q) := by
+      omega
+    calc
+      (512 * k + 206) / 27 = (r + 27 * (18 * k + 7 + q)) / 27 := by
+        rw [hdecomp]
+      _ = r / 27 + (18 * k + 7 + q) := by
+        simpa [Nat.mul_comm] using
+          (Nat.add_mul_div_right r (18 * k + 7 + q) (by norm_num : 0 < 27))
+      _ = 0 + (18 * k + 7 + q) := by
+        rw [Nat.div_eq_of_lt hrlt]
+      _ = 18 * k + 7 + q := by simp
+  have hqleK : q ≤ k := by
+    have hlt : (26 * k + 17) / 27 < k + 1 := by
+      rw [Nat.div_lt_iff_lt_mul (by norm_num : 0 < 27)]
+      omega
+    exact Nat.lt_succ_iff.mp (by simpa [q] using hlt)
+  have hqle : q ≤ 14 * k + 6 := by
+    omega
+  unfold regimeIISelfThresholdDefect regimeIIBaseThreshold regimeIIStateValue
+  rw [ht, he, hk]
+  norm_num
+  have hnum : (8 * (32 * k + 13) - 1) * 2 = 512 * k + 206 := by
+    omega
+  rw [hnum, hdiv]
+  omega
+
 /-- On the surviving intrinsic source branch `(time, eject) = (3, 1)` with
     `base ≡ 29 (mod 64)`, the destination state's self-threshold is exactly the
     source base. -/
@@ -8025,6 +8076,34 @@ theorem normalizedRepeatValue832_eq_normalizedRepeatRadialGap832_of_target_le
   unfold RegimeIIBadFrontierState.normalizedRepeatValue832
   unfold RegimeIIBadFrontierState.normalizedRepeatRadialGap832
   unfold regimeIIRadialGap
+  omega
+
+/-- The shared `9387` observer gap is exactly the normalized target-facing
+    radial observer minus `216` times the normalized self-threshold defect. -/
+theorem observerGap9387_832_eq_normalizedRepeatRadialGap832_sub_twoHundredSixteen_mul_normalizedRepeatSelfThresholdDefect832
+    (x : RegimeIIBadFrontierState 832) :
+    RegimeIIBadFrontierState.observerGap9387_832 x =
+      (RegimeIIBadFrontierState.normalizedRepeatRadialGap832 x : ℤ) -
+        (216 : ℤ) * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 x := by
+  have hx1 : 1 ≤ x.selfThresholdDefect := Nat.succ_le_of_lt x.selfThresholdDefect_pos
+  unfold RegimeIIBadFrontierState.observerGap9387_832
+  unfold RegimeIIBadFrontierState.normalizedRepeatRadialGap832
+  unfold RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832
+  omega
+
+/-- Above the target `832`, the same observer gap can equally be read through
+    the normalized value observer. -/
+theorem observerGap9387_832_eq_normalizedRepeatValue832_sub_twoHundredSixteen_mul_normalizedRepeatSelfThresholdDefect832_of_target_le
+    (x : RegimeIIBadFrontierState 832)
+    (hx : 832 ≤ regimeIIStateValue x.src) :
+    RegimeIIBadFrontierState.observerGap9387_832 x =
+      (RegimeIIBadFrontierState.normalizedRepeatValue832 x : ℤ) -
+        (216 : ℤ) * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 x := by
+  have hvalueZ :
+      (RegimeIIBadFrontierState.normalizedRepeatValue832 x : ℤ) =
+        RegimeIIBadFrontierState.normalizedRepeatRadialGap832 x := by
+    exact_mod_cast normalizedRepeatValue832_eq_normalizedRepeatRadialGap832_of_target_le x hx
+  rw [observerGap9387_832_eq_normalizedRepeatRadialGap832_sub_twoHundredSixteen_mul_normalizedRepeatSelfThresholdDefect832]
   omega
 
 /-- The repeat-seed observer vanishes exactly when the deeper seed coordinate
@@ -8882,6 +8961,45 @@ theorem sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mu
       τ hτ h0
   omega
 
+/-- The shared `9387` observer-gap coordinate inherits the same exact `27/16`
+    transport law on the intrinsic pure affine repeat phase. -/
+theorem sixteen_mul_dst_observerGap9387_832_eq_twentySeven_mul_src_observerGap9387_832_of_src_repeatThresholdSeedResidue832_eq_zero
+    (τ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (h0 : RegimeIIBadFrontierState.repeatThresholdSeedResidue832 τ.src = 0) :
+    (16 : ℤ) * RegimeIIBadFrontierState.observerGap9387_832 τ.dst =
+      27 * RegimeIIBadFrontierState.observerGap9387_832 τ.src := by
+  have hgap :
+      (16 : ℤ) * RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.dst =
+        27 * RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.src := by
+    exact_mod_cast
+      sixteen_mul_dst_normalizedRepeatRadialGap832_eq_twentySeven_mul_src_normalizedRepeatRadialGap832_of_repeatCore832Transition
+        τ hτ
+  have hdef :
+      (16 : ℤ) * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.dst =
+        27 * RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.src := by
+    exact_mod_cast
+      sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_src_repeatThresholdSeedResidue832_eq_zero
+        τ hτ h0
+  let Gdst : ℤ := RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.dst
+  let Gsrc : ℤ := RegimeIIBadFrontierState.normalizedRepeatRadialGap832 τ.src
+  let Ddst : ℤ := RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.dst
+  let Dsrc : ℤ := RegimeIIBadFrontierState.normalizedRepeatSelfThresholdDefect832 τ.src
+  have hgap' : 16 * Gdst = 27 * Gsrc := by
+    simpa [Gdst, Gsrc] using hgap
+  have hdef' : 16 * Ddst = 27 * Dsrc := by
+    simpa [Ddst, Dsrc] using hdef
+  rw [observerGap9387_832_eq_normalizedRepeatRadialGap832_sub_twoHundredSixteen_mul_normalizedRepeatSelfThresholdDefect832
+      (x := τ.dst)]
+  rw [observerGap9387_832_eq_normalizedRepeatRadialGap832_sub_twoHundredSixteen_mul_normalizedRepeatSelfThresholdDefect832
+      (x := τ.src)]
+  change 16 * (Gdst - 216 * Ddst) = 27 * (Gsrc - 216 * Dsrc)
+  calc
+    16 * (Gdst - 216 * Ddst)
+        = 16 * Gdst - 216 * (16 * Ddst) := by ring
+    _ = 27 * Gsrc - 216 * (27 * Dsrc) := by rw [hgap', hdef']
+    _ = 27 * (Gsrc - 216 * Dsrc) := by ring
+
 /-- Two-step normalized self-threshold transport on the repeat tower: the
     deeper branch `q = 16*r + 5` forces the next repeat-core transition into
     the exact normalized affine phase. -/
@@ -9336,6 +9454,55 @@ theorem sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mu
   exact
     sixteen_mul_dst_normalizedRepeatSelfThresholdDefect832_eq_twentySeven_mul_src_normalizedRepeatSelfThresholdDefect832_of_src_repeatThresholdSeedResidue832_eq_zero
       σ hσ hphase.2
+
+/-- Locked-sector transport on the shared observer-gap coordinate: if a second
+    repeat-core transition follows immediately, then the intermediate source
+    state already lies in the pure affine phase, so the observer-gap transport
+    is exactly `27/16`. -/
+theorem sixteen_mul_dst_observerGap9387_832_eq_twentySeven_mul_src_observerGap9387_832_of_repeatCore832Transition_chain
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst) :
+    (16 : ℤ) * RegimeIIBadFrontierState.observerGap9387_832 σ.dst =
+      27 * RegimeIIBadFrontierState.observerGap9387_832 σ.src := by
+  have hphase : regimeIIRepeatPurePhase832 σ.src := by
+    simpa [hlink] using dst_repeatPurePhase832_of_repeatCore832Transition_chain τ σ hτ hσ hlink
+  exact
+    sixteen_mul_dst_observerGap9387_832_eq_twentySeven_mul_src_observerGap9387_832_of_src_repeatThresholdSeedResidue832_eq_zero
+      σ hσ hphase.2
+
+/-- Carrier form of the shared observer-gap transport on a two-step repeat-core
+    chain. Once persistence reaches the pure affine sector, the source and
+    destination observer gaps already factor through one common integer carrier
+    `u`, with source gap `16*u` and destination gap `27*u`. -/
+theorem exists_observerGap9387_832_carrier_of_repeatCore832Transition_chain
+    (τ σ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hlink : σ.src = τ.dst) :
+    ∃ u : ℤ,
+      RegimeIIBadFrontierState.observerGap9387_832 σ.src = 16 * u ∧
+      RegimeIIBadFrontierState.observerGap9387_832 σ.dst = 27 * u := by
+  let Gsrc : ℤ := RegimeIIBadFrontierState.observerGap9387_832 σ.src
+  let Gdst : ℤ := RegimeIIBadFrontierState.observerGap9387_832 σ.dst
+  have htransport : 16 * Gdst = 27 * Gsrc := by
+    simpa [Gsrc, Gdst] using
+      sixteen_mul_dst_observerGap9387_832_eq_twentySeven_mul_src_observerGap9387_832_of_repeatCore832Transition_chain
+        τ σ hτ hσ hlink
+  have hmod : Gsrc % 16 = 0 := by
+    omega
+  refine ⟨Gsrc / 16, ?_, ?_⟩
+  · calc
+      Gsrc = 16 * (Gsrc / 16) + Gsrc % 16 := by
+        simpa using (Int.mul_ediv_add_emod Gsrc 16).symm
+      _ = 16 * (Gsrc / 16) := by rw [hmod]; ring
+  · have hsrc : Gsrc = 16 * (Gsrc / 16) := by
+      calc
+        Gsrc = 16 * (Gsrc / 16) + Gsrc % 16 := by
+          simpa using (Int.mul_ediv_add_emod Gsrc 16).symm
+        _ = 16 * (Gsrc / 16) := by rw [hmod]; ring
+    omega
 
 /-- Locked-sector projective invariance on a two-step repeat-core chain: if
     repeat-core persistence survives for two consecutive transitions, then the
@@ -11687,6 +11854,86 @@ theorem twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_stateVal
     _ = (11 * regimeIIStateValue σ.src.src + 19) + 216 := by rw [← hnorm]
     _ = 11 * regimeIIStateValue σ.src.src + 235 := by omega
 
+/-- Target-facing radial form of the same cycle-return affine ray collapse.
+    On the first true cycle-return state, the source self-threshold defect sits
+    exactly on the `832`-radial ray with the same constant `9387` that now also
+    bounds the newer higher-time `32*k + 13` branch. -/
+theorem twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_radialGap_832_add_9387_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    216 * σ.src.selfThresholdDefect =
+      11 * regimeIIRadialGap 832 σ.src.src + 9387 := by
+  have hvalue :=
+    twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_stateValue_add_235_of_repeatCore832Transition_chain10
+      τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+      hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  have htarget :
+      832 ≤ regimeIIStateValue σ.src.src := by
+    exact
+      (target_le_stateValue_iff_one_le_repeatParam832_of_repeatCore832 σ.src hσ.1).2
+        (one_le_src_repeatParam832_of_repeatCore832Transition σ hσ)
+  have hsplit : regimeIIStateValue σ.src.src = regimeIIRadialGap 832 σ.src.src + 832 := by
+    unfold regimeIIRadialGap
+    exact (Nat.sub_eq_iff_eq_add htarget).1 rfl
+  rw [hsplit] at hvalue
+  exact hvalue.trans (by omega)
+
+/-- The common `9387` target-facing observer gap vanishes exactly on the first
+    true repeat-core cycle-return state. -/
+theorem observerGap9387_832_eq_zero_of_repeatCore832Transition_chain10
+    (τ σ ρ ups χ ψ ω ζ η θ : RegimeIIBadFrontierTransition 832)
+    (hτ : regimeIIRepeatCore832Transition τ)
+    (hσ : regimeIIRepeatCore832Transition σ)
+    (hρ : regimeIIRepeatCore832Transition ρ)
+    (hups : regimeIIRepeatCore832Transition ups)
+    (hχ : regimeIIRepeatCore832Transition χ)
+    (hψ : regimeIIRepeatCore832Transition ψ)
+    (hω : regimeIIRepeatCore832Transition ω)
+    (hζ : regimeIIRepeatCore832Transition ζ)
+    (hη : regimeIIRepeatCore832Transition η)
+    (hθ : regimeIIRepeatCore832Transition θ)
+    (hlinkτσ : σ.src = τ.dst)
+    (hlinkσρ : ρ.src = σ.dst)
+    (hlinkρups : ups.src = ρ.dst)
+    (hlinkupsχ : χ.src = ups.dst)
+    (hlinkχψ : ψ.src = χ.dst)
+    (hlinkψω : ω.src = ψ.dst)
+    (hlinkωζ : ζ.src = ω.dst)
+    (hlinkζη : η.src = ζ.dst)
+    (hlinkηθ : θ.src = η.dst) :
+    RegimeIIBadFrontierState.observerGap9387_832 σ.src = 0 := by
+  have hexact :
+      216 * σ.src.selfThresholdDefect =
+        11 * regimeIIRadialGap 832 σ.src.src + 9387 := by
+    exact
+      twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_radialGap_832_add_9387_of_repeatCore832Transition_chain10
+        τ σ ρ ups χ ψ ω ζ η θ hτ hσ hρ hups hχ hψ hω hζ hη hθ
+        hlinkτσ hlinkσρ hlinkρups hlinkupsχ hlinkχψ hlinkψω hlinkωζ hlinkζη hlinkηθ
+  have hexactZ :
+      (216 * (σ.src.selfThresholdDefect : ℤ)) =
+        (11 * regimeIIRadialGap 832 σ.src.src + 9387 : ℤ) := by
+    exact_mod_cast hexact
+  unfold RegimeIIBadFrontierState.observerGap9387_832
+  omega
+
 /-- Exact affine transport on the actual source self-threshold defect along
     the first true cycle-return branch. This is the source-state form of the
     normalized `16/27` transport law. -/
@@ -12025,6 +12272,394 @@ theorem two_le_k_of_src_base_eq_32k_add_13
         exact τ.dst_stateValue_eq_nextValue
   rw [hdst] at hge
   omega
+
+/-- On the higher-time surviving branch out of the intrinsic source slice
+    `(time,eject) = (3,1)`, the source self-threshold defect is an explicit
+    affine-minus-staircase function of the source chart parameter. -/
+theorem src_selfThresholdDefect_eq_14k_add_6_sub_div27_of_src_base_eq_32k_add_13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13) :
+    regimeIISelfThresholdDefect τ.src.src = 14 * k + 6 - (26 * k + 17) / 27 := by
+  exact regimeIIState_selfThresholdDefect_eq_14k_add_6_sub_div27_of_time3_eject1_of_base_eq_32k_add_13
+    τ.src.src ht he hk
+
+/-- On the higher-time surviving branch out of the intrinsic source slice
+    `(time,eject) = (3,1)`, the source reconstructed value itself is an
+    explicit affine function of the source chart parameter. -/
+theorem src_stateValue_eq_256k_add_103_of_src_base_eq_32k_add_13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13) :
+    regimeIIStateValue τ.src.src = 256 * k + 103 := by
+  unfold regimeIIStateValue
+  rw [ht, hk]
+  omega
+
+/-- On the higher-time surviving branch `base = 32*k + 13`, the source
+    self-threshold defect lies on the same projective source-value ray as the
+    repeat-core package, up to one bounded mod-27 residue term. This repackages
+    the floor term in the source defect formula as an explicit finite residue
+    observer. -/
+theorem twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_stateValue_add_twentySeven_add_eight_mul_residue_of_src_base_eq_32k_add_13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13) :
+    216 * regimeIISelfThresholdDefect τ.src.src =
+      11 * regimeIIStateValue τ.src.src + 27 + 8 * ((26 * k + 17) % 27) := by
+  have hdecomp : (26 * k + 17) % 27 + 27 * ((26 * k + 17) / 27) = 26 * k + 17 := by
+    exact Nat.mod_add_div (26 * k + 17) 27
+  have hexact :
+      216 * (14 * k + 6 - (26 * k + 17) / 27) =
+        11 * (256 * k + 103) + 27 + 8 * ((26 * k + 17) % 27) := by
+    omega
+  rw [src_selfThresholdDefect_eq_14k_add_6_sub_div27_of_src_base_eq_32k_add_13 τ ht he hk,
+    src_stateValue_eq_256k_add_103_of_src_base_eq_32k_add_13 τ ht hk]
+  exact hexact
+
+/-- Quantitative upper comparison form of the `32*k + 13` self-threshold ray:
+    the source self-threshold defect has the same projective slope as the old
+    repeat-core source package, with uniformly bounded error at most `235`. -/
+theorem twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_stateValue_add_235_of_src_base_eq_32k_add_13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13) :
+    216 * regimeIISelfThresholdDefect τ.src.src ≤
+      11 * regimeIIStateValue τ.src.src + 235 := by
+  have hlt : (26 * k + 17) % 27 < 27 := by
+    exact Nat.mod_lt (26 * k + 17) (by norm_num : 0 < 27)
+  have hexact :=
+    twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_stateValue_add_twentySeven_add_eight_mul_residue_of_src_base_eq_32k_add_13
+      (B := B) τ ht he hk
+  omega
+
+/-- Intrinsic congruence form of the bounded self-threshold/source-value ray on
+    the higher-time `(time,eject) = (3,1)` branch with `base ≡ 13 (mod 32)`. -/
+theorem twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_stateValue_add_235_of_src_base_mod32_eq13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 13) :
+    216 * regimeIISelfThresholdDefect τ.src.src ≤
+      11 * regimeIIStateValue τ.src.src + 235 := by
+  obtain ⟨k, hk⟩ : ∃ k, τ.src.src.base = 32 * k + 13 := by
+    refine ⟨τ.src.src.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 32
+    omega
+  exact
+    twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_stateValue_add_235_of_src_base_eq_32k_add_13
+      (B := B) τ ht he hk
+
+/-- Once the higher-time source branch `base = 32*k + 13` is itself already
+    above the target `832`, the same bounded residue observer can be read
+    directly against the source radial gap above `832`. -/
+theorem twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_radialGap_832_add_9179_add_eight_mul_residue_of_src_base_eq_32k_add_13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    216 * regimeIISelfThresholdDefect τ.src.src =
+      11 * regimeIIRadialGap 832 τ.src.src + 9179 + 8 * ((26 * k + 17) % 27) := by
+  have hexact :=
+    twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_stateValue_add_twentySeven_add_eight_mul_residue_of_src_base_eq_32k_add_13
+      (B := 832) τ ht he hk
+  have hsplit : regimeIIStateValue τ.src.src = regimeIIRadialGap 832 τ.src.src + 832 := by
+    unfold regimeIIRadialGap
+    exact (Nat.sub_eq_iff_eq_add hcore).1 rfl
+  rw [hsplit] at hexact
+  exact hexact.trans (by omega)
+
+/-- Quantitative radial-gap form of the bounded source self-threshold ray on
+    the higher-time `32*k + 13` branch once the source already lies above the
+    target `832`. -/
+theorem twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_radialGap_832_add_9387_of_src_base_eq_32k_add_13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    216 * regimeIISelfThresholdDefect τ.src.src ≤
+      11 * regimeIIRadialGap 832 τ.src.src + 9387 := by
+  have hlt : (26 * k + 17) % 27 < 27 := by
+    exact Nat.mod_lt (26 * k + 17) (by norm_num : 0 < 27)
+  have hexact :=
+    twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_radialGap_832_add_9179_add_eight_mul_residue_of_src_base_eq_32k_add_13
+      τ ht he hk hcore
+  omega
+
+/-- Intrinsic congruence form of the bounded self-threshold/radial-gap ray on
+    the higher-time `(time,eject) = (3,1)` branch with `base ≡ 13 (mod 32)`,
+    once the source value itself is already above `832`. -/
+theorem twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_radialGap_832_add_9387_of_src_base_mod32_eq13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    216 * regimeIISelfThresholdDefect τ.src.src ≤
+      11 * regimeIIRadialGap 832 τ.src.src + 9387 := by
+  obtain ⟨k, hk⟩ : ∃ k, τ.src.src.base = 32 * k + 13 := by
+    refine ⟨τ.src.src.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 32
+    omega
+  exact
+    twoHundredSixteen_mul_src_selfThresholdDefect_le_eleven_mul_src_radialGap_832_add_9387_of_src_base_eq_32k_add_13
+      τ ht he hk hcore
+
+/-- Exact gap-to-ray form of the higher-time `32*k + 13` source package above
+    `832`: the distance from the shared `9387` radial observer line is itself
+    a bounded finite residue, namely `8 * (26 - ((26*k+17) % 27))`. -/
+theorem eleven_mul_src_radialGap_832_add_9387_eq_twoHundredSixteen_mul_src_selfThresholdDefect_add_eight_mul_twentySix_sub_residue_of_src_base_eq_32k_add_13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    11 * regimeIIRadialGap 832 τ.src.src + 9387 =
+      216 * regimeIISelfThresholdDefect τ.src.src +
+        8 * (26 - ((26 * k + 17) % 27)) := by
+  have hlt : (26 * k + 17) % 27 < 27 := by
+    exact Nat.mod_lt (26 * k + 17) (by norm_num : 0 < 27)
+  have hexact :=
+    twoHundredSixteen_mul_src_selfThresholdDefect_eq_eleven_mul_src_radialGap_832_add_9179_add_eight_mul_residue_of_src_base_eq_32k_add_13
+      τ ht he hk hcore
+  omega
+
+/-- Quantitative gap-to-ray bound for the higher-time `32*k + 13` source
+    package above `832`: the shared `9387` radial observer line sits at most
+    `208` above the actual source self-threshold readout. -/
+theorem eleven_mul_src_radialGap_832_add_9387_le_twoHundredSixteen_mul_src_selfThresholdDefect_add_208_of_src_base_eq_32k_add_13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    11 * regimeIIRadialGap 832 τ.src.src + 9387 ≤
+      216 * regimeIISelfThresholdDefect τ.src.src + 208 := by
+  have hexact :=
+    eleven_mul_src_radialGap_832_add_9387_eq_twoHundredSixteen_mul_src_selfThresholdDefect_add_eight_mul_twentySix_sub_residue_of_src_base_eq_32k_add_13
+      τ ht he hk hcore
+  have hlt : (26 * k + 17) % 27 < 27 := by
+    exact Nat.mod_lt (26 * k + 17) (by norm_num : 0 < 27)
+  omega
+
+/-- The shared `9387` target-facing observer line induces an exact bounded
+    source-state gap coordinate on the higher-time `32*k + 13` branch above
+    `832`. -/
+theorem observerGap9387_832_eq_eight_mul_twentySix_sub_residue_of_src_base_eq_32k_add_13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    RegimeIIBadFrontierState.observerGap9387_832 τ.src =
+      (8 * (26 - ((26 * k + 17) % 27)) : ℤ) := by
+  have hexact :
+      11 * regimeIIRadialGap 832 τ.src.src + 9387 =
+        216 * regimeIISelfThresholdDefect τ.src.src +
+          8 * (26 - ((26 * k + 17) % 27)) := by
+    exact
+      eleven_mul_src_radialGap_832_add_9387_eq_twoHundredSixteen_mul_src_selfThresholdDefect_add_eight_mul_twentySix_sub_residue_of_src_base_eq_32k_add_13
+        τ ht he hk hcore
+  have hexactZ :
+      ((11 * regimeIIRadialGap 832 τ.src.src + 9387 : ℤ)) =
+        216 * (τ.src.selfThresholdDefect : ℤ) +
+          ((8 * (26 - ((26 * k + 17) % 27)) : ℕ) : ℤ) := by
+    exact_mod_cast hexact
+  unfold RegimeIIBadFrontierState.observerGap9387_832
+  omega
+
+/-- The higher-time source observer gap to the shared `9387` line is always
+    nonnegative. -/
+theorem zero_le_observerGap9387_832_of_src_base_eq_32k_add_13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    0 ≤ RegimeIIBadFrontierState.observerGap9387_832 τ.src := by
+  have hlt : (26 * k + 17) % 27 < 27 := by
+    exact Nat.mod_lt (26 * k + 17) (by norm_num : 0 < 27)
+  rw [observerGap9387_832_eq_eight_mul_twentySix_sub_residue_of_src_base_eq_32k_add_13 τ ht he hk hcore]
+  norm_num
+  omega
+
+/-- The higher-time source observer gap to the shared `9387` line is uniformly
+    bounded by `208`. -/
+theorem observerGap9387_832_le_208_of_src_base_eq_32k_add_13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    RegimeIIBadFrontierState.observerGap9387_832 τ.src ≤ 208 := by
+  have hlt : (26 * k + 17) % 27 < 27 := by
+    exact Nat.mod_lt (26 * k + 17) (by norm_num : 0 < 27)
+  rw [observerGap9387_832_eq_eight_mul_twentySix_sub_residue_of_src_base_eq_32k_add_13 τ ht he hk hcore]
+  norm_num
+  omega
+
+/-- Intrinsic congruence-form bound for the higher-time source observer gap to
+    the shared `9387` line. -/
+theorem observerGap9387_832_le_208_of_src_base_mod32_eq13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    RegimeIIBadFrontierState.observerGap9387_832 τ.src ≤ 208 := by
+  obtain ⟨k, hk⟩ : ∃ k, τ.src.src.base = 32 * k + 13 := by
+    refine ⟨τ.src.src.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 32
+    omega
+  exact observerGap9387_832_le_208_of_src_base_eq_32k_add_13 τ ht he hk hcore
+
+/-- Finite-state packaging of the higher-time source observer gap above `832`:
+    it is always one of the `27` multiples `8*q` with `q < 27`. -/
+theorem exists_observerGap9387_832_eq_eight_mul_of_src_base_mod32_eq13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    ∃ q : ℕ, q < 27 ∧
+      RegimeIIBadFrontierState.observerGap9387_832 τ.src = (8 * q : ℤ) := by
+  obtain ⟨k, hk⟩ : ∃ k, τ.src.src.base = 32 * k + 13 := by
+    refine ⟨τ.src.src.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 32
+    omega
+  refine ⟨26 - ((26 * k + 17) % 27), ?_, ?_⟩
+  · have hlt : (26 * k + 17) % 27 < 27 := by
+      exact Nat.mod_lt (26 * k + 17) (by norm_num : 0 < 27)
+    omega
+  · rw [observerGap9387_832_eq_eight_mul_twentySix_sub_residue_of_src_base_eq_32k_add_13 τ ht he hk hcore]
+    norm_num
+    omega
+
+/-- On the higher-time surviving branch out of the intrinsic source slice
+    `(time,eject) = (3,1)` with `base = 32*k + 13`, the state value already
+    obeys the same exact affine `27/16` transport law seen in the repeat-core
+    package. -/
+theorem sixteen_mul_dst_stateValue_eq_twentySeven_mul_src_stateValue_add_19_of_src_base_eq_32k_add_13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13) :
+    16 * regimeIIStateValue τ.dst.src = 27 * regimeIIStateValue τ.src.src + 19 := by
+  rw [src_stateValue_eq_256k_add_103_of_src_base_eq_32k_add_13 τ ht hk,
+    dst_value_eq_432k_add_175_of_src_base_eq_32k_add_13 τ ht he hk]
+  omega
+
+/-- Intrinsic congruence form of the higher-time `27/16` state-value transport
+    law on the `(time,eject) = (3,1)` branch with `base ≡ 13 (mod 32)`. -/
+theorem sixteen_mul_dst_stateValue_eq_twentySeven_mul_src_stateValue_add_19_of_src_base_mod32_eq13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 13) :
+    16 * regimeIIStateValue τ.dst.src = 27 * regimeIIStateValue τ.src.src + 19 := by
+  obtain ⟨k, hk⟩ : ∃ k, τ.src.src.base = 32 * k + 13 := by
+    refine ⟨τ.src.src.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 32
+    omega
+  exact sixteen_mul_dst_stateValue_eq_twentySeven_mul_src_stateValue_add_19_of_src_base_eq_32k_add_13
+    (B := B) τ ht he hk
+
+/-- On the higher-time surviving branch out of the intrinsic source slice
+    `(time,eject) = (3,1)`, the source radial gap above the `832` cutoff is an
+    explicit affine function of the same source chart parameter. -/
+theorem src_radialGap_832_eq_256k_sub_729_of_src_base_eq_32k_add_13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13) :
+    regimeIIRadialGap 832 τ.src.src = 256 * k - 729 := by
+  unfold regimeIIRadialGap regimeIIStateValue
+  rw [ht, hk]
+  omega
+
+/-- On the higher-time surviving branch out of the intrinsic source slice
+    `(time,eject) = (3,1)` with `base = 32*k + 13`, the destination radial gap
+    above the `832` cutoff is an explicit affine function of the same source
+    chart parameter. -/
+theorem dst_radialGap_832_eq_432k_sub_657_of_src_base_eq_32k_add_13
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13) :
+    regimeIIRadialGap 832 τ.dst.src = 432 * k - 657 := by
+  have hdst : regimeIIStateValue τ.dst.src = 432 * k + 175 :=
+    dst_value_eq_432k_add_175_of_src_base_eq_32k_add_13 τ ht he hk
+  unfold regimeIIRadialGap
+  rw [hdst]
+  omega
+
+/-- On the higher-time surviving `832` branch out of the intrinsic source
+    slice `(time,eject) = (3,1)` with `base = 32*k + 13`, the destination
+    radial gap already strictly exceeds the source radial gap. -/
+theorem src_radialGap_832_lt_dst_radialGap_832_of_src_base_eq_32k_add_13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13) :
+    regimeIIRadialGap 832 τ.src.src < regimeIIRadialGap 832 τ.dst.src := by
+  have hsrc :
+      regimeIIRadialGap 832 τ.src.src = 256 * k - 729 := by
+    exact src_radialGap_832_eq_256k_sub_729_of_src_base_eq_32k_add_13 τ ht hk
+  have hdst :
+      regimeIIRadialGap 832 τ.dst.src = 432 * k - 657 := by
+    exact dst_radialGap_832_eq_432k_sub_657_of_src_base_eq_32k_add_13 τ ht he hk
+  have hkge2 : 2 ≤ k := by
+    exact two_le_k_of_src_base_eq_32k_add_13 τ ht he hk
+  rw [hsrc, hdst]
+  omega
+
+/-- Intrinsic congruence form of the strict radial-gap increase on the
+    higher-time `(time,eject) = (3,1)` branch with `base ≡ 13 (mod 32)`. -/
+theorem src_radialGap_832_lt_dst_radialGap_832_of_src_base_mod32_eq13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 13) :
+    regimeIIRadialGap 832 τ.src.src < regimeIIRadialGap 832 τ.dst.src := by
+  obtain ⟨k, hk⟩ : ∃ k, τ.src.src.base = 32 * k + 13 := by
+    refine ⟨τ.src.src.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 32
+    omega
+  exact src_radialGap_832_lt_dst_radialGap_832_of_src_base_eq_32k_add_13 τ ht he hk
+
+/-- If the source value on the higher-time surviving branch `base = 32*k + 13`
+    is itself already on or above the `832` cutoff, then necessarily `k ≥ 3`.
+    This is the precise point where the intrinsic source radial gap stops being
+    truncated to zero. -/
+theorem three_le_k_of_src_base_eq_32k_add_13_of_src_value_ge_832
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    3 ≤ k := by
+  rw [src_stateValue_eq_256k_add_103_of_src_base_eq_32k_add_13 τ ht hk] at hcore
+  omega
+
+/-- On the higher-time surviving branch out of the intrinsic source slice
+    `(time,eject) = (3,1)` with `base = 32*k + 13`, the radial gap above the
+    `832` cutoff obeys the same exact affine `27/16` transport law as the
+    older repeat-core package. -/
+theorem sixteen_mul_dst_radialGap_832_eq_twentySeven_mul_src_radialGap_832_add_9171_of_src_base_eq_32k_add_13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {k : ℕ} (hk : τ.src.src.base = 32 * k + 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    16 * regimeIIRadialGap 832 τ.dst.src =
+      27 * regimeIIRadialGap 832 τ.src.src + 9171 := by
+  have hkge3 : 3 ≤ k := by
+    exact three_le_k_of_src_base_eq_32k_add_13_of_src_value_ge_832 τ ht hk hcore
+  rw [src_radialGap_832_eq_256k_sub_729_of_src_base_eq_32k_add_13 τ ht hk,
+    dst_radialGap_832_eq_432k_sub_657_of_src_base_eq_32k_add_13 τ ht he hk]
+  omega
+
+/-- Intrinsic congruence form of the guarded `27/16` radial-gap transport law
+    on the higher-time `(time,eject) = (3,1)` branch with `base ≡ 13 (mod 32)`.
+    The guard `832 ≤ src.value` is exactly the point where the source radial
+    gap itself is no longer truncated to zero. -/
+theorem sixteen_mul_dst_radialGap_832_eq_twentySeven_mul_src_radialGap_832_add_9171_of_src_base_mod32_eq13
+    (τ : RegimeIIBadFrontierTransition 832)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (hmod : τ.src.src.base % 32 = 13)
+    (hcore : 832 ≤ regimeIIStateValue τ.src.src) :
+    16 * regimeIIRadialGap 832 τ.dst.src =
+      27 * regimeIIRadialGap 832 τ.src.src + 9171 := by
+  obtain ⟨k, hk⟩ : ∃ k, τ.src.src.base = 32 * k + 13 := by
+    refine ⟨τ.src.src.base / 32, ?_⟩
+    have hdiv := Nat.mod_add_div τ.src.src.base 32
+    omega
+  exact
+    sixteen_mul_dst_radialGap_832_eq_twentySeven_mul_src_radialGap_832_add_9171_of_src_base_eq_32k_add_13
+      τ ht he hk hcore
 
 /-- On the `base = 32*k + 13` higher-time exit, the excess destination time
     above `4` is exactly the dyadic valuation of `27*k + 11`. -/

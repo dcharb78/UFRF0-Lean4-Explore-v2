@@ -1,0 +1,12 @@
+{
+  "source": "UFRF/CollatzConcurrentScales.lean",
+  "verified_at": "2026-04-12T05:52:44Z",
+  "command": "lake build UFRF.CollatzConcurrentScales",
+  "session_id": 58830,
+  "source_sha256": "c530243f8a7c1c6a8e4d4006999cb8783d3789878614477afdeb7a255a4e39a6",
+  "boundary": "observer-gap carrier theorem is green; later attempted third-carrier theorem was reverted without rerunning Lean at user request",
+  "notes": [
+    "This hash records the last known green source boundary for UFRF/CollatzConcurrentScales.lean.",
+    "The later failed attempt was exists_observerGap9387_832_thirdCarrier_of_repeatCore832Transition_chain3 and it is not part of this recorded green boundary."
+  ]
+}
