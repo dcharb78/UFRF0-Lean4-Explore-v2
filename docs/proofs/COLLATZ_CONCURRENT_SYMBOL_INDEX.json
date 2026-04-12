@@ -1,8 +1,8 @@
 {
   "title": "Collatz Concurrent Scales Symbol Index",
-  "source": "/tmp/repo-collatz-memory-loop/UFRF/CollatzConcurrentScales.lean",
-  "generated_at": "2026-04-11T05:06:02.814639+00:00",
-  "declaration_count": 1112,
+  "source": "UFRF/CollatzConcurrentScales.lean",
+  "generated_at": "2026-04-12T00:11:31.877189+00:00",
+  "declaration_count": 1229,
   "entries": [
     {
       "line": 56,
@@ -9160,6 +9160,1059 @@
     {
       "line": 21805,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_one_hundred_thirty_four_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389",
+      "short_name": "dst_time_eq_one_hundred_thirty_four_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "First dyadic shell inside the residual `time \u2265 134` branch: `base = 87112285931760246646623899502532662132736*m + 85499095451542464301316049511745020241389` is exactly the `time = 134` case."
+    },
+    {
+      "line": 21833,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_53_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389",
+      "short_name": "dst_base_eq_54m_add_53_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the first dyadic shell `base = 87112285931760246646623899502532662132736*m + 85499095451542464301316049511745020241389`, the higher-time destination base is exactly `54*m + 53`."
+    },
+    {
+      "line": 21858,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_time_eq_one_hundred_thirty_five_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021",
+      "short_name": "dst_time_eq_one_hundred_thirty_five_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Second dyadic shell inside the residual `time \u2265 134` branch: `base = 174224571863520493293247799005065324265472*m + 41942952485662340978004099760478689175021` is exactly the `time = 135` case."
+    },
+    {
+      "line": 21886,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_base_eq_54m_add_13_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021",
+      "short_name": "dst_base_eq_54m_add_13_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "On the second dyadic shell `base = 174224571863520493293247799005065324265472*m + 41942952485662340978004099760478689175021`, the higher-time destination base is exactly `54*m + 13`."
+    },
+    {
+      "line": 21912,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.one_hundred_thirty_six_le_dst_time_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "short_name": "one_hundred_thirty_six_le_dst_time_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual shell after the first two dyadic cases of the `time \u2265 134` branch: `base = 174224571863520493293247799005065324265472*m + 129055238417422587624627999263011351307757` still forces destination time at least `136`."
+    },
+    {
+      "line": 21946,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.two_pow_dst_time_sub_one_hundred_thirty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "short_name": "two_pow_dst_time_sub_one_hundred_thirty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Residual transport law after the first two dyadic shells of the `time \u2265 134` branch."
+    },
+    {
+      "line": 21988,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "short_name": "VerifiedHigherTimeReturnClock",
+      "kind": "inductive",
+      "modifiers": "",
+      "doc_summary": "The five verified higher-time return clocks on the intrinsic bad-frontier."
+    },
+    {
+      "line": 21999,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.residue",
+      "short_name": "residue",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Residual affine residue carried by a verified higher-time return clock."
+    },
+    {
+      "line": 22007,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.anchorTime",
+      "short_name": "anchorTime",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Canonical older shell time to which the verified return clock renormalizes."
+    },
+    {
+      "line": 22016,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.srcCoeff",
+      "short_name": "srcCoeff",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Source coefficient of the currently verified scale-`2^90` representative for each return clock."
+    },
+    {
+      "line": 22025,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.srcConst",
+      "short_name": "srcConst",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Source constant of the currently verified scale-`2^90` representative for each return clock."
+    },
+    {
+      "line": 22035,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.next",
+      "short_name": "next",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "One concurrent step of the verified higher-time return machine."
+    },
+    {
+      "line": 22042,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.next_five_eq_self",
+      "short_name": "next_five_eq_self",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22046,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.next_signature",
+      "short_name": "next_signature",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22060,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.residualCoeff",
+      "short_name": "residualCoeff",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Source coefficient of the currently live residual family beyond each verified higher-time return clock."
+    },
+    {
+      "line": 22069,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.residualConst",
+      "short_name": "residualConst",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Source constant of the currently live residual family beyond each verified higher-time return clock."
+    },
+    {
+      "line": 22079,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.residualParamScale",
+      "short_name": "residualParamScale",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Affine scale factor sending the live residual parameter for `clk` to the canonical parameter of `next clk`."
+    },
+    {
+      "line": 22089,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.residualParamShift",
+      "short_name": "residualParamShift",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Affine shift sending the live residual parameter for `clk` to the canonical parameter of `next clk`."
+    },
+    {
+      "line": 22098,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.residual_eq_next_reindexed",
+      "short_name": "residual_eq_next_reindexed",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "The currently live residual family at each verified clock state is already an affine re-indexing of the canonical source family for `next clk`."
+    },
+    {
+      "line": 22123,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.transport_of_eq_src_base",
+      "short_name": "transport_of_eq_src_base",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Dispatcher theorem for the verified higher-time return machine at the current common renormalized scale `2^90`."
+    },
+    {
+      "line": 22155,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.c26_residual_reenters_c20_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "short_name": "c26_residual_reenters_c20_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "The newly exposed residual beyond the verified `c26` shell family is not a new clock state: it already re-enters the verified `c20` state after the affine source rewrite `m \u21a6 262144*m + 194180`."
+    },
+    {
+      "line": 22180,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.c26_residual_reenters_next_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "short_name": "c26_residual_reenters_next_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Machine-internal packaging of the same re-entry: the residual beyond the verified `c26` shell family re-enters the next clock state itself."
+    },
+    {
+      "line": 22202,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.residual_reenters_next_of_eq_src_base",
+      "short_name": "residual_reenters_next_of_eq_src_base",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Uniform closure theorem for the verified higher-time return machine: the currently live residual family beyond any verified clock state already re-enters `next clk` after the canonical affine parameter rewrite."
+    },
+    {
+      "line": 22232,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.nextParam",
+      "short_name": "nextParam",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Canonical parameter update induced by one verified residual re-entry step of the higher-time return machine."
+    },
+    {
+      "line": 22237,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.step",
+      "short_name": "step",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "One step of the verified higher-time return machine on the pair consisting of the clock label and its canonical affine parameter."
+    },
+    {
+      "line": 22243,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.step_five_eq",
+      "short_name": "step_five_eq",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "After one full verified five-clock cycle, the machine returns to the same clock label and applies the single affine renormalization `m \u21a6 262144*m + 194180` to the canonical parameter."
+    },
+    {
+      "line": 22248,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.VerifiedHigherTimeReturnClock.nextParam_five_eq",
+      "short_name": "nextParam_five_eq",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "Parameter-only form of the full five-step renormalization law."
+    },
+    {
+      "line": 22257,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.returned_twenty_eight_shell_transport_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "short_name": "returned_twenty_eight_shell_transport_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "The returned `time \u2265 136` transport is already an exact re-entry into the verified `c20` state of `VerifiedHigherTimeReturnClock`, after the affine source rewrite `m \u21a6 262144*m + 194180`."
+    },
+    {
+      "line": 22296,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.Coord",
+      "short_name": "Coord",
+      "kind": "structure",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22304,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.State",
+      "short_name": "State",
+      "kind": "structure",
+      "modifiers": "",
+      "doc_summary": "A canonical prime-local state may need signed displacement: numbers below a prime anchor should still have a unique prime-relative coordinate instead of being forced outside the chart."
+    },
+    {
+      "line": 22310,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.anchorValue",
+      "short_name": "anchorValue",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Prime-local shell anchor in integer form."
+    },
+    {
+      "line": 22314,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.nextAnchorValue",
+      "short_name": "nextAnchorValue",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Upper edge of the current dyadic shell at prime `p`."
+    },
+    {
+      "line": 22320,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.value",
+      "short_name": "value",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Recover the signed value represented by a prime-local state in the chart rooted at `p`."
+    },
+    {
+      "line": 22325,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.realizes",
+      "short_name": "realizes",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "`realizes p n c` means that `n` lies in the dyadic shell rooted at the odd prime `p`, with shell anchor `p * 2^c.level` and local offset `c.offset`."
+    },
+    {
+      "line": 22328,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.realizes_prime_as_root_zero",
+      "short_name": "realizes_prime_as_root_zero",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22333,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.realizes_two_mul_prime_as_first_doubling",
+      "short_name": "realizes_two_mul_prime_as_first_doubling",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22339,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.realizes_two_mul_prime_add_one_as_first_seed",
+      "short_name": "realizes_two_mul_prime_add_one_as_first_seed",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22347,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.centeredClockMod_eq_offset_succ_of_realizes",
+      "short_name": "centeredClockMod_eq_offset_succ_of_realizes",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": "The existing centered `n + 1 mod p` observer chart reads the prime-root offset, but shifted by `+1` and forgetting the dyadic shell level."
+    },
+    {
+      "line": 22355,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.primeFive_root_zero",
+      "short_name": "primeFive_root_zero",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22359,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.primeFive_first_doubling",
+      "short_name": "primeFive_first_doubling",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22363,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.primeFive_eleven_first_seed",
+      "short_name": "primeFive_eleven_first_seed",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22367,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.centeredClock5_of_primeFive_root_zero",
+      "short_name": "centeredClock5_of_primeFive_root_zero",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22373,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.centeredClock5_of_primeFive_eleven_first_seed",
+      "short_name": "centeredClock5_of_primeFive_eleven_first_seed",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22379,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.residue_c11_is_primeFive_first_seed",
+      "short_name": "residue_c11_is_primeFive_first_seed",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22383,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.residue_c20_is_primeFive_second_doubling_anchor",
+      "short_name": "residue_c20_is_primeFive_second_doubling_anchor",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22390,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.anchorLevel",
+      "short_name": "anchorLevel",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "The largest dyadic shell anchor `p * 2^level` that does not exceed `n`, defaulting to level `0` when `n < p`."
+    },
+    {
+      "line": 22398,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.canonicalState",
+      "short_name": "canonicalState",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Canonical prime-local state built from the largest dyadic shell anchor not exceeding `n`, together with the signed displacement from that anchor."
+    },
+    {
+      "line": 22403,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.realizesState",
+      "short_name": "realizesState",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Realization predicate for the signed canonical prime-local state."
+    },
+    {
+      "line": 22406,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.value_eq_nat_of_realizesState",
+      "short_name": "value_eq_nat_of_realizesState",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22411,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.realizesState_canonicalState",
+      "short_name": "realizesState_canonicalState",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22415,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.value_canonicalState",
+      "short_name": "value_canonicalState",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22419,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.canonicalState_five_five",
+      "short_name": "canonicalState_five_five",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22423,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.canonicalState_five_ten",
+      "short_name": "canonicalState_five_ten",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22427,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.canonicalState_five_eleven",
+      "short_name": "canonicalState_five_eleven",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22434,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.atAnchor",
+      "short_name": "atAnchor",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "A prime-local state sits on its current shell anchor exactly when its signed offset is zero."
+    },
+    {
+      "line": 22437,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.anchorLevel_eq_of_eq_anchor",
+      "short_name": "anchorLevel_eq_of_eq_anchor",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22460,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.canonicalState_eq_anchor_state_of_eq_anchor",
+      "short_name": "canonicalState_eq_anchor_state_of_eq_anchor",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22464,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.atAnchor_canonicalState_of_eq_anchor",
+      "short_name": "atAnchor_canonicalState_of_eq_anchor",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22468,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.eq_anchor_of_atAnchor_canonicalState",
+      "short_name": "eq_anchor_of_atAnchor_canonicalState",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22477,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.exists_eq_anchor_of_atAnchor_canonicalState",
+      "short_name": "exists_eq_anchor_of_atAnchor_canonicalState",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22482,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.atAnchor_canonicalState_iff_exists_eq_anchor",
+      "short_name": "atAnchor_canonicalState_iff_exists_eq_anchor",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22493,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.JointState",
+      "short_name": "JointState",
+      "kind": "structure",
+      "modifiers": "",
+      "doc_summary": "Joint signature across the first four odd-prime observer voices already present in the file."
+    },
+    {
+      "line": 22500,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.jointState",
+      "short_name": "jointState",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22506,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.atAnchor_jointState_p5_iff_exists_eq_anchor",
+      "short_name": "atAnchor_jointState_p5_iff_exists_eq_anchor",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22511,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.atAnchor_jointState_p7_iff_exists_eq_anchor",
+      "short_name": "atAnchor_jointState_p7_iff_exists_eq_anchor",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22516,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.atAnchor_jointState_p11_iff_exists_eq_anchor",
+      "short_name": "atAnchor_jointState_p11_iff_exists_eq_anchor",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22521,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.atAnchor_jointState_p13_iff_exists_eq_anchor",
+      "short_name": "atAnchor_jointState_p13_iff_exists_eq_anchor",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22526,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointState",
+      "short_name": "returnJointState",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22532,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnDelta",
+      "short_name": "returnDelta",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Signed change of the verified return residue across one step of the five-state return machine."
+    },
+    {
+      "line": 22539,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.residue_next_eq_add_returnDelta",
+      "short_name": "residue_next_eq_add_returnDelta",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22545,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.value_jointState_p5",
+      "short_name": "value_jointState_p5",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22549,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.value_jointState_p7",
+      "short_name": "value_jointState_p7",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22553,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.value_jointState_p11",
+      "short_name": "value_jointState_p11",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22557,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.value_jointState_p13",
+      "short_name": "value_jointState_p13",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22561,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.value_returnJointState_agrees",
+      "short_name": "value_returnJointState_agrees",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22574,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.value_returnJointState_next_agrees_add_delta",
+      "short_name": "value_returnJointState_next_agrees_add_delta",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22614,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.LocalUpdate",
+      "short_name": "LocalUpdate",
+      "kind": "structure",
+      "modifiers": "",
+      "doc_summary": "Residual local update after factoring out the common signed return delta."
+    },
+    {
+      "line": 22620,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.reanchors",
+      "short_name": "reanchors",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "A local update reanchors when the shell level actually changes."
+    },
+    {
+      "line": 22627,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.shellShift",
+      "short_name": "shellShift",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Predicted shell shift from a common next value: stay in the same shell if the next value remains in `[anchor, nextAnchor)`, shift down if it drops below the current anchor and the chart is not already at base level, and shift up if it reaches the next shell."
+    },
+    {
+      "line": 22637,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.nextLevel",
+      "short_name": "nextLevel",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Predicted next shell level from the same threshold-crossing rule, phrased as a natural-number level rather than an integer delta."
+    },
+    {
+      "line": 22645,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.localUpdate",
+      "short_name": "localUpdate",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22649,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.localUpdate_spec",
+      "short_name": "localUpdate_spec",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22654,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.offsetCorrection_eq_anchor_diff_of_value_eq_add",
+      "short_name": "offsetCorrection_eq_anchor_diff_of_value_eq_add",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22668,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.JointUpdate",
+      "short_name": "JointUpdate",
+      "kind": "structure",
+      "modifiers": "",
+      "doc_summary": "Residual joint update across the four exploratory prime-local views once the common signed residue delta has been factored out."
+    },
+    {
+      "line": 22675,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate",
+      "short_name": "returnJointUpdate",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22687,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.predictedLocalUpdate",
+      "short_name": "predictedLocalUpdate",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Predicted local update obtained from the common next value alone: the level change comes from shell threshold crossing, and the remaining offset correction is exactly the anchor bookkeeping forced by that reanchoring."
+    },
+    {
+      "line": 22693,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.predictedJointUpdate",
+      "short_name": "predictedJointUpdate",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Predicted joint update when all prime-local views evolve toward the same common next value."
+    },
+    {
+      "line": 22702,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnReanchorSignature",
+      "short_name": "returnReanchorSignature",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Sparse support pattern of the residual reanchoring update after the common signed residue delta is factored out."
+    },
+    {
+      "line": 22709,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnReanchorSignature_eq",
+      "short_name": "returnReanchorSignature_eq",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22719,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnDelta_cycle_sum_zero",
+      "short_name": "returnDelta_cycle_sum_zero",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22724,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p5_correction_eq_anchor_diff",
+      "short_name": "returnJointUpdate_p5_correction_eq_anchor_diff",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22733,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p7_correction_eq_anchor_diff",
+      "short_name": "returnJointUpdate_p7_correction_eq_anchor_diff",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22742,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p11_correction_eq_anchor_diff",
+      "short_name": "returnJointUpdate_p11_correction_eq_anchor_diff",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22751,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p13_correction_eq_anchor_diff",
+      "short_name": "returnJointUpdate_p13_correction_eq_anchor_diff",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22760,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p5_levelDelta_eq_shellShift",
+      "short_name": "returnJointUpdate_p5_levelDelta_eq_shellShift",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22767,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p7_levelDelta_eq_shellShift",
+      "short_name": "returnJointUpdate_p7_levelDelta_eq_shellShift",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22774,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p11_levelDelta_eq_shellShift",
+      "short_name": "returnJointUpdate_p11_levelDelta_eq_shellShift",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22781,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p13_levelDelta_eq_shellShift",
+      "short_name": "returnJointUpdate_p13_levelDelta_eq_shellShift",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22788,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p5_eq_predictedLocalUpdate",
+      "short_name": "returnJointUpdate_p5_eq_predictedLocalUpdate",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22795,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p7_eq_predictedLocalUpdate",
+      "short_name": "returnJointUpdate_p7_eq_predictedLocalUpdate",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22802,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p11_eq_predictedLocalUpdate",
+      "short_name": "returnJointUpdate_p11_eq_predictedLocalUpdate",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22809,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_p13_eq_predictedLocalUpdate",
+      "short_name": "returnJointUpdate_p13_eq_predictedLocalUpdate",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22816,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_eq_predictedJointUpdate",
+      "short_name": "returnJointUpdate_eq_predictedJointUpdate",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22823,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_c20",
+      "short_name": "returnJointUpdate_c20",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22828,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_c16",
+      "short_name": "returnJointUpdate_c16",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22833,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_c14",
+      "short_name": "returnJointUpdate_c14",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22838,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_c11",
+      "short_name": "returnJointUpdate_c11",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22843,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointUpdate_c26",
+      "short_name": "returnJointUpdate_c26",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22848,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointState_c20",
+      "short_name": "returnJointState_c20",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22853,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointState_c16",
+      "short_name": "returnJointState_c16",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22858,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointState_c14",
+      "short_name": "returnJointState_c14",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22863,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointState_c11",
+      "short_name": "returnJointState_c11",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22868,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnJointState_c26",
+      "short_name": "returnJointState_c26",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22875,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.anchorSignature",
+      "short_name": "anchorSignature",
+      "kind": "def",
+      "modifiers": "",
+      "doc_summary": "Which exploratory prime-local voices are exactly on their shell anchors in a given joint state."
+    },
+    {
+      "line": 22881,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.shellSignature",
+      "short_name": "shellSignature",
+      "kind": "def",
+      "modifiers": "noncomputable",
+      "doc_summary": "Dyadic prime-shell membership signature for the sampled `5/7/11/13` voices."
+    },
+    {
+      "line": 22889,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.anchorSignature_jointState_eq_shellSignature",
+      "short_name": "anchorSignature_jointState_eq_shellSignature",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22898,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice",
+      "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.ExploratoryPrimeVoice.returnAnchorSignature_eq",
+      "short_name": "returnAnchorSignature_eq",
+      "kind": "theorem",
+      "modifiers": "",
+      "doc_summary": ""
+    },
+    {
+      "line": 22913,
+      "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_1_of_src_base_eq_128r_add_13",
       "short_name": "dst_slice_eq_4_1_of_src_base_eq_128r_add_13",
       "kind": "theorem",
@@ -9167,7 +10220,7 @@
       "doc_summary": "First time-4 sub-shell inside the higher-time `13 mod 32` exit: once the source branch refines to `base = 128*r + 13`, the destination source slice is exactly `(4,1)`."
     },
     {
-      "line": 21843,
+      "line": 22951,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_2_of_src_base_eq_256r_add_205",
       "short_name": "dst_slice_eq_4_2_of_src_base_eq_256r_add_205",
@@ -9176,7 +10229,7 @@
       "doc_summary": "Second time-4 sub-shell inside the higher-time `13 mod 32` exit: the refined source chart `base = 256*r + 205` lands exactly on destination slice `(4,2)`."
     },
     {
-      "line": 21881,
+      "line": 22989,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_3_of_src_base_eq_512r_add_333",
       "short_name": "dst_slice_eq_4_3_of_src_base_eq_512r_add_333",
@@ -9185,7 +10238,7 @@
       "doc_summary": "Third time-4 sub-shell inside the higher-time `13 mod 32` exit: the refined source chart `base = 512*r + 333` lands exactly on destination slice `(4,3)`."
     },
     {
-      "line": 21919,
+      "line": 23027,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_4_of_src_base_eq_1024r_add_77",
       "short_name": "dst_slice_eq_4_4_of_src_base_eq_1024r_add_77",
@@ -9194,7 +10247,7 @@
       "doc_summary": "Fourth time-4 sub-shell inside the higher-time `13 mod 32` exit: the refined source chart `base = 1024*r + 77` lands exactly on destination slice `(4,4)`."
     },
     {
-      "line": 21957,
+      "line": 23065,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.five_le_dst_eject_of_src_base_eq_1024r_add_589",
       "short_name": "five_le_dst_eject_of_src_base_eq_1024r_add_589",
@@ -9203,7 +10256,7 @@
       "doc_summary": "Residual time-4 branch after the first four exact ejection slices: the refined source chart `base = 1024*r + 589` still lands at `time = 4`, but now with destination ejection valuation at least `5`."
     },
     {
-      "line": 21999,
+      "line": 23107,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_5_of_src_base_eq_2048r_add_1613",
       "short_name": "dst_slice_eq_4_5_of_src_base_eq_2048r_add_1613",
@@ -9212,7 +10265,7 @@
       "doc_summary": "First exact refinement of the residual time-4 branch: `base = 2048*r + 1613` lands exactly on destination slice `(4,5)`."
     },
     {
-      "line": 22036,
+      "line": 23144,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_4_6_of_src_base_eq_4096r_add_589",
       "short_name": "dst_slice_eq_4_6_of_src_base_eq_4096r_add_589",
@@ -9221,7 +10274,7 @@
       "doc_summary": "Second exact refinement of the residual time-4 branch: `base = 4096*r + 589` lands exactly on destination slice `(4,6)`."
     },
     {
-      "line": 22074,
+      "line": 23182,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.seven_le_dst_eject_of_src_base_eq_4096r_add_2637",
       "short_name": "seven_le_dst_eject_of_src_base_eq_4096r_add_2637",
@@ -9230,7 +10283,7 @@
       "doc_summary": "Residual branch after the first two exact refinements of `base = 1024*r + 589`: the chart `base = 4096*r + 2637` still lands at `time = 4`, now with destination ejection valuation at least `7`."
     },
     {
-      "line": 22116,
+      "line": 23224,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_1_of_src_base_eq_256r_add_173",
       "short_name": "dst_slice_eq_5_1_of_src_base_eq_256r_add_173",
@@ -9239,7 +10292,7 @@
       "doc_summary": "First exact refinement of the `time = 5` shell: `base = 256*r + 173` lands exactly on destination slice `(5,1)`."
     },
     {
-      "line": 22153,
+      "line": 23261,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_2_of_src_base_eq_512r_add_301",
       "short_name": "dst_slice_eq_5_2_of_src_base_eq_512r_add_301",
@@ -9248,7 +10301,7 @@
       "doc_summary": "Second exact refinement of the `time = 5` shell: `base = 512*r + 301` lands exactly on destination slice `(5,2)`."
     },
     {
-      "line": 22190,
+      "line": 23298,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_3_of_src_base_eq_1024r_add_45",
       "short_name": "dst_slice_eq_5_3_of_src_base_eq_1024r_add_45",
@@ -9257,7 +10310,7 @@
       "doc_summary": "Third exact refinement of the `time = 5` shell: `base = 1024*r + 45` lands exactly on destination slice `(5,3)`."
     },
     {
-      "line": 22228,
+      "line": 23336,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.four_le_dst_eject_of_src_base_eq_1024r_add_557",
       "short_name": "four_le_dst_eject_of_src_base_eq_1024r_add_557",
@@ -9266,7 +10319,7 @@
       "doc_summary": "Residual branch after the first three exact refinements of the `time = 5` shell: `base = 1024*r + 557` still lands at `time = 5`, now with destination ejection valuation at least `4`."
     },
     {
-      "line": 22270,
+      "line": 23378,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_4_of_src_base_eq_2048r_add_557",
       "short_name": "dst_slice_eq_5_4_of_src_base_eq_2048r_add_557",
@@ -9275,7 +10328,7 @@
       "doc_summary": "First exact refinement of the residual `time = 5` shell: `base = 2048*r + 557` lands exactly on destination slice `(5,4)`."
     },
     {
-      "line": 22307,
+      "line": 23415,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_5_of_src_base_eq_4096r_add_1581",
       "short_name": "dst_slice_eq_5_5_of_src_base_eq_4096r_add_1581",
@@ -9284,7 +10337,7 @@
       "doc_summary": "Second exact refinement of the residual `time = 5` shell: `base = 4096*r + 1581` lands exactly on destination slice `(5,5)`."
     },
     {
-      "line": 22344,
+      "line": 23452,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_6_of_src_base_eq_8192r_add_3629",
       "short_name": "dst_slice_eq_5_6_of_src_base_eq_8192r_add_3629",
@@ -9293,7 +10346,7 @@
       "doc_summary": "Third exact refinement of the residual `time = 5` shell: `base = 8192*r + 3629` lands exactly on destination slice `(5,6)`."
     },
     {
-      "line": 22381,
+      "line": 23489,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_5_7_of_src_base_eq_16384r_add_7725",
       "short_name": "dst_slice_eq_5_7_of_src_base_eq_16384r_add_7725",
@@ -9302,7 +10355,7 @@
       "doc_summary": "Fourth exact refinement of the residual `time = 5` shell: `base = 16384*r + 7725` lands exactly on destination slice `(5,7)`."
     },
     {
-      "line": 22419,
+      "line": 23527,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.eight_le_dst_eject_of_src_base_eq_16384r_add_15917",
       "short_name": "eight_le_dst_eject_of_src_base_eq_16384r_add_15917",
@@ -9311,7 +10364,7 @@
       "doc_summary": "Residual branch after the first four exact refinements of the `time = 5` shell: `base = 16384*r + 15917` still lands at `time = 5`, now with destination ejection valuation at least `8`."
     },
     {
-      "line": 22461,
+      "line": 23569,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_1_of_src_base_eq_512r_add_109",
       "short_name": "dst_slice_eq_6_1_of_src_base_eq_512r_add_109",
@@ -9320,7 +10373,7 @@
       "doc_summary": "First exact refinement of the `time = 6` shell: `base = 512*r + 109` lands exactly on destination slice `(6,1)`."
     },
     {
-      "line": 22498,
+      "line": 23606,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_2_of_src_base_eq_1024r_add_365",
       "short_name": "dst_slice_eq_6_2_of_src_base_eq_1024r_add_365",
@@ -9329,7 +10382,7 @@
       "doc_summary": "Second exact refinement of the `time = 6` shell: `base = 1024*r + 365` lands exactly on destination slice `(6,2)`."
     },
     {
-      "line": 22535,
+      "line": 23643,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_3_of_src_base_eq_2048r_add_1901",
       "short_name": "dst_slice_eq_6_3_of_src_base_eq_2048r_add_1901",
@@ -9338,7 +10391,7 @@
       "doc_summary": "Third exact refinement of the `time = 6` shell: `base = 2048*r + 1901` lands exactly on destination slice `(6,3)`."
     },
     {
-      "line": 22572,
+      "line": 23680,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_4_of_src_base_eq_4096r_add_877",
       "short_name": "dst_slice_eq_6_4_of_src_base_eq_4096r_add_877",
@@ -9347,7 +10400,7 @@
       "doc_summary": "Fourth exact refinement of the `time = 6` shell: `base = 4096*r + 877` lands exactly on destination slice `(6,4)`."
     },
     {
-      "line": 22609,
+      "line": 23717,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_6_5_of_src_base_eq_8192r_add_7021",
       "short_name": "dst_slice_eq_6_5_of_src_base_eq_8192r_add_7021",
@@ -9356,7 +10409,7 @@
       "doc_summary": "Fifth exact refinement of the `time = 6` shell: `base = 8192*r + 7021` lands exactly on destination slice `(6,5)`."
     },
     {
-      "line": 22647,
+      "line": 23755,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.six_le_dst_eject_of_src_base_eq_8192r_add_2925",
       "short_name": "six_le_dst_eject_of_src_base_eq_8192r_add_2925",
@@ -9365,7 +10418,7 @@
       "doc_summary": "Residual branch after the first five exact refinements of the `time = 6` shell: `base = 8192*r + 2925` still lands at `time = 6`, now with destination ejection valuation at least `6`."
     },
     {
-      "line": 22689,
+      "line": 23797,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_1_of_src_base_eq_1024r_add_237",
       "short_name": "dst_slice_eq_7_1_of_src_base_eq_1024r_add_237",
@@ -9374,7 +10427,7 @@
       "doc_summary": "First exact refinement of the `time = 7` shell: `base = 1024*r + 237` lands exactly on destination slice `(7,1)`."
     },
     {
-      "line": 22726,
+      "line": 23834,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_2_of_src_base_eq_2048r_add_749",
       "short_name": "dst_slice_eq_7_2_of_src_base_eq_2048r_add_749",
@@ -9383,7 +10436,7 @@
       "doc_summary": "Second exact refinement of the `time = 7` shell: `base = 2048*r + 749` lands exactly on destination slice `(7,2)`."
     },
     {
-      "line": 22763,
+      "line": 23871,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_3_of_src_base_eq_4096r_add_1773",
       "short_name": "dst_slice_eq_7_3_of_src_base_eq_4096r_add_1773",
@@ -9392,7 +10445,7 @@
       "doc_summary": "Third exact refinement of the `time = 7` shell: `base = 4096*r + 1773` lands exactly on destination slice `(7,3)`."
     },
     {
-      "line": 22800,
+      "line": 23908,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_4_of_src_base_eq_8192r_add_3821",
       "short_name": "dst_slice_eq_7_4_of_src_base_eq_8192r_add_3821",
@@ -9401,7 +10454,7 @@
       "doc_summary": "Fourth exact refinement of the `time = 7` shell: `base = 8192*r + 3821` lands exactly on destination slice `(7,4)`."
     },
     {
-      "line": 22837,
+      "line": 23945,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_5_of_src_base_eq_16384r_add_7917",
       "short_name": "dst_slice_eq_7_5_of_src_base_eq_16384r_add_7917",
@@ -9410,7 +10463,7 @@
       "doc_summary": "Fifth exact refinement of the `time = 7` shell: `base = 16384*r + 7917` lands exactly on destination slice `(7,5)`."
     },
     {
-      "line": 22874,
+      "line": 23982,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_slice_eq_7_6_of_src_base_eq_32768r_add_32493",
       "short_name": "dst_slice_eq_7_6_of_src_base_eq_32768r_add_32493",
@@ -9419,7 +10472,7 @@
       "doc_summary": "Sixth exact refinement of the `time = 7` shell: `base = 32768*r + 32493` lands exactly on destination slice `(7,6)`."
     },
     {
-      "line": 22912,
+      "line": 24020,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.seven_le_dst_eject_of_src_base_eq_32768r_add_16109",
       "short_name": "seven_le_dst_eject_of_src_base_eq_32768r_add_16109",
@@ -9428,7 +10481,7 @@
       "doc_summary": "Residual branch after the first six exact refinements of the `time = 7` shell: `base = 32768*r + 16109` still lands at `time = 7`, now with destination ejection valuation at least `7`."
     },
     {
-      "line": 22952,
+      "line": 24060,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_value_ge_target",
       "short_name": "dst_value_ge_target",
@@ -9437,7 +10490,7 @@
       "doc_summary": ""
     },
     {
-      "line": 22960,
+      "line": 24068,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_orderedMultiviewCone",
       "short_name": "dst_orderedMultiviewCone",
@@ -9446,7 +10499,7 @@
       "doc_summary": ""
     },
     {
-      "line": 22968,
+      "line": 24076,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_zoneDefect_eq_selfDefect_add_radialGap",
       "short_name": "dst_zoneDefect_eq_selfDefect_add_radialGap",
@@ -9455,7 +10508,7 @@
       "doc_summary": "On a surviving bad-frontier transition, the destination's target-zone successor defect is exactly the self defect plus the radial gap above `B`."
     },
     {
-      "line": 22978,
+      "line": 24086,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_zoneThresholdDefect_eq_selfThresholdDefect_add_thresholdGap",
       "short_name": "dst_zoneThresholdDefect_eq_selfThresholdDefect_add_thresholdGap",
@@ -9464,7 +10517,7 @@
       "doc_summary": "On a surviving bad-frontier transition, the destination's target-zone threshold defect is exactly the self-threshold defect plus the threshold gap between the self and target views."
     },
     {
-      "line": 22985,
+      "line": 24093,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.centeredClockBundle_eq_bundleStateStep_of_coherence",
       "short_name": "centeredClockBundle_eq_bundleStateStep_of_coherence",
@@ -9473,7 +10526,7 @@
       "doc_summary": ""
     },
     {
-      "line": 23007,
+      "line": 24115,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_orderedMultiviewCone_iff_selfThresholdDefect_pos",
       "short_name": "dst_orderedMultiviewCone_iff_selfThresholdDefect_pos",
@@ -9482,7 +10535,7 @@
       "doc_summary": "On a surviving bad-frontier transition, the destination already lies above the target cutoff `B`, so its ordered multiview cone is equivalent to the positivity of the intrinsic self-threshold defect alone."
     },
     {
-      "line": 23020,
+      "line": 24128,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierState",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierState.nextTransition",
       "short_name": "nextTransition",
@@ -9491,7 +10544,7 @@
       "doc_summary": "Canonical surviving transition produced when the intrinsic successor of a bad-frontier state remains on the same bad frontier."
     },
     {
-      "line": 23039,
+      "line": 24147,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierState",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierState.nextState_shrinks_or_exists_transition",
       "short_name": "nextState_shrinks_or_exists_transition",
@@ -9500,7 +10553,7 @@
       "doc_summary": "One intrinsic meta-step from a bad-frontier state either already yields a shrinking certificate on the successor value, or yields a first-class source-to-source bad-frontier transition."
     },
     {
-      "line": 23057,
+      "line": 24165,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierState",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierState.nextState_shrinks_or_exists_transition_split_of_time3_eject1",
       "short_name": "nextState_shrinks_or_exists_transition_split_of_time3_eject1",
@@ -9509,7 +10562,7 @@
       "doc_summary": "On the hard source slice `(time, eject) = (3, 1)` at target `832`, one intrinsic meta-step already reduces the bad-frontier search to a finite obstruction split: either the successor value already carries a shrinking certificate, or the surviving transition lands on `(2,1)`, or the destination time jumps to at least `4`, or the source lies on the stricter `29 mod 64` surviving branch."
     },
     {
-      "line": 23078,
+      "line": 24186,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierState",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierState.nextState_shrinks_or_exists_transition_core",
       "short_name": "nextState_shrinks_or_exists_transition_core",
@@ -9518,7 +10571,7 @@
       "doc_summary": "Core surviving-branch form: after one intrinsic bad-to-bad meta-step, the destination source state already lies above the target cutoff `B`, and the remaining independent obstruction is the self-threshold defect."
     },
     {
-      "line": 23101,
+      "line": 24209,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone",
       "short_name": "regimeII_slice_shrinks_via_exact_zone",
@@ -9527,7 +10580,7 @@
       "doc_summary": "Any fixed Regime-II slice whose intrinsic base lies below the exact-zone threshold at `832` already has a certified shrinking window on the true integer orbit."
     },
     {
-      "line": 23113,
+      "line": 24221,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time2_eject1_base_lt_185",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time2_eject1_base_lt_185",
@@ -9536,7 +10589,7 @@
       "doc_summary": "The lower-time handoff slice `(time, eject) = (2, 1)` and intrinsic bound `base < 185` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23123,
+      "line": 24231,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time4_eject1_base_lt_21",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time4_eject1_base_lt_21",
@@ -9545,7 +10598,7 @@
       "doc_summary": "The first higher-time slice `(time, eject) = (4, 1)` and intrinsic bound `base < 21` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23133,
+      "line": 24241,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time4_eject2_base_lt_42",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time4_eject2_base_lt_42",
@@ -9554,7 +10607,7 @@
       "doc_summary": "The first higher-time slice `(time, eject) = (4, 2)` and intrinsic bound `base < 42` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23143,
+      "line": 24251,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time4_eject3_base_lt_83",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time4_eject3_base_lt_83",
@@ -9563,7 +10616,7 @@
       "doc_summary": "The first higher-time slice `(time, eject) = (4, 3)` and intrinsic bound `base < 83` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23153,
+      "line": 24261,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time4_eject4_base_lt_165",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time4_eject4_base_lt_165",
@@ -9572,7 +10625,7 @@
       "doc_summary": "The first higher-time slice `(time, eject) = (4, 4)` and intrinsic bound `base < 165` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23163,
+      "line": 24271,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time5_eject1_base_lt_7",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time5_eject1_base_lt_7",
@@ -9581,7 +10634,7 @@
       "doc_summary": "The slice `(time, eject) = (5, 1)` and intrinsic bound `base < 7` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23173,
+      "line": 24281,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time5_eject2_base_lt_14",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time5_eject2_base_lt_14",
@@ -9590,7 +10643,7 @@
       "doc_summary": "The slice `(time, eject) = (5, 2)` and intrinsic bound `base < 14` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23183,
+      "line": 24291,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time5_eject3_base_lt_28",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time5_eject3_base_lt_28",
@@ -9599,7 +10652,7 @@
       "doc_summary": "The slice `(time, eject) = (5, 3)` and intrinsic bound `base < 28` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23193,
+      "line": 24301,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time6_eject1_base_lt_3",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time6_eject1_base_lt_3",
@@ -9608,7 +10661,7 @@
       "doc_summary": "The slice `(time, eject) = (6, 1)` and intrinsic bound `base < 3` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23203,
+      "line": 24311,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time6_eject2_base_lt_5",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time6_eject2_base_lt_5",
@@ -9617,7 +10670,7 @@
       "doc_summary": "The slice `(time, eject) = (6, 2)` and intrinsic bound `base < 5` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23213,
+      "line": 24321,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_lt_10",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_lt_10",
@@ -9626,7 +10679,7 @@
       "doc_summary": "The slice `(time, eject) = (6, 3)` and intrinsic bound `base < 10` already certify a shrinking window on the true integer orbit."
     },
     {
-      "line": 23223,
+      "line": 24331,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_eq_1",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time6_eject3_base_eq_1",
@@ -9635,7 +10688,7 @@
       "doc_summary": "The exact singleton source state `(time, base, eject) = (6, 1, 3)` already certifies a shrinking window on the true integer orbit."
     },
     {
-      "line": 23234,
+      "line": 24342,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time7_eject5_base_eq_3",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time7_eject5_base_eq_3",
@@ -9644,7 +10697,7 @@
       "doc_summary": "The exact singleton source state `(time, base, eject) = (7, 3, 5)` already certifies a shrinking window on the true integer orbit."
     },
     {
-      "line": 23245,
+      "line": 24353,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_slice_shrinks_via_exact_zone_of_time8_eject5_base_eq_1",
       "short_name": "regimeII_slice_shrinks_via_exact_zone_of_time8_eject5_base_eq_1",
@@ -9653,7 +10706,7 @@
       "doc_summary": "The exact singleton source state `(time, base, eject) = (8, 1, 5)` already certifies a shrinking window on the true integer orbit."
     },
     {
-      "line": 23259,
+      "line": 24367,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.dst_next_lt_832_of_dst_slice_exact_zone",
       "short_name": "dst_next_lt_832_of_dst_slice_exact_zone",
@@ -9662,7 +10715,7 @@
       "doc_summary": "If the destination source state of a bad-frontier transition already lies in the exact `832` threshold window of its own intrinsic slice, then its compressed successor enters the verified exact zone below `832`."
     },
     {
-      "line": 23284,
+      "line": 24392,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_next_lt_832",
       "short_name": "src_shrinks_of_dst_next_lt_832",
@@ -9671,7 +10724,7 @@
       "doc_summary": "If the destination source state of a bad-frontier transition already enters the exact `832` zone on its own next intrinsic meta-step, then the original source orbit already has a certified shrinking window."
     },
     {
-      "line": 23334,
+      "line": 24442,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_slice_exact_zone",
       "short_name": "src_shrinks_of_dst_slice_exact_zone",
@@ -9680,7 +10733,7 @@
       "doc_summary": "Exact-zone handoff principle for intrinsic bad-frontier transitions at target `832`: if the destination source state lies below the exact-zone threshold of its own slice, then the original source orbit already shrinks."
     },
     {
-      "line": 23347,
+      "line": 24455,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time2_eject1_base_lt_185",
       "short_name": "src_shrinks_of_dst_time2_eject1_base_lt_185",
@@ -9689,7 +10742,7 @@
       "doc_summary": "The `(2,1)` destination exit from a bad-frontier transition out of the hard `(3,1)` source slice already feeds the exact `832` zone whenever the destination base lies below `185`, so the original source orbit shrinks."
     },
     {
-      "line": 23360,
+      "line": 24468,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_32k_add_21_of_k_lt_two",
       "short_name": "src_shrinks_of_src_base_eq_32k_add_21_of_k_lt_two",
@@ -9698,7 +10751,7 @@
       "doc_summary": "Concrete `(2,1)` exact-zone handoff on the `21 mod 32` source branch: once the source chart is `base = 32*k + 21` with `k < 2`, the destination already enters the exact `832` zone on its own next meta-step, so the original source orbit shrinks."
     },
     {
-      "line": 23376,
+      "line": 24484,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_13",
       "short_name": "src_shrinks_of_src_base_eq_13",
@@ -9707,7 +10760,7 @@
       "doc_summary": "The first time-4 shell subcase on the non-residual `(3,1)` branch already collapses at source base `13`: it lands on destination slice `(4,1)` with destination base `11`, so the destination immediately enters the exact `832` zone and the original source orbit shrinks."
     },
     {
-      "line": 23396,
+      "line": 24504,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_77",
       "short_name": "src_shrinks_of_src_base_eq_77",
@@ -9716,7 +10769,7 @@
       "doc_summary": "The fourth time-4 shell subcase on the non-residual `(3,1)` branch already collapses at source base `77`: it lands on destination slice `(4,4)` with destination base `65`, which lies below the exact-zone threshold `165`, so the original source orbit shrinks."
     },
     {
-      "line": 23416,
+      "line": 24524,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_589",
       "short_name": "src_shrinks_of_src_base_eq_589",
@@ -9725,7 +10778,7 @@
       "doc_summary": "The next exact refinement of the residual time-4 branch already collapses at source base `589`: it lands on destination slice `(4,6)` with destination base `497`, which lies below the exact-zone threshold `658`, so the original source orbit shrinks."
     },
     {
-      "line": 23436,
+      "line": 24544,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_src_base_eq_45",
       "short_name": "src_shrinks_of_src_base_eq_45",
@@ -9734,7 +10787,7 @@
       "doc_summary": "The first exact refinement of the `time = 5` shell already collapses at source base `45`: it lands on destination slice `(5,3)` with destination base `19`, which lies below the exact-zone threshold `28`, so the original source orbit shrinks."
     },
     {
-      "line": 23455,
+      "line": 24563,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time4_eject1_base_lt_21",
       "short_name": "src_shrinks_of_dst_time4_eject1_base_lt_21",
@@ -9743,7 +10796,7 @@
       "doc_summary": "The first higher-time destination slice `(4,1)` already feeds the exact `832` zone once its intrinsic base lies below `21`, so the original source orbit shrinks."
     },
     {
-      "line": 23467,
+      "line": 24575,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time4_eject2_base_lt_42",
       "short_name": "src_shrinks_of_dst_time4_eject2_base_lt_42",
@@ -9752,7 +10805,7 @@
       "doc_summary": "The first higher-time destination slice `(4,2)` already feeds the exact `832` zone once its intrinsic base lies below `42`, so the original source orbit shrinks."
     },
     {
-      "line": 23479,
+      "line": 24587,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time4_eject3_base_lt_83",
       "short_name": "src_shrinks_of_dst_time4_eject3_base_lt_83",
@@ -9761,7 +10814,7 @@
       "doc_summary": "The first higher-time destination slice `(4,3)` already feeds the exact `832` zone once its intrinsic base lies below `83`, so the original source orbit shrinks."
     },
     {
-      "line": 23491,
+      "line": 24599,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time4_eject4_base_lt_165",
       "short_name": "src_shrinks_of_dst_time4_eject4_base_lt_165",
@@ -9770,7 +10823,7 @@
       "doc_summary": "The first higher-time destination slice `(4,4)` already feeds the exact `832` zone once its intrinsic base lies below `165`, so the original source orbit shrinks."
     },
     {
-      "line": 23503,
+      "line": 24611,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time5_eject1_base_lt_7",
       "short_name": "src_shrinks_of_dst_time5_eject1_base_lt_7",
@@ -9779,7 +10832,7 @@
       "doc_summary": "The next higher-time destination slice `(5,1)` already feeds the exact `832` zone once its intrinsic base lies below `7`, so the original source orbit shrinks."
     },
     {
-      "line": 23515,
+      "line": 24623,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time5_eject2_base_lt_14",
       "short_name": "src_shrinks_of_dst_time5_eject2_base_lt_14",
@@ -9788,7 +10841,7 @@
       "doc_summary": "The next higher-time destination slice `(5,2)` already feeds the exact `832` zone once its intrinsic base lies below `14`, so the original source orbit shrinks."
     },
     {
-      "line": 23527,
+      "line": 24635,
       "namespace": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition",
       "full_name": "UFRF.ConcurrentScales.RegimeIIBadFrontierTransition.src_shrinks_of_dst_time5_eject3_base_lt_28",
       "short_name": "src_shrinks_of_dst_time5_eject3_base_lt_28",
@@ -9797,7 +10850,7 @@
       "doc_summary": "The next higher-time destination slice `(5,3)` already feeds the exact `832` zone once its intrinsic base lies below `28`, so the original source orbit shrinks."
     },
     {
-      "line": 23543,
+      "line": 24651,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_shrinks_or_hits_exact_zone",
       "short_name": "regimeII_shrinks_or_hits_exact_zone",
@@ -9806,7 +10859,7 @@
       "doc_summary": "Generic Regime-II return-map dichotomy into any exact finite zone."
     },
     {
-      "line": 23568,
+      "line": 24676,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.regimeII_shrinks_or_hits_k6_zone",
       "short_name": "regimeII_shrinks_or_hits_k6_zone",
@@ -9815,7 +10868,7 @@
       "doc_summary": "Regime-II return-map dichotomy at the `k=6` exact scale."
     },
     {
-      "line": 23598,
+      "line": 24706,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.spectral_gap_predicts_crt",
       "short_name": "spectral_gap_predicts_crt",
@@ -9824,7 +10877,7 @@
       "doc_summary": "**Bridge 4: The carry automaton's spectral gap predicts the CRT structure.** The automaton has 2 active states with P(continue) = 1/2 each."
     },
     {
-      "line": 23642,
+      "line": 24750,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.surplus_recovery_bound",
       "short_name": "surplus_recovery_bound",
@@ -9833,7 +10886,7 @@
       "doc_summary": "**The unified picture**: all three threads meet at one identity."
     },
     {
-      "line": 23696,
+      "line": 24804,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_3x7",
       "short_name": "harmonize_3x7",
@@ -9842,7 +10895,7 @@
       "doc_summary": "**Clock 3\u00d77 = 21**: all 10 odd residues contract in 8 steps."
     },
     {
-      "line": 23702,
+      "line": 24810,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x7",
       "short_name": "harmonize_5x7",
@@ -9851,7 +10904,7 @@
       "doc_summary": "**Clock 5\u00d77 = 35**: all 17 odd residues contract in 10 steps."
     },
     {
-      "line": 23708,
+      "line": 24816,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x11",
       "short_name": "harmonize_5x11",
@@ -9860,7 +10913,7 @@
       "doc_summary": "**Clock 5\u00d711 = 55**: all 27 odd residues contract in 12 steps."
     },
     {
-      "line": 23714,
+      "line": 24822,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_7x11",
       "short_name": "harmonize_7x11",
@@ -9869,7 +10922,7 @@
       "doc_summary": "**Clock 7\u00d711 = 77**: all 38 odd residues contract in 16 steps."
     },
     {
-      "line": 23720,
+      "line": 24828,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_7x13",
       "short_name": "harmonize_7x13",
@@ -9878,7 +10931,7 @@
       "doc_summary": "**Clock 7\u00d713 = 91**: all 45 odd residues contract in 20 steps."
     },
     {
-      "line": 23732,
+      "line": 24840,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_3x5x13",
       "short_name": "harmonize_3x5x13",
@@ -9887,7 +10940,7 @@
       "doc_summary": "**Clock 3\u00d75\u00d713 = 195**: resolves the 3\u00d75 and 5\u00d713 traps."
     },
     {
-      "line": 23741,
+      "line": 24849,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x7x13",
       "short_name": "harmonize_5x7x13",
@@ -9896,7 +10949,7 @@
       "doc_summary": "**Clock 5\u00d77\u00d713 = 455**: resolves the 5\u00d713 trap."
     },
     {
-      "line": 23747,
+      "line": 24855,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x11x13",
       "short_name": "harmonize_5x11x13",
@@ -9905,7 +10958,7 @@
       "doc_summary": "**Clock 5\u00d711\u00d713 = 715**: all 357 odd residues contract in 64 steps."
     },
     {
-      "line": 23760,
+      "line": 24868,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x7x11x13",
       "short_name": "harmonize_5x7x11x13",
@@ -9914,7 +10967,7 @@
       "doc_summary": "**Clock 5\u00d77\u00d711\u00d713 = 5005**: resolves ALL 2-clock and 3-clock traps involving these primes (5\u00d713, 7\u00d711\u00d713, 5\u00d77\u00d711 are all STUCK individually)."
     },
     {
-      "line": 23767,
+      "line": 24875,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_3x5x7x11x13",
       "short_name": "harmonize_3x5x7x11x13",
@@ -9923,7 +10976,7 @@
       "doc_summary": "**Clock 3\u00d75\u00d77\u00d711\u00d713 = 15015**: all five odd primes \u2264 13 as concurrent clocks."
     },
     {
-      "line": 23777,
+      "line": 24885,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonize_5x7x11x13x17",
       "short_name": "harmonize_5x7x11x13x17",
@@ -9932,7 +10985,7 @@
       "doc_summary": "**Clock 5\u00d77\u00d711\u00d713\u00d717 = 85085**: adding the p=17 clock."
     },
     {
-      "line": 23789,
+      "line": 24897,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.harmonization_ratio_decreasing",
       "short_name": "harmonization_ratio_decreasing",
@@ -9941,7 +10994,7 @@
       "doc_summary": "**Harmonization W/M ratio decreases across prime products.** The contraction window W grows sub-linearly relative to modulus M."
     },
     {
-      "line": 23814,
+      "line": 24922,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.stuck_then_resolved",
       "short_name": "stuck_then_resolved",
@@ -9950,7 +11003,7 @@
       "doc_summary": "**Stuck pairs and their resolution.** Certain CRT products have permanently trapped modular orbits."
     },
     {
-      "line": 23834,
+      "line": 24942,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.mod3_degenerate",
       "short_name": "mod3_degenerate",
@@ -9959,7 +11012,7 @@
       "doc_summary": "**Mod-3 degeneracy**: 3n+1 \u2261 1 mod 3 for all n, so the p=3 clock carries ZERO dynamical information."
     },
     {
-      "line": 23842,
+      "line": 24950,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.trap_cycle_mod15",
       "short_name": "trap_cycle_mod15",
@@ -9968,7 +11021,7 @@
       "doc_summary": "**Mod-15 trap cycle**: at mod 15 = 3\u00d75, residues 7\u219211\u21922\u21927 form a 3-cycle that passes through EVEN residue 2."
     },
     {
-      "line": 23852,
+      "line": 24960,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.trap_cycle_mod65",
       "short_name": "trap_cycle_mod65",
@@ -9977,7 +11030,7 @@
       "doc_summary": "**Mod-65 trap cycle**: at mod 65 = 5\u00d713, residue 55 forms a 2-cycle 55\u219218\u219255 through EVEN residue 18."
     },
     {
-      "line": 23862,
+      "line": 24970,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.stuck_certificate_mod65",
       "short_name": "stuck_certificate_mod65",
@@ -9986,7 +11039,7 @@
       "doc_summary": "**Stuck certificate for mod 65**: the trapped residue r=55 has v\u2082 sum far below the contraction threshold even after 200 steps."
     },
     {
-      "line": 23867,
+      "line": 24975,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.stuck_certificate_mod15",
       "short_name": "stuck_certificate_mod15",
@@ -9995,7 +11048,7 @@
       "doc_summary": "**Stuck certificate for mod 15**: r=7 has v\u2082 sum far below threshold."
     },
     {
-      "line": 23878,
+      "line": 24986,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.observer_class_A",
       "short_name": "observer_class_A",
@@ -10004,7 +11057,7 @@
       "doc_summary": "**Observer classification by p mod 6.** For odd primes > 3, the Syracuse observer r = -1/3 mod p satisfies: - p \u2261 1 mod 6 (Class A): observer is EVEN \u2192 survives Syracuse - p \u2261 5 mod 6 (Class B): observer is ODD \u2192 annihilates to 0 Cross-class CRT products (A\u00d7B) always create traps because the joint observer annihilates."
     },
     {
-      "line": 23890,
+      "line": 24998,
       "namespace": "UFRF.ConcurrentScales",
       "full_name": "UFRF.ConcurrentScales.observer_class_B",
       "short_name": "observer_class_B",

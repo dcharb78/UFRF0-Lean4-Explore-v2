@@ -21799,6 +21799,1114 @@ theorem returned_forty_four_shell_transport_of_src_base_eq_435561429658801233233
     _ = 2 ^ 90 * (27 * m + 26) := by
       ring_nf
 
+/-- First dyadic shell inside the residual `time ≥ 134` branch:
+    `base = 87112285931760246646623899502532662132736*m + 85499095451542464301316049511745020241389`
+    is exactly the `time = 134` case. -/
+theorem dst_time_eq_one_hundred_thirty_four_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 87112285931760246646623899502532662132736 * m + 85499095451542464301316049511745020241389) :
+    τ.dst.src.time = 134 := by
+  have hk : τ.src.src.base = 32 * (2722258935367507707706996859454145691648 * m + 2671846732860702009416126547242031882543) + 13 := by
+    calc
+      τ.src.src.base = 87112285931760246646623899502532662132736 * m + 85499095451542464301316049511745020241389 := hm
+      _ = 32 * (2722258935367507707706996859454145691648 * m + 2671846732860702009416126547242031882543) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 53) := by
+    omega
+  have hv2 : v2 (27 * (2722258935367507707706996859454145691648 * m + 2671846732860702009416126547242031882543) + 11) = 130 := by
+    calc
+      v2 (27 * (2722258935367507707706996859454145691648 * m + 2671846732860702009416126547242031882543) + 11) =
+          v2 (2 ^ 130 * (54 * m + 53)) := by
+            ring_nf
+      _ = 130 := by
+        simpa using v2_pow_mul_of_not_two_dvd 130 (54 * m + 53) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (2722258935367507707706996859454145691648 * m + 2671846732860702009416126547242031882543) + 11) := htime
+    _ = 4 + 130 := by rw [hv2]
+    _ = 134 := by norm_num
+
+/-- On the first dyadic shell
+    `base = 87112285931760246646623899502532662132736*m + 85499095451542464301316049511745020241389`,
+    the higher-time destination base is exactly `54*m + 53`. -/
+theorem dst_base_eq_54m_add_53_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 87112285931760246646623899502532662132736 * m + 85499095451542464301316049511745020241389) :
+    τ.dst.src.base = 54 * m + 53 := by
+  have hm' : τ.src.src.base = 43556142965880123323311949751266331066368 * (2 * m + 1) + 41942952485662340978004099760478689175021 := by
+    calc
+      τ.src.src.base = 87112285931760246646623899502532662132736 * m + 85499095451542464301316049511745020241389 := hm
+      _ = 43556142965880123323311949751266331066368 * (2 * m + 1) + 41942952485662340978004099760478689175021 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 134) * τ.dst.src.base = 54 * m + 53 := by
+    calc
+      2 ^ (τ.dst.src.time - 134) * τ.dst.src.base = 27 * (2 * m + 1) + 26 := by
+        exact two_pow_dst_time_sub_one_hundred_thirty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021
+          τ ht he hm'
+      _ = 54 * m + 53 := by
+        ring
+  have htime : τ.dst.src.time = 134 :=
+    dst_time_eq_one_hundred_thirty_four_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  simpa using htransport
+
+/-- Second dyadic shell inside the residual `time ≥ 134` branch:
+    `base = 174224571863520493293247799005065324265472*m + 41942952485662340978004099760478689175021`
+    is exactly the `time = 135` case. -/
+theorem dst_time_eq_one_hundred_thirty_five_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 174224571863520493293247799005065324265472 * m + 41942952485662340978004099760478689175021) :
+    τ.dst.src.time = 135 := by
+  have hk : τ.src.src.base = 32 * (5444517870735015415413993718908291383296 * m + 1310717265176948155562628117514959036719) + 13 := by
+    calc
+      τ.src.src.base = 174224571863520493293247799005065324265472 * m + 41942952485662340978004099760478689175021 := hm
+      _ = 32 * (5444517870735015415413993718908291383296 * m + 1310717265176948155562628117514959036719) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hodd : ¬ 2 ∣ (54 * m + 13) := by
+    omega
+  have hv2 : v2 (27 * (5444517870735015415413993718908291383296 * m + 1310717265176948155562628117514959036719) + 11) = 131 := by
+    calc
+      v2 (27 * (5444517870735015415413993718908291383296 * m + 1310717265176948155562628117514959036719) + 11) =
+          v2 (2 ^ 131 * (54 * m + 13)) := by
+            ring_nf
+      _ = 131 := by
+        simpa using v2_pow_mul_of_not_two_dvd 131 (54 * m + 13) hodd
+  calc
+    τ.dst.src.time = 4 + v2 (27 * (5444517870735015415413993718908291383296 * m + 1310717265176948155562628117514959036719) + 11) := htime
+    _ = 4 + 131 := by rw [hv2]
+    _ = 135 := by norm_num
+
+/-- On the second dyadic shell
+    `base = 174224571863520493293247799005065324265472*m + 41942952485662340978004099760478689175021`,
+    the higher-time destination base is exactly `54*m + 13`. -/
+theorem dst_base_eq_54m_add_13_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 174224571863520493293247799005065324265472 * m + 41942952485662340978004099760478689175021) :
+    τ.dst.src.base = 54 * m + 13 := by
+  have hm' : τ.src.src.base = 43556142965880123323311949751266331066368 * (4 * m) + 41942952485662340978004099760478689175021 := by
+    calc
+      τ.src.src.base = 174224571863520493293247799005065324265472 * m + 41942952485662340978004099760478689175021 := hm
+      _ = 43556142965880123323311949751266331066368 * (4 * m) + 41942952485662340978004099760478689175021 := by ring
+  have htransport : 2 ^ (τ.dst.src.time - 134) * τ.dst.src.base = 108 * m + 26 := by
+    calc
+      2 ^ (τ.dst.src.time - 134) * τ.dst.src.base = 27 * (4 * m) + 26 := by
+        exact two_pow_dst_time_sub_one_hundred_thirty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021
+          τ ht he hm'
+      _ = 108 * m + 26 := by
+        ring
+  have htime : τ.dst.src.time = 135 :=
+    dst_time_eq_one_hundred_thirty_five_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021 τ ht he hm
+  rw [htime] at htransport
+  norm_num at htransport
+  omega
+
+/-- Residual shell after the first two dyadic cases of the `time ≥ 134`
+    branch:
+    `base = 174224571863520493293247799005065324265472*m + 129055238417422587624627999263011351307757`
+    still forces destination time at least `136`. -/
+theorem one_hundred_thirty_six_le_dst_time_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 174224571863520493293247799005065324265472 * m + 129055238417422587624627999263011351307757) :
+    136 ≤ τ.dst.src.time := by
+  have hk : τ.src.src.base = 32 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 13 := by
+    calc
+      τ.src.src.base = 174224571863520493293247799005065324265472 * m + 129055238417422587624627999263011351307757 := hm
+      _ = 32 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 13 := by ring
+  have htime :=
+    dst_time_eq_four_add_v2_27k_add_11_of_src_base_eq_32k_add_13 τ ht he hk
+  have hfac : 27 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 11 = 2 ^ 132 * (27 * m + 20) := by
+    ring_nf
+  have hpos : 0 < 27 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 11 := by
+    omega
+  have hdvd : 2 ^ 132 ∣ 27 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 11 := by
+    refine ⟨27 * m + 20, ?_⟩
+    exact hfac
+  have hv2_ge132 : 132 ≤ v2 (27 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 11) := by
+    by_contra hlt
+    have hlt' : v2 (27 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 11) + 1 ≤ 132 := by
+      omega
+    have hdiv :
+        2 ^ (v2 (27 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 11) + 1) ∣
+          27 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 11 := by
+      exact dvd_trans (Nat.pow_dvd_pow 2 hlt') hdvd
+    exact (v2_pow_succ_not_dvd (27 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 11) hpos) hdiv
+  have htime_ge : 136 ≤ 4 + v2 (27 * (5444517870735015415413993718908291383296 * m + 4032976200544455863269624976969104728367) + 11) := by
+    omega
+  rw [htime]
+  exact htime_ge
+
+/-- Residual transport law after the first two dyadic shells of the
+    `time ≥ 134` branch. -/
+theorem two_pow_dst_time_sub_one_hundred_thirty_six_mul_dst_base_eq_27m_add_20_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 174224571863520493293247799005065324265472 * m + 129055238417422587624627999263011351307757) :
+    2 ^ (τ.dst.src.time - 136) * τ.dst.src.base = 27 * m + 20 := by
+  have hm' : τ.src.src.base = 43556142965880123323311949751266331066368 * (4 * m + 2) + 41942952485662340978004099760478689175021 := by
+    calc
+      τ.src.src.base = 174224571863520493293247799005065324265472 * m + 129055238417422587624627999263011351307757 := hm
+      _ = 43556142965880123323311949751266331066368 * (4 * m + 2) + 41942952485662340978004099760478689175021 := by ring
+  have htime_ge136 : 136 ≤ τ.dst.src.time :=
+    one_hundred_thirty_six_le_dst_time_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757 τ ht he hm
+  have htransport :
+      2 ^ (τ.dst.src.time - 134) * τ.dst.src.base = 27 * (4 * m + 2) + 26 :=
+    two_pow_dst_time_sub_one_hundred_thirty_four_mul_dst_base_eq_27m_add_26_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021
+      τ ht he hm'
+  have hpow_split : 2 ^ (τ.dst.src.time - 134) = 2 ^ (τ.dst.src.time - 136) * 2 ^ 2 := by
+    have hsub : τ.dst.src.time - 134 = (τ.dst.src.time - 136) + 2 := by
+      omega
+    rw [hsub, pow_add]
+  have hmul :
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 136) * τ.dst.src.base) =
+        2 ^ 2 * (27 * m + 20) := by
+    calc
+      2 ^ 2 * (2 ^ (τ.dst.src.time - 136) * τ.dst.src.base)
+          = (2 ^ (τ.dst.src.time - 136) * 2 ^ 2) * τ.dst.src.base := by
+              ring
+      _ = 2 ^ (τ.dst.src.time - 134) * τ.dst.src.base := by
+        rw [← hpow_split]
+      _ = 27 * (4 * m + 2) + 26 := htransport
+      _ = 2 ^ 2 * (27 * m + 20) := by
+        ring_nf
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2 ^ 2) hmul
+
+/-- The five verified higher-time return clocks on the intrinsic bad-frontier.
+    These are not five unrelated shell facts; they are the currently verified
+    states of one closed source-state return machine. The labels record the
+    returned affine residues `27*m + c`.
+
+    This packages only the source-state return structure actually verified in
+    Lean. Any stronger interpretation in terms of rotating "prime voices",
+    observer-centered prime clocks, or concurrent prime-perspective closure is
+    still exploratory and is not formalized by this definition alone. -/
+inductive VerifiedHigherTimeReturnClock where
+  | c20
+  | c16
+  | c14
+  | c11
+  | c26
+  deriving DecidableEq, Repr
+
+namespace VerifiedHigherTimeReturnClock
+
+/-- Residual affine residue carried by a verified higher-time return clock. -/
+def residue : VerifiedHigherTimeReturnClock → ℕ
+  | .c20 => 20
+  | .c16 => 16
+  | .c14 => 14
+  | .c11 => 11
+  | .c26 => 26
+
+/-- Canonical older shell time to which the verified return clock renormalizes. -/
+def anchorTime : VerifiedHigherTimeReturnClock → ℕ
+  | .c20 => 28
+  | .c16 => 31
+  | .c14 => 36
+  | .c11 => 40
+  | .c26 => 44
+
+/-- Source coefficient of the currently verified scale-`2^90` representative
+    for each return clock. -/
+def srcCoeff : VerifiedHigherTimeReturnClock → ℕ
+  | .c20 => 664613997892457936451903530140172288
+  | .c16 => 5316911983139663491615228241121378304
+  | .c14 => 170141183460469231731687303715884105728
+  | .c11 => 2722258935367507707706996859454145691648
+  | .c26 => 43556142965880123323311949751266331066368
+
+/-- Source constant of the currently verified scale-`2^90` representative
+    for each return clock. -/
+def srcConst : VerifiedHigherTimeReturnClock → ℕ
+  | .c20 => 492306665105524397371780392696423917
+  | .c16 => 3150762656675356143179394513257113069
+  | .c14 => 88221354386909972009023046371199165933
+  | .c11 => 1109068455149725362399146868666503800301
+  | .c26 => 41942952485662340978004099760478689175021
+
+/-- One concurrent step of the verified higher-time return machine. The
+    currently verified recurrence cycle is
+    `20 -> 16 -> 14 -> 11 -> 26 -> 20`. -/
+def next : VerifiedHigherTimeReturnClock → VerifiedHigherTimeReturnClock
+  | .c20 => .c16
+  | .c16 => .c14
+  | .c14 => .c11
+  | .c11 => .c26
+  | .c26 => .c20
+
+theorem next_five_eq_self (clk : VerifiedHigherTimeReturnClock) :
+    next (next (next (next (next clk)))) = clk := by
+  cases clk <;> rfl
+
+theorem next_signature (clk : VerifiedHigherTimeReturnClock) :
+    (anchorTime (next clk), residue (next clk)) =
+      match clk with
+      | .c20 => (31, 16)
+      | .c16 => (36, 14)
+      | .c14 => (40, 11)
+      | .c11 => (44, 26)
+      | .c26 => (28, 20) := by
+  cases clk <;> rfl
+
+/-- Source coefficient of the currently live residual family beyond each
+    verified higher-time return clock. For `c20/c16/c14/c11` this is exactly
+    the next verified clock family. For `c26` it is the newly exposed residual
+    shell that re-enters `c20` only after an affine parameter rewrite. -/
+def residualCoeff : VerifiedHigherTimeReturnClock → ℕ
+  | .c20 => srcCoeff .c16
+  | .c16 => srcCoeff .c14
+  | .c14 => srcCoeff .c11
+  | .c11 => srcCoeff .c26
+  | .c26 => 174224571863520493293247799005065324265472
+
+/-- Source constant of the currently live residual family beyond each verified
+    higher-time return clock. -/
+def residualConst : VerifiedHigherTimeReturnClock → ℕ
+  | .c20 => srcConst .c16
+  | .c16 => srcConst .c14
+  | .c14 => srcConst .c11
+  | .c11 => srcConst .c26
+  | .c26 => 129055238417422587624627999263011351307757
+
+/-- Affine scale factor sending the live residual parameter for `clk` to the
+    canonical parameter of `next clk`. Only the `c26 -> c20` closure needs a
+    nontrivial scale change. -/
+def residualParamScale : VerifiedHigherTimeReturnClock → ℕ
+  | .c20 => 1
+  | .c16 => 1
+  | .c14 => 1
+  | .c11 => 1
+  | .c26 => 262144
+
+/-- Affine shift sending the live residual parameter for `clk` to the canonical
+    parameter of `next clk`. Only the `c26 -> c20` closure needs a nonzero
+    shift. -/
+def residualParamShift : VerifiedHigherTimeReturnClock → ℕ
+  | .c20 => 0
+  | .c16 => 0
+  | .c14 => 0
+  | .c11 => 0
+  | .c26 => 194180
+
+/-- The currently live residual family at each verified clock state is already
+    an affine re-indexing of the canonical source family for `next clk`. -/
+theorem residual_eq_next_reindexed (clk : VerifiedHigherTimeReturnClock) (m : ℕ) :
+    residualCoeff clk * m + residualConst clk =
+      srcCoeff (next clk) * (residualParamScale clk * m + residualParamShift clk) +
+        srcConst (next clk) := by
+  cases clk with
+  | c20 =>
+      simp [residualCoeff, residualConst, residualParamScale,
+        residualParamShift, next, srcCoeff, srcConst]
+  | c16 =>
+      simp [residualCoeff, residualConst, residualParamScale,
+        residualParamShift, next, srcCoeff, srcConst]
+  | c14 =>
+      simp [residualCoeff, residualConst, residualParamScale,
+        residualParamShift, next, srcCoeff, srcConst]
+  | c11 =>
+      simp [residualCoeff, residualConst, residualParamScale,
+        residualParamShift, next, srcCoeff, srcConst]
+  | c26 =>
+      simp [residualCoeff, residualConst, residualParamScale,
+        residualParamShift, next, srcCoeff, srcConst]
+      ring
+
+/-- Dispatcher theorem for the verified higher-time return machine at the
+    current common renormalized scale `2^90`. This packages the fact that each
+    clock state carries a genuine source theorem, not just a conceptual label. -/
+theorem transport_of_eq_src_base
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (clk : VerifiedHigherTimeReturnClock)
+    {m : ℕ} (hm : τ.src.src.base = srcCoeff clk * m + srcConst clk) :
+    2 ^ (τ.dst.src.time - anchorTime clk) * τ.dst.src.base =
+      2 ^ 90 * (27 * m + residue clk) := by
+  cases clk with
+  | c20 =>
+      simpa [srcCoeff, srcConst, anchorTime, residue] using
+        returned_twenty_eight_shell_transport_of_src_base_eq_664613997892457936451903530140172288m_add_492306665105524397371780392696423917
+          τ ht he hm
+  | c16 =>
+      simpa [srcCoeff, srcConst, anchorTime, residue] using
+        returned_thirty_one_shell_transport_of_src_base_eq_5316911983139663491615228241121378304m_add_3150762656675356143179394513257113069
+          τ ht he hm
+  | c14 =>
+      simpa [srcCoeff, srcConst, anchorTime, residue] using
+        returned_thirty_six_shell_transport_of_src_base_eq_170141183460469231731687303715884105728m_add_88221354386909972009023046371199165933
+          τ ht he hm
+  | c11 =>
+      simpa [srcCoeff, srcConst, anchorTime, residue] using
+        returned_forty_shell_transport_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301
+          τ ht he hm
+  | c26 =>
+      simpa [srcCoeff, srcConst, anchorTime, residue] using
+        returned_forty_four_shell_transport_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021
+          τ ht he hm
+
+/-- The newly exposed residual beyond the verified `c26` shell family is not a
+    new clock state: it already re-enters the verified `c20` state after the
+    affine source rewrite `m ↦ 262144*m + 194180`. -/
+theorem c26_residual_reenters_c20_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ}
+    (hm : τ.src.src.base = 174224571863520493293247799005065324265472 * m + 129055238417422587624627999263011351307757) :
+    τ.src.src.base =
+        srcCoeff .c20 * (262144 * m + 194180) + srcConst .c20 ∧
+      2 ^ (τ.dst.src.time - anchorTime .c20) * τ.dst.src.base =
+        2 ^ 90 * (27 * (262144 * m + 194180) + residue .c20) := by
+  have hbase :
+      τ.src.src.base =
+        srcCoeff .c20 * (262144 * m + 194180) + srcConst .c20 := by
+    calc
+      τ.src.src.base = 174224571863520493293247799005065324265472 * m + 129055238417422587624627999263011351307757 := hm
+      _ =
+          664613997892457936451903530140172288 * (262144 * m + 194180) +
+            492306665105524397371780392696423917 := by ring
+      _ = srcCoeff .c20 * (262144 * m + 194180) + srcConst .c20 := by
+        simp [srcCoeff, srcConst]
+  constructor
+  · exact hbase
+  · exact transport_of_eq_src_base τ ht he .c20 hbase
+
+/-- Machine-internal packaging of the same re-entry: the residual beyond the
+    verified `c26` shell family re-enters the next clock state itself. -/
+theorem c26_residual_reenters_next_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ}
+    (hm : τ.src.src.base = 174224571863520493293247799005065324265472 * m + 129055238417422587624627999263011351307757) :
+    ∃ q,
+      τ.src.src.base = srcCoeff (next .c26) * q + srcConst (next .c26) ∧
+      2 ^ (τ.dst.src.time - anchorTime (next .c26)) * τ.dst.src.base =
+        2 ^ 90 * (27 * q + residue (next .c26)) := by
+  refine ⟨262144 * m + 194180, ?_, ?_⟩
+  · simpa [next] using
+      (c26_residual_reenters_c20_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757
+        τ ht he hm).1
+  · simpa [next] using
+      (c26_residual_reenters_c20_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757
+        τ ht he hm).2
+
+/-- Uniform closure theorem for the verified higher-time return machine: the
+    currently live residual family beyond any verified clock state already
+    re-enters `next clk` after the canonical affine parameter rewrite. For the
+    first four states this rewrite is the identity; the `c26` case is the
+    verified nontrivial closure back into `c20`. -/
+theorem residual_reenters_next_of_eq_src_base
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    (clk : VerifiedHigherTimeReturnClock)
+    {m : ℕ}
+    (hm : τ.src.src.base = residualCoeff clk * m + residualConst clk) :
+    ∃ q,
+      q = residualParamScale clk * m + residualParamShift clk ∧
+      τ.src.src.base = srcCoeff (next clk) * q + srcConst (next clk) ∧
+      2 ^ (τ.dst.src.time - anchorTime (next clk)) * τ.dst.src.base =
+        2 ^ 90 * (27 * q + residue (next clk)) := by
+  refine ⟨residualParamScale clk * m + residualParamShift clk, rfl, ?_, ?_⟩
+  · calc
+      τ.src.src.base = residualCoeff clk * m + residualConst clk := hm
+      _ =
+          srcCoeff (next clk) * (residualParamScale clk * m + residualParamShift clk) +
+            srcConst (next clk) := residual_eq_next_reindexed clk m
+  · have hbase :
+        τ.src.src.base =
+          srcCoeff (next clk) * (residualParamScale clk * m + residualParamShift clk) +
+            srcConst (next clk) := by
+        calc
+          τ.src.src.base = residualCoeff clk * m + residualConst clk := hm
+          _ =
+              srcCoeff (next clk) * (residualParamScale clk * m + residualParamShift clk) +
+                srcConst (next clk) := residual_eq_next_reindexed clk m
+    exact transport_of_eq_src_base τ ht he (next clk) hbase
+
+/-- Canonical parameter update induced by one verified residual re-entry step of
+    the higher-time return machine. -/
+def nextParam (clk : VerifiedHigherTimeReturnClock) (m : ℕ) : ℕ :=
+  residualParamScale clk * m + residualParamShift clk
+
+/-- One step of the verified higher-time return machine on the pair consisting
+    of the clock label and its canonical affine parameter. -/
+def step : VerifiedHigherTimeReturnClock × ℕ → VerifiedHigherTimeReturnClock × ℕ
+  | (clk, m) => (next clk, nextParam clk m)
+
+/-- After one full verified five-clock cycle, the machine returns to the same
+    clock label and applies the single affine renormalization
+    `m ↦ 262144*m + 194180` to the canonical parameter. -/
+theorem step_five_eq (clk : VerifiedHigherTimeReturnClock) (m : ℕ) :
+    step (step (step (step (step (clk, m))))) = (clk, 262144 * m + 194180) := by
+  cases clk <;> simp [step, nextParam, next, residualParamScale, residualParamShift]
+
+/-- Parameter-only form of the full five-step renormalization law. -/
+theorem nextParam_five_eq (clk : VerifiedHigherTimeReturnClock) (m : ℕ) :
+    (step (step (step (step (step (clk, m)))))).2 = 262144 * m + 194180 := by
+  simpa using congrArg Prod.snd (step_five_eq clk m)
+
+end VerifiedHigherTimeReturnClock
+
+/-- The returned `time ≥ 136` transport is already an exact re-entry into the
+    verified `c20` state of `VerifiedHigherTimeReturnClock`, after the affine
+    source rewrite `m ↦ 262144*m + 194180`. -/
+theorem returned_twenty_eight_shell_transport_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {m : ℕ} (hm : τ.src.src.base = 174224571863520493293247799005065324265472 * m + 129055238417422587624627999263011351307757) :
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base = 2 ^ 108 * (27 * m + 20) := by
+  have hm' :
+      τ.src.src.base =
+        VerifiedHigherTimeReturnClock.srcCoeff .c20 * (262144 * m + 194180) +
+          VerifiedHigherTimeReturnClock.srcConst .c20 := by
+    calc
+      τ.src.src.base = 174224571863520493293247799005065324265472 * m + 129055238417422587624627999263011351307757 := hm
+      _ =
+          664613997892457936451903530140172288 * (262144 * m + 194180) +
+            492306665105524397371780392696423917 := by ring
+      _ =
+          VerifiedHigherTimeReturnClock.srcCoeff .c20 * (262144 * m + 194180) +
+            VerifiedHigherTimeReturnClock.srcConst .c20 := by
+              simp [VerifiedHigherTimeReturnClock.srcCoeff, VerifiedHigherTimeReturnClock.srcConst]
+  calc
+    2 ^ (τ.dst.src.time - 28) * τ.dst.src.base
+        = 2 ^ 90 * (27 * (262144 * m + 194180) + 20) := by
+            exact VerifiedHigherTimeReturnClock.transport_of_eq_src_base τ ht he .c20 hm'
+    _ = 2 ^ 108 * (27 * m + 20) := by
+      ring_nf
+
+/-
+Exploratory prime-root chart for testing whether an odd prime `p` can be read
+as a local seed/void with dyadic shells around it. The intended reading is that
+`p * 2^level` is the shell anchor and `offset` is the local displacement inside
+that shell.
+
+This is intentionally weaker than the core Regime-II ontology. It does not
+treat the distinguished UFRF seed `1` as a modulus, and it does not try to
+absorb the dyadic role of `2` into the prime-voice layer. It is just a
+calibration chart for testing prime-centered concurrent-clock hypotheses
+against the existing Lean source.
+-/
+namespace ExploratoryPrimeVoice
+
+structure Coord where
+  level : ℕ
+  offset : ℕ
+  deriving DecidableEq, Repr
+
+/-- A canonical prime-local state may need signed displacement: numbers below a
+    prime anchor should still have a unique prime-relative coordinate instead
+    of being forced outside the chart. -/
+structure State where
+  level : ℕ
+  offset : ℤ
+  deriving DecidableEq, Repr
+
+/-- Prime-local shell anchor in integer form. -/
+def anchorValue (p level : ℕ) : ℤ :=
+  (p * 2 ^ level : ℕ)
+
+/-- Upper edge of the current dyadic shell at prime `p`. -/
+def nextAnchorValue (p level : ℕ) : ℤ :=
+  anchorValue p (level + 1)
+
+/-- Recover the signed value represented by a prime-local state in the chart
+    rooted at `p`. Different primes can decompose the same integer into
+    different shell coordinates while agreeing on this represented value. -/
+def value (p : ℕ) (s : State) : ℤ :=
+  anchorValue p s.level + s.offset
+
+/-- `realizes p n c` means that `n` lies in the dyadic shell rooted at the odd
+    prime `p`, with shell anchor `p * 2^c.level` and local offset `c.offset`. -/
+def realizes (p n : ℕ) (c : Coord) : Prop :=
+  n = p * 2 ^ c.level + c.offset
+
+theorem realizes_prime_as_root_zero (p : ℕ) :
+    realizes p p ⟨0, 0⟩ := by
+  unfold realizes
+  simp
+
+theorem realizes_two_mul_prime_as_first_doubling (p : ℕ) :
+    realizes p (2 * p) ⟨1, 0⟩ := by
+  unfold realizes
+  norm_num
+  omega
+
+theorem realizes_two_mul_prime_add_one_as_first_seed (p : ℕ) :
+    realizes p (2 * p + 1) ⟨1, 1⟩ := by
+  unfold realizes
+  norm_num
+  omega
+
+/-- The existing centered `n + 1 mod p` observer chart reads the prime-root
+    offset, but shifted by `+1` and forgetting the dyadic shell level. -/
+theorem centeredClockMod_eq_offset_succ_of_realizes
+    {p n : ℕ} {c : Coord} (h : realizes p n c) :
+    centeredClockMod p n = ((c.offset + 1 : ℕ) : ZMod p) := by
+  rcases c with ⟨level, offset⟩
+  unfold realizes at h
+  rw [h]
+  simp [centeredClockMod, Nat.cast_add, Nat.cast_mul, Nat.cast_pow]
+
+theorem primeFive_root_zero :
+    realizes 5 5 ⟨0, 0⟩ := by
+  simpa using realizes_prime_as_root_zero 5
+
+theorem primeFive_first_doubling :
+    realizes 5 10 ⟨1, 0⟩ := by
+  simpa using realizes_two_mul_prime_as_first_doubling 5
+
+theorem primeFive_eleven_first_seed :
+    realizes 5 11 ⟨1, 1⟩ := by
+  simpa using realizes_two_mul_prime_add_one_as_first_seed 5
+
+theorem centeredClock5_of_primeFive_root_zero :
+    centeredClock5 5 = (1 : ZMod 5) := by
+  simpa [centeredClock5] using
+    (centeredClockMod_eq_offset_succ_of_realizes (p := 5) (n := 5)
+      (c := ⟨0, 0⟩) primeFive_root_zero)
+
+theorem centeredClock5_of_primeFive_eleven_first_seed :
+    centeredClock5 11 = (2 : ZMod 5) := by
+  simpa [centeredClock5] using
+    (centeredClockMod_eq_offset_succ_of_realizes (p := 5) (n := 11)
+      (c := ⟨1, 1⟩) primeFive_eleven_first_seed)
+
+theorem residue_c11_is_primeFive_first_seed :
+    realizes 5 (VerifiedHigherTimeReturnClock.residue .c11) ⟨1, 1⟩ := by
+  norm_num [VerifiedHigherTimeReturnClock.residue, realizes]
+
+theorem residue_c20_is_primeFive_second_doubling_anchor :
+    realizes 5 (VerifiedHigherTimeReturnClock.residue .c20) ⟨2, 0⟩ := by
+  norm_num [VerifiedHigherTimeReturnClock.residue, realizes]
+
+/-- The largest dyadic shell anchor `p * 2^level` that does not exceed `n`,
+    defaulting to level `0` when `n < p`. This is a candidate canonical shell
+    coordinate for prime-centered local charts. -/
+def anchorLevel (p n : ℕ) : ℕ :=
+  if hp : p ≤ n then
+    Nat.findGreatest (fun k => p * 2 ^ k ≤ n) n
+  else
+    0
+
+/-- Canonical prime-local state built from the largest dyadic shell anchor not
+    exceeding `n`, together with the signed displacement from that anchor. -/
+def canonicalState (p n : ℕ) : State where
+  level := anchorLevel p n
+  offset := (n : ℤ) - (p * 2 ^ anchorLevel p n : ℕ)
+
+/-- Realization predicate for the signed canonical prime-local state. -/
+def realizesState (p n : ℕ) (s : State) : Prop :=
+  (n : ℤ) = (p * 2 ^ s.level : ℕ) + s.offset
+
+theorem value_eq_nat_of_realizesState {p n : ℕ} {s : State}
+    (h : realizesState p n s) :
+    value p s = (n : ℤ) := by
+  simpa [value, realizesState] using h.symm
+
+theorem realizesState_canonicalState (p n : ℕ) :
+    realizesState p n (canonicalState p n) := by
+  simp [canonicalState, realizesState]
+
+theorem value_canonicalState (p n : ℕ) :
+    value p (canonicalState p n) = (n : ℤ) := by
+  exact value_eq_nat_of_realizesState (realizesState_canonicalState p n)
+
+theorem canonicalState_five_five :
+    canonicalState 5 5 = ⟨0, 0⟩ := by
+  native_decide
+
+theorem canonicalState_five_ten :
+    canonicalState 5 10 = ⟨1, 0⟩ := by
+  native_decide
+
+theorem canonicalState_five_eleven :
+    canonicalState 5 11 = ⟨1, 1⟩ := by
+  native_decide
+
+/-- A prime-local state sits on its current shell anchor exactly when its
+    signed offset is zero. This is a minimal exact proxy for “the local voice
+    is currently at its own zero/root” inside the exploratory chart. -/
+def atAnchor (s : State) : Bool :=
+  decide (s.offset = 0)
+
+theorem anchorLevel_eq_of_eq_anchor {p k : ℕ} (hp : 0 < p) :
+    anchorLevel p (p * 2 ^ k) = k := by
+  unfold anchorLevel
+  have hp_le : p ≤ p * 2 ^ k := by
+    calc
+      p = p * 1 := by simp
+      _ ≤ p * 2 ^ k := by
+        exact Nat.mul_le_mul_left p (Nat.one_le_pow k 2 Nat.zero_lt_two)
+  simp [hp_le]
+  refine (Nat.findGreatest_eq_iff).2 ?_
+  refine ⟨?_, ?_, ?_⟩
+  · calc
+      k ≤ 2 ^ k := Nat.le_of_lt k.lt_two_pow_self
+      _ ≤ p * 2 ^ k := by
+        have hp1 : 1 ≤ p := Nat.succ_le_of_lt hp
+        simpa [one_mul] using Nat.mul_le_mul_right (2 ^ k) hp1
+  · intro _
+    exact le_rfl
+  · intro n hkn _ hP
+    have hpow : 2 ^ k < 2 ^ n := Nat.pow_lt_pow_right Nat.one_lt_two hkn
+    have hmul : p * 2 ^ k < p * 2 ^ n := Nat.mul_lt_mul_of_pos_left hpow hp
+    exact (not_le_of_gt hmul) hP
+
+theorem canonicalState_eq_anchor_state_of_eq_anchor {p k : ℕ} (hp : 0 < p) :
+    canonicalState p (p * 2 ^ k) = ⟨k, 0⟩ := by
+  simp [canonicalState, anchorLevel_eq_of_eq_anchor hp]
+
+theorem atAnchor_canonicalState_of_eq_anchor {p k : ℕ} (hp : 0 < p) :
+    atAnchor (canonicalState p (p * 2 ^ k)) = true := by
+  simp [atAnchor, canonicalState_eq_anchor_state_of_eq_anchor hp]
+
+theorem eq_anchor_of_atAnchor_canonicalState {p n : ℕ}
+    (h : atAnchor (canonicalState p n) = true) :
+    n = p * 2 ^ anchorLevel p n := by
+  have hzero : (canonicalState p n).offset = 0 := by
+    simpa [atAnchor] using h
+  have hEqZ : (n : ℤ) = (p * 2 ^ anchorLevel p n : ℕ) := by
+    simpa [canonicalState, sub_eq_zero] using hzero
+  exact_mod_cast hEqZ
+
+theorem exists_eq_anchor_of_atAnchor_canonicalState {p n : ℕ}
+    (h : atAnchor (canonicalState p n) = true) :
+    ∃ k, n = p * 2 ^ k := by
+  exact ⟨anchorLevel p n, eq_anchor_of_atAnchor_canonicalState h⟩
+
+theorem atAnchor_canonicalState_iff_exists_eq_anchor {p n : ℕ} (hp : 0 < p) :
+    atAnchor (canonicalState p n) = true ↔ ∃ k, n = p * 2 ^ k := by
+  constructor
+  · exact exists_eq_anchor_of_atAnchor_canonicalState
+  · rintro ⟨k, rfl⟩
+    simpa using atAnchor_canonicalState_of_eq_anchor (p := p) (k := k) hp
+
+/-- Joint signature across the first four odd-prime observer voices already
+    present in the file. This is still exploratory, but it gives a concrete
+    target for comparing the verified source-state return machine against
+    concurrent prime-local views. -/
+structure JointState where
+  p5 : State
+  p7 : State
+  p11 : State
+  p13 : State
+  deriving DecidableEq, Repr
+
+def jointState (n : ℕ) : JointState where
+  p5 := canonicalState 5 n
+  p7 := canonicalState 7 n
+  p11 := canonicalState 11 n
+  p13 := canonicalState 13 n
+
+theorem atAnchor_jointState_p5_iff_exists_eq_anchor (n : ℕ) :
+    atAnchor (jointState n).p5 = true ↔ ∃ k, n = 5 * 2 ^ k := by
+  simpa [jointState] using
+    (atAnchor_canonicalState_iff_exists_eq_anchor (p := 5) (n := n) (by decide))
+
+theorem atAnchor_jointState_p7_iff_exists_eq_anchor (n : ℕ) :
+    atAnchor (jointState n).p7 = true ↔ ∃ k, n = 7 * 2 ^ k := by
+  simpa [jointState] using
+    (atAnchor_canonicalState_iff_exists_eq_anchor (p := 7) (n := n) (by decide))
+
+theorem atAnchor_jointState_p11_iff_exists_eq_anchor (n : ℕ) :
+    atAnchor (jointState n).p11 = true ↔ ∃ k, n = 11 * 2 ^ k := by
+  simpa [jointState] using
+    (atAnchor_canonicalState_iff_exists_eq_anchor (p := 11) (n := n) (by decide))
+
+theorem atAnchor_jointState_p13_iff_exists_eq_anchor (n : ℕ) :
+    atAnchor (jointState n).p13 = true ↔ ∃ k, n = 13 * 2 ^ k := by
+  simpa [jointState] using
+    (atAnchor_canonicalState_iff_exists_eq_anchor (p := 13) (n := n) (by decide))
+
+def returnJointState (clk : VerifiedHigherTimeReturnClock) : JointState :=
+  jointState (VerifiedHigherTimeReturnClock.residue clk)
+
+/-- Signed change of the verified return residue across one step of the
+    five-state return machine. The prime-local views all represent the same
+    value change, even though their shell coordinates shift differently. -/
+def returnDelta : VerifiedHigherTimeReturnClock → ℤ
+  | .c20 => -4
+  | .c16 => -2
+  | .c14 => -3
+  | .c11 => 15
+  | .c26 => -6
+
+theorem residue_next_eq_add_returnDelta (clk : VerifiedHigherTimeReturnClock) :
+    (VerifiedHigherTimeReturnClock.residue (VerifiedHigherTimeReturnClock.next clk) : ℤ) =
+      VerifiedHigherTimeReturnClock.residue clk + returnDelta clk := by
+  cases clk <;> norm_num [VerifiedHigherTimeReturnClock.next,
+    VerifiedHigherTimeReturnClock.residue, returnDelta]
+
+theorem value_jointState_p5 (n : ℕ) :
+    value 5 (jointState n).p5 = (n : ℤ) := by
+  simp [jointState, value_canonicalState]
+
+theorem value_jointState_p7 (n : ℕ) :
+    value 7 (jointState n).p7 = (n : ℤ) := by
+  simp [jointState, value_canonicalState]
+
+theorem value_jointState_p11 (n : ℕ) :
+    value 11 (jointState n).p11 = (n : ℤ) := by
+  simp [jointState, value_canonicalState]
+
+theorem value_jointState_p13 (n : ℕ) :
+    value 13 (jointState n).p13 = (n : ℤ) := by
+  simp [jointState, value_canonicalState]
+
+theorem value_returnJointState_agrees (clk : VerifiedHigherTimeReturnClock) :
+    value 5 (returnJointState clk).p5 =
+        (VerifiedHigherTimeReturnClock.residue clk : ℤ) ∧
+      value 7 (returnJointState clk).p7 =
+        (VerifiedHigherTimeReturnClock.residue clk : ℤ) ∧
+      value 11 (returnJointState clk).p11 =
+        (VerifiedHigherTimeReturnClock.residue clk : ℤ) ∧
+      value 13 (returnJointState clk).p13 =
+        (VerifiedHigherTimeReturnClock.residue clk : ℤ) := by
+  cases clk <;> simp [returnJointState, VerifiedHigherTimeReturnClock.residue,
+    value_jointState_p5, value_jointState_p7, value_jointState_p11,
+    value_jointState_p13]
+
+theorem value_returnJointState_next_agrees_add_delta
+    (clk : VerifiedHigherTimeReturnClock) :
+    value 5 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p5 =
+        value 5 (returnJointState clk).p5 + returnDelta clk ∧
+      value 7 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p7 =
+        value 7 (returnJointState clk).p7 + returnDelta clk ∧
+      value 11 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p11 =
+        value 11 (returnJointState clk).p11 + returnDelta clk ∧
+      value 13 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p13 =
+        value 13 (returnJointState clk).p13 + returnDelta clk := by
+  have hagree := value_returnJointState_agrees clk
+  have hnextagree := value_returnJointState_agrees (VerifiedHigherTimeReturnClock.next clk)
+  rcases hagree with ⟨h5, h7, h11, h13⟩
+  rcases hnextagree with ⟨h5n, h7n, h11n, h13n⟩
+  have hdelta := residue_next_eq_add_returnDelta clk
+  constructor
+  · calc
+      value 5 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p5
+          = (VerifiedHigherTimeReturnClock.residue (VerifiedHigherTimeReturnClock.next clk) : ℤ) := h5n
+      _ = VerifiedHigherTimeReturnClock.residue clk + returnDelta clk := hdelta
+      _ = value 5 (returnJointState clk).p5 + returnDelta clk := by rw [h5]
+  constructor
+  · calc
+      value 7 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p7
+          = (VerifiedHigherTimeReturnClock.residue (VerifiedHigherTimeReturnClock.next clk) : ℤ) := h7n
+      _ = VerifiedHigherTimeReturnClock.residue clk + returnDelta clk := hdelta
+      _ = value 7 (returnJointState clk).p7 + returnDelta clk := by rw [h7]
+  constructor
+  · calc
+      value 11 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p11
+          = (VerifiedHigherTimeReturnClock.residue (VerifiedHigherTimeReturnClock.next clk) : ℤ) := h11n
+      _ = VerifiedHigherTimeReturnClock.residue clk + returnDelta clk := hdelta
+      _ = value 11 (returnJointState clk).p11 + returnDelta clk := by rw [h11]
+  · calc
+      value 13 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p13
+          = (VerifiedHigherTimeReturnClock.residue (VerifiedHigherTimeReturnClock.next clk) : ℤ) := h13n
+      _ = VerifiedHigherTimeReturnClock.residue clk + returnDelta clk := hdelta
+      _ = value 13 (returnJointState clk).p13 + returnDelta clk := by rw [h13]
+
+/-- Residual local update after factoring out the common signed return delta. -/
+structure LocalUpdate where
+  levelDelta : ℤ
+  offsetCorrection : ℤ
+  deriving DecidableEq, Repr
+
+/-- A local update reanchors when the shell level actually changes. -/
+def reanchors (u : LocalUpdate) : Bool :=
+  decide (u.levelDelta ≠ 0)
+
+/-- Predicted shell shift from a common next value: stay in the same shell if
+    the next value remains in `[anchor, nextAnchor)`, shift down if it drops
+    below the current anchor and the chart is not already at base level, and
+    shift up if it reaches the next shell. -/
+def shellShift (p : ℕ) (s : State) (nextValue : ℤ) : ℤ :=
+  if nextValue < anchorValue p s.level then
+    if s.level = 0 then 0 else -1
+  else if nextAnchorValue p s.level ≤ nextValue then
+    1
+  else
+    0
+
+/-- Predicted next shell level from the same threshold-crossing rule, phrased
+    as a natural-number level rather than an integer delta. -/
+def nextLevel (p : ℕ) (s : State) (nextValue : ℤ) : ℕ :=
+  if nextValue < anchorValue p s.level then
+    if s.level = 0 then 0 else s.level - 1
+  else if nextAnchorValue p s.level ≤ nextValue then
+    s.level + 1
+  else
+    s.level
+
+def localUpdate (d : ℤ) (s t : State) : LocalUpdate where
+  levelDelta := (t.level : ℤ) - s.level
+  offsetCorrection := t.offset - (s.offset + d)
+
+theorem localUpdate_spec (d : ℤ) (s t : State) :
+    (t.level : ℤ) = s.level + (localUpdate d s t).levelDelta ∧
+      t.offset = s.offset + d + (localUpdate d s t).offsetCorrection := by
+  simp [localUpdate]
+
+theorem offsetCorrection_eq_anchor_diff_of_value_eq_add
+    (p : ℕ) {d : ℤ} {s t : State}
+    (h : value p t = value p s + d) :
+    (localUpdate d s t).offsetCorrection =
+      anchorValue p s.level - anchorValue p t.level := by
+  have h' : anchorValue p t.level + t.offset =
+      anchorValue p s.level + s.offset + d := by
+    simpa [value] using h
+  have h'' := congrArg (fun z : ℤ => z - (anchorValue p t.level + (s.offset + d))) h'
+  simp [localUpdate, sub_eq_add_neg, add_assoc, add_left_comm, add_comm] at h'' ⊢
+  omega
+
+/-- Residual joint update across the four exploratory prime-local views once
+    the common signed residue delta has been factored out. -/
+structure JointUpdate where
+  p5 : LocalUpdate
+  p7 : LocalUpdate
+  p11 : LocalUpdate
+  p13 : LocalUpdate
+  deriving DecidableEq, Repr
+
+def returnJointUpdate (clk : VerifiedHigherTimeReturnClock) : JointUpdate :=
+  let s := returnJointState clk
+  let t := returnJointState (VerifiedHigherTimeReturnClock.next clk)
+  let d := returnDelta clk
+  { p5 := localUpdate d s.p5 t.p5
+    p7 := localUpdate d s.p7 t.p7
+    p11 := localUpdate d s.p11 t.p11
+    p13 := localUpdate d s.p13 t.p13 }
+
+/-- Predicted local update obtained from the common next value alone: the level
+    change comes from shell threshold crossing, and the remaining offset
+    correction is exactly the anchor bookkeeping forced by that reanchoring. -/
+def predictedLocalUpdate (p : ℕ) (s : State) (nextValue : ℤ) : LocalUpdate where
+  levelDelta := (nextLevel p s nextValue : ℤ) - s.level
+  offsetCorrection := anchorValue p s.level - anchorValue p (nextLevel p s nextValue)
+
+/-- Predicted joint update when all prime-local views evolve toward the same
+    common next value. -/
+def predictedJointUpdate (s : JointState) (nextValue : ℤ) : JointUpdate where
+  p5 := predictedLocalUpdate 5 s.p5 nextValue
+  p7 := predictedLocalUpdate 7 s.p7 nextValue
+  p11 := predictedLocalUpdate 11 s.p11 nextValue
+  p13 := predictedLocalUpdate 13 s.p13 nextValue
+
+/-- Sparse support pattern of the residual reanchoring update after the common
+    signed residue delta is factored out. The four booleans record whether the
+    `5`, `7`, `11`, and `13` voices reanchor on that return step. -/
+def returnReanchorSignature (clk : VerifiedHigherTimeReturnClock) :
+    Bool × Bool × Bool × Bool :=
+  (reanchors (returnJointUpdate clk).p5,
+    reanchors (returnJointUpdate clk).p7,
+    reanchors (returnJointUpdate clk).p11,
+    reanchors (returnJointUpdate clk).p13)
+
+theorem returnReanchorSignature_eq (clk : VerifiedHigherTimeReturnClock) :
+    returnReanchorSignature clk =
+      match clk with
+      | .c20 => (true, false, false, false)
+      | .c16 => (false, false, false, false)
+      | .c14 => (false, true, false, false)
+      | .c11 => (true, true, true, true)
+      | .c26 => (false, false, true, true) := by
+  cases clk <;> native_decide
+
+theorem returnDelta_cycle_sum_zero :
+    returnDelta .c20 + returnDelta .c16 + returnDelta .c14 +
+      returnDelta .c11 + returnDelta .c26 = 0 := by
+  norm_num [returnDelta]
+
+theorem returnJointUpdate_p5_correction_eq_anchor_diff
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p5.offsetCorrection =
+      anchorValue 5 (returnJointState clk).p5.level -
+        anchorValue 5 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p5.level := by
+  have h := (value_returnJointState_next_agrees_add_delta clk).1
+  simpa [returnJointUpdate, jointState, returnJointState] using
+    offsetCorrection_eq_anchor_diff_of_value_eq_add 5 h
+
+theorem returnJointUpdate_p7_correction_eq_anchor_diff
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p7.offsetCorrection =
+      anchorValue 7 (returnJointState clk).p7.level -
+        anchorValue 7 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p7.level := by
+  have h := (value_returnJointState_next_agrees_add_delta clk).2.1
+  simpa [returnJointUpdate, jointState, returnJointState] using
+    offsetCorrection_eq_anchor_diff_of_value_eq_add 7 h
+
+theorem returnJointUpdate_p11_correction_eq_anchor_diff
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p11.offsetCorrection =
+      anchorValue 11 (returnJointState clk).p11.level -
+        anchorValue 11 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p11.level := by
+  have h := (value_returnJointState_next_agrees_add_delta clk).2.2.1
+  simpa [returnJointUpdate, jointState, returnJointState] using
+    offsetCorrection_eq_anchor_diff_of_value_eq_add 11 h
+
+theorem returnJointUpdate_p13_correction_eq_anchor_diff
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p13.offsetCorrection =
+      anchorValue 13 (returnJointState clk).p13.level -
+        anchorValue 13 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p13.level := by
+  have h := (value_returnJointState_next_agrees_add_delta clk).2.2.2
+  simpa [returnJointUpdate, jointState, returnJointState] using
+    offsetCorrection_eq_anchor_diff_of_value_eq_add 13 h
+
+theorem returnJointUpdate_p5_levelDelta_eq_shellShift
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p5.levelDelta =
+      shellShift 5 (returnJointState clk).p5
+        (value 5 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p5) := by
+  cases clk <;> native_decide
+
+theorem returnJointUpdate_p7_levelDelta_eq_shellShift
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p7.levelDelta =
+      shellShift 7 (returnJointState clk).p7
+        (value 7 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p7) := by
+  cases clk <;> native_decide
+
+theorem returnJointUpdate_p11_levelDelta_eq_shellShift
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p11.levelDelta =
+      shellShift 11 (returnJointState clk).p11
+        (value 11 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p11) := by
+  cases clk <;> native_decide
+
+theorem returnJointUpdate_p13_levelDelta_eq_shellShift
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p13.levelDelta =
+      shellShift 13 (returnJointState clk).p13
+        (value 13 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p13) := by
+  cases clk <;> native_decide
+
+theorem returnJointUpdate_p5_eq_predictedLocalUpdate
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p5 =
+      predictedLocalUpdate 5 (returnJointState clk).p5
+        (value 5 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p5) := by
+  cases clk <;> native_decide
+
+theorem returnJointUpdate_p7_eq_predictedLocalUpdate
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p7 =
+      predictedLocalUpdate 7 (returnJointState clk).p7
+        (value 7 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p7) := by
+  cases clk <;> native_decide
+
+theorem returnJointUpdate_p11_eq_predictedLocalUpdate
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p11 =
+      predictedLocalUpdate 11 (returnJointState clk).p11
+        (value 11 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p11) := by
+  cases clk <;> native_decide
+
+theorem returnJointUpdate_p13_eq_predictedLocalUpdate
+    (clk : VerifiedHigherTimeReturnClock) :
+    (returnJointUpdate clk).p13 =
+      predictedLocalUpdate 13 (returnJointState clk).p13
+        (value 13 (returnJointState (VerifiedHigherTimeReturnClock.next clk)).p13) := by
+  cases clk <;> native_decide
+
+theorem returnJointUpdate_eq_predictedJointUpdate
+    (clk : VerifiedHigherTimeReturnClock) :
+    returnJointUpdate clk =
+      predictedJointUpdate (returnJointState clk)
+        (VerifiedHigherTimeReturnClock.residue (VerifiedHigherTimeReturnClock.next clk)) := by
+  cases clk <;> rfl
+
+theorem returnJointUpdate_c20 :
+    returnJointUpdate .c20 =
+      ⟨⟨-1, 10⟩, ⟨0, 0⟩, ⟨0, 0⟩, ⟨0, 0⟩⟩ := by
+  native_decide
+
+theorem returnJointUpdate_c16 :
+    returnJointUpdate .c16 =
+      ⟨⟨0, 0⟩, ⟨0, 0⟩, ⟨0, 0⟩, ⟨0, 0⟩⟩ := by
+  native_decide
+
+theorem returnJointUpdate_c14 :
+    returnJointUpdate .c14 =
+      ⟨⟨0, 0⟩, ⟨-1, 7⟩, ⟨0, 0⟩, ⟨0, 0⟩⟩ := by
+  native_decide
+
+theorem returnJointUpdate_c11 :
+    returnJointUpdate .c11 =
+      ⟨⟨1, -10⟩, ⟨1, -7⟩, ⟨1, -11⟩, ⟨1, -13⟩⟩ := by
+  native_decide
+
+theorem returnJointUpdate_c26 :
+    returnJointUpdate .c26 =
+      ⟨⟨0, 0⟩, ⟨0, 0⟩, ⟨-1, 11⟩, ⟨-1, 13⟩⟩ := by
+  native_decide
+
+theorem returnJointState_c20 :
+    returnJointState .c20 =
+      ⟨⟨2, 0⟩, ⟨1, 6⟩, ⟨0, 9⟩, ⟨0, 7⟩⟩ := by
+  native_decide
+
+theorem returnJointState_c16 :
+    returnJointState .c16 =
+      ⟨⟨1, 6⟩, ⟨1, 2⟩, ⟨0, 5⟩, ⟨0, 3⟩⟩ := by
+  native_decide
+
+theorem returnJointState_c14 :
+    returnJointState .c14 =
+      ⟨⟨1, 4⟩, ⟨1, 0⟩, ⟨0, 3⟩, ⟨0, 1⟩⟩ := by
+  native_decide
+
+theorem returnJointState_c11 :
+    returnJointState .c11 =
+      ⟨⟨1, 1⟩, ⟨0, 4⟩, ⟨0, 0⟩, ⟨0, -2⟩⟩ := by
+  native_decide
+
+theorem returnJointState_c26 :
+    returnJointState .c26 =
+      ⟨⟨2, 6⟩, ⟨1, 12⟩, ⟨1, 4⟩, ⟨1, 0⟩⟩ := by
+  native_decide
+
+/-- Which exploratory prime-local voices are exactly on their shell anchors in
+    a given joint state. -/
+def anchorSignature (s : JointState) : Bool × Bool × Bool × Bool :=
+  (atAnchor s.p5, atAnchor s.p7, atAnchor s.p11, atAnchor s.p13)
+
+/-- Dyadic prime-shell membership signature for the sampled `5/7/11/13`
+    voices. This is the shell-membership side of the exact local-zero test on
+    the exploratory joint state. -/
+noncomputable def shellSignature (n : ℕ) : Bool × Bool × Bool × Bool := by
+  classical
+  exact
+    (decide (∃ k, n = 5 * 2 ^ k),
+      decide (∃ k, n = 7 * 2 ^ k),
+      decide (∃ k, n = 11 * 2 ^ k),
+      decide (∃ k, n = 13 * 2 ^ k))
+
+theorem anchorSignature_jointState_eq_shellSignature (n : ℕ) :
+    anchorSignature (jointState n) = shellSignature n := by
+  ext <;> rw [Bool.eq_iff_iff] <;>
+    simp [anchorSignature, shellSignature,
+      atAnchor_jointState_p5_iff_exists_eq_anchor,
+      atAnchor_jointState_p7_iff_exists_eq_anchor,
+      atAnchor_jointState_p11_iff_exists_eq_anchor,
+      atAnchor_jointState_p13_iff_exists_eq_anchor]
+
+theorem returnAnchorSignature_eq (clk : VerifiedHigherTimeReturnClock) :
+    anchorSignature (returnJointState clk) =
+      match clk with
+      | .c20 => (true, false, false, false)
+      | .c16 => (false, false, false, false)
+      | .c14 => (false, true, false, false)
+      | .c11 => (false, false, true, false)
+      | .c26 => (false, false, false, true) := by
+  cases clk <;> native_decide
+
+end ExploratoryPrimeVoice
+
 /-- First time-4 sub-shell inside the higher-time `13 mod 32` exit: once the
     source branch refines to `base = 128*r + 13`, the destination source slice
     is exactly `(4,1)`. -/

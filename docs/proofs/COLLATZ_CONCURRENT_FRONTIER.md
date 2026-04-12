@@ -79,7 +79,9 @@ Current checkpoint:
 - Message: `Extend residual higher-time shell split through time 45`
 - Current worktree state: targeted `lake build UFRF.CollatzConcurrentScales`
   is green after extending the mirrored higher-time family through exact
-  `time = 129` with residual `time ≥ 130`
+  `time = 135` with residual `time ≥ 136`, and after packaging the recurring
+  higher-time return laws and their live residual re-entry as one explicit
+  finite-state source machine
 
 ## Resume State
 
@@ -88,46 +90,152 @@ source edits before describing the frontier.
 
 - Last green checkpoint:
   - targeted `lake build UFRF.CollatzConcurrentScales` is green through exact
-    `time = 129`
+    `time = 135`
+  - the verified exact shell family immediately beyond the old
+    `133 / ≥134` boundary is now:
+    `dst_time_eq_one_hundred_thirty_four_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389`,
+    `dst_base_eq_54m_add_53_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389`,
+    `dst_time_eq_one_hundred_thirty_five_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021`,
+    and
+    `dst_base_eq_54m_add_13_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021`
   - the verified residual shell is
-    `base = 2722258935367507707706996859454145691648*r + 1109068455149725362399146868666503800301`
+    `base = 174224571863520493293247799005065324265472*r + 129055238417422587624627999263011351307757`
   - the verified residual transport law is
-    `dst.time ≥ 130` together with
-    `2^(dst.time - 130) * dst.base = 27*r + 11`
+    `dst.time ≥ 136` together with
+    `2^(dst.time - 136) * dst.base = 27*r + 20`
+  - the verified recurrence theorem is now also
+    `returned_twenty_eight_shell_transport_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757`,
+    packaging that returned `27*r + 20` residual as an explicit re-entry into
+    `VerifiedHigherTimeReturnClock.c20` via the affine source rewrite
+    `m ↦ 262144*m + 194180`
+  - the verified source now also contains two clock-namespace packaging
+    theorems for that same re-entry:
+    `VerifiedHigherTimeReturnClock.c26_residual_reenters_c20_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757`
+    states it directly against the `c20` clock data, and
+    `VerifiedHigherTimeReturnClock.c26_residual_reenters_next_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757`
+    packages the same fact in machine-internal form using `next .c26`
   - the verified recurrence theorem is
-    `returned_forty_shell_transport_of_src_base_eq_2722258935367507707706996859454145691648m_add_1109068455149725362399146868666503800301`
-    identifying that returned `27*r + 11` law with the older `time ≥ 40`
-    shell after renormalization
-    `m ↦ 1237940039285380274899124224*m + 504345941931080852736680239`
-  - Rover curated memory is synced through that checkpoint
-  - the generated declaration index has been regenerated to reflect the
-    current Lean source, including any active WIP beyond the checkpoint
-- Active WIP beyond the checkpoint:
-  - Lean source now drafts the mirrored `130/131/132/133/≥134` family
-    beyond the last green checkpoint
-  - the drafted exact shells are:
-    - `base = 5444517870735015415413993718908291383296*r + 1109068455149725362399146868666503800301`
-      with `dst.time = 130` and `dst.base = 54*r + 11`
-    - `base = 10889035741470030830827987437816582766592*r + 3831327390517233070106143728120649491949`
-      with `dst.time = 131` and `dst.base = 54*r + 19`
-    - `base = 21778071482940061661655974875633165533184*r + 9275845261252248485520137447028940875245`
-      with `dst.time = 132` and `dst.base = 54*r + 23`
-    - `base = 43556142965880123323311949751266331066368*r + 20164881002722279316348124884845523641837`
-      with `dst.time = 133` and `dst.base = 54*r + 25`
-  - the drafted residual shell is
-    `base = 43556142965880123323311949751266331066368*r + 41942952485662340978004099760478689175021`
-    with drafted transport law
-    `dst.time ≥ 134` together with
-    `2^(dst.time - 134) * dst.base = 27*r + 26`
-  - Lean source also drafts the recurrence theorem
     `returned_forty_four_shell_transport_of_src_base_eq_43556142965880123323311949751266331066368m_add_41942952485662340978004099760478689175021`
     identifying that returned `27*r + 26` law with the older `time ≥ 44`
     shell after renormalization
     `m ↦ 1237940039285380274899124224*m + 1192090408200736561013971474`
-  - this WIP source block is not yet part of the last green checkpoint, so
-    Rover curated memory remains synced only through the verified
-    `129 / ≥130` boundary, while the generated declaration index already
-    reflects the drafted source names
+  - the verified source now also contains the explicit finite-state wrapper
+    `VerifiedHigherTimeReturnClock` with clock cycle
+    `20 → 16 → 14 → 11 → 26 → 20`
+  - the dispatcher theorem
+    `VerifiedHigherTimeReturnClock.transport_of_eq_src_base`
+    packages the five verified scale-`2^90` return transports as one source
+    machine instead of five isolated shell facts
+  - the green source now also contains explicit live-residual machine data
+    `VerifiedHigherTimeReturnClock.residualCoeff`,
+    `VerifiedHigherTimeReturnClock.residualConst`,
+    `VerifiedHigherTimeReturnClock.residualParamScale`, and
+    `VerifiedHigherTimeReturnClock.residualParamShift`, together with the
+    affine identification theorem
+    `VerifiedHigherTimeReturnClock.residual_eq_next_reindexed`
+  - the new structural gain is the uniform closure theorem
+    `VerifiedHigherTimeReturnClock.residual_reenters_next_of_eq_src_base`:
+    for any verified return clock `clk`, the currently live residual family
+    beyond `clk` already re-enters `next clk` after the canonical affine
+    parameter rewrite
+  - for `c20/c16/c14/c11` that rewrite is the identity, so the live residual
+    is exactly the next verified family; for `c26` it specializes to the
+    previously verified nontrivial closure `q = 262144*r + 194180` back into
+    `c20`
+  - the verified source now also contains the explicit one-step and full-cycle
+    parameter machine:
+    `VerifiedHigherTimeReturnClock.nextParam`,
+    `VerifiedHigherTimeReturnClock.step`,
+    `VerifiedHigherTimeReturnClock.step_five_eq`, and
+    `VerifiedHigherTimeReturnClock.nextParam_five_eq`
+  - in particular, after one full verified cycle
+    `20 → 16 → 14 → 11 → 26 → 20`, the clock label returns to itself and the
+    canonical parameter is renormalized by the single affine law
+    `m ↦ 262144*m + 194180`
+  - the current green source also contains the explicitly exploratory
+    namespace `ExploratoryPrimeVoice`, which calibrates a prime-root shell
+    chart on small examples such as prime `5`, its first doubling shell, and
+    the relation of `11` to that chart
+  - that exploratory layer now also contains a candidate canonical
+    prime-local state `ExploratoryPrimeVoice.canonicalState`, a joint
+    `5/7/11/13` signature `ExploratoryPrimeVoice.JointState`, and exact
+    theorems computing that signature on the five verified return residues
+    `20, 16, 14, 11, 26`
+  - it now also proves the bridge facts
+    `ExploratoryPrimeVoice.value_returnJointState_agrees` and
+    `ExploratoryPrimeVoice.value_returnJointState_next_agrees_add_delta`:
+    all four prime-local views represent the same return residue value, and
+    one step of the verified return machine adds the same signed residue delta
+    in every prime-local view even though the shell coordinates reorganize
+    differently
+  - the exploratory bridge is now sharper than raw signature tables:
+    `ExploratoryPrimeVoice.returnJointUpdate_p*_correction_eq_anchor_diff`
+    proves that the residual offset correction is exactly the difference of
+    old and new shell anchors, and
+    `ExploratoryPrimeVoice.returnJointUpdate_p*_levelDelta_eq_shellShift`
+    proves that the shell-level change is governed by a threshold-crossing
+    law `ExploratoryPrimeVoice.shellShift` on the common next value, clipped
+    at base level
+  - the exploratory bridge is now also packaged as an actual update rule:
+    `ExploratoryPrimeVoice.predictedLocalUpdate` and
+    `ExploratoryPrimeVoice.predictedJointUpdate` define the local and joint
+    reanchoring update from the current canonical state plus the common next
+    residue value alone, and
+    `ExploratoryPrimeVoice.returnJointUpdate_p*_eq_predictedLocalUpdate`
+    together with
+    `ExploratoryPrimeVoice.returnJointUpdate_eq_predictedJointUpdate`
+    prove that the verified five-state return machine exactly matches that
+    packaged common-next-value law on the exploratory `5/7/11/13` views
+  - the exploratory source now also contains a first exact local-zero probe:
+    `ExploratoryPrimeVoice.atAnchor`,
+    `ExploratoryPrimeVoice.anchorSignature`, and
+    `ExploratoryPrimeVoice.returnAnchorSignature_eq`
+    prove that, on the sampled `5/7/11/13` views of the verified return cycle,
+    exact shell-anchor occupancy rotates as
+    `p5 → none → p7 → p11 → p13`
+    across the residues `20 → 16 → 14 → 11 → 26`
+  - this is still exploratory: it gives a kernel-checked candidate bridge
+    object from the verified return machine to concurrent prime-local views,
+    but it does not yet prove that this packaged update admits a monotone
+    shrink-producing defect functional or extends beyond the verified return
+    cycle without further source-state work
+  - the exploratory source now also contains a general dyadic-shell / local-zero
+    bridge:
+    `ExploratoryPrimeVoice.anchorLevel_eq_of_eq_anchor`,
+    `ExploratoryPrimeVoice.canonicalState_eq_anchor_state_of_eq_anchor`, and
+    `ExploratoryPrimeVoice.atAnchor_canonicalState_of_eq_anchor`
+    prove that for any positive `p`, the canonical prime-local state of
+    `p * 2^k` is exactly `⟨k, 0⟩`, so dyadic shells of a prime are exact local
+    zeros in this exploratory chart
+  - that local-zero law is now sharpened to an exact characterization in the
+    canonical prime chart:
+    `ExploratoryPrimeVoice.eq_anchor_of_atAnchor_canonicalState`,
+    `ExploratoryPrimeVoice.exists_eq_anchor_of_atAnchor_canonicalState`, and
+    `ExploratoryPrimeVoice.atAnchor_canonicalState_iff_exists_eq_anchor`
+    prove that a number sits exactly at local zero for `p` in this chart iff
+    it is a dyadic shell `p * 2^k`
+  - that characterization is now lifted to the actual sampled joint state:
+    `ExploratoryPrimeVoice.atAnchor_jointState_p5_iff_exists_eq_anchor`,
+    `ExploratoryPrimeVoice.atAnchor_jointState_p7_iff_exists_eq_anchor`,
+    `ExploratoryPrimeVoice.atAnchor_jointState_p11_iff_exists_eq_anchor`, and
+    `ExploratoryPrimeVoice.atAnchor_jointState_p13_iff_exists_eq_anchor`
+    identify exact local zero on the `jointState` coordinates with membership
+    in the corresponding dyadic prime shell
+  - that joint-state shell criterion is now also packaged at tuple level:
+    `ExploratoryPrimeVoice.shellSignature` and
+    `ExploratoryPrimeVoice.anchorSignature_jointState_eq_shellSignature`
+    identify the whole sampled local-zero signature
+    `anchorSignature (jointState n)` with dyadic shell membership for
+    `5/7/11/13`
+  - Rover curated memory is synced through that checkpoint
+  - the generated declaration index has been regenerated to reflect the
+    current Lean source, including any active WIP beyond the checkpoint
+- Active WIP beyond the checkpoint:
+  - no newer unverified shell-family block is currently drafted beyond the
+    verified closed residual machine
+    `VerifiedHigherTimeReturnClock.residual_reenters_next_of_eq_src_base`
+  - beyond that closure packaging, no newer unverified structural recurrence
+    theorem is currently drafted
 - Resume rule:
   - when chat memory, Rover, and source disagree, trust Lean source plus the
     latest green build boundary
@@ -610,27 +718,148 @@ earlier and current returned `27*r + 26`, `27*r + 20`, `27*r + 16`, and
 `time ≥ 28`, `time ≥ 31`, `time ≥ 36`, and `time ≥ 40` shells in
 renormalized coordinates. This is stronger evidence for a genuine
 source-state renormalization cycle rather than an endless stream of novel
-higher-time obstructions.
+higher-time obstructions. The source now also packages those five recurring
+return laws as the explicit finite-state wrapper
+`VerifiedHigherTimeReturnClock` with cycle
+`20 → 16 → 14 → 11 → 26 → 20`, so the “single machine, concurrent all at
+once” viewpoint is now represented directly in Lean rather than only inferred
+from scattered theorem clusters.
+
+Exploratory interpretation:
+
+- one possible reading of the verified return machine is that the surviving
+  higher-time obstruction rotates through finitely many observer-normalized
+  leading voices and ejection phases rather than tracing one endlessly novel
+  branch
+- in that language, different prime-centered observer perspectives might all
+  normalize their own leading clock to a local zero while the underlying
+  source-state machine keeps rotating globally
+- the current Lean source does **not** prove that stronger prime-perspective
+  statement; what is proved is the source-state return cycle
+  `20 → 16 → 14 → 11 → 26 → 20` together with its exact transport laws
+- the current green source now includes a tiny exploratory calibration layer
+  `ExploratoryPrimeVoice`; it now includes a candidate canonical
+  prime-local state and exact joint signatures for the verified return
+  residues, not just isolated examples like “prime `5` as local root”
+- the current arithmetic check now says something sharper: the five verified
+  return residues do project to definite joint `5/7/11/13` signatures, but
+  **not** by a naive phase-only multiplication law on the existing centered
+  clocks; shell level or a similar extra coordinate really is part of the
+  correct state
+- the current Lean source now also proves a first agreement law across those
+  concurrent views: after passing to the represented signed value, the
+  prime-local views all agree on the same residue, and the verified return
+  step adds the same signed delta in each view
+- the current Lean source now further decomposes the remaining local update:
+  the shell-level move is a threshold-crossing rule on the common next value,
+  and the offset correction is then forced by the difference between the old
+  and new shell anchors
+- the current Lean source now packages that decomposition into explicit update
+  objects: `ExploratoryPrimeVoice.predictedLocalUpdate` and
+  `ExploratoryPrimeVoice.predictedJointUpdate` reconstruct the full local or
+  joint reanchoring step from the current state plus the common next residue
+  value, and
+  `ExploratoryPrimeVoice.returnJointUpdate_eq_predictedJointUpdate` proves
+  that the verified return machine exactly follows that packaged law on the
+  five verified return residues
+- the current Lean source now also contains a minimal exact test of “local
+  return” behavior inside that sampled lift: `ExploratoryPrimeVoice.
+  returnAnchorSignature_eq` proves that exact anchor occupancy rotates through
+  `p5`, then none, then `p7`, then `p11`, then `p13` along the verified base
+  cycle; this supports a rotating local-zero reading in the sampled
+  `5/7/11/13` window, but it does **not** yet prove the full claim that every
+  prime carries such a return structure
+- the current Lean source now also proves the first non-finite structural
+  version of that idea inside the exploratory chart:
+  `ExploratoryPrimeVoice.canonicalState_eq_anchor_state_of_eq_anchor` shows
+  that for any positive `p`, the canonical prime-local coordinate of
+  `p * 2^k` is exactly `⟨k, 0⟩`; in this chart, every dyadic shell of a prime
+  is an exact local zero for that prime
+- the current Lean source now sharpens that further to an exact iff statement:
+  `ExploratoryPrimeVoice.atAnchor_canonicalState_iff_exists_eq_anchor` proves
+  that a number is exactly at local zero for `p` in the canonical prime chart
+  iff it is a dyadic shell `p * 2^k`
+- the current Lean source now lifts that exact criterion to the sampled
+  `5/7/11/13` joint state itself:
+  `ExploratoryPrimeVoice.atAnchor_jointState_p*_iff_exists_eq_anchor`
+  identifies exact local zero on each joint-state coordinate with membership
+  in that prime’s dyadic shell
+- the current Lean source now packages those four coordinatewise shell tests
+  into one tuple-level law:
+  `ExploratoryPrimeVoice.anchorSignature_jointState_eq_shellSignature`
+  identifies the sampled local-zero signature
+  `anchorSignature (jointState n)` with the dyadic shell-membership tuple for
+  `5/7/11/13`
+- treat any “prime voice rotation” reading as a conjectural interpretation to
+  test against explicit source-state definitions, not as established theorem
+  content
 
 ## Best Next Step
 
-The immediate next step is to confirm the currently drafted source block by a
-targeted `lake build UFRF.CollatzConcurrentScales`.
+The immediate next step is no longer another bookkeeping build; the current
+source is already green through the verified `135 / ≥136` boundary.
 
-- if that build is green, promote the checkpoint through exact `time = 133`
-  with residual `time ≥ 134`
-- if that build is green, the new verified residual shell becomes
-  `base = 43556142965880123323311949751266331066368*r + 41942952485662340978004099760478689175021`
-  with verified transport law
-  `dst.time ≥ 134` and
-  `2^(dst.time - 134) * dst.base = 27*r + 26`
-- if that build is green, regenerate the declaration index and sync Rover
-  curated memory so the memory layer catches up to the already drafted source
-- the source already drafts the matching recurrence theorem back to the older
-  `time ≥ 44` shell via the renormalization
-  `m ↦ 1237940039285380274899124224*m + 1192090408200736561013971474`, so the
-  next post-build move should be to continue from the returned `27*r + 26`
-  stage rather than reopening the old `27*r + 11` shell
+- the exploratory bridge is now compressed through the tuple-level shell
+  signature `ExploratoryPrimeVoice.anchorSignature_jointState_eq_shellSignature`,
+  so any further exploratory work should only continue if it yields a strictly
+  stronger compression than the current coordinatewise package
+- the next structural move should be to use
+  `VerifiedHigherTimeReturnClock` and
+  `VerifiedHigherTimeReturnClock.transport_of_eq_src_base` to prove that the
+  surviving higher-time non-self-return branch lives inside one closed
+  five-state source machine rather than an endlessly novel chain
+- in parallel with that source-state packaging, the next exploratory bridge is
+  to use the new candidate canonical joint prime-voice state to search for a
+  genuine voice-leading law on the five verified return residues
+  `20, 16, 14, 11, 26`, rather than stopping at raw signature computation
+- concretely: compare `ExploratoryPrimeVoice.returnJointState` across the
+  cycle `20 → 16 → 14 → 11 → 26 → 20`; now that
+  `ExploratoryPrimeVoice.value_returnJointState_next_agrees_add_delta`
+  isolates the common signed-value update,
+  `ExploratoryPrimeVoice.returnJointUpdate_p*_levelDelta_eq_shellShift`
+  identifies the shell-level motion as threshold crossing, and
+  `ExploratoryPrimeVoice.returnJointUpdate_p*_correction_eq_anchor_diff`
+  identifies the offset correction as anchor bookkeeping, while
+  `ExploratoryPrimeVoice.returnJointUpdate_eq_predictedJointUpdate`
+  packages the whole verified reanchoring step from current joint state plus
+  common next value and
+  `ExploratoryPrimeVoice.returnAnchorSignature_eq` now isolates exact local
+  anchor occupancy on the sampled views, while
+  `ExploratoryPrimeVoice.atAnchor_canonicalState_iff_exists_eq_anchor`
+  identifies exact local zero with dyadic prime shells in general, the next
+  search should be for a higher-level defect, tension functional, or
+  compressed lifted recurrence on this already-compressed coordinate rule
+- only after that coordinate-level rule is visible should we ask whether the
+  resulting update admits a monotone tension / defect / resolution functional
+- the music-theory / “concurrent voices” heuristic is most useful here as a
+  search guide for finite joint state, voice-leading update, and resolution
+  data; do not treat it as theorem content until those objects are defined in
+  Lean
+- if we test a prime-perspective interpretation, keep it explicitly marked as
+  exploratory until it is translated into source-state definitions and proved
+  from those definitions
+- the immediate intrinsic source-state move is now no longer speculative:
+  the verified theorem
+  `returned_twenty_eight_shell_transport_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757`
+  shows that the surviving higher-time non-self-return branch has re-entered
+  `VerifiedHigherTimeReturnClock.c20`; the next structural step is to use that
+  re-entry to package the branch as one genuinely closed source machine across
+  scales rather than as a longer and longer theorem list
+- that packaging step is now verified directly in the clock namespace, both as
+  explicit re-entry into `c20` and as the machine-internal theorem
+  `VerifiedHigherTimeReturnClock.c26_residual_reenters_next_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757`;
+  the source now also packages the whole live residual layer as the uniform
+  theorem
+  `VerifiedHigherTimeReturnClock.residual_reenters_next_of_eq_src_base`, and
+  one full cycle is now packaged by
+  `VerifiedHigherTimeReturnClock.step_five_eq` as the affine self-map
+  `m ↦ 262144*m + 194180`; the next real source-state question is how to use
+  this verified closed machine plus its explicit renormalization map to
+  compress the global bad-frontier argument, rather than continuing to
+  accumulate parallel restatements
+- if that recurrence packaging is postponed, the fallback next local shell
+  split is the mirrored `136/137/138/≥139` family from the verified residual
+  `27*r + 20` stage
 - keep composing any concrete destination slices with the existing `832`
   exact-zone / dead-slice theorems whenever the threshold is strong enough to
   produce actual source shrink
