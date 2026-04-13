@@ -1,10 +1,10 @@
 {
   "source": "UFRF/CollatzConcurrentScales.lean",
-  "verified_at": "2026-04-13T03:40:12Z",
+  "verified_at": "2026-04-13T04:03:50Z",
   "command": "lake build UFRF.CollatzConcurrentScales",
-  "session_id": 45425,
-  "source_sha256": "1659d6a82cfc5ac30a3526471d6649e06c06d071ba85687bd449ab5d48b710c1",
-  "boundary": "observer-gap vanishing package is green through the zero-shell time = 4 odd residual split into an exact eject-20 branch and a residual eject >= 21 tail",
+  "session_id": 11502,
+  "source_sha256": "b25dc595e36751f9a2b46faeb8550aa560d4e65acd93a19546ca4b0ec5bd2228",
+  "boundary": "observer-gap vanishing package is green through the zero-shell time = 4 odd residual split into an exact eject-21 branch and a residual eject >= 22 tail",
   "notes": [
     "This hash records the last known green source boundary for UFRF/CollatzConcurrentScales.lean.",
     "The recorded boundary includes exists_observerGap9387_832_fourthCarrier_of_repeatCore832Transition_chain4 and exists_observerGap9387_832_fourthCarrier_with_gate_of_repeatCore832Transition_chain5.",
@@ -28,8 +28,10 @@
     "That eject >= 18 tail is now further refined by the generic exact split dst_slice_eq_4_18_of_src_base_eq_16777216r_add_7866957 together with nineteen_le_dst_eject_of_src_base_eq_16777216r_add_16255565, and by the zero-shell wrappers dst_slice_eq_4_18_of_src_base_eq_452984832r_add_326634061 together with nineteen_le_dst_eject_of_src_base_eq_452984832r_add_100141645, leaving only a thinner residual eject >= 19 tail on the zero-shell time = 4 side.",
     "That eject >= 19 tail is now further refined by the generic exact split dst_slice_eq_4_19_of_src_base_eq_33554432r_add_16255565 together with twenty_le_dst_eject_of_src_base_eq_33554432r_add_33032781, and by the zero-shell wrappers dst_slice_eq_4_19_of_src_base_eq_905969664r_add_553126477 together with twenty_le_dst_eject_of_src_base_eq_905969664r_add_100141645, leaving only a thinner residual eject >= 20 tail on the zero-shell time = 4 side.",
     "That eject >= 20 tail is now further refined by the generic exact split dst_slice_eq_4_20_of_src_base_eq_67108864r_add_33032781 together with twenty_one_le_dst_eject_of_src_base_eq_67108864r_add_66587213, and by the zero-shell wrappers dst_slice_eq_4_20_of_src_base_eq_1811939328r_add_100141645 together with twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309, leaving only a thinner residual eject >= 21 tail on the zero-shell time = 4 side.",
+    "That eject >= 21 tail is now further refined by the generic exact split dst_slice_eq_4_21_of_src_base_eq_134217728r_add_133696077 together with twenty_two_le_dst_eject_of_src_base_eq_134217728r_add_66587213, and by the zero-shell wrappers dst_slice_eq_4_21_of_src_base_eq_3623878656r_add_2818050637 together with twenty_two_le_dst_eject_of_src_base_eq_3623878656r_add_1006111309, leaving only a thinner residual eject >= 22 tail on the zero-shell time = 4 side.",
     "The residual branch base = 6912*m + 6637 is green only as dst.time >= 7 with transport 2^(dst.time - 7) * dst.base = 729*m + 700; an abandoned uniform time = 9 shortcut is not part of the verified boundary.",
     "A repaired isolated-sandbox batch harness confirmed cumulative green builds through eject-20 and found the first exact-template failure at eject-21, where the old odd-factor proof shape stops applying.",
-    "This boundary was confirmed in the live repo by targeted build session 45425 with only the familiar pre-existing warnings."
+    "The live eject-21 split was resolved manually from the actual residual law: exact eject-21 lands on base = 134217728*r + 133696077 while the surviving residual eject >= 22 tail stays on base = 134217728*r + 66587213.",
+    "This boundary was confirmed in the live repo by targeted build session 11502 with only the familiar pre-existing warnings."
   ]
 }

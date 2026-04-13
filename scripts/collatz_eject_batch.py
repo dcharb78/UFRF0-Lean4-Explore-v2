@@ -47,6 +47,15 @@ class SeedState:
 
 
 @dataclass(frozen=True)
+class ResidualSeedState:
+    next_exact_eject: int
+    residual_coeff: int
+    residual_const: int
+    zero_tail_const: int
+    q_residual: int
+
+
+@dataclass(frozen=True)
 class LayerSpec:
     exact_eject: int
     exact_coeff: int
@@ -133,6 +142,75 @@ def build_specs(seed: SeedState, end_eject: int) -> list[LayerSpec]:
         exact_const = residual_const
         zero_tail_const = zero_residual_const
         q_exact = q_residual
+
+    return specs
+
+
+def build_specs_from_residual(seed: ResidualSeedState, end_eject: int) -> list[LayerSpec]:
+    specs: list[LayerSpec] = []
+    exact_eject = seed.next_exact_eject
+    residual_coeff = seed.residual_coeff
+    residual_const = seed.residual_const
+    zero_tail_const = seed.zero_tail_const
+    q_residual = seed.q_residual
+
+    while exact_eject <= end_eject:
+        exact_coeff = 2 * residual_coeff
+        residual_lower_bound = exact_eject + 1
+
+        if q_residual % 2 == 1:
+            exact_const = residual_const
+            next_residual_const = residual_const + residual_coeff
+            q_exact = q_residual
+            next_q_residual = (2187 + q_residual) // 2
+        else:
+            exact_const = residual_const + residual_coeff
+            next_residual_const = residual_const
+            q_exact = 2187 + q_residual
+            next_q_residual = q_residual // 2
+
+        zero_exact_coeff = 27 * exact_coeff
+        zero_residual_coeff = zero_exact_coeff
+        zero_even_const = zero_tail_const
+        zero_odd_const = zero_tail_const + zero_exact_coeff // 2
+
+        candidates = [zero_even_const, zero_odd_const]
+        exact_candidates = [cand for cand in candidates if (cand - exact_const) % exact_coeff == 0]
+        residual_candidates = [cand for cand in candidates if (cand - next_residual_const) % exact_coeff == 0]
+        if len(exact_candidates) != 1 or len(residual_candidates) != 1:
+            raise ValueError(f"could not resolve zero-shell parity split for eject {exact_eject}")
+        zero_exact_const = exact_candidates[0]
+        zero_residual_const = residual_candidates[0]
+        if zero_exact_const == zero_residual_const:
+            raise ValueError(f"degenerate zero-shell split for eject {exact_eject}")
+
+        zero_exact_shift_num = zero_exact_const - exact_const
+        zero_residual_shift_num = zero_residual_const - next_residual_const
+
+        specs.append(
+            LayerSpec(
+                exact_eject=exact_eject,
+                exact_coeff=exact_coeff,
+                exact_const=exact_const,
+                residual_lower_bound=residual_lower_bound,
+                residual_coeff=exact_coeff,
+                residual_const=next_residual_const,
+                zero_exact_coeff=zero_exact_coeff,
+                zero_exact_const=zero_exact_const,
+                zero_exact_shift=zero_exact_shift_num // exact_coeff,
+                zero_residual_coeff=zero_residual_coeff,
+                zero_residual_const=zero_residual_const,
+                zero_residual_shift=zero_residual_shift_num // exact_coeff,
+                q_exact=q_exact,
+                q_residual=next_q_residual,
+            )
+        )
+
+        exact_eject += 1
+        residual_coeff = exact_coeff
+        residual_const = next_residual_const
+        zero_tail_const = zero_residual_const
+        q_residual = next_q_residual
 
     return specs
 
@@ -446,7 +524,21 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Directory for telemetry output. Defaults to a fresh temp directory.",
     )
-    parser.add_argument("--seed-layer", type=int, default=15)
+    parser.add_argument(
+        "--seed-layer",
+        type=int,
+        default=None,
+        help="First exact layer represented by the seed. Defaults to --start-layer.",
+    )
+    parser.add_argument(
+        "--seed-mode",
+        choices=["exact", "residual"],
+        default="exact",
+        help=(
+            "Interpret the seed as either a previously verified exact split "
+            "or as the current verified residual law that should generate the next layer."
+        ),
+    )
     parser.add_argument("--seed-exact-coeff", type=int, default=2097152)
     parser.add_argument("--seed-exact-const", type=int, default=526925)
     parser.add_argument(
@@ -456,6 +548,24 @@ def parse_args() -> argparse.Namespace:
         help="The zero-shell residual constant just before the start layer split.",
     )
     parser.add_argument("--seed-q-exact", type=int, default=1099)
+    parser.add_argument(
+        "--seed-residual-coeff",
+        type=int,
+        default=None,
+        help="Residual-law coefficient to seed from when --seed-mode residual.",
+    )
+    parser.add_argument(
+        "--seed-residual-const",
+        type=int,
+        default=None,
+        help="Residual-law constant to seed from when --seed-mode residual.",
+    )
+    parser.add_argument(
+        "--seed-q-residual",
+        type=int,
+        default=None,
+        help="Residual-law q parameter in 2^k * (2187*r + q) when --seed-mode residual.",
+    )
     return parser.parse_args()
 
 
@@ -463,15 +573,44 @@ def main() -> int:
     args = parse_args()
     repo_root = Path(__file__).resolve().parents[1]
     base_source = (repo_root / "UFRF" / "CollatzConcurrentScales.lean").read_text()
+    seed_layer = args.seed_layer if args.seed_layer is not None else args.start_layer
 
-    seed = SeedState(
-        exact_eject=args.seed_layer,
-        exact_coeff=args.seed_exact_coeff,
-        exact_const=args.seed_exact_const,
-        zero_tail_const=args.seed_zero_tail_const,
-        q_exact=args.seed_q_exact,
-    )
-    specs = build_specs(seed, args.end_layer)
+    if args.seed_mode == "exact":
+        seed = SeedState(
+            exact_eject=seed_layer,
+            exact_coeff=args.seed_exact_coeff,
+            exact_const=args.seed_exact_const,
+            zero_tail_const=args.seed_zero_tail_const,
+            q_exact=args.seed_q_exact,
+        )
+        specs = build_specs(seed, args.end_layer)
+        seed_summary = asdict(seed)
+    else:
+        missing = [
+            name
+            for name, value in [
+                ("--seed-residual-coeff", args.seed_residual_coeff),
+                ("--seed-residual-const", args.seed_residual_const),
+                ("--seed-q-residual", args.seed_q_residual),
+            ]
+            if value is None
+        ]
+        if missing:
+            raise SystemExit(
+                "residual seed mode requires "
+                + ", ".join(missing)
+                + " so the next layer is derived from the actual verified residual law"
+            )
+
+        seed = ResidualSeedState(
+            next_exact_eject=seed_layer,
+            residual_coeff=args.seed_residual_coeff,
+            residual_const=args.seed_residual_const,
+            zero_tail_const=args.seed_zero_tail_const,
+            q_residual=args.seed_q_residual,
+        )
+        specs = build_specs_from_residual(seed, args.end_layer)
+        seed_summary = asdict(seed)
 
     summary = {
         "repo_root": str(repo_root),
@@ -480,7 +619,8 @@ def main() -> int:
         "end_layer": args.end_layer,
         "workers": args.workers,
         "start_stagger_seconds": args.start_stagger_seconds,
-        "seed": asdict(seed),
+        "seed_mode": args.seed_mode,
+        "seed": seed_summary,
         "layers": [asdict(spec) for spec in specs if args.start_layer <= spec.exact_eject <= args.end_layer],
     }
 

@@ -89,8 +89,8 @@ shift the exact line, but this theorem remains the global target.
 Current checkpoint:
 
 - Branch: `codex/collatz-memory-loop`
-- Older pushed checkpoint before this boundary: `843de49`
-- Older pushed message: `Record green eject-13 observer-gap checkpoint`
+- Older pushed checkpoint before this boundary: `717aba4`
+- Older pushed message: `Promote green eject-20 boundary and repair batch harness`
 - Current worktree state: targeted `lake build UFRF.CollatzConcurrentScales`
   is green after adding the higher-time `32*k + 13` source self-threshold /
   value / radial package, the shared `9387` observer-line bridge to the older
@@ -134,8 +134,8 @@ Current checkpoint:
   tail, and the next exact refinements of that same tail into exact eject-15
   / residual eject-`≥ 16`, exact eject-16 / residual eject-`≥ 17`, exact
   eject-17 / residual eject-`≥ 18`, exact eject-18 / residual eject-`≥ 19`,
-  exact eject-19 / residual eject-`≥ 20`, and exact eject-20 /
-  residual eject-`≥ 21` tails
+  exact eject-19 / residual eject-`≥ 20`, exact eject-20 /
+  residual eject-`≥ 21`, and exact eject-21 / residual eject-`≥ 22` tails
 
 ## Resume State
 
@@ -469,15 +469,15 @@ source edits before describing the frontier.
   - the current green boundary now continues through the exact `(4,15)` /
     residual `≥ 16`, exact `(4,16)` / residual `≥ 17`, exact `(4,17)` /
     residual `≥ 18`, exact `(4,18)` / residual `≥ 19`, exact `(4,19)` /
-    residual `≥ 20`, and exact `(4,20)` / residual `≥ 21` refinements,
-    ending on the generic tail
-    `twenty_one_le_dst_eject_of_src_base_eq_67108864r_add_66587213` and its
+    residual `≥ 20`, exact `(4,20)` / residual `≥ 21`, and exact `(4,21)` /
+    residual `≥ 22` refinements, ending on the generic tail
+    `twenty_two_le_dst_eject_of_src_base_eq_134217728r_add_66587213` and its
     zero-shell wrapper
-    `twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309`
+    `twenty_two_le_dst_eject_of_src_base_eq_3623878656r_add_1006111309`
   - repaired cumulative sandbox telemetry is green through eject-20 and first
-    fails at eject-21, so the next frontier move should return to a
-    single-eject proof analysis there instead of trusting the old exact
-    template blindly
+    fails at eject-21; the live source now resolves that interface manually,
+    so the next frontier move should return to a single-eject proof analysis
+    at eject-22 instead of trusting the old exact template blindly
 - Resume rule:
   - when chat memory, Rover, and source disagree, trust Lean source plus the
     latest green build boundary
@@ -1100,9 +1100,9 @@ Exploratory interpretation:
 ## Best Next Step
 
 The immediate next step is to keep the now-verified odd zero-shell `time = 4`
-refinement through eject-20 fixed, and then continue consuming the remaining
+refinement through eject-21 fixed, and then continue consuming the remaining
 tail inside the existing time-4 eject tree with a normal single-eject proof
-analysis at eject-21 rather than opening another parallel split tree.
+analysis at eject-22 rather than opening another parallel split tree.
 
 - the current green boundary already reaches the exact zero-shell transport
   family `2^(dst.time - 4) * dst.base = 729*m + 497`, its first exact
@@ -1112,21 +1112,24 @@ analysis at eject-21 rather than opening another parallel split tree.
   hand the zero-shell outputs to the same higher-time shell interfaces that
   the existing slice and exact-zone theorems already know how to consume
 - the next proof move should therefore use the new residual theorem
-  `twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309`
+  `twenty_two_le_dst_eject_of_src_base_eq_3623878656r_add_1006111309`
   together with the already verified time-4 residual machinery, aiming to
-  understand the first eject-21 split without assuming the older exact-branch
-  parity pattern still persists
+  understand the first eject-22 split from the actual residual law now in
+  source instead of assuming the older exact-branch parity pattern still
+  persists
 - more concretely, the frontier should stay inside the same time-4 eject tree:
-  the current green boundary already reaches the exact eject-20 split as the
+  the current green boundary already reaches the exact eject-21 split as the
   generic pair
-  `dst_slice_eq_4_20_of_src_base_eq_67108864r_add_33032781` /
-  `twenty_one_le_dst_eject_of_src_base_eq_67108864r_add_66587213` and the
+  `dst_slice_eq_4_21_of_src_base_eq_134217728r_add_133696077` /
+  `twenty_two_le_dst_eject_of_src_base_eq_134217728r_add_66587213` and the
   zero-shell wrappers
-  `dst_slice_eq_4_20_of_src_base_eq_1811939328r_add_100141645` /
-  `twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309`
+  `dst_slice_eq_4_21_of_src_base_eq_3623878656r_add_2818050637` /
+  `twenty_two_le_dst_eject_of_src_base_eq_3623878656r_add_1006111309`
 - repaired batch telemetry showed that the first naive exact `(4,21)` proof
   shape fails: its candidate factor `4374*r + 2170` is even, so the old
-  odd-factor argument cannot certify a uniform exact valuation there
+  odd-factor argument cannot certify a uniform exact valuation there; any
+  batch continuation toward eject-22 must therefore seed from the verified
+  residual law `2187*r + 1085`
 - treat `base = 6912*m + 6637` carefully: the green fact there is only the
   residual law `dst.time ≥ 7` with
   `2^(dst.time - 7) * dst.base = 729*m + 700`; do not revive the discarded
