@@ -89,15 +89,47 @@ shift the exact line, but this theorem remains the global target.
 Current checkpoint:
 
 - Branch: `codex/collatz-memory-loop`
-- Base commit: `054e0b3`
-- Message: `Package affine five-step return-machine self-map`
+- Older pushed checkpoint before this boundary: `054e0b3`
+- Older pushed message: `Package affine five-step return-machine self-map`
 - Current worktree state: targeted `lake build UFRF.CollatzConcurrentScales`
   is green after adding the higher-time `32*k + 13` source self-threshold /
   value / radial package, the shared `9387` observer-line bridge to the older
   repeat-core package, the bounded observer-gap coordinate on that common
   line, the immediate two-step observer-gap chain wrapper, and the new carrier
   theorem
-  `exists_observerGap9387_832_carrier_of_repeatCore832Transition_chain`
+  `exists_observerGap9387_832_carrier_of_repeatCore832Transition_chain`, and
+  the three-step shell-lift theorem
+  `exists_observerGap9387_832_thirdCarrier_of_repeatCore832Transition_chain3`,
+  the fourth-carrier / gate package
+  `exists_observerGap9387_832_fourthCarrier_of_repeatCore832Transition_chain4`
+  and
+  `exists_observerGap9387_832_fourthCarrier_with_gate_of_repeatCore832Transition_chain5`,
+  the early vanishing theorems
+  `observerGap9387_832_eq_zero_of_repeatCore832Transition_chain5` and
+  `observerGap9387_832_zero_block_of_repeatCore832Transition_chain5`, and the
+  higher-time affine zero-shell equivalence
+  `observerGap9387_832_eq_zero_of_src_base_eq_864m_add_589` /
+  `exists_src_base_eq_864m_add_589_of_observerGap9387_832_eq_zero_of_src_base_mod32_eq13`,
+  the specialized transport law
+  `two_pow_dst_time_sub_four_mul_dst_base_eq_729m_add_497_of_src_base_eq_864m_add_589`,
+  and its first exact destination-shell split through
+  `dst_time_eq_seven_of_src_base_eq_13824m_add_13549` /
+  `dst_base_eq_1458m_add_1429_of_src_base_eq_13824m_add_13549`, together
+  with the theorem-level reindexing bridge back into the established
+  `54*k + 11/19/23/25` shell families, and the first destination-eject split
+  of the zero-shell `time = 4` case, the parity split of its residual
+  eject-`≥ 5` family, the next exact refinement of that odd residual into an
+  exact eject-7 branch plus a residual eject-`≥ 8` tail, and the next exact
+  refinement of the remaining tail into an exact eject-8 branch plus a
+  residual eject-`≥ 9` tail, and the next exact refinement of that remaining
+  tail into an exact eject-9 branch plus a residual eject-`≥ 10` tail, and
+  the next exact refinement of that remaining tail into an exact eject-10
+  branch plus a residual eject-`≥ 11` tail, and the next exact refinement of
+  that remaining tail into an exact eject-11 branch plus a residual
+  eject-`≥ 12` tail, and the next exact refinement of that remaining tail
+  into an exact eject-12 branch plus a residual eject-`≥ 13` tail, and the
+  next exact refinement of that remaining tail into an exact eject-13 branch
+  plus a residual eject-`≥ 14` tail
 
 ## Resume State
 
@@ -319,9 +351,110 @@ source edits before describing the frontier.
     `exists_observerGap9387_832_carrier_of_repeatCore832Transition_chain`
     packaging the same two-step observer-gap transport through one common
     integer `u` with source gap `16*u` and destination gap `27*u`
-  - there is no newer unverified shell-family block drafted beyond this
-    guarded recurrence, carrier packaging, and bounded self-threshold
-    packaging
+  - local green WIP now also includes the three-step shell lift
+    `exists_observerGap9387_832_thirdCarrier_of_repeatCore832Transition_chain3`
+    packaging the overlapped observer-gap carrier as one deeper integer
+    `v` with `σ.src = 256*v`, `σ.dst = 432*v`, and `ρ.dst = 729*v`
+  - local green WIP now also includes the four-step shell lift
+    `exists_observerGap9387_832_fourthCarrier_of_repeatCore832Transition_chain4`
+    packaging one more overlap as the exact orbit
+    `4096*w -> 6912*w -> 11664*w -> 19683*w`
+  - local green WIP now also includes the five-step continuation gate
+    `exists_observerGap9387_832_fourthCarrier_with_gate_of_repeatCore832Transition_chain5`
+    forcing `16 ∣ w` on that fourth carrier
+  - local green WIP now also includes the early observer-gap vanishing package
+    `observerGap9387_832_eq_zero_of_repeatCore832Transition_chain5` and
+    `observerGap9387_832_zero_block_of_repeatCore832Transition_chain5`,
+    showing five-step persistence already kills the short observer-gap block
+    `σ.src, σ.dst, ρ.dst, ups.dst`
+  - local green WIP now also includes the higher-time affine zero-shell
+    equivalence
+    `observerGap9387_832_eq_zero_of_src_base_eq_864m_add_589` and
+    `exists_src_base_eq_864m_add_589_of_observerGap9387_832_eq_zero_of_src_base_mod32_eq13`,
+    so on the `(time,eject) = (3,1)` branch with `base ≡ 13 (mod 32)` the zero
+    locus of the bounded observer gap is exactly `base = 864*m + 589`
+  - local green WIP now also includes the specialized zero-shell transport
+    family
+    `two_pow_dst_time_sub_four_mul_dst_base_eq_729m_add_497_of_src_base_eq_864m_add_589`,
+    its exact parameterizations
+    `dst_time_eq_four_add_v2_729m_add_497_of_src_base_eq_864m_add_589` and
+    `dst_base_eq_div_pow_v2_729m_add_497_of_src_base_eq_864m_add_589`, and
+    the first exact destination-shell ladder through
+    `dst_time_eq_four_of_src_base_eq_1728m_add_589`,
+    `dst_time_eq_five_of_src_base_eq_3456m_add_1453`,
+    `dst_time_eq_six_of_src_base_eq_6912m_add_3181`,
+    `seven_le_dst_time_of_src_base_eq_6912m_add_6637`,
+    `two_pow_dst_time_sub_seven_mul_dst_base_eq_729m_add_700_of_src_base_eq_6912m_add_6637`,
+    `dst_time_eq_seven_of_src_base_eq_13824m_add_13549`, and their
+    destination-base companions
+  - local green WIP now also includes theorem-level bridge lemmas
+    `exists_dst_time4_base_eq_54k_add_11_of_src_base_eq_1728m_add_589`,
+    `exists_dst_time5_base_eq_54k_add_19_of_src_base_eq_3456m_add_1453`,
+    `exists_dst_time6_base_eq_54k_add_23_of_src_base_eq_6912m_add_3181`, and
+    `exists_dst_time7_base_eq_54k_add_25_of_src_base_eq_13824m_add_13549`,
+    which reindex the exact zero-shell outputs directly into the established
+    `54*k + 11/19/23/25` destination-shell interfaces with explicit affine
+    parameter maps
+  - local green WIP now also includes the first destination-eject split of
+    the zero-shell `time = 4` branch:
+    `dst_slice_eq_4_1_of_src_base_eq_3456r_add_2317`,
+    `dst_slice_eq_4_2_of_src_base_eq_6912r_add_4045`,
+    `dst_slice_eq_4_3_of_src_base_eq_13824r_add_7501`,
+    `dst_slice_eq_4_4_of_src_base_eq_27648r_add_14413`, and the residual
+    theorem `five_le_dst_eject_of_src_base_eq_55296r_add_589`
+  - local green WIP now also includes the next parity handoff of that
+    residual:
+    `dst_slice_eq_4_6_of_src_base_eq_110592r_add_589` and
+    `seven_le_dst_eject_of_src_base_eq_110592r_add_55885`
+  - local green WIP now also includes the next exact refinement of that odd
+    residual:
+    `dst_slice_eq_4_7_of_src_base_eq_221184r_add_55885` and
+    `eight_le_dst_eject_of_src_base_eq_221184r_add_166477`
+  - local green WIP now also includes the next exact refinement of the
+    remaining tail:
+    `dst_slice_eq_4_8_of_src_base_eq_442368r_add_387661` and
+    `nine_le_dst_eject_of_src_base_eq_442368r_add_166477`
+  - local green WIP now also includes the next exact refinement of that
+    remaining tail:
+    `dst_slice_eq_4_9_of_src_base_eq_884736r_add_608845` and
+    `ten_le_dst_eject_of_src_base_eq_884736r_add_166477`
+  - local green WIP now also includes the next exact refinement of that
+    remaining tail, first as the generic time-4 split
+    `dst_slice_eq_4_10_of_src_base_eq_65536r_add_35405` and
+    `eleven_le_dst_eject_of_src_base_eq_65536r_add_2637`, and on the
+    zero-shell side as
+    `dst_slice_eq_4_10_of_src_base_eq_1769472r_add_166477` and
+    `eleven_le_dst_eject_of_src_base_eq_1769472r_add_1051213`
+  - local green WIP now also includes the next exact refinement of that
+    remaining tail, first as the generic time-4 split
+    `dst_slice_eq_4_11_of_src_base_eq_131072r_add_68173` and
+    `twelve_le_dst_eject_of_src_base_eq_131072r_add_2637`, and on the
+    zero-shell side as
+    `dst_slice_eq_4_11_of_src_base_eq_3538944r_add_2820685` and
+    `twelve_le_dst_eject_of_src_base_eq_3538944r_add_1051213`
+  - local green WIP now also includes the next exact refinement of that
+    remaining tail, first as the generic time-4 split
+    `dst_slice_eq_4_12_of_src_base_eq_262144r_add_133709` and
+    `thirteen_le_dst_eject_of_src_base_eq_262144r_add_2637`, and on the
+    zero-shell side as
+    `dst_slice_eq_4_12_of_src_base_eq_7077888r_add_4590157` and
+    `thirteen_le_dst_eject_of_src_base_eq_7077888r_add_1051213`
+  - local green WIP now also includes the next exact refinement of that
+    remaining tail, first as the generic time-4 split
+    `dst_slice_eq_4_13_of_src_base_eq_524288r_add_264781` and
+    `fourteen_le_dst_eject_of_src_base_eq_524288r_add_2637`, and on the
+    zero-shell side as
+    `dst_slice_eq_4_13_of_src_base_eq_14155776r_add_8129101` and
+    `fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213`
+  - these new destination bases are not arbitrary arithmetic byproducts:
+    `1458*m + 497`, `1458*m + 613`, `1458*m + 671`, and `1458*m + 1429`
+    match the pre-existing higher-time shell residues `11, 19, 23, 25 mod 54`
+  - an abandoned shortcut that treated `base = 6912*m + 6637` as a uniform
+    `time = 9` case is not part of the verified frontier; the green theorem
+    there is only the residual `dst.time ≥ 7` transport law, with exact
+    `time = 7` recovered on the odd sub-shell `base = 13824*m + 13549`
+  - current source currently matches that green build boundary, so there is
+    no newer unverified source delta at this moment
 - Resume rule:
   - when chat memory, Rover, and source disagree, trust Lean source plus the
     latest green build boundary
@@ -376,9 +509,35 @@ Latest intrinsic gain:
     hence the shared line sits at most `208` above the actual branch readout
   - that same comparison is now packaged as an actual source-state coordinate
     `RegimeIIBadFrontierState.observerGap9387_832`:
-    it is exactly `0` on the first true repeat-core cycle-return state, and on
-    the higher-time `base ≡ 13 (mod 32)` branch above `832` it lies in the
-    finite set `8 * {0, ..., 26}`, so in particular `0 ≤ observerGap ≤ 208`
+    it is already exactly `0` on five-step repeat-core persistence and its
+    short transported block, and on the higher-time `base ≡ 13 (mod 32)`
+    branch above `832` it lies in the finite set `8 * {0, ..., 26}` with zero
+    occurring exactly on the affine shell `base = 864*m + 589`, so in
+    particular `0 ≤ observerGap ≤ 208`
+  - on that exact zero shell, the higher-time transport law is now specialized
+    to `2^(dst.time - 4) * dst.base = 729*m + 497`
+  - the first green split of that family now yields exact destination shells
+    `time = 4, 5, 6, 7` with destination bases
+    `1458*m + 497`, `1458*m + 613`, `1458*m + 671`, and `1458*m + 1429`
+  - those destination bases line up with the already-verified shell residues
+    `11, 19, 23, 25 mod 54`, so the observer-gap zero shell is feeding back
+    into the existing higher-time shell tree rather than drifting into a
+    disconnected observer-only branch
+  - that attachment is now theorem-level, not just interpretive: the new
+    bridge lemmas hand the exact `time = 4/5/6/7` zero-shell cases back to
+    the established `54*k + 11/19/23/25` families with explicit reindexings
+    `k = 27*m + 9`, `27*m + 11`, `27*m + 12`, and `27*m + 26`
+  - the zero-shell `time = 4` branch is now also split by destination eject
+    through exact slices `(4,1)`, `(4,2)`, `(4,3)`, `(4,4)` and a residual
+    family with `dst.eject ≥ 5`, so this branch is entering the same exact
+    slice language used elsewhere in the higher-time tree
+  - that residual is now split one layer further by parity: the even branch
+    lands exactly on the existing `(4,6)` slice, while the odd branch stays
+    in the same `time = 4` residual language with `dst.eject ≥ 7`
+  - the failed shortcut “`6912*m + 6637` gives uniform `time = 9`” has now
+    been explicitly ruled out by the verified residual statement:
+    only `dst.time ≥ 7` is green there, and the exact odd sub-shell is
+    `base = 13824*m + 13549` with `dst.time = 7`
   - that higher-time branch is now parameterized exactly by
     `dst.time = 4 + v2(27*k + 11)` and
     `dst.base = (27*k + 11) / 2^v2(27*k + 11)`
@@ -917,120 +1076,42 @@ Exploratory interpretation:
 
 ## Best Next Step
 
-The immediate next step is no longer another bookkeeping build; the current
-source is already green through the verified `135 / ≥136` boundary.
+The immediate next step is to continue consuming the remaining odd zero-shell
+`time = 4` tail inside the existing time-4 eject tree rather than opening
+another parallel split tree.
 
-- the exploratory bridge is now compressed through the tuple-level shell
-  signature `ExploratoryPrimeVoice.anchorSignature_jointState_eq_shellSignature`,
-  so any further exploratory work should only continue if it yields a strictly
-  stronger compression than the current coordinatewise package
-- the next structural move should be to use
-  `VerifiedHigherTimeReturnClock` and
-  `VerifiedHigherTimeReturnClock.transport_of_eq_src_base` to prove that the
-  surviving higher-time non-self-return branch lives inside one closed
-  five-state source machine rather than an endlessly novel chain
-- in parallel with that source-state packaging, the next exploratory bridge is
-  to use the new candidate canonical joint prime-voice state to search for a
-  genuine voice-leading law on the five verified return residues
-  `20, 16, 14, 11, 26`, rather than stopping at raw signature computation
-- concretely: compare `ExploratoryPrimeVoice.returnJointState` across the
-  cycle `20 → 16 → 14 → 11 → 26 → 20`; now that
-  `ExploratoryPrimeVoice.value_returnJointState_next_agrees_add_delta`
-  isolates the common signed-value update,
-  `ExploratoryPrimeVoice.returnJointUpdate_p*_levelDelta_eq_shellShift`
-  identifies the shell-level motion as threshold crossing, and
-  `ExploratoryPrimeVoice.returnJointUpdate_p*_correction_eq_anchor_diff`
-  identifies the offset correction as anchor bookkeeping, while
-  `ExploratoryPrimeVoice.returnJointUpdate_eq_predictedJointUpdate`
-  packages the whole verified reanchoring step from current joint state plus
-  common next value and
-  `ExploratoryPrimeVoice.returnAnchorSignature_eq` now isolates exact local
-  anchor occupancy on the sampled views, while
-  `ExploratoryPrimeVoice.atAnchor_canonicalState_iff_exists_eq_anchor`
-  identifies exact local zero with dyadic prime shells in general, the next
-  search should be for a higher-level defect, tension functional, or
-  compressed lifted recurrence on this already-compressed coordinate rule
-- only after that coordinate-level rule is visible should we ask whether the
-  resulting update admits a monotone tension / defect / resolution functional
-- the music-theory / “concurrent voices” heuristic is most useful here as a
-  search guide for finite joint state, voice-leading update, and resolution
-  data; do not treat it as theorem content until those objects are defined in
-  Lean
-- if we test a prime-perspective interpretation, keep it explicitly marked as
-  exploratory until it is translated into source-state definitions and proved
-  from those definitions
-- the immediate intrinsic source-state move is now no longer speculative:
-  the verified theorem
-  `returned_twenty_eight_shell_transport_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757`
-  shows that the surviving higher-time non-self-return branch has re-entered
-  `VerifiedHigherTimeReturnClock.c20`; the next structural step is to use that
-  re-entry to package the branch as one genuinely closed source machine across
-  scales rather than as a longer and longer theorem list
-- that packaging step is now verified directly in the clock namespace, both as
-  explicit re-entry into `c20` and as the machine-internal theorem
-  `VerifiedHigherTimeReturnClock.c26_residual_reenters_next_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757`;
-  the source now also packages the whole live residual layer as the uniform
-  theorem
-  `VerifiedHigherTimeReturnClock.residual_reenters_next_of_eq_src_base`, and
-  one full cycle is now packaged by
-  `VerifiedHigherTimeReturnClock.step_five_eq` as the affine self-map
-  `m ↦ 262144*m + 194180`; the next real source-state question is how to use
-  this verified closed machine plus its explicit renormalization map to
-  compress the global bad-frontier argument, rather than continuing to
-  accumulate parallel restatements
-- the immediate source-side bridge into that next question is now stronger
-  than it was at commit `054e0b3`: the higher-time `base = 32*k + 13` branch
-  no longer has only transport/value formulas, but also its own intrinsic
-  source self-threshold defect law. The next good structural move is to pair
-  that defect formula with the already-verified higher-time transport/clock
-  package and look for a monotone projective inequality, recurrence, or other
-  compressed bad-frontier functional, rather than reopening ad hoc shell
-  splitting first.
-- that recurrence search has now crossed its first real threshold: the
-  `32*k + 13` branch itself satisfies the same exact affine `27/16` transport
-  law on source/destination reconstructed value as the older repeat-core
-  package, and on `832` radial gap once the source is itself already above the
-  `832` cutoff. This is the clearest verified evidence so far that the newer
-  higher-time branch is not just producing isolated shell identities, but is
-  re-entering the same finite affine transport geometry.
-- the newest source-side gain is that the same branch no longer carries only a
-  raw floor-expression self-threshold law. That floor term is now repackaged as
-  an explicit bounded mod-27 residue on the projective ray
-  `216 * selfThresholdDefect` versus `11 * value`, exactly the same style of
-  observer repackaging that made the old repeat-core self-threshold transport
-  usable. This is the best current bridge from the newer higher-time branch
-  into a reusable finite-observer package, rather than an isolated affine chart.
-- the latest sharpening is that this bounded residue observer is now also
-  available directly against `src.radialGap_832`, not just `src.value`. That is
-  a materially better interface for the live bad-frontier work, because the
-  global target already lives at `832` and the new branch can now be compared in
-  the same target-facing coordinate family as the older repeat-core package.
-- the newest structural gain is stronger still: the old repeat-core chain now
-  has an explicit theorem on that same target-facing affine ray with the same
-  constant `9387`. This is the first clean theorem-level meeting point between
-  the older return package and the newer higher-time `13 mod 32` branch inside
-  one shared `832`-radial observer coordinate.
-- the latest sharpening turns that shared line into an actual finite observer
-  remainder on the newer branch: its distance to the common `9387` radial line
-  is exactly `8 * (26 - residue)` with residue `((26*k + 17) % 27)`, hence
-  uniformly bounded by `208`. That is the strongest current candidate for a
-  common “observer-gap” coordinate spanning both packages.
-- that same recurrence package is no longer only available in explicit
-  `base = 32*k + 13` chart form. The source now also has intrinsic
-  `base % 32 = 13` wrapper theorems for the state-value transport, strict
-  radial-gap increase, guarded radial-gap transport law, and bounded
-  self-threshold/source-value ray, which is a much better interface for
-  feeding the global bad-frontier split without reopening the affine chart
-  parameter by hand.
-- if that recurrence packaging is postponed, the fallback next local shell
-  split is the mirrored `136/137/138/≥139` family from the verified residual
-  `27*r + 20` stage
-- keep composing any concrete destination slices with the existing `832`
-  exact-zone / dead-slice theorems whenever the threshold is strong enough to
-  produce actual source shrink
-- keep thinning the residual higher-time shells together with the source
-  self-return branch `base % 64 = 29` until the true global frontier is
-  isolated
+- the current green boundary already reaches the exact zero-shell transport
+  family `2^(dst.time - 4) * dst.base = 729*m + 497`, its first exact
+  destination shells `time = 4, 5, 6, 7`, and the direct bridge lemmas into
+  the `54*k + 11/19/23/25` families
+- the structural opportunity is now explicit in source: those bridge lemmas
+  hand the zero-shell outputs to the same higher-time shell interfaces that
+  the existing slice and exact-zone theorems already know how to consume
+- the current green boundary now already includes the exact eject-13 /
+  residual eject-`≥ 14` split, so the next proof move should use the residual
+  theorem `fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213`
+  together with the already verified time-4 residual machinery, aiming for an
+  exact eject-14 case and a thinner eject-`≥ 15` tail, so the observer-gap
+  package keeps re-entering the established shell tree rather than reopening
+  fresh arithmetic
+- more concretely, the frontier should stay inside the same time-4 eject tree:
+  the current green boundary already reaches the exact eject-13 split as the
+  generic pair
+  `dst_slice_eq_4_13_of_src_base_eq_524288r_add_264781` /
+  `fourteen_le_dst_eject_of_src_base_eq_524288r_add_2637` and the zero-shell
+  wrappers
+  `dst_slice_eq_4_13_of_src_base_eq_14155776r_add_8129101` /
+  `fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213`; the next live
+  tail is the `eject ≥ 14` family on
+  `base = 14155776*r + 1051213`
+- treat `base = 6912*m + 6637` carefully: the green fact there is only the
+  residual law `dst.time ≥ 7` with
+  `2^(dst.time - 7) * dst.base = 729*m + 700`; do not revive the discarded
+  uniform `time = 9` shortcut
+- only after the odd zero-shell `time = 4` residual is exhausted through
+  those existing slice interfaces should we split further elsewhere, because
+  the main risk now is not missing arithmetic but drifting away from the
+  source-state transport structure we have already recovered
 
 This keeps the work on the source-state side and avoids sliding back into
 bundle-only analysis.

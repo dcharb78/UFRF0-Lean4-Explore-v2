@@ -1,12 +1,27 @@
 {
   "source": "UFRF/CollatzConcurrentScales.lean",
-  "verified_at": "2026-04-12T05:52:44Z",
+  "verified_at": "2026-04-13T02:16:28Z",
   "command": "lake build UFRF.CollatzConcurrentScales",
-  "session_id": 58830,
-  "source_sha256": "c530243f8a7c1c6a8e4d4006999cb8783d3789878614477afdeb7a255a4e39a6",
-  "boundary": "observer-gap carrier theorem is green; later attempted third-carrier theorem was reverted without rerunning Lean at user request",
+  "session_id": 86196,
+  "source_sha256": "d0ec63dc34511e40c3521c495c282ae4156b31175afdf064a81057a066ed8846",
+  "boundary": "observer-gap vanishing package is green through the zero-shell time = 4 odd residual split into an exact eject-13 branch and a residual eject >= 14 tail",
   "notes": [
     "This hash records the last known green source boundary for UFRF/CollatzConcurrentScales.lean.",
-    "The later failed attempt was exists_observerGap9387_832_thirdCarrier_of_repeatCore832Transition_chain3 and it is not part of this recorded green boundary."
+    "The recorded boundary includes exists_observerGap9387_832_fourthCarrier_of_repeatCore832Transition_chain4 and exists_observerGap9387_832_fourthCarrier_with_gate_of_repeatCore832Transition_chain5.",
+    "It also includes observerGap9387_832_eq_zero_of_repeatCore832Transition_chain5 together with observerGap9387_832_zero_block_of_repeatCore832Transition_chain5.",
+    "The higher-time branch now has an exact zero-shell equivalence: observerGap9387_832_eq_zero_of_src_base_eq_864m_add_589 and exists_src_base_eq_864m_add_589_of_observerGap9387_832_eq_zero_of_src_base_mod32_eq13.",
+    "It also includes the transport family two_pow_dst_time_sub_four_mul_dst_base_eq_729m_add_497_of_src_base_eq_864m_add_589 together with the exact shell theorems dst_time_eq_four_of_src_base_eq_1728m_add_589, dst_time_eq_five_of_src_base_eq_3456m_add_1453, dst_time_eq_six_of_src_base_eq_6912m_add_3181, and dst_time_eq_seven_of_src_base_eq_13824m_add_13549 and their destination-base companions.",
+    "It now also includes the bridge theorems exists_dst_time4_base_eq_54k_add_11_of_src_base_eq_1728m_add_589, exists_dst_time5_base_eq_54k_add_19_of_src_base_eq_3456m_add_1453, exists_dst_time6_base_eq_54k_add_23_of_src_base_eq_6912m_add_3181, and exists_dst_time7_base_eq_54k_add_25_of_src_base_eq_13824m_add_13549, which reindex the exact zero-shell outputs into the established 54*k destination-shell families.",
+    "The current boundary further splits the zero-shell time = 4 branch by destination eject via dst_slice_eq_4_1_of_src_base_eq_3456r_add_2317, dst_slice_eq_4_2_of_src_base_eq_6912r_add_4045, dst_slice_eq_4_3_of_src_base_eq_13824r_add_7501, dst_slice_eq_4_4_of_src_base_eq_27648r_add_14413, and five_le_dst_eject_of_src_base_eq_55296r_add_589.",
+    "It now also includes dst_slice_eq_4_6_of_src_base_eq_110592r_add_589 together with seven_le_dst_eject_of_src_base_eq_110592r_add_55885, so the zero-shell time = 4 residual first splits by parity into the established eject-6 interface and an odd eject >= 7 branch.",
+    "That odd branch is now further refined by dst_slice_eq_4_7_of_src_base_eq_221184r_add_55885 together with eight_le_dst_eject_of_src_base_eq_221184r_add_166477, leaving only a thinner residual eject >= 8 tail on the zero-shell time = 4 side.",
+    "That remaining tail is now further refined by dst_slice_eq_4_8_of_src_base_eq_442368r_add_387661 together with nine_le_dst_eject_of_src_base_eq_442368r_add_166477, so the zero-shell time = 4 odd residual is now consumed through an exact eject-8 branch and only a thinner eject >= 9 tail remains.",
+    "That eject >= 9 tail is now further refined by dst_slice_eq_4_9_of_src_base_eq_884736r_add_608845 together with ten_le_dst_eject_of_src_base_eq_884736r_add_166477, leaving only a thinner residual eject >= 10 tail on the zero-shell time = 4 side.",
+    "That eject >= 10 tail is now further refined by the generic exact split dst_slice_eq_4_10_of_src_base_eq_65536r_add_35405 together with eleven_le_dst_eject_of_src_base_eq_65536r_add_2637, and by the zero-shell wrappers dst_slice_eq_4_10_of_src_base_eq_1769472r_add_166477 together with eleven_le_dst_eject_of_src_base_eq_1769472r_add_1051213, leaving only a thinner residual eject >= 11 tail on the zero-shell time = 4 side.",
+    "That eject >= 11 tail is now further refined by the generic exact split dst_slice_eq_4_11_of_src_base_eq_131072r_add_68173 together with twelve_le_dst_eject_of_src_base_eq_131072r_add_2637, and by the zero-shell wrappers dst_slice_eq_4_11_of_src_base_eq_3538944r_add_2820685 together with twelve_le_dst_eject_of_src_base_eq_3538944r_add_1051213, leaving only a thinner residual eject >= 12 tail on the zero-shell time = 4 side.",
+    "That eject >= 12 tail is now further refined by the generic exact split dst_slice_eq_4_12_of_src_base_eq_262144r_add_133709 together with thirteen_le_dst_eject_of_src_base_eq_262144r_add_2637, and by the zero-shell wrappers dst_slice_eq_4_12_of_src_base_eq_7077888r_add_4590157 together with thirteen_le_dst_eject_of_src_base_eq_7077888r_add_1051213, leaving only a thinner residual eject >= 13 tail on the zero-shell time = 4 side.",
+    "That eject >= 13 tail is now further refined by the generic exact split dst_slice_eq_4_13_of_src_base_eq_524288r_add_264781 together with fourteen_le_dst_eject_of_src_base_eq_524288r_add_2637, and by the zero-shell wrappers dst_slice_eq_4_13_of_src_base_eq_14155776r_add_8129101 together with fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213, leaving only a thinner residual eject >= 14 tail on the zero-shell time = 4 side.",
+    "The residual branch base = 6912*m + 6637 is green only as dst.time >= 7 with transport 2^(dst.time - 7) * dst.base = 729*m + 700; an abandoned uniform time = 9 shortcut is not part of the verified boundary.",
+    "This boundary was confirmed by targeted build session 86196 with only the familiar pre-existing warnings."
   ]
 }
