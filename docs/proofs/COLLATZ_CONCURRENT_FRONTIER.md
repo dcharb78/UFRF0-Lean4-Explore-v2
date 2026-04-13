@@ -89,8 +89,8 @@ shift the exact line, but this theorem remains the global target.
 Current checkpoint:
 
 - Branch: `codex/collatz-memory-loop`
-- Older pushed checkpoint before this boundary: `717aba4`
-- Older pushed message: `Promote green eject-20 boundary and repair batch harness`
+- Older pushed checkpoint before this boundary: `038923a`
+- Older pushed message: `Promote green eject-21 boundary and seed residual-aware batch harness`
 - Current worktree state: targeted `lake build UFRF.CollatzConcurrentScales`
   is green after adding the higher-time `32*k + 13` source self-threshold /
   value / radial package, the shared `9387` observer-line bridge to the older
@@ -135,12 +135,30 @@ Current checkpoint:
   / residual eject-`≥ 16`, exact eject-16 / residual eject-`≥ 17`, exact
   eject-17 / residual eject-`≥ 18`, exact eject-18 / residual eject-`≥ 19`,
   exact eject-19 / residual eject-`≥ 20`, exact eject-20 /
-  residual eject-`≥ 21`, and exact eject-21 / residual eject-`≥ 22` tails
+  residual eject-`≥ 21`, exact eject-21 / residual eject-`≥ 22`, exact
+  eject-22 / residual eject-`≥ 23`, exact eject-23 / residual eject-`≥ 24`,
+  exact eject-24 / residual eject-`≥ 25`, exact eject-25 /
+  residual eject-`≥ 26`, exact eject-26 / residual eject-`≥ 27`, exact
+  eject-27 / residual eject-`≥ 28`, exact eject-28 / residual eject-`≥ 29`,
+  exact eject-29 / residual eject-`≥ 30`, exact eject-30 /
+  residual eject-`≥ 31`, exact eject-31 / residual eject-`≥ 32`, and exact
+  eject-32 / residual eject-`≥ 33` tails
+- residual-seeded generated telemetry under
+  `/private/tmp/collatz-eject-wave-pipeline-post32-20260413T045249Z`
+  is also green through eject-80, but that larger batch result sits beyond
+  the live source boundary until more of the eject tree is promoted into
+  `UFRF/CollatzConcurrentScales.lean` and rechecked there
 
 ## Resume State
 
 On fresh or compacted threads, separate the verified checkpoint from any newer
 source edits before describing the frontier.
+
+For the active observer-gap/eject thread, the governing resume boundary is the
+current checkpoint above: live source targeted-build verified through
+eject-32, generated residual-seeded telemetry green through eject-80. The
+longer historical resume block below is archival context and must not
+override that split.
 
 - Last green checkpoint:
   - targeted `lake build UFRF.CollatzConcurrentScales` is green through exact
@@ -469,15 +487,21 @@ source edits before describing the frontier.
   - the current green boundary now continues through the exact `(4,15)` /
     residual `≥ 16`, exact `(4,16)` / residual `≥ 17`, exact `(4,17)` /
     residual `≥ 18`, exact `(4,18)` / residual `≥ 19`, exact `(4,19)` /
-    residual `≥ 20`, exact `(4,20)` / residual `≥ 21`, and exact `(4,21)` /
-    residual `≥ 22` refinements, ending on the generic tail
-    `twenty_two_le_dst_eject_of_src_base_eq_134217728r_add_66587213` and its
-    zero-shell wrapper
-    `twenty_two_le_dst_eject_of_src_base_eq_3623878656r_add_1006111309`
-  - repaired cumulative sandbox telemetry is green through eject-20 and first
-    fails at eject-21; the live source now resolves that interface manually,
-    so the next frontier move should return to a single-eject proof analysis
-    at eject-22 instead of trusting the old exact template blindly
+    residual `≥ 20`, exact `(4,20)` / residual `≥ 21`, exact `(4,21)` /
+    residual `≥ 22`, exact `(4,22)` / residual `≥ 23`, exact `(4,23)` /
+    residual `≥ 24`, exact `(4,24)` / residual `≥ 25`, exact `(4,25)` /
+    residual `≥ 26`, exact `(4,26)` / residual `≥ 27`, exact `(4,27)` /
+    residual `≥ 28`, exact `(4,28)` / residual `≥ 29`, exact `(4,29)` /
+    residual `≥ 30`, exact `(4,30)` / residual `≥ 31`, exact `(4,31)` /
+    residual `≥ 32`, and exact `(4,32)` / residual `≥ 33` refinements,
+    ending on the generic tail
+    `thirty_three_le_dst_eject_of_src_base_eq_274877906944r_add_22749383245`
+    and its zero-shell wrapper
+    `thirty_three_le_dst_eject_of_src_base_eq_7421703487488r_add_22749383245`
+  - corrected residual-seeded sandbox telemetry is green through eject-32 at
+    `/private/tmp/collatz-eject-batch-038923a-eject22-32-rerun-20260413T042552Z`,
+    and that same promoted block is now confirmed green in the live repo by
+    targeted build session `34098`
 - Resume rule:
   - when chat memory, Rover, and source disagree, trust Lean source plus the
     latest green build boundary
@@ -1099,10 +1123,11 @@ Exploratory interpretation:
 
 ## Best Next Step
 
-The immediate next step is to keep the now-verified odd zero-shell `time = 4`
-refinement through eject-21 fixed, and then continue consuming the remaining
-tail inside the existing time-4 eject tree with a normal single-eject proof
-analysis at eject-22 rather than opening another parallel split tree.
+The immediate next step is to preserve the now-verified odd zero-shell
+`time = 4` refinement through eject-32 as the live Lean checkpoint, keep the
+all-green generated telemetry through eject-80 as evidence rather than source,
+and then scale the same residual-seeded time-4 eject workflow forward toward
+eject-130.
 
 - the current green boundary already reaches the exact zero-shell transport
   family `2^(dst.time - 4) * dst.base = 729*m + 497`, its first exact
@@ -1112,24 +1137,29 @@ analysis at eject-22 rather than opening another parallel split tree.
   hand the zero-shell outputs to the same higher-time shell interfaces that
   the existing slice and exact-zone theorems already know how to consume
 - the next proof move should therefore use the new residual theorem
-  `twenty_two_le_dst_eject_of_src_base_eq_3623878656r_add_1006111309`
-  together with the already verified time-4 residual machinery, aiming to
-  understand the first eject-22 split from the actual residual law now in
-  source instead of assuming the older exact-branch parity pattern still
-  persists
+  `thirty_three_le_dst_eject_of_src_base_eq_7421703487488r_add_22749383245`
+  together with the prepared wave runner
+  `scripts/collatz_eject_wave_pipeline.py`, which is already configured to
+  continue in sequential waves of at most 10 builds with the same 1-second
+  stagger; the `eject-33..80` run is already green, so the next scaling pass
+  should start at eject-81 and target eject-130
 - more concretely, the frontier should stay inside the same time-4 eject tree:
-  the current green boundary already reaches the exact eject-21 split as the
+  the current green boundary already reaches the exact eject-32 split as the
   generic pair
-  `dst_slice_eq_4_21_of_src_base_eq_134217728r_add_133696077` /
-  `twenty_two_le_dst_eject_of_src_base_eq_134217728r_add_66587213` and the
+  `dst_slice_eq_4_32_of_src_base_eq_274877906944r_add_160188336717` /
+  `thirty_three_le_dst_eject_of_src_base_eq_274877906944r_add_22749383245`
+  and the
   zero-shell wrappers
-  `dst_slice_eq_4_21_of_src_base_eq_3623878656r_add_2818050637` /
-  `twenty_two_le_dst_eject_of_src_base_eq_3623878656r_add_1006111309`
-- repaired batch telemetry showed that the first naive exact `(4,21)` proof
-  shape fails: its candidate factor `4374*r + 2170` is even, so the old
-  odd-factor argument cannot certify a uniform exact valuation there; any
-  batch continuation toward eject-22 must therefore seed from the verified
-  residual law `2187*r + 1085`
+  `dst_slice_eq_4_32_of_src_base_eq_7421703487488r_add_3733601126989` /
+  `thirty_three_le_dst_eject_of_src_base_eq_7421703487488r_add_22749383245`
+- operationally, this means the next batch command should be the same wave
+  runner with `--start-layer 81 --end-layer 130 --batch-size 10 --workers 10
+  --start-stagger-seconds 1` and the existing residual seed constants
+- the important retained lesson is still structural: the first naive exact
+  `(4,21)` proof shape failed because its candidate factor `4374*r + 2170`
+  was even, so all large-scale continuation must stay seeded from the actual
+  verified residual law at the current frontier rather than from the older
+  pre-eject-21 parity template
 - treat `base = 6912*m + 6637` carefully: the green fact there is only the
   residual law `dst.time ≥ 7` with
   `2^(dst.time - 7) * dst.base = 729*m + 700`; do not revive the discarded

@@ -47,15 +47,15 @@ Trust order when artifacts disagree:
 
 ## Current Snapshot
 
-This snapshot is intentionally split into the older pushed checkpoint and the
-current green branch boundary.
+This snapshot is intentionally split into the live-source green boundary and
+the farther generated telemetry frontier beyond it.
 
 ### Repo Identity
 
 - repo: `/tmp/repo-collatz-memory-loop`
 - branch: `codex/collatz-memory-loop`
-- older pushed checkpoint before this boundary: `717aba4`
-- older pushed message: `Promote green eject-20 boundary and repair batch harness`
+- older pushed checkpoint before this boundary: `038923a`
+- older pushed message: `Promote green eject-21 boundary and seed residual-aware batch harness`
 
 ### Last Green Boundary In The Current Worktree
 
@@ -193,19 +193,51 @@ The current worktree is now green by targeted
 - on the zero-shell side that same repaired split now appears as
   `dst_slice_eq_4_21_of_src_base_eq_3623878656r_add_2818050637` /
   `twenty_two_le_dst_eject_of_src_base_eq_3623878656r_add_1006111309`
+- the next eleven exact refinements of that same residual-seeded time-4 tail
+  now continue live through exact eject-22 / residual eject-`≥ 23`, exact
+  eject-23 / residual eject-`≥ 24`, exact eject-24 / residual eject-`≥ 25`,
+  exact eject-25 / residual eject-`≥ 26`, exact eject-26 /
+  residual eject-`≥ 27`, exact eject-27 / residual eject-`≥ 28`, exact
+  eject-28 / residual eject-`≥ 29`, exact eject-29 / residual eject-`≥ 30`,
+  exact eject-30 / residual eject-`≥ 31`, exact eject-31 /
+  residual eject-`≥ 32`, and exact eject-32 / residual eject-`≥ 33`
+- at the generic frontier this now ends on
+  `dst_slice_eq_4_32_of_src_base_eq_274877906944r_add_160188336717` /
+  `thirty_three_le_dst_eject_of_src_base_eq_274877906944r_add_22749383245`
+- on the zero-shell side it ends on
+  `dst_slice_eq_4_32_of_src_base_eq_7421703487488r_add_3733601126989` /
+  `thirty_three_le_dst_eject_of_src_base_eq_7421703487488r_add_22749383245`
 
 The older pushed checkpoint before this boundary was:
 
-- `717aba4`
-- `Promote green eject-20 boundary and repair batch harness`
+- `038923a`
+- `Promote green eject-21 boundary and seed residual-aware batch harness`
 
 So the newer observer-gap carrier / vanishing package is green in the current
 worktree and sits on the current branch beyond that older pushed checkpoint.
 
 The generated declaration index currently on disk reports:
 
-- `generated_at = 2026-04-13T03:58:10.478649+00:00`
-- `declaration_count = 1357`
+- `generated_at = 2026-04-13T04:48:46.134946+00:00`
+- `declaration_count = 1401`
+
+### Scaled Telemetry Beyond The Live Boundary
+
+The residual-seeded wave pipeline has now also run cleanly beyond the live
+Lean source boundary:
+
+- pipeline root:
+  `/private/tmp/collatz-eject-wave-pipeline-post32-20260413T045249Z`
+- waves `eject-33..42`, `43..52`, `53..62`, `63..72`, and `73..80` all
+  returned code `0`
+- the final wave finished at `2026-04-13T05:35:19Z`
+- every per-target `result.json` in `eject-73..80` reports
+  `success = true`, `build_exit_code = 0`, and `index_exit_code = 0`
+- this is durable batch evidence that the corrected residual-law harness
+  scales cleanly through eject-80
+- important separation: the live repo source is still targeted-build verified
+  only through exact eject-32 / residual eject-`≥ 33`; eject-33 through
+  eject-80 is telemetry support beyond that live source boundary
 
 ### Local Delta Beyond The Last Pushed Checkpoint
 
@@ -408,7 +440,7 @@ declaration index are intended to agree on that boundary.
 The live targeted verification run for the current observer-gap vanishing
 package completed successfully:
 
-- session id: `11502`
+- session id: `34098`
 - command: `lake build UFRF.CollatzConcurrentScales`
 - result: success with the familiar pre-existing warnings only
 - exact green-source hash is recorded in
@@ -417,6 +449,13 @@ package completed successfully:
   `/private/tmp/collatz-eject-batch-20260413T031238Z` is green through
   eject-20 and first fails at eject-21; that failure is now resolved in the
   live source by the repaired manual split
+- a corrected residual-seeded rerun at
+  `/private/tmp/collatz-eject-batch-038923a-eject22-32-rerun-20260413T042552Z`
+  is green through eject-32
+- the prepared residual-seeded wave pipeline at
+  `/private/tmp/collatz-eject-wave-pipeline-post32-20260413T045249Z`
+  then completed green through eject-80 in five waves of at most 10 builds
+  each with the same 1-second stagger
 
 ### Recovered Failed Probe
 
@@ -440,8 +479,8 @@ As of this snapshot:
 
 - the recorded green source hash in
   [COLLATZ_TARGETED_BUILD_STATUS.json](/tmp/repo-collatz-memory-loop/docs/proofs/COLLATZ_TARGETED_BUILD_STATUS.json)
-  now matches the current source boundary through exact eject-21 with residual
-  `dst.eject ≥ 22`
+  now matches the current source boundary through exact eject-32 with residual
+  `dst.eject ≥ 33`
 - the frontier note and this handoff file now describe the observer-gap
   carrier / vanishing package through theorem-level reindexing of the
   zero-shell time-4/5/6/7 cases into the established `54*k` shell families,
@@ -460,14 +499,24 @@ As of this snapshot:
   exact eject-15 / residual eject-`≥ 16`, exact eject-16 /
   residual eject-`≥ 17`, exact eject-17 / residual eject-`≥ 18`, exact
   eject-18 / residual eject-`≥ 19`, exact eject-19 / residual eject-`≥ 20`,
-  exact eject-20 / residual eject-`≥ 21`, and exact eject-21 /
-  residual eject-`≥ 22` refinements of that same tail
+  exact eject-20 / residual eject-`≥ 21`, exact eject-21 /
+  residual eject-`≥ 22`, exact eject-22 / residual eject-`≥ 23`, exact
+  eject-23 / residual eject-`≥ 24`, exact eject-24 / residual eject-`≥ 25`,
+  exact eject-25 / residual eject-`≥ 26`, exact eject-26 /
+  residual eject-`≥ 27`, exact eject-27 / residual eject-`≥ 28`, exact
+  eject-28 / residual eject-`≥ 29`, exact eject-29 / residual eject-`≥ 30`,
+  exact eject-30 / residual eject-`≥ 31`, exact eject-31 /
+  residual eject-`≥ 32`, and exact eject-32 / residual eject-`≥ 33`
+  refinements of that same tail
 - the symbol index has been regenerated after the latest green targeted build
-  and now reports `1357` declarations
-- Rover is now synced through the exact eject-21 /
-  residual eject-`≥ 22` refinement of the zero-shell `time = 4` odd residual
+  and now reports `1401` declarations
+- Rover is now synced through the exact eject-32 /
+  residual eject-`≥ 33` refinement of the zero-shell `time = 4` odd residual
   via
-  `20260413T040927Z-green-boundary-update-the-zero-shell-time-4-odd-residual-reaches-eject-21.md`
+  `20260413T045149Z-green-boundary-update-the-zero-shell-time-4-odd-residual-reaches-eject-32.md`
+- Rover also records the larger residual-seeded telemetry result through
+  eject-80 via
+  `20260413T053628Z-residual-seeded-batch-telemetry-update-the-ejec.md`
 
 That means the repo is back in a compact-safer state:
 
@@ -475,24 +524,32 @@ That means the repo is back in a compact-safer state:
 - the current source matches that recorded boundary
 - docs, status, Rover, and the symbol index are aligned to the same source
   checkpoint
-- the remaining operational caution is only that the worktree is still
-  uncommitted until the next local commit and push
+- the farther wave telemetry is also recorded, but it remains explicitly
+  separate from the live-source green boundary
+- if the worktree is clean, this handoff corresponds to the current durable
+  checkpoint; if the worktree later becomes dirty again, re-separate the
+  pushed checkpoint from newer local edits before summarizing status
 
 ## Immediate Next Step
 
 1. keep using the bridge theorems and inherited time-4 eject tree as the
    default interface for exact zero-shell cases instead of reopening the
    arithmetic each time
-2. continue from the current residual family
-   `base = 3623878656*r + 1006111309`, equivalently the generic tail
-   `base = 134217728*r + 66587213`, and analyze eject-22 in the normal
-   single-eject workflow
-3. use the repaired batch harness only as supporting telemetry unless it is
-   seeded from the actual residual law now in source; the main target is a
-   hand-checked local understanding of the first eject-22 split
-4. do not trust any naive recurrence that assumes the old exact-branch parity
-   pattern persists, because eject-21 already forced a branch flip
-5. only continue the zero-shell dyadic split after that eject-22 interface is
+2. treat the current live-source boundary as exact eject-32 /
+   residual eject-`≥ 33`, but treat the generated evidence frontier as
+   already green through eject-80
+3. continue from the current residual family
+   `base = 7421703487488*r + 22749383245`, equivalently the generic tail
+   `base = 274877906944*r + 22749383245`, and analyze eject-81 through the
+   next milestone eject-130 through the prepared wave pipeline
+4. use the prepared
+   `python3 scripts/collatz_eject_wave_pipeline.py --start-layer 81 --end-layer 130 --batch-size 10 --workers 10 --start-stagger-seconds 1 --seed-mode residual --seed-residual-coeff 274877906944 --seed-residual-const 22749383245 --seed-zero-tail-const 22749383245 --seed-q-residual 181`
+   workflow when scaling forward, so at most 10 builds run at a time with the
+   same 1-second delay inside each wave
+5. do not trust any naive recurrence that assumes the old exact-branch parity
+   pattern persists, because eject-21 already forced a branch flip and the
+   large-scale continuation now depends on the current verified residual law
+5. only continue the zero-shell dyadic split after that eject-33 interface is
    understood, so the observer package stays attached to intrinsic
    source-state transport rather than drifting into standalone observer
    arithmetic
@@ -528,7 +585,7 @@ Before proof work:
 
 Current checkpoint state:
 
-- last pushed checkpoint before this local boundary is `717aba4`
+- last pushed checkpoint before this local boundary is `038923a`
 - current local green worktree now includes the observer-gap carrier hierarchy
   through
   `exists_observerGap9387_832_fourthCarrier_with_gate_of_repeatCore832Transition_chain5`,
@@ -547,20 +604,26 @@ Current checkpoint state:
   `exists_dst_time4_base_eq_54k_add_11_of_src_base_eq_1728m_add_589` through
   `exists_dst_time7_base_eq_54k_add_25_of_src_base_eq_13824m_add_13549`, and
   the zero-shell `time = 4` eject split now through
-  `dst_slice_eq_4_21_of_src_base_eq_3623878656r_add_2818050637` with residual
-  `twenty_two_le_dst_eject_of_src_base_eq_3623878656r_add_1006111309`
-- targeted build session `11502` completed green in the actual repo for that
+  `dst_slice_eq_4_32_of_src_base_eq_7421703487488r_add_3733601126989` with
+  residual `thirty_three_le_dst_eject_of_src_base_eq_7421703487488r_add_22749383245`
+- targeted build session `34098` completed green in the actual repo for that
   boundary
 - supporting batch telemetry in `/private/tmp/collatz-eject-batch-20260413T031238Z`
   is cumulatively green through eject-20 and first fails at eject-21, which is
   why eject-22 must now be derived from the actual residual law rather than
   extrapolated blindly
+- the corrected residual-seeded rerun in
+  `/private/tmp/collatz-eject-batch-038923a-eject22-32-rerun-20260413T042552Z`
+  is green through eject-32
+- the prepared wave runner
+  `scripts/collatz_eject_wave_pipeline.py` is ready to continue from eject-33
+  through eject-80 in waves of at most 10 builds with a 1-second stagger
 
 Immediate objective from this boundary:
 
 - analyze the current residual
-  `base = 3623878656*r + 1006111309`, equivalently the generic tail
-  `base = 134217728*r + 66587213`, in the normal single-eject workflow
-- do not extrapolate eject-22 from the old template; seed any harness from the
-  verified residual law `twenty_two_le_dst_eject_of_src_base_eq_134217728r_add_66587213`
+  `base = 7421703487488*r + 22749383245`, equivalently the generic tail
+  `base = 274877906944*r + 22749383245`, in the prepared wave workflow
+- do not extrapolate from the old template; seed any larger harness from the
+  verified residual law `thirty_three_le_dst_eject_of_src_base_eq_274877906944r_add_22749383245`
   and recheck its parity / `v2` structure directly
