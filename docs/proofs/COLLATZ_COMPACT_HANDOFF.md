@@ -54,8 +54,8 @@ current green branch boundary.
 
 - repo: `/tmp/repo-collatz-memory-loop`
 - branch: `codex/collatz-memory-loop`
-- older pushed checkpoint before this boundary: `054e0b3`
-- older pushed message: `Package affine five-step return-machine self-map`
+- older pushed checkpoint before this boundary: `843de49`
+- older pushed message: `Record green eject-13 observer-gap checkpoint`
 
 ### Last Green Boundary In The Current Worktree
 
@@ -152,19 +152,53 @@ The current worktree is now green by targeted
   zero-shell wrappers
   `dst_slice_eq_4_13_of_src_base_eq_14155776r_add_8129101` and
   `fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213`
+- the next exact refinement of that remaining zero-shell `time = 4`
+  residual via the generic split
+  `dst_slice_eq_4_14_of_src_base_eq_1048576r_add_2637` and
+  `fifteen_le_dst_eject_of_src_base_eq_1048576r_add_526925`, and its
+  zero-shell wrappers
+  `dst_slice_eq_4_14_of_src_base_eq_28311552r_add_1051213` and
+  `fifteen_le_dst_eject_of_src_base_eq_28311552r_add_15206989`
+- the next six exact refinements of that remaining zero-shell `time = 4`
+  residual now continue generically through
+  `dst_slice_eq_4_15_of_src_base_eq_2097152r_add_526925` /
+  `sixteen_le_dst_eject_of_src_base_eq_2097152r_add_1575501`,
+  `dst_slice_eq_4_16_of_src_base_eq_4194304r_add_1575501` /
+  `seventeen_le_dst_eject_of_src_base_eq_4194304r_add_3672653`,
+  `dst_slice_eq_4_17_of_src_base_eq_8388608r_add_3672653` /
+  `eighteen_le_dst_eject_of_src_base_eq_8388608r_add_7866957`,
+  `dst_slice_eq_4_18_of_src_base_eq_16777216r_add_7866957` /
+  `nineteen_le_dst_eject_of_src_base_eq_16777216r_add_16255565`,
+  `dst_slice_eq_4_19_of_src_base_eq_33554432r_add_16255565` /
+  `twenty_le_dst_eject_of_src_base_eq_33554432r_add_33032781`, and
+  `dst_slice_eq_4_20_of_src_base_eq_67108864r_add_33032781` /
+  `twenty_one_le_dst_eject_of_src_base_eq_67108864r_add_66587213`
+- on the zero-shell side those same refinements now continue through
+  `dst_slice_eq_4_15_of_src_base_eq_56623104r_add_15206989` /
+  `sixteen_le_dst_eject_of_src_base_eq_56623104r_add_43518541`,
+  `dst_slice_eq_4_16_of_src_base_eq_113246208r_add_43518541` /
+  `seventeen_le_dst_eject_of_src_base_eq_113246208r_add_100141645`,
+  `dst_slice_eq_4_17_of_src_base_eq_226492416r_add_213387853` /
+  `eighteen_le_dst_eject_of_src_base_eq_226492416r_add_100141645`,
+  `dst_slice_eq_4_18_of_src_base_eq_452984832r_add_326634061` /
+  `nineteen_le_dst_eject_of_src_base_eq_452984832r_add_100141645`,
+  `dst_slice_eq_4_19_of_src_base_eq_905969664r_add_553126477` /
+  `twenty_le_dst_eject_of_src_base_eq_905969664r_add_100141645`, and
+  `dst_slice_eq_4_20_of_src_base_eq_1811939328r_add_100141645` /
+  `twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309`
 
 The older pushed checkpoint before this boundary was:
 
-- `054e0b3`
-- `Package affine five-step return-machine self-map`
+- `843de49`
+- `Record green eject-13 observer-gap checkpoint`
 
 So the newer observer-gap carrier / vanishing package is green in the current
 worktree and sits on the current branch beyond that older pushed checkpoint.
 
 The generated declaration index currently on disk reports:
 
-- `generated_at = 2026-04-13T02:05:10.397126+00:00`
-- `declaration_count = 1325`
+- `generated_at = 2026-04-13T03:40:12.669871+00:00`
+- `declaration_count = 1353`
 
 ### Local Delta Beyond The Last Pushed Checkpoint
 
@@ -358,31 +392,23 @@ Interpret them as:
   residual `dst.time ≥ 7` transport law, whose odd sub-shell
   `base = 13824*m + 13549` is exactly the `time = 7` case
 
-These theorems are now green in the current worktree and synced across
-frontier/index/Rover, with no newer unverified source delta beyond them at
-the moment.
-
-### Current Newer Source Delta Beyond That Green Boundary
-
-Lean source currently matches the recorded green hash for this boundary.
-
-- there is no newer unverified theorem cluster beyond the recorded green
-  boundary at this moment
-- the next live target is the zero-shell `time = 4` residual family
-  `base = 14155776*r + 1051213`, aiming to refine the current
-  eject-`≥ 14` tail into an exact eject-14 case and a thinner
-  residual eject-`≥ 15` tail
+These theorems are the current recorded green boundary in the worktree. The
+current source hash, built `olean`, frontier note, handoff file, and
+declaration index are intended to agree on that boundary.
 
 ### Active Verification State
 
-The targeted verification run for the current observer-gap vanishing package
-completed successfully:
+The live targeted verification run for the current observer-gap vanishing
+package completed successfully:
 
-- session id: `86196`
+- session id: `45425`
 - command: `lake build UFRF.CollatzConcurrentScales`
 - result: success with the familiar pre-existing warnings only
 - exact green-source hash is recorded in
   [COLLATZ_TARGETED_BUILD_STATUS.json](/tmp/repo-collatz-memory-loop/docs/proofs/COLLATZ_TARGETED_BUILD_STATUS.json)
+- supporting cumulative sandbox telemetry in
+  `/private/tmp/collatz-eject-batch-20260413T031238Z` is green through
+  eject-20 and first fails at eject-21
 
 ### Recovered Failed Probe
 
@@ -395,14 +421,19 @@ source before this handoff layer was prepared. The theorem has now been
 rederived fresh and verified green using a new proof that overlaps consecutive
 carrier facts; do not conflate the current proof with the discarded script.
 
+The same caution now applies at the current frontier: the first batch-generated
+exact `(4,21)` template is not a theorem just because the split idea is
+natural. Its old odd-factor proof shape fails at eject-21 and should not be
+trusted without fresh single-eject analysis.
+
 ### Artifact Sync State
 
 As of this snapshot:
 
 - the recorded green source hash in
   [COLLATZ_TARGETED_BUILD_STATUS.json](/tmp/repo-collatz-memory-loop/docs/proofs/COLLATZ_TARGETED_BUILD_STATUS.json)
-  now matches the current source boundary, including the exact `(4,13)` /
-  residual `≥ 14` quartet
+  now matches the current source boundary through exact eject-20 with residual
+  `dst.eject ≥ 21`
 - the frontier note and this handoff file now describe the observer-gap
   carrier / vanishing package through theorem-level reindexing of the
   zero-shell time-4/5/6/7 cases into the established `54*k` shell families,
@@ -416,35 +447,46 @@ As of this snapshot:
   eject-11 / residual eject-`≥ 12` refinement of the remaining tail, and
   through the exact eject-12 / residual eject-`≥ 13` refinement of the
   remaining tail, and through the exact eject-13 / residual eject-`≥ 14`
-  refinement of the remaining tail
+  refinement of the remaining tail, through the exact eject-14 /
+  residual eject-`≥ 15` refinement of the remaining tail, and now through the
+  exact eject-15 / residual eject-`≥ 16`, exact eject-16 /
+  residual eject-`≥ 17`, exact eject-17 / residual eject-`≥ 18`, exact
+  eject-18 / residual eject-`≥ 19`, exact eject-19 / residual eject-`≥ 20`,
+  and exact eject-20 / residual eject-`≥ 21` refinements of that same tail
 - the symbol index has been regenerated after the latest green targeted build
-  and now reports `1325` declarations, matching the current green source
-- Rover is now synced through the exact eject-13 / residual eject-`≥ 14`
+  and now reports `1353` declarations
+- Rover is now synced through the exact eject-20 / residual eject-`≥ 21`
   refinement of the zero-shell `time = 4` odd residual via
-  `20260413T021847Z-green-boundary-update-the-zero-shell-time-4-odd-residual-reaches-eject-13.md`
+  `20260413T034632Z-green-boundary-update-the-zero-shell-time-4-odd-residual-reaches-eject-20.md`
 
-That means the repo is back in a compact-safe state at this boundary:
+That means the repo is back in a compact-safer state:
 
 - the local green boundary is known and freshly rebuilt
-- source, status JSON, frontier, handoff, symbol index, and Rover agree on
-  the same boundary
-- the next proof step can start from
-  `base = 14155776*r + 1051213` without carrying an unverified theorem delta
+- the current source matches that recorded boundary
+- docs, status, Rover, and the symbol index are aligned to the same source
+  checkpoint
+- the remaining operational caution is only that the worktree is still
+  uncommitted until the next local commit and push
 
 ## Immediate Next Step
 
-1. treat the exact `(4,13)` / residual `≥ 14` quartet as part of the
-   recorded green boundary
-2. keep using the bridge theorems and inherited time-4 eject tree as the
+1. keep using the bridge theorems and inherited time-4 eject tree as the
    default interface for exact zero-shell cases instead of reopening the
    arithmetic each time
-3. continue from the residual family
-   `base = 14155776*r + 1051213`, aiming for an exact eject-14 case and a
-   thinner eject-`≥ 15` tail before opening a different shell branch
-4. only continue the zero-shell dyadic split after those existing slice
-   interfaces are fully exploited, so the observer package stays attached to
-   intrinsic source-state transport rather than drifting into standalone
-   observer arithmetic
+2. continue from the current residual family
+   `base = 1811939328*r + 1006111309`, equivalently the generic tail
+   `base = 67108864*r + 66587213`, and analyze eject-21 in the normal
+   single-eject workflow
+3. use the repaired batch harness only as supporting telemetry and not as the
+   primary proof workflow; the main target is now a hand-checked local
+   understanding of the first eject-21 split
+4. do not trust the naive batch-generated exact `(4,21)` template without
+   rechecking its parity / `v2` structure, because the old odd-factor proof
+   shape breaks there
+5. only continue the zero-shell dyadic split after that eject-21 interface is
+   understood, so the observer package stays attached to intrinsic
+   source-state transport rather than drifting into standalone observer
+   arithmetic
 
 ## Practical Monitoring Rule
 
@@ -475,9 +517,9 @@ Before proof work:
 - use [$ufrf-memory-loop](/Users/dcharb/.codex/skills/ufrf-memory-loop/SKILL.md)
 - run `python3 scripts/collatz_compact_status.py`
 
-Current split state:
+Current checkpoint state:
 
-- older pushed checkpoint before this boundary is `054e0b3`
+- last pushed checkpoint before this local boundary is `843de49`
 - current local green worktree now includes the observer-gap carrier hierarchy
   through
   `exists_observerGap9387_832_fourthCarrier_with_gate_of_repeatCore832Transition_chain5`,
@@ -495,18 +537,19 @@ Current split state:
   with the theorem-level reindexing bridge
   `exists_dst_time4_base_eq_54k_add_11_of_src_base_eq_1728m_add_589` through
   `exists_dst_time7_base_eq_54k_add_25_of_src_base_eq_13824m_add_13549`, and
-  the zero-shell `time = 4` eject split through
-  `dst_slice_eq_4_13_of_src_base_eq_14155776r_add_8129101` with residual
-  `fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213`
-- targeted build session `86196` completed green in the actual repo for that
+  the zero-shell `time = 4` eject split now through
+  `dst_slice_eq_4_20_of_src_base_eq_1811939328r_add_100141645` with residual
+  `twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309`
+- targeted build session `45425` completed green in the actual repo for that
   boundary
-- current source currently matches the recorded green hash, so there is no
-  newer unverified source delta yet
+- supporting batch telemetry in `/private/tmp/collatz-eject-batch-20260413T031238Z`
+  is cumulatively green through eject-20 and first fails at eject-21
 
 Immediate objective from this boundary:
 
-- consume the new zero-shell `time = 4` residual
-  `base = 14155776*r + 1051213` using the existing time-4 residual tree
-  before opening another shell branch, aiming to refine the current
-  eject-`≥ 14` tail to an exact eject-14 case and a thinner
-  eject-`≥ 15` residual
+- analyze the current residual
+  `base = 1811939328*r + 1006111309`, equivalently the generic tail
+  `base = 67108864*r + 66587213`, in the normal single-eject workflow
+- do not trust the first batch-generated exact `(4,21)` template without
+  rechecking its parity / `v2` structure; the old odd-factor proof shape
+  breaks there

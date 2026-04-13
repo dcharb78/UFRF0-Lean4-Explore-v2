@@ -25658,6 +25658,809 @@ theorem fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213
   simpa using
     fourteen_le_dst_eject_of_src_base_eq_524288r_add_2637 (r := 27 * r + 2) τ ht he hr'
 
+/-- First exact refinement of the residual `dst.eject ≥ 14` time-4 branch:
+    `base = 1048576*r + 2637` lands exactly on destination slice `(4,14)`. -/
+theorem dst_slice_eq_4_14_of_src_base_eq_1048576r_add_2637
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 1048576 * r + 2637) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 14 := by
+  have hm : τ.src.src.base = 64 * (16384 * r + 41) + 13 := by
+    calc
+      τ.src.src.base = 1048576 * r + 2637 := hr
+      _ = 64 * (16384 * r + 41) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 884736 * r + 2225 := by
+    calc
+      τ.dst.src.base = 54 * (16384 * r + 41) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 884736 * r + 2225 := by ring
+  have heject' : τ.dst.src.eject = 14 := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hodd : ¬ 2 ∣ (4374 * r + 11) := by
+      intro h2
+      have hmod : (4374 * r + 11) % 2 = 0 := Nat.mod_eq_zero_of_dvd h2
+      omega
+    have hfac : 3 ^ 4 * (884736 * r + 2225) - 1 = 2 ^ 14 * (4374 * r + 11) := by
+      norm_num
+      omega
+    have hv2 : v2 (3 ^ 4 * (884736 * r + 2225) - 1) = 14 := by
+      calc
+        v2 (3 ^ 4 * (884736 * r + 2225) - 1) =
+            v2 (2 ^ 14 * (4374 * r + 11)) := by
+              rw [hfac]
+        _ = 14 := by
+            simpa using v2_pow_mul_of_not_two_dvd 14 (4374 * r + 11) hodd
+    rw [hv2] at hadm
+    exact hadm
+  exact ⟨htime, heject'⟩
+
+/-- Residual branch after the exact `(4,14)` split:
+    `base = 1048576*r + 526925` still lands at `time = 4`, now with
+    destination ejection valuation at least `15`. -/
+theorem fifteen_le_dst_eject_of_src_base_eq_1048576r_add_526925
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 1048576 * r + 526925) :
+    τ.dst.src.time = 4 ∧ 15 ≤ τ.dst.src.eject := by
+  have hm : τ.src.src.base = 64 * (16384 * r + 8233) + 13 := by
+    calc
+      τ.src.src.base = 1048576 * r + 526925 := hr
+      _ = 64 * (16384 * r + 8233) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 884736 * r + 444593 := by
+    calc
+      τ.dst.src.base = 54 * (16384 * r + 8233) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 884736 * r + 444593 := by ring
+  have heject_ge : 15 ≤ τ.dst.src.eject := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hfac : 3 ^ 4 * (884736 * r + 444593) - 1 = 2 ^ 15 * (2187 * r + 1099) := by
+      norm_num
+      omega
+    have hdiv : 2 ^ 15 ∣ 3 ^ 4 * (884736 * r + 444593) - 1 := by
+      refine ⟨2187 * r + 1099, ?_⟩
+      exact hfac
+    have hpos : 0 < 3 ^ 4 * (884736 * r + 444593) - 1 := by
+      norm_num
+      omega
+    have hv2_ge15 : 15 ≤ v2 (3 ^ 4 * (884736 * r + 444593) - 1) := by
+      by_contra hlt
+      have hpow : v2 (3 ^ 4 * (884736 * r + 444593) - 1) + 1 ≤ 15 := by
+        omega
+      have hdiv' :
+          2 ^ (v2 (3 ^ 4 * (884736 * r + 444593) - 1) + 1) ∣
+            3 ^ 4 * (884736 * r + 444593) - 1 := by
+        exact dvd_trans (Nat.pow_dvd_pow 2 hpow) hdiv
+      exact (v2_pow_succ_not_dvd (3 ^ 4 * (884736 * r + 444593) - 1) hpos) hdiv'
+    rw [hadm]
+    exact hv2_ge15
+  exact ⟨htime, heject_ge⟩
+
+/-- Even subfamily of the remaining zero-shell time-4 residual:
+    `base = 28311552*r + 1051213` lands exactly on destination slice `(4,14)`. -/
+theorem dst_slice_eq_4_14_of_src_base_eq_28311552r_add_1051213
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 28311552 * r + 1051213) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 14 := by
+  have hr' : τ.src.src.base = 1048576 * (27 * r + 1) + 2637 := by
+    calc
+      τ.src.src.base = 28311552 * r + 1051213 := hr
+      _ = 1048576 * (27 * r + 1) + 2637 := by ring
+  simpa using
+    dst_slice_eq_4_14_of_src_base_eq_1048576r_add_2637 (r := 27 * r + 1) τ ht he hr'
+
+/-- Odd subfamily of the remaining zero-shell time-4 residual:
+    `base = 28311552*r + 15206989` still lands at `time = 4`, now with
+    destination ejection valuation at least `15`. -/
+theorem fifteen_le_dst_eject_of_src_base_eq_28311552r_add_15206989
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 28311552 * r + 15206989) :
+    τ.dst.src.time = 4 ∧ 15 ≤ τ.dst.src.eject := by
+  have hr' : τ.src.src.base = 1048576 * (27 * r + 14) + 526925 := by
+    calc
+      τ.src.src.base = 28311552 * r + 15206989 := hr
+      _ = 1048576 * (27 * r + 14) + 526925 := by ring
+  simpa using
+    fifteen_le_dst_eject_of_src_base_eq_1048576r_add_526925 (r := 27 * r + 14) τ ht he hr'
+
+/-- First exact refinement of the residual `dst.eject ≥ 15` time-4 branch:
+    `base = 2097152*r + 526925` lands exactly on destination slice `(4,15)`. -/
+theorem dst_slice_eq_4_15_of_src_base_eq_2097152r_add_526925
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 2097152 * r + 526925) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 15 := by
+  have hm : τ.src.src.base = 64 * (32768 * r + 8233) + 13 := by
+    calc
+      τ.src.src.base = 2097152 * r + 526925 := hr
+      _ = 64 * (32768 * r + 8233) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 1769472 * r + 444593 := by
+    calc
+      τ.dst.src.base = 54 * (32768 * r + 8233) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 1769472 * r + 444593 := by ring
+  have heject' : τ.dst.src.eject = 15 := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hodd : ¬ 2 ∣ (4374 * r + 1099) := by
+      intro h2
+      have hmod : (4374 * r + 1099) % 2 = 0 := Nat.mod_eq_zero_of_dvd h2
+      omega
+    have hfac : 3 ^ 4 * (1769472 * r + 444593) - 1 = 2 ^ 15 * (4374 * r + 1099) := by
+      norm_num
+      omega
+    have hv2 : v2 (3 ^ 4 * (1769472 * r + 444593) - 1) = 15 := by
+      calc
+        v2 (3 ^ 4 * (1769472 * r + 444593) - 1) =
+            v2 (2 ^ 15 * (4374 * r + 1099)) := by
+              rw [hfac]
+        _ = 15 := by
+            simpa using v2_pow_mul_of_not_two_dvd 15 (4374 * r + 1099) hodd
+    rw [hv2] at hadm
+    exact hadm
+  exact ⟨htime, heject'⟩
+
+/-- Residual branch after the exact `(4,15)` split:
+    `base = 2097152*r + 1575501` still lands at `time = 4`, now with
+    destination ejection valuation at least `16`. -/
+theorem sixteen_le_dst_eject_of_src_base_eq_2097152r_add_1575501
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 2097152 * r + 1575501) :
+    τ.dst.src.time = 4 ∧ 16 ≤ τ.dst.src.eject := by
+  have hm : τ.src.src.base = 64 * (32768 * r + 24617) + 13 := by
+    calc
+      τ.src.src.base = 2097152 * r + 1575501 := hr
+      _ = 64 * (32768 * r + 24617) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 1769472 * r + 1329329 := by
+    calc
+      τ.dst.src.base = 54 * (32768 * r + 24617) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 1769472 * r + 1329329 := by ring
+  have heject_ge : 16 ≤ τ.dst.src.eject := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hfac : 3 ^ 4 * (1769472 * r + 1329329) - 1 = 2 ^ 16 * (2187 * r + 1643) := by
+      norm_num
+      omega
+    have hdiv : 2 ^ 16 ∣ 3 ^ 4 * (1769472 * r + 1329329) - 1 := by
+      refine ⟨2187 * r + 1643, ?_⟩
+      exact hfac
+    have hpos : 0 < 3 ^ 4 * (1769472 * r + 1329329) - 1 := by
+      norm_num
+      omega
+    have hv2_ge16 : 16 ≤ v2 (3 ^ 4 * (1769472 * r + 1329329) - 1) := by
+      by_contra hlt
+      have hpow : v2 (3 ^ 4 * (1769472 * r + 1329329) - 1) + 1 ≤ 16 := by
+        omega
+      have hdiv' :
+          2 ^ (v2 (3 ^ 4 * (1769472 * r + 1329329) - 1) + 1) ∣
+            3 ^ 4 * (1769472 * r + 1329329) - 1 := by
+        exact dvd_trans (Nat.pow_dvd_pow 2 hpow) hdiv
+      exact (v2_pow_succ_not_dvd (3 ^ 4 * (1769472 * r + 1329329) - 1) hpos) hdiv'
+    rw [hadm]
+    exact hv2_ge16
+  exact ⟨htime, heject_ge⟩
+
+/-- Even subfamily of the remaining zero-shell time-4 residual:
+    `base = 56623104*r + 15206989` lands exactly on destination slice `(4,15)`. -/
+theorem dst_slice_eq_4_15_of_src_base_eq_56623104r_add_15206989
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 56623104 * r + 15206989) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 15 := by
+  have hr' : τ.src.src.base = 2097152 * (27 * r + 7) + 526925 := by
+    calc
+      τ.src.src.base = 56623104 * r + 15206989 := hr
+      _ = 2097152 * (27 * r + 7) + 526925 := by ring
+  simpa using
+    dst_slice_eq_4_15_of_src_base_eq_2097152r_add_526925 (r := 27 * r + 7) τ ht he hr'
+
+/-- Odd subfamily of the remaining zero-shell time-4 residual:
+    `base = 56623104*r + 43518541` still lands at `time = 4`, now with
+    destination ejection valuation at least `16`. -/
+theorem sixteen_le_dst_eject_of_src_base_eq_56623104r_add_43518541
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 56623104 * r + 43518541) :
+    τ.dst.src.time = 4 ∧ 16 ≤ τ.dst.src.eject := by
+  have hr' : τ.src.src.base = 2097152 * (27 * r + 20) + 1575501 := by
+    calc
+      τ.src.src.base = 56623104 * r + 43518541 := hr
+      _ = 2097152 * (27 * r + 20) + 1575501 := by ring
+  simpa using
+    sixteen_le_dst_eject_of_src_base_eq_2097152r_add_1575501 (r := 27 * r + 20) τ ht he hr'
+
+/-- First exact refinement of the residual `dst.eject ≥ 16` time-4 branch:
+    `base = 4194304*r + 1575501` lands exactly on destination slice `(4,16)`. -/
+theorem dst_slice_eq_4_16_of_src_base_eq_4194304r_add_1575501
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 4194304 * r + 1575501) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 16 := by
+  have hm : τ.src.src.base = 64 * (65536 * r + 24617) + 13 := by
+    calc
+      τ.src.src.base = 4194304 * r + 1575501 := hr
+      _ = 64 * (65536 * r + 24617) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 3538944 * r + 1329329 := by
+    calc
+      τ.dst.src.base = 54 * (65536 * r + 24617) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 3538944 * r + 1329329 := by ring
+  have heject' : τ.dst.src.eject = 16 := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hodd : ¬ 2 ∣ (4374 * r + 1643) := by
+      intro h2
+      have hmod : (4374 * r + 1643) % 2 = 0 := Nat.mod_eq_zero_of_dvd h2
+      omega
+    have hfac : 3 ^ 4 * (3538944 * r + 1329329) - 1 = 2 ^ 16 * (4374 * r + 1643) := by
+      norm_num
+      omega
+    have hv2 : v2 (3 ^ 4 * (3538944 * r + 1329329) - 1) = 16 := by
+      calc
+        v2 (3 ^ 4 * (3538944 * r + 1329329) - 1) =
+            v2 (2 ^ 16 * (4374 * r + 1643)) := by
+              rw [hfac]
+        _ = 16 := by
+            simpa using v2_pow_mul_of_not_two_dvd 16 (4374 * r + 1643) hodd
+    rw [hv2] at hadm
+    exact hadm
+  exact ⟨htime, heject'⟩
+
+/-- Residual branch after the exact `(4,16)` split:
+    `base = 4194304*r + 3672653` still lands at `time = 4`, now with
+    destination ejection valuation at least `17`. -/
+theorem seventeen_le_dst_eject_of_src_base_eq_4194304r_add_3672653
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 4194304 * r + 3672653) :
+    τ.dst.src.time = 4 ∧ 17 ≤ τ.dst.src.eject := by
+  have hm : τ.src.src.base = 64 * (65536 * r + 57385) + 13 := by
+    calc
+      τ.src.src.base = 4194304 * r + 3672653 := hr
+      _ = 64 * (65536 * r + 57385) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 3538944 * r + 3098801 := by
+    calc
+      τ.dst.src.base = 54 * (65536 * r + 57385) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 3538944 * r + 3098801 := by ring
+  have heject_ge : 17 ≤ τ.dst.src.eject := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hfac : 3 ^ 4 * (3538944 * r + 3098801) - 1 = 2 ^ 17 * (2187 * r + 1915) := by
+      norm_num
+      omega
+    have hdiv : 2 ^ 17 ∣ 3 ^ 4 * (3538944 * r + 3098801) - 1 := by
+      refine ⟨2187 * r + 1915, ?_⟩
+      exact hfac
+    have hpos : 0 < 3 ^ 4 * (3538944 * r + 3098801) - 1 := by
+      norm_num
+      omega
+    have hv2_ge : 17 ≤ v2 (3 ^ 4 * (3538944 * r + 3098801) - 1) := by
+      by_contra hlt
+      have hpow : v2 (3 ^ 4 * (3538944 * r + 3098801) - 1) + 1 ≤ 17 := by
+        omega
+      have hdiv' :
+          2 ^ (v2 (3 ^ 4 * (3538944 * r + 3098801) - 1) + 1) ∣
+            3 ^ 4 * (3538944 * r + 3098801) - 1 := by
+          exact dvd_trans (Nat.pow_dvd_pow 2 hpow) hdiv
+      exact (v2_pow_succ_not_dvd (3 ^ 4 * (3538944 * r + 3098801) - 1) hpos) hdiv'
+    rw [hadm]
+    exact hv2_ge
+  exact ⟨htime, heject_ge⟩
+
+/-- Zero-shell wrapper of the exact `(4,16)` split:
+    `base = 113246208*r + 43518541` lands exactly on
+    destination slice `(4,16)`. -/
+theorem dst_slice_eq_4_16_of_src_base_eq_113246208r_add_43518541
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 113246208 * r + 43518541) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 16 := by
+  have hr' : τ.src.src.base = 4194304 * (27 * r + 10) + 1575501 := by
+    calc
+      τ.src.src.base = 113246208 * r + 43518541 := hr
+      _ = 4194304 * (27 * r + 10) + 1575501 := by ring
+  simpa using
+    dst_slice_eq_4_16_of_src_base_eq_4194304r_add_1575501 (r := 27 * r + 10) τ ht he hr'
+
+/-- Zero-shell wrapper of the residual `dst.eject ≥ 17` branch:
+    `base = 113246208*r + 100141645` still lands at
+    `time = 4`, now with destination ejection valuation at least `17`. -/
+theorem seventeen_le_dst_eject_of_src_base_eq_113246208r_add_100141645
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 113246208 * r + 100141645) :
+    τ.dst.src.time = 4 ∧ 17 ≤ τ.dst.src.eject := by
+  have hr' : τ.src.src.base = 4194304 * (27 * r + 23) + 3672653 := by
+    calc
+      τ.src.src.base = 113246208 * r + 100141645 := hr
+      _ = 4194304 * (27 * r + 23) + 3672653 := by ring
+  simpa using
+    seventeen_le_dst_eject_of_src_base_eq_4194304r_add_3672653 (r := 27 * r + 23) τ ht he hr'
+
+/-- First exact refinement of the residual `dst.eject ≥ 17` time-4 branch:
+    `base = 8388608*r + 3672653` lands exactly on destination slice `(4,17)`. -/
+theorem dst_slice_eq_4_17_of_src_base_eq_8388608r_add_3672653
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 8388608 * r + 3672653) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 17 := by
+  have hm : τ.src.src.base = 64 * (131072 * r + 57385) + 13 := by
+    calc
+      τ.src.src.base = 8388608 * r + 3672653 := hr
+      _ = 64 * (131072 * r + 57385) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 7077888 * r + 3098801 := by
+    calc
+      τ.dst.src.base = 54 * (131072 * r + 57385) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 7077888 * r + 3098801 := by ring
+  have heject' : τ.dst.src.eject = 17 := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hodd : ¬ 2 ∣ (4374 * r + 1915) := by
+      intro h2
+      have hmod : (4374 * r + 1915) % 2 = 0 := Nat.mod_eq_zero_of_dvd h2
+      omega
+    have hfac : 3 ^ 4 * (7077888 * r + 3098801) - 1 = 2 ^ 17 * (4374 * r + 1915) := by
+      norm_num
+      omega
+    have hv2 : v2 (3 ^ 4 * (7077888 * r + 3098801) - 1) = 17 := by
+      calc
+        v2 (3 ^ 4 * (7077888 * r + 3098801) - 1) =
+            v2 (2 ^ 17 * (4374 * r + 1915)) := by
+              rw [hfac]
+        _ = 17 := by
+            simpa using v2_pow_mul_of_not_two_dvd 17 (4374 * r + 1915) hodd
+    rw [hv2] at hadm
+    exact hadm
+  exact ⟨htime, heject'⟩
+
+/-- Residual branch after the exact `(4,17)` split:
+    `base = 8388608*r + 7866957` still lands at `time = 4`, now with
+    destination ejection valuation at least `18`. -/
+theorem eighteen_le_dst_eject_of_src_base_eq_8388608r_add_7866957
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 8388608 * r + 7866957) :
+    τ.dst.src.time = 4 ∧ 18 ≤ τ.dst.src.eject := by
+  have hm : τ.src.src.base = 64 * (131072 * r + 122921) + 13 := by
+    calc
+      τ.src.src.base = 8388608 * r + 7866957 := hr
+      _ = 64 * (131072 * r + 122921) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 7077888 * r + 6637745 := by
+    calc
+      τ.dst.src.base = 54 * (131072 * r + 122921) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 7077888 * r + 6637745 := by ring
+  have heject_ge : 18 ≤ τ.dst.src.eject := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hfac : 3 ^ 4 * (7077888 * r + 6637745) - 1 = 2 ^ 18 * (2187 * r + 2051) := by
+      norm_num
+      omega
+    have hdiv : 2 ^ 18 ∣ 3 ^ 4 * (7077888 * r + 6637745) - 1 := by
+      refine ⟨2187 * r + 2051, ?_⟩
+      exact hfac
+    have hpos : 0 < 3 ^ 4 * (7077888 * r + 6637745) - 1 := by
+      norm_num
+      omega
+    have hv2_ge : 18 ≤ v2 (3 ^ 4 * (7077888 * r + 6637745) - 1) := by
+      by_contra hlt
+      have hpow : v2 (3 ^ 4 * (7077888 * r + 6637745) - 1) + 1 ≤ 18 := by
+        omega
+      have hdiv' :
+          2 ^ (v2 (3 ^ 4 * (7077888 * r + 6637745) - 1) + 1) ∣
+            3 ^ 4 * (7077888 * r + 6637745) - 1 := by
+          exact dvd_trans (Nat.pow_dvd_pow 2 hpow) hdiv
+      exact (v2_pow_succ_not_dvd (3 ^ 4 * (7077888 * r + 6637745) - 1) hpos) hdiv'
+    rw [hadm]
+    exact hv2_ge
+  exact ⟨htime, heject_ge⟩
+
+/-- Zero-shell wrapper of the exact `(4,17)` split:
+    `base = 226492416*r + 213387853` lands exactly on
+    destination slice `(4,17)`. -/
+theorem dst_slice_eq_4_17_of_src_base_eq_226492416r_add_213387853
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 226492416 * r + 213387853) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 17 := by
+  have hr' : τ.src.src.base = 8388608 * (27 * r + 25) + 3672653 := by
+    calc
+      τ.src.src.base = 226492416 * r + 213387853 := hr
+      _ = 8388608 * (27 * r + 25) + 3672653 := by ring
+  simpa using
+    dst_slice_eq_4_17_of_src_base_eq_8388608r_add_3672653 (r := 27 * r + 25) τ ht he hr'
+
+/-- Zero-shell wrapper of the residual `dst.eject ≥ 18` branch:
+    `base = 226492416*r + 100141645` still lands at
+    `time = 4`, now with destination ejection valuation at least `18`. -/
+theorem eighteen_le_dst_eject_of_src_base_eq_226492416r_add_100141645
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 226492416 * r + 100141645) :
+    τ.dst.src.time = 4 ∧ 18 ≤ τ.dst.src.eject := by
+  have hr' : τ.src.src.base = 8388608 * (27 * r + 11) + 7866957 := by
+    calc
+      τ.src.src.base = 226492416 * r + 100141645 := hr
+      _ = 8388608 * (27 * r + 11) + 7866957 := by ring
+  simpa using
+    eighteen_le_dst_eject_of_src_base_eq_8388608r_add_7866957 (r := 27 * r + 11) τ ht he hr'
+
+/-- First exact refinement of the residual `dst.eject ≥ 18` time-4 branch:
+    `base = 16777216*r + 7866957` lands exactly on destination slice `(4,18)`. -/
+theorem dst_slice_eq_4_18_of_src_base_eq_16777216r_add_7866957
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 16777216 * r + 7866957) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 18 := by
+  have hm : τ.src.src.base = 64 * (262144 * r + 122921) + 13 := by
+    calc
+      τ.src.src.base = 16777216 * r + 7866957 := hr
+      _ = 64 * (262144 * r + 122921) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 14155776 * r + 6637745 := by
+    calc
+      τ.dst.src.base = 54 * (262144 * r + 122921) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 14155776 * r + 6637745 := by ring
+  have heject' : τ.dst.src.eject = 18 := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hodd : ¬ 2 ∣ (4374 * r + 2051) := by
+      intro h2
+      have hmod : (4374 * r + 2051) % 2 = 0 := Nat.mod_eq_zero_of_dvd h2
+      omega
+    have hfac : 3 ^ 4 * (14155776 * r + 6637745) - 1 = 2 ^ 18 * (4374 * r + 2051) := by
+      norm_num
+      omega
+    have hv2 : v2 (3 ^ 4 * (14155776 * r + 6637745) - 1) = 18 := by
+      calc
+        v2 (3 ^ 4 * (14155776 * r + 6637745) - 1) =
+            v2 (2 ^ 18 * (4374 * r + 2051)) := by
+              rw [hfac]
+        _ = 18 := by
+            simpa using v2_pow_mul_of_not_two_dvd 18 (4374 * r + 2051) hodd
+    rw [hv2] at hadm
+    exact hadm
+  exact ⟨htime, heject'⟩
+
+/-- Residual branch after the exact `(4,18)` split:
+    `base = 16777216*r + 16255565` still lands at `time = 4`, now with
+    destination ejection valuation at least `19`. -/
+theorem nineteen_le_dst_eject_of_src_base_eq_16777216r_add_16255565
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 16777216 * r + 16255565) :
+    τ.dst.src.time = 4 ∧ 19 ≤ τ.dst.src.eject := by
+  have hm : τ.src.src.base = 64 * (262144 * r + 253993) + 13 := by
+    calc
+      τ.src.src.base = 16777216 * r + 16255565 := hr
+      _ = 64 * (262144 * r + 253993) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 14155776 * r + 13715633 := by
+    calc
+      τ.dst.src.base = 54 * (262144 * r + 253993) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 14155776 * r + 13715633 := by ring
+  have heject_ge : 19 ≤ τ.dst.src.eject := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hfac : 3 ^ 4 * (14155776 * r + 13715633) - 1 = 2 ^ 19 * (2187 * r + 2119) := by
+      norm_num
+      omega
+    have hdiv : 2 ^ 19 ∣ 3 ^ 4 * (14155776 * r + 13715633) - 1 := by
+      refine ⟨2187 * r + 2119, ?_⟩
+      exact hfac
+    have hpos : 0 < 3 ^ 4 * (14155776 * r + 13715633) - 1 := by
+      norm_num
+      omega
+    have hv2_ge : 19 ≤ v2 (3 ^ 4 * (14155776 * r + 13715633) - 1) := by
+      by_contra hlt
+      have hpow : v2 (3 ^ 4 * (14155776 * r + 13715633) - 1) + 1 ≤ 19 := by
+        omega
+      have hdiv' :
+          2 ^ (v2 (3 ^ 4 * (14155776 * r + 13715633) - 1) + 1) ∣
+            3 ^ 4 * (14155776 * r + 13715633) - 1 := by
+          exact dvd_trans (Nat.pow_dvd_pow 2 hpow) hdiv
+      exact (v2_pow_succ_not_dvd (3 ^ 4 * (14155776 * r + 13715633) - 1) hpos) hdiv'
+    rw [hadm]
+    exact hv2_ge
+  exact ⟨htime, heject_ge⟩
+
+/-- Zero-shell wrapper of the exact `(4,18)` split:
+    `base = 452984832*r + 326634061` lands exactly on
+    destination slice `(4,18)`. -/
+theorem dst_slice_eq_4_18_of_src_base_eq_452984832r_add_326634061
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 452984832 * r + 326634061) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 18 := by
+  have hr' : τ.src.src.base = 16777216 * (27 * r + 19) + 7866957 := by
+    calc
+      τ.src.src.base = 452984832 * r + 326634061 := hr
+      _ = 16777216 * (27 * r + 19) + 7866957 := by ring
+  simpa using
+    dst_slice_eq_4_18_of_src_base_eq_16777216r_add_7866957 (r := 27 * r + 19) τ ht he hr'
+
+/-- Zero-shell wrapper of the residual `dst.eject ≥ 19` branch:
+    `base = 452984832*r + 100141645` still lands at
+    `time = 4`, now with destination ejection valuation at least `19`. -/
+theorem nineteen_le_dst_eject_of_src_base_eq_452984832r_add_100141645
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 452984832 * r + 100141645) :
+    τ.dst.src.time = 4 ∧ 19 ≤ τ.dst.src.eject := by
+  have hr' : τ.src.src.base = 16777216 * (27 * r + 5) + 16255565 := by
+    calc
+      τ.src.src.base = 452984832 * r + 100141645 := hr
+      _ = 16777216 * (27 * r + 5) + 16255565 := by ring
+  simpa using
+    nineteen_le_dst_eject_of_src_base_eq_16777216r_add_16255565 (r := 27 * r + 5) τ ht he hr'
+
+/-- First exact refinement of the residual `dst.eject ≥ 19` time-4 branch:
+    `base = 33554432*r + 16255565` lands exactly on destination slice `(4,19)`. -/
+theorem dst_slice_eq_4_19_of_src_base_eq_33554432r_add_16255565
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 33554432 * r + 16255565) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 19 := by
+  have hm : τ.src.src.base = 64 * (524288 * r + 253993) + 13 := by
+    calc
+      τ.src.src.base = 33554432 * r + 16255565 := hr
+      _ = 64 * (524288 * r + 253993) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 28311552 * r + 13715633 := by
+    calc
+      τ.dst.src.base = 54 * (524288 * r + 253993) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 28311552 * r + 13715633 := by ring
+  have heject' : τ.dst.src.eject = 19 := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hodd : ¬ 2 ∣ (4374 * r + 2119) := by
+      intro h2
+      have hmod : (4374 * r + 2119) % 2 = 0 := Nat.mod_eq_zero_of_dvd h2
+      omega
+    have hfac : 3 ^ 4 * (28311552 * r + 13715633) - 1 = 2 ^ 19 * (4374 * r + 2119) := by
+      norm_num
+      omega
+    have hv2 : v2 (3 ^ 4 * (28311552 * r + 13715633) - 1) = 19 := by
+      calc
+        v2 (3 ^ 4 * (28311552 * r + 13715633) - 1) =
+            v2 (2 ^ 19 * (4374 * r + 2119)) := by
+              rw [hfac]
+        _ = 19 := by
+            simpa using v2_pow_mul_of_not_two_dvd 19 (4374 * r + 2119) hodd
+    rw [hv2] at hadm
+    exact hadm
+  exact ⟨htime, heject'⟩
+
+/-- Residual branch after the exact `(4,19)` split:
+    `base = 33554432*r + 33032781` still lands at `time = 4`, now with
+    destination ejection valuation at least `20`. -/
+theorem twenty_le_dst_eject_of_src_base_eq_33554432r_add_33032781
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 33554432 * r + 33032781) :
+    τ.dst.src.time = 4 ∧ 20 ≤ τ.dst.src.eject := by
+  have hm : τ.src.src.base = 64 * (524288 * r + 516137) + 13 := by
+    calc
+      τ.src.src.base = 33554432 * r + 33032781 := hr
+      _ = 64 * (524288 * r + 516137) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 28311552 * r + 27871409 := by
+    calc
+      τ.dst.src.base = 54 * (524288 * r + 516137) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 28311552 * r + 27871409 := by ring
+  have heject_ge : 20 ≤ τ.dst.src.eject := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hfac : 3 ^ 4 * (28311552 * r + 27871409) - 1 = 2 ^ 20 * (2187 * r + 2153) := by
+      norm_num
+      omega
+    have hdiv : 2 ^ 20 ∣ 3 ^ 4 * (28311552 * r + 27871409) - 1 := by
+      refine ⟨2187 * r + 2153, ?_⟩
+      exact hfac
+    have hpos : 0 < 3 ^ 4 * (28311552 * r + 27871409) - 1 := by
+      norm_num
+      omega
+    have hv2_ge : 20 ≤ v2 (3 ^ 4 * (28311552 * r + 27871409) - 1) := by
+      by_contra hlt
+      have hpow : v2 (3 ^ 4 * (28311552 * r + 27871409) - 1) + 1 ≤ 20 := by
+        omega
+      have hdiv' :
+          2 ^ (v2 (3 ^ 4 * (28311552 * r + 27871409) - 1) + 1) ∣
+            3 ^ 4 * (28311552 * r + 27871409) - 1 := by
+          exact dvd_trans (Nat.pow_dvd_pow 2 hpow) hdiv
+      exact (v2_pow_succ_not_dvd (3 ^ 4 * (28311552 * r + 27871409) - 1) hpos) hdiv'
+    rw [hadm]
+    exact hv2_ge
+  exact ⟨htime, heject_ge⟩
+
+/-- Zero-shell wrapper of the exact `(4,19)` split:
+    `base = 905969664*r + 553126477` lands exactly on
+    destination slice `(4,19)`. -/
+theorem dst_slice_eq_4_19_of_src_base_eq_905969664r_add_553126477
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 905969664 * r + 553126477) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 19 := by
+  have hr' : τ.src.src.base = 33554432 * (27 * r + 16) + 16255565 := by
+    calc
+      τ.src.src.base = 905969664 * r + 553126477 := hr
+      _ = 33554432 * (27 * r + 16) + 16255565 := by ring
+  simpa using
+    dst_slice_eq_4_19_of_src_base_eq_33554432r_add_16255565 (r := 27 * r + 16) τ ht he hr'
+
+/-- Zero-shell wrapper of the residual `dst.eject ≥ 20` branch:
+    `base = 905969664*r + 100141645` still lands at
+    `time = 4`, now with destination ejection valuation at least `20`. -/
+theorem twenty_le_dst_eject_of_src_base_eq_905969664r_add_100141645
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 905969664 * r + 100141645) :
+    τ.dst.src.time = 4 ∧ 20 ≤ τ.dst.src.eject := by
+  have hr' : τ.src.src.base = 33554432 * (27 * r + 2) + 33032781 := by
+    calc
+      τ.src.src.base = 905969664 * r + 100141645 := hr
+      _ = 33554432 * (27 * r + 2) + 33032781 := by ring
+  simpa using
+    twenty_le_dst_eject_of_src_base_eq_33554432r_add_33032781 (r := 27 * r + 2) τ ht he hr'
+
+/-- First exact refinement of the residual `dst.eject ≥ 20` time-4 branch:
+    `base = 67108864*r + 33032781` lands exactly on destination slice `(4,20)`. -/
+theorem dst_slice_eq_4_20_of_src_base_eq_67108864r_add_33032781
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 67108864 * r + 33032781) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 20 := by
+  have hm : τ.src.src.base = 64 * (1048576 * r + 516137) + 13 := by
+    calc
+      τ.src.src.base = 67108864 * r + 33032781 := hr
+      _ = 64 * (1048576 * r + 516137) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 56623104 * r + 27871409 := by
+    calc
+      τ.dst.src.base = 54 * (1048576 * r + 516137) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 56623104 * r + 27871409 := by ring
+  have heject' : τ.dst.src.eject = 20 := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hodd : ¬ 2 ∣ (4374 * r + 2153) := by
+      intro h2
+      have hmod : (4374 * r + 2153) % 2 = 0 := Nat.mod_eq_zero_of_dvd h2
+      omega
+    have hfac : 3 ^ 4 * (56623104 * r + 27871409) - 1 = 2 ^ 20 * (4374 * r + 2153) := by
+      norm_num
+      omega
+    have hv2 : v2 (3 ^ 4 * (56623104 * r + 27871409) - 1) = 20 := by
+      calc
+        v2 (3 ^ 4 * (56623104 * r + 27871409) - 1) =
+            v2 (2 ^ 20 * (4374 * r + 2153)) := by
+              rw [hfac]
+        _ = 20 := by
+            simpa using v2_pow_mul_of_not_two_dvd 20 (4374 * r + 2153) hodd
+    rw [hv2] at hadm
+    exact hadm
+  exact ⟨htime, heject'⟩
+
+/-- Residual branch after the exact `(4,20)` split:
+    `base = 67108864*r + 66587213` still lands at `time = 4`, now with
+    destination ejection valuation at least `21`. -/
+theorem twenty_one_le_dst_eject_of_src_base_eq_67108864r_add_66587213
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 67108864 * r + 66587213) :
+    τ.dst.src.time = 4 ∧ 21 ≤ τ.dst.src.eject := by
+  have hm : τ.src.src.base = 64 * (1048576 * r + 1040425) + 13 := by
+    calc
+      τ.src.src.base = 67108864 * r + 66587213 := hr
+      _ = 64 * (1048576 * r + 1040425) + 13 := by ring
+  have htime : τ.dst.src.time = 4 :=
+    dst_time_eq_four_of_src_base_eq_64m_add_13 τ ht he hm
+  have hbase : τ.dst.src.base = 56623104 * r + 56182961 := by
+    calc
+      τ.dst.src.base = 54 * (1048576 * r + 1040425) + 11 :=
+        dst_base_eq_54m_add_11_of_src_base_eq_64m_add_13 τ ht he hm
+      _ = 56623104 * r + 56182961 := by ring
+  have heject_ge : 21 ≤ τ.dst.src.eject := by
+    have hadm : τ.dst.src.eject = v2 (3 ^ τ.dst.src.time * τ.dst.src.base - 1) :=
+      τ.dst.admissible.2.2
+    rw [htime, hbase] at hadm
+    have hfac : 3 ^ 4 * (56623104 * r + 56182961) - 1 = 2 ^ 21 * (2187 * r + 2170) := by
+      norm_num
+      omega
+    have hdiv : 2 ^ 21 ∣ 3 ^ 4 * (56623104 * r + 56182961) - 1 := by
+      refine ⟨2187 * r + 2170, ?_⟩
+      exact hfac
+    have hpos : 0 < 3 ^ 4 * (56623104 * r + 56182961) - 1 := by
+      norm_num
+      omega
+    have hv2_ge : 21 ≤ v2 (3 ^ 4 * (56623104 * r + 56182961) - 1) := by
+      by_contra hlt
+      have hpow : v2 (3 ^ 4 * (56623104 * r + 56182961) - 1) + 1 ≤ 21 := by
+        omega
+      have hdiv' :
+          2 ^ (v2 (3 ^ 4 * (56623104 * r + 56182961) - 1) + 1) ∣
+            3 ^ 4 * (56623104 * r + 56182961) - 1 := by
+          exact dvd_trans (Nat.pow_dvd_pow 2 hpow) hdiv
+      exact (v2_pow_succ_not_dvd (3 ^ 4 * (56623104 * r + 56182961) - 1) hpos) hdiv'
+    rw [hadm]
+    exact hv2_ge
+  exact ⟨htime, heject_ge⟩
+
+/-- Zero-shell wrapper of the exact `(4,20)` split:
+    `base = 1811939328*r + 100141645` lands exactly on
+    destination slice `(4,20)`. -/
+theorem dst_slice_eq_4_20_of_src_base_eq_1811939328r_add_100141645
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 1811939328 * r + 100141645) :
+    τ.dst.src.time = 4 ∧ τ.dst.src.eject = 20 := by
+  have hr' : τ.src.src.base = 67108864 * (27 * r + 1) + 33032781 := by
+    calc
+      τ.src.src.base = 1811939328 * r + 100141645 := hr
+      _ = 67108864 * (27 * r + 1) + 33032781 := by ring
+  simpa using
+    dst_slice_eq_4_20_of_src_base_eq_67108864r_add_33032781 (r := 27 * r + 1) τ ht he hr'
+
+/-- Zero-shell wrapper of the residual `dst.eject ≥ 21` branch:
+    `base = 1811939328*r + 1006111309` still lands at
+    `time = 4`, now with destination ejection valuation at least `21`. -/
+theorem twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309
+    {B : ℕ} (τ : RegimeIIBadFrontierTransition B)
+    (ht : τ.src.src.time = 3) (he : τ.src.src.eject = 1)
+    {r : ℕ} (hr : τ.src.src.base = 1811939328 * r + 1006111309) :
+    τ.dst.src.time = 4 ∧ 21 ≤ τ.dst.src.eject := by
+  have hr' : τ.src.src.base = 67108864 * (27 * r + 14) + 66587213 := by
+    calc
+      τ.src.src.base = 1811939328 * r + 1006111309 := hr
+      _ = 67108864 * (27 * r + 14) + 66587213 := by ring
+  simpa using
+    twenty_one_le_dst_eject_of_src_base_eq_67108864r_add_66587213 (r := 27 * r + 14) τ ht he hr'
+
 /-- First exact refinement of the `time = 5` shell:
     `base = 256*r + 173` lands exactly on destination slice `(5,1)`. -/
 theorem dst_slice_eq_5_1_of_src_base_eq_256r_add_173

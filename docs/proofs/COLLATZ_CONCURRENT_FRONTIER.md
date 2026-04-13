@@ -89,8 +89,8 @@ shift the exact line, but this theorem remains the global target.
 Current checkpoint:
 
 - Branch: `codex/collatz-memory-loop`
-- Older pushed checkpoint before this boundary: `054e0b3`
-- Older pushed message: `Package affine five-step return-machine self-map`
+- Older pushed checkpoint before this boundary: `843de49`
+- Older pushed message: `Record green eject-13 observer-gap checkpoint`
 - Current worktree state: targeted `lake build UFRF.CollatzConcurrentScales`
   is green after adding the higher-time `32*k + 13` source self-threshold /
   value / radial package, the shared `9387` observer-line bridge to the older
@@ -129,7 +129,13 @@ Current checkpoint:
   eject-`≥ 12` tail, and the next exact refinement of that remaining tail
   into an exact eject-12 branch plus a residual eject-`≥ 13` tail, and the
   next exact refinement of that remaining tail into an exact eject-13 branch
-  plus a residual eject-`≥ 14` tail
+  plus a residual eject-`≥ 14` tail, and the next exact refinement of that
+  remaining tail into an exact eject-14 branch plus a residual eject-`≥ 15`
+  tail, and the next exact refinements of that same tail into exact eject-15
+  / residual eject-`≥ 16`, exact eject-16 / residual eject-`≥ 17`, exact
+  eject-17 / residual eject-`≥ 18`, exact eject-18 / residual eject-`≥ 19`,
+  exact eject-19 / residual eject-`≥ 20`, and exact eject-20 /
+  residual eject-`≥ 21` tails
 
 ## Resume State
 
@@ -446,6 +452,13 @@ source edits before describing the frontier.
     zero-shell side as
     `dst_slice_eq_4_13_of_src_base_eq_14155776r_add_8129101` and
     `fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213`
+  - local green WIP now also includes the next exact refinement of that
+    remaining tail, first as the generic time-4 split
+    `dst_slice_eq_4_14_of_src_base_eq_1048576r_add_2637` and
+    `fifteen_le_dst_eject_of_src_base_eq_1048576r_add_526925`, and on the
+    zero-shell side as
+    `dst_slice_eq_4_14_of_src_base_eq_28311552r_add_1051213` and
+    `fifteen_le_dst_eject_of_src_base_eq_28311552r_add_15206989`
   - these new destination bases are not arbitrary arithmetic byproducts:
     `1458*m + 497`, `1458*m + 613`, `1458*m + 671`, and `1458*m + 1429`
     match the pre-existing higher-time shell residues `11, 19, 23, 25 mod 54`
@@ -453,8 +466,18 @@ source edits before describing the frontier.
     `time = 9` case is not part of the verified frontier; the green theorem
     there is only the residual `dst.time ≥ 7` transport law, with exact
     `time = 7` recovered on the odd sub-shell `base = 13824*m + 13549`
-  - current source currently matches that green build boundary, so there is
-    no newer unverified source delta at this moment
+  - the current green boundary now continues through the exact `(4,15)` /
+    residual `≥ 16`, exact `(4,16)` / residual `≥ 17`, exact `(4,17)` /
+    residual `≥ 18`, exact `(4,18)` / residual `≥ 19`, exact `(4,19)` /
+    residual `≥ 20`, and exact `(4,20)` / residual `≥ 21` refinements,
+    ending on the generic tail
+    `twenty_one_le_dst_eject_of_src_base_eq_67108864r_add_66587213` and its
+    zero-shell wrapper
+    `twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309`
+  - repaired cumulative sandbox telemetry is green through eject-20 and first
+    fails at eject-21, so the next frontier move should return to a
+    single-eject proof analysis there instead of trusting the old exact
+    template blindly
 - Resume rule:
   - when chat memory, Rover, and source disagree, trust Lean source plus the
     latest green build boundary
@@ -1076,9 +1099,10 @@ Exploratory interpretation:
 
 ## Best Next Step
 
-The immediate next step is to continue consuming the remaining odd zero-shell
-`time = 4` tail inside the existing time-4 eject tree rather than opening
-another parallel split tree.
+The immediate next step is to keep the now-verified odd zero-shell `time = 4`
+refinement through eject-20 fixed, and then continue consuming the remaining
+tail inside the existing time-4 eject tree with a normal single-eject proof
+analysis at eject-21 rather than opening another parallel split tree.
 
 - the current green boundary already reaches the exact zero-shell transport
   family `2^(dst.time - 4) * dst.base = 729*m + 497`, its first exact
@@ -1087,23 +1111,22 @@ another parallel split tree.
 - the structural opportunity is now explicit in source: those bridge lemmas
   hand the zero-shell outputs to the same higher-time shell interfaces that
   the existing slice and exact-zone theorems already know how to consume
-- the current green boundary now already includes the exact eject-13 /
-  residual eject-`≥ 14` split, so the next proof move should use the residual
-  theorem `fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213`
-  together with the already verified time-4 residual machinery, aiming for an
-  exact eject-14 case and a thinner eject-`≥ 15` tail, so the observer-gap
-  package keeps re-entering the established shell tree rather than reopening
-  fresh arithmetic
+- the next proof move should therefore use the new residual theorem
+  `twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309`
+  together with the already verified time-4 residual machinery, aiming to
+  understand the first eject-21 split without assuming the older exact-branch
+  parity pattern still persists
 - more concretely, the frontier should stay inside the same time-4 eject tree:
-  the current green boundary already reaches the exact eject-13 split as the
+  the current green boundary already reaches the exact eject-20 split as the
   generic pair
-  `dst_slice_eq_4_13_of_src_base_eq_524288r_add_264781` /
-  `fourteen_le_dst_eject_of_src_base_eq_524288r_add_2637` and the zero-shell
-  wrappers
-  `dst_slice_eq_4_13_of_src_base_eq_14155776r_add_8129101` /
-  `fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213`; the next live
-  tail is the `eject ≥ 14` family on
-  `base = 14155776*r + 1051213`
+  `dst_slice_eq_4_20_of_src_base_eq_67108864r_add_33032781` /
+  `twenty_one_le_dst_eject_of_src_base_eq_67108864r_add_66587213` and the
+  zero-shell wrappers
+  `dst_slice_eq_4_20_of_src_base_eq_1811939328r_add_100141645` /
+  `twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309`
+- repaired batch telemetry showed that the first naive exact `(4,21)` proof
+  shape fails: its candidate factor `4374*r + 2170` is even, so the old
+  odd-factor argument cannot certify a uniform exact valuation there
 - treat `base = 6912*m + 6637` carefully: the green fact there is only the
   residual law `dst.time ≥ 7` with
   `2^(dst.time - 7) * dst.base = 729*m + 700`; do not revive the discarded

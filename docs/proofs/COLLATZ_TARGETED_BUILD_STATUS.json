@@ -1,10 +1,10 @@
 {
   "source": "UFRF/CollatzConcurrentScales.lean",
-  "verified_at": "2026-04-13T02:16:28Z",
+  "verified_at": "2026-04-13T03:40:12Z",
   "command": "lake build UFRF.CollatzConcurrentScales",
-  "session_id": 86196,
-  "source_sha256": "d0ec63dc34511e40c3521c495c282ae4156b31175afdf064a81057a066ed8846",
-  "boundary": "observer-gap vanishing package is green through the zero-shell time = 4 odd residual split into an exact eject-13 branch and a residual eject >= 14 tail",
+  "session_id": 45425,
+  "source_sha256": "1659d6a82cfc5ac30a3526471d6649e06c06d071ba85687bd449ab5d48b710c1",
+  "boundary": "observer-gap vanishing package is green through the zero-shell time = 4 odd residual split into an exact eject-20 branch and a residual eject >= 21 tail",
   "notes": [
     "This hash records the last known green source boundary for UFRF/CollatzConcurrentScales.lean.",
     "The recorded boundary includes exists_observerGap9387_832_fourthCarrier_of_repeatCore832Transition_chain4 and exists_observerGap9387_832_fourthCarrier_with_gate_of_repeatCore832Transition_chain5.",
@@ -21,7 +21,15 @@
     "That eject >= 11 tail is now further refined by the generic exact split dst_slice_eq_4_11_of_src_base_eq_131072r_add_68173 together with twelve_le_dst_eject_of_src_base_eq_131072r_add_2637, and by the zero-shell wrappers dst_slice_eq_4_11_of_src_base_eq_3538944r_add_2820685 together with twelve_le_dst_eject_of_src_base_eq_3538944r_add_1051213, leaving only a thinner residual eject >= 12 tail on the zero-shell time = 4 side.",
     "That eject >= 12 tail is now further refined by the generic exact split dst_slice_eq_4_12_of_src_base_eq_262144r_add_133709 together with thirteen_le_dst_eject_of_src_base_eq_262144r_add_2637, and by the zero-shell wrappers dst_slice_eq_4_12_of_src_base_eq_7077888r_add_4590157 together with thirteen_le_dst_eject_of_src_base_eq_7077888r_add_1051213, leaving only a thinner residual eject >= 13 tail on the zero-shell time = 4 side.",
     "That eject >= 13 tail is now further refined by the generic exact split dst_slice_eq_4_13_of_src_base_eq_524288r_add_264781 together with fourteen_le_dst_eject_of_src_base_eq_524288r_add_2637, and by the zero-shell wrappers dst_slice_eq_4_13_of_src_base_eq_14155776r_add_8129101 together with fourteen_le_dst_eject_of_src_base_eq_14155776r_add_1051213, leaving only a thinner residual eject >= 14 tail on the zero-shell time = 4 side.",
+    "That eject >= 14 tail is now further refined by the generic exact split dst_slice_eq_4_14_of_src_base_eq_1048576r_add_2637 together with fifteen_le_dst_eject_of_src_base_eq_1048576r_add_526925, and by the zero-shell wrappers dst_slice_eq_4_14_of_src_base_eq_28311552r_add_1051213 together with fifteen_le_dst_eject_of_src_base_eq_28311552r_add_15206989, leaving only a thinner residual eject >= 15 tail on the zero-shell time = 4 side.",
+    "That eject >= 15 tail is now further refined by the generic exact split dst_slice_eq_4_15_of_src_base_eq_2097152r_add_526925 together with sixteen_le_dst_eject_of_src_base_eq_2097152r_add_1575501, and by the zero-shell wrappers dst_slice_eq_4_15_of_src_base_eq_56623104r_add_15206989 together with sixteen_le_dst_eject_of_src_base_eq_56623104r_add_43518541, leaving only a thinner residual eject >= 16 tail on the zero-shell time = 4 side.",
+    "That eject >= 16 tail is now further refined by the generic exact split dst_slice_eq_4_16_of_src_base_eq_4194304r_add_1575501 together with seventeen_le_dst_eject_of_src_base_eq_4194304r_add_3672653, and by the zero-shell wrappers dst_slice_eq_4_16_of_src_base_eq_113246208r_add_43518541 together with seventeen_le_dst_eject_of_src_base_eq_113246208r_add_100141645, leaving only a thinner residual eject >= 17 tail on the zero-shell time = 4 side.",
+    "That eject >= 17 tail is now further refined by the generic exact split dst_slice_eq_4_17_of_src_base_eq_8388608r_add_3672653 together with eighteen_le_dst_eject_of_src_base_eq_8388608r_add_7866957, and by the zero-shell wrappers dst_slice_eq_4_17_of_src_base_eq_226492416r_add_213387853 together with eighteen_le_dst_eject_of_src_base_eq_226492416r_add_100141645, leaving only a thinner residual eject >= 18 tail on the zero-shell time = 4 side.",
+    "That eject >= 18 tail is now further refined by the generic exact split dst_slice_eq_4_18_of_src_base_eq_16777216r_add_7866957 together with nineteen_le_dst_eject_of_src_base_eq_16777216r_add_16255565, and by the zero-shell wrappers dst_slice_eq_4_18_of_src_base_eq_452984832r_add_326634061 together with nineteen_le_dst_eject_of_src_base_eq_452984832r_add_100141645, leaving only a thinner residual eject >= 19 tail on the zero-shell time = 4 side.",
+    "That eject >= 19 tail is now further refined by the generic exact split dst_slice_eq_4_19_of_src_base_eq_33554432r_add_16255565 together with twenty_le_dst_eject_of_src_base_eq_33554432r_add_33032781, and by the zero-shell wrappers dst_slice_eq_4_19_of_src_base_eq_905969664r_add_553126477 together with twenty_le_dst_eject_of_src_base_eq_905969664r_add_100141645, leaving only a thinner residual eject >= 20 tail on the zero-shell time = 4 side.",
+    "That eject >= 20 tail is now further refined by the generic exact split dst_slice_eq_4_20_of_src_base_eq_67108864r_add_33032781 together with twenty_one_le_dst_eject_of_src_base_eq_67108864r_add_66587213, and by the zero-shell wrappers dst_slice_eq_4_20_of_src_base_eq_1811939328r_add_100141645 together with twenty_one_le_dst_eject_of_src_base_eq_1811939328r_add_1006111309, leaving only a thinner residual eject >= 21 tail on the zero-shell time = 4 side.",
     "The residual branch base = 6912*m + 6637 is green only as dst.time >= 7 with transport 2^(dst.time - 7) * dst.base = 729*m + 700; an abandoned uniform time = 9 shortcut is not part of the verified boundary.",
-    "This boundary was confirmed by targeted build session 86196 with only the familiar pre-existing warnings."
+    "A repaired isolated-sandbox batch harness confirmed cumulative green builds through eject-20 and found the first exact-template failure at eject-21, where the old odd-factor proof shape stops applying.",
+    "This boundary was confirmed in the live repo by targeted build session 45425 with only the familiar pre-existing warnings."
   ]
 }
