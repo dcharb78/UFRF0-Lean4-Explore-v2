@@ -12,6 +12,12 @@ operational layer that must keep the last green boundary separate from any
 newer unverified source edits, active build sessions, or unsynced
 index/Rover state.
 
+For strategy durability, also read
+`docs/proofs/COLLATZ_APPROACH_CHECKPOINTS.md`.
+That file records when to keep extending the seam ladder, when to stop and
+evaluate the approach, and how to prevent theorem-centered work from drifting
+back into seam-only motion.
+
 ## Local Name Workflow
 
 For this frontier file, use two layers together:
@@ -87,6 +93,10 @@ The conjecture-critical remaining `sorry` is still the theorem
 
 At the time of writing, this sits at line 646 in the file. Future edits may
 shift the exact line, but this theorem remains the global target.
+
+For the current theorem-centered route from the banked local return mechanism
+to that target, also read
+`docs/proofs/COLLATZ_ORBIT_SHRINKS_BRIDGE_MEMO.md`.
 
 ## Current Checkpoint
 

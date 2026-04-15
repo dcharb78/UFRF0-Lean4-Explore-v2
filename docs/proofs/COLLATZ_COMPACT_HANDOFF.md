@@ -16,14 +16,18 @@ Refresh it before:
 2. Read this file.
 3. Read
    [COLLATZ_CONCURRENT_FRONTIER.md](/private/tmp/repo-collatz-memory-loop/docs/proofs/COLLATZ_CONCURRENT_FRONTIER.md).
-4. Use the
+4. Read
+   [COLLATZ_APPROACH_CHECKPOINTS.md](/private/tmp/repo-collatz-memory-loop/docs/proofs/COLLATZ_APPROACH_CHECKPOINTS.md)
+   before deciding whether the next move should be another seam or a bridge
+   theorem.
+5. Use the
    [$ufrf-memory-loop](/Users/dcharb/.codex/skills/ufrf-memory-loop/SKILL.md)
    workflow before substantial proof work.
-5. First verify repo identity with a repo-anchored check, even if the desktop
+6. First verify repo identity with a repo-anchored check, even if the desktop
    thread reopened outside the repo:
    `python3 /private/tmp/repo-collatz-memory-loop/scripts/collatz_compact_status.py`.
    Resolve any warnings before flattening status into a single summary.
-6. When refreshing the declaration index, serialize the step:
+7. When refreshing the declaration index, serialize the step:
    run `python3 scripts/generate_decl_index.py ...`, wait for it to finish,
    then read `generated_at`, `declaration_count`, or compact status.
    Do not read the index in parallel with regenerating it.
