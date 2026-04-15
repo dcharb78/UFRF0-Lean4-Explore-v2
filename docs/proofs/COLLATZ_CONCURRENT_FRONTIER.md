@@ -26,6 +26,10 @@ Regenerate the index after declaration movement with:
 
 `python3 scripts/generate_decl_index.py --input UFRF/CollatzConcurrentScales.lean --json docs/proofs/COLLATZ_CONCURRENT_SYMBOL_INDEX.json --markdown docs/proofs/COLLATZ_CONCURRENT_SYMBOL_INDEX.md --title "Collatz Concurrent Scales Symbol Index"`
 
+Important workflow rule: do not run that regeneration in parallel with any
+command that reads the index metadata or runs
+`python3 scripts/collatz_compact_status.py`. Regenerate first, then read.
+
 Before compacting or opening a new thread, run:
 
 `python3 scripts/collatz_compact_status.py`
@@ -89,8 +93,8 @@ shift the exact line, but this theorem remains the global target.
 Current checkpoint:
 
 - Branch: `codex/collatz-memory-loop`
-- Older pushed checkpoint before this boundary: `038923a`
-- Older pushed message: `Promote green eject-21 boundary and seed residual-aware batch harness`
+- Older pushed checkpoint before this boundary: `13cc195`
+- Older pushed message: `Checkpoint eject-32 source and eject-80 telemetry frontier`
 - Current worktree state: targeted `lake build UFRF.CollatzConcurrentScales`
   is green after adding the higher-time `32*k + 13` source self-threshold /
   value / radial package, the shared `9387` observer-line bridge to the older
@@ -148,6 +152,324 @@ Current checkpoint:
   is also green through eject-80, but that larger batch result sits beyond
   the live source boundary until more of the eject tree is promoted into
   `UFRF/CollatzConcurrentScales.lean` and rechecked there
+- The theorem frontier is unchanged, but the latest recorded green source hash
+  now also includes the full helper-normalized `time = 4` eject ladder
+  through exact eject-32 / residual eject-`≥ 33`
+- those proof terms now use the generic `64*m + 13` factorization helpers
+  `dst_slice_eq_4_exact_of_src_base_eq_64m_add_13_of_factorization`,
+  `dst_time_eq_four_and_dst_eject_ge_of_src_base_eq_64m_add_13_of_factorization`,
+  `dst_slice_eq_4_exact_of_src_base_eq_64m_add_13_of_dst_factorization`, and
+  `dst_time_eq_four_and_dst_eject_ge_of_src_base_eq_64m_add_13_of_dst_factorization`
+- that completed `time = 4` helper-refactor seam was confirmed by targeted
+  build session `65450`
+- the latest recorded green source hash now also includes the initial
+  helper-normalized `time = 5` shell through exact eject-7 /
+  residual eject-`≥ 8`
+- those proof terms now use the generic `128*m + 45` factorization helpers
+  `dst_slice_eq_5_exact_of_src_base_eq_128m_add_45_of_factorization`,
+  `dst_time_eq_five_and_dst_eject_ge_of_src_base_eq_128m_add_45_of_factorization`,
+  `dst_slice_eq_5_exact_of_src_base_eq_128m_add_45_of_dst_factorization`, and
+  `dst_time_eq_five_and_dst_eject_ge_of_src_base_eq_128m_add_45_of_dst_factorization`
+- that initial `time = 5` helper-refactor seam was confirmed by targeted
+  build session `40265`
+- the latest recorded green source hash now also includes the initial
+  helper-normalized `time = 6` shell through exact eject-5 /
+  residual eject-`≥ 6`
+- those proof terms now use the generic `256*m + 109` factorization helpers
+  `dst_slice_eq_6_exact_of_src_base_eq_256m_add_109_of_factorization`,
+  `dst_time_eq_six_and_dst_eject_ge_of_src_base_eq_256m_add_109_of_factorization`,
+  `dst_slice_eq_6_exact_of_src_base_eq_256m_add_109_of_dst_factorization`, and
+  `dst_time_eq_six_and_dst_eject_ge_of_src_base_eq_256m_add_109_of_dst_factorization`
+- that initial `time = 6` helper-refactor seam was confirmed by targeted
+  build session `68178`
+- the latest recorded green source hash now also includes the initial
+  helper-normalized `time = 7` shell through exact eject-6 /
+  residual eject-`≥ 7`
+- those proof terms now use the generic `512*m + 237` factorization helpers
+  `dst_slice_eq_7_exact_of_src_base_eq_512m_add_237_of_factorization`,
+  `dst_time_eq_seven_and_dst_eject_ge_of_src_base_eq_512m_add_237_of_factorization`,
+  `dst_slice_eq_7_exact_of_src_base_eq_512m_add_237_of_dst_factorization`, and
+  `dst_time_eq_seven_and_dst_eject_ge_of_src_base_eq_512m_add_237_of_dst_factorization`
+- that initial `time = 7` helper-refactor seam was confirmed by targeted
+  build session `22759`
+- the latest recorded green source hash now also includes the initial
+  helper-normalized higher-time seam on `base = 512*m + 493` through exact
+  `time = 8`, exact `time = 9`, and residual `time ≥ 10`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_eight_add_and_dst_base_eq_of_src_base_eq_512m_add_493_of_factorization`
+  and
+  `dst_time_ge_eight_add_and_scaled_base_eq_of_src_base_eq_512m_add_493_of_factorization`
+- that initial `time ≥ 8` helper-refactor seam was confirmed by targeted
+  build session `15275`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on `base = 2048*m + 1517` through exact
+  `time = 10`, exact `time = 11`, exact `time = 12`, and residual
+  `time ≥ 13`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_ten_add_and_dst_base_eq_of_src_base_eq_2048m_add_1517_of_factorization`
+  and
+  `dst_time_ge_ten_add_and_scaled_base_eq_of_src_base_eq_2048m_add_1517_of_factorization`
+- that initial `time ≥ 10` helper-refactor seam was confirmed by targeted
+  build session `19932`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on `base = 16384*m + 9709` through exact
+  `time = 13`, exact `time = 14`, exact `time = 15`, exact `time = 16`,
+  exact `time = 17`, and residual `time ≥ 18`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_thirteen_add_and_dst_base_eq_of_src_base_eq_16384m_add_9709_of_factorization`
+  and
+  `dst_time_ge_thirteen_add_and_scaled_base_eq_of_src_base_eq_16384m_add_9709_of_factorization`
+- that initial `time ≥ 13` helper-refactor seam was confirmed by targeted
+  build session `1280`
+- the latest recorded green source hash now also includes the continuing
+  higher-time return ladder through exact `time = 135` and residual
+  `time ≥ 136`, with the live residual shells now helper-normalized on
+  `base = 524288*m + 271853`, `8388608*m + 3417581`,
+  `134217728*m + 129246701`, `536870912*m + 397682157`,
+  `4294967296*m + 2545165805`,
+  `137438953472*m + 71264642541`, and
+  `174224571863520493293247799005065324265472*m + 129055238417422587624627999263011351307757`
+- that deeper higher-time continuation, including the returned-shell transport
+  packaging and `VerifiedHigherTimeReturnClock` wrappers already in source,
+  was confirmed by targeted build session `46483`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 174224571863520493293247799005065324265472*m + 129055238417422587624627999263011351307757`
+  through exact `time = 136`, exact `time = 137`, exact `time = 138`, and
+  residual `time ≥ 139`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_thirty_six_add_and_dst_base_eq_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757_of_factorization`
+  and
+  `dst_time_ge_one_hundred_thirty_six_add_and_scaled_base_eq_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757_of_factorization`
+- that `time ≥ 136` helper-refactor seam was confirmed by targeted build
+  session `44643`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 1393796574908163946345982392040522594123776*m + 825953525871504560797619195283272648369645`
+  through exact `time = 139`, exact `time = 140`, exact `time = 141`,
+  exact `time = 142`, exact `time = 143`, and residual `time ≥ 144`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_thirty_nine_add_and_dst_base_eq_of_src_base_eq_1393796574908163946345982392040522594123776m_add_825953525871504560797619195283272648369645_of_factorization`
+  and
+  `dst_time_ge_one_hundred_thirty_nine_add_and_scaled_base_eq_of_src_base_eq_1393796574908163946345982392040522594123776m_add_825953525871504560797619195283272648369645_of_factorization`
+- that `time ≥ 139` helper-refactor seam was confirmed by targeted build
+  session `6009`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 44601490397061246283071436545296723011960832*m + 23126698724402127702333337467931634154350061`
+  through exact `time = 144`, exact `time = 145`, exact `time = 146`,
+  exact `time = 147`, and residual `time ≥ 148`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_forty_four_add_and_dst_base_eq_of_src_base_eq_44601490397061246283071436545296723011960832m_add_23126698724402127702333337467931634154350061_of_factorization`
+  and
+  `dst_time_ge_one_hundred_forty_four_add_and_scaled_base_eq_of_src_base_eq_44601490397061246283071436545296723011960832m_add_23126698724402127702333337467931634154350061_of_factorization`
+- that `time ≥ 144` helper-refactor seam was confirmed by targeted build
+  session `64428`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 713623846352979940529142984724747568191373312*m + 290735641106769605400761956739711972226115053`
+  through exact `time = 148`, exact `time = 149`, exact `time = 150`,
+  exact `time = 151`, and residual `time ≥ 152`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_forty_eight_add_and_dst_base_eq_of_src_base_eq_713623846352979940529142984724747568191373312m_add_290735641106769605400761956739711972226115053_of_factorization`
+  and
+  `dst_time_ge_one_hundred_forty_eight_add_and_scaled_base_eq_of_src_base_eq_713623846352979940529142984724747568191373312m_add_290735641106769605400761956739711972226115053_of_factorization`
+- that `time ≥ 148` helper-refactor seam was confirmed by targeted build
+  session `11441`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 11417981541647679048466287755595961091061972992*m + 10995093336401468713337906727610925495096714733`
+  through exact `time = 152`, exact `time = 153`, and residual `time ≥ 154`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_fifty_two_add_and_dst_base_eq_of_src_base_eq_11417981541647679048466287755595961091061972992m_add_10995093336401468713337906727610925495096714733_of_factorization`
+  and
+  `dst_time_ge_one_hundred_fifty_two_add_and_scaled_base_eq_of_src_base_eq_11417981541647679048466287755595961091061972992m_add_10995093336401468713337906727610925495096714733_of_factorization`
+- that `time ≥ 152` helper-refactor seam was confirmed by targeted build
+  session `27586`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 45671926166590716193865151022383844364247891968*m + 33831056419696826810270482238802847677220660717`
+  through exact `time = 154`, exact `time = 155`, exact `time = 156`, and
+  residual `time ≥ 157`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_fifty_four_add_and_dst_base_eq_of_src_base_eq_45671926166590716193865151022383844364247891968m_add_33831056419696826810270482238802847677220660717_of_factorization`
+  and
+  `dst_time_ge_one_hundred_fifty_four_add_and_scaled_base_eq_of_src_base_eq_45671926166590716193865151022383844364247891968m_add_33831056419696826810270482238802847677220660717_of_factorization`
+- that `time ≥ 154` helper-refactor seam was confirmed by targeted build
+  session `19103`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 365375409332725729550921208179070754913983135744*m + 216518761086059691585731086328338225134212228589`
+  through exact `time = 157`, exact `time = 158`, exact `time = 159`,
+  exact `time = 160`, exact `time = 161`, and residual `time ≥ 162`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_fifty_seven_add_and_dst_base_eq_of_src_base_eq_365375409332725729550921208179070754913983135744m_add_216518761086059691585731086328338225134212228589_of_factorization`
+  and
+  `dst_time_ge_one_hundred_fifty_seven_add_and_scaled_base_eq_of_src_base_eq_365375409332725729550921208179070754913983135744m_add_216518761086059691585731086328338225134212228589_of_factorization`
+- that `time ≥ 157` helper-refactor seam was confirmed by targeted build
+  session `15712`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 11692013098647223345629478661730264157247460343808*m + 6062525310409671364400470417193470303757942400493`
+  through exact `time = 162`, exact `time = 163`, exact `time = 164`,
+  exact `time = 165`, and residual `time ≥ 166`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_sixty_two_add_and_dst_base_eq_of_src_base_eq_11692013098647223345629478661730264157247460343808m_add_6062525310409671364400470417193470303757942400493_of_factorization`
+  and
+  `dst_time_ge_one_hundred_sixty_two_add_and_scaled_base_eq_of_src_base_eq_11692013098647223345629478661730264157247460343808m_add_6062525310409671364400470417193470303757942400493_of_factorization`
+- that `time ≥ 162` helper-refactor seam was confirmed by targeted build
+  session `51385`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 187072209578355573530071658587684226515959365500928*m + 76214603902293011438177342387575055247242704463341`
+  through exact `time = 166`, exact `time = 167`, exact `time = 168`,
+  exact `time = 169`, and residual `time ≥ 170`, ending on
+  `two_pow_dst_time_sub_one_hundred_seventy_mul_dst_base_eq_27m_add_26_of_src_base_eq_2993155353253689176481146537402947624255349848014848m_add_2882297747577626614389252221202838452986633186977261`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_sixty_six_add_and_dst_base_eq_of_src_base_eq_187072209578355573530071658587684226515959365500928m_add_76214603902293011438177342387575055247242704463341_of_factorization`
+  and
+  `dst_time_ge_one_hundred_sixty_six_add_and_scaled_base_eq_of_src_base_eq_187072209578355573530071658587684226515959365500928m_add_76214603902293011438177342387575055247242704463341_of_factorization`
+- that `time ≥ 166` helper-refactor seam was confirmed by targeted build
+  session `34519`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 2993155353253689176481146537402947624255349848014848*m + 2882297747577626614389252221202838452986633186977261`
+  through exact `time = 170`, exact `time = 171`, and residual
+  `time ≥ 172`, ending on
+  `two_pow_dst_time_sub_one_hundred_seventy_two_mul_dst_base_eq_27m_add_20_of_src_base_eq_11972621413014756705924586149611790497021399392059392m_add_8868608454085004967351545296008733701497332883006957`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_seventy_add_and_dst_base_eq_of_src_base_eq_2993155353253689176481146537402947624255349848014848m_add_2882297747577626614389252221202838452986633186977261_of_factorization`
+  and
+  `dst_time_ge_one_hundred_seventy_add_and_scaled_base_eq_of_src_base_eq_2993155353253689176481146537402947624255349848014848m_add_2882297747577626614389252221202838452986633186977261_of_factorization`
+- that `time ≥ 170` helper-refactor seam was confirmed by targeted build
+  session `70979`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 11972621413014756705924586149611790497021399392059392*m + 8868608454085004967351545296008733701497332883006957`
+  through exact `time = 172`, exact `time = 173`, exact `time = 174`, and
+  residual `time ≥ 175`, ending on
+  `two_pow_dst_time_sub_one_hundred_seventy_five_mul_dst_base_eq_27m_add_16_of_src_base_eq_95780971304118053647396689196894323976171195136475136m_add_56759094106144031791049889894455895689582930451244525`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_seventy_two_add_and_dst_base_eq_of_src_base_eq_11972621413014756705924586149611790497021399392059392m_add_8868608454085004967351545296008733701497332883006957_of_factorization`
+  and
+  `dst_time_ge_one_hundred_seventy_two_add_and_scaled_base_eq_of_src_base_eq_11972621413014756705924586149611790497021399392059392m_add_8868608454085004967351545296008733701497332883006957_of_factorization`
+- that `time ≥ 172` helper-refactor seam was confirmed by targeted build
+  session `1430`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 95780971304118053647396689196894323976171195136475136*m + 56759094106144031791049889894455895689582930451244525`
+  through exact `time = 175`, exact `time = 176`, exact `time = 177`,
+  exact `time = 178`, exact `time = 179`, and residual `time ≥ 180`, ending
+  on
+  `two_pow_dst_time_sub_one_hundred_eighty_mul_dst_base_eq_27m_add_14_of_src_base_eq_3064991081731777716716694054300618367237478244367204352m_add_1589254634972032890149396917044765079308322052634846701`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_seventy_five_add_and_dst_base_eq_of_src_base_eq_95780971304118053647396689196894323976171195136475136m_add_56759094106144031791049889894455895689582930451244525_of_factorization`
+  and
+  `dst_time_ge_one_hundred_seventy_five_add_and_scaled_base_eq_of_src_base_eq_95780971304118053647396689196894323976171195136475136m_add_56759094106144031791049889894455895689582930451244525_of_factorization`
+- that `time ≥ 175` helper-refactor seam was confirmed by targeted build
+  session `92506`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 3064991081731777716716694054300618367237478244367204352*m + 1589254634972032890149396917044765079308322052634846701`
+  through exact `time = 180`, exact `time = 181`, exact `time = 182`,
+  exact `time = 183`, exact `time = 184`, and residual `time ≥ 185`, ending
+  on
+  `two_pow_dst_time_sub_one_hundred_eighty_five_mul_dst_base_eq_27m_add_19_of_src_base_eq_98079714615416886934934209737619787751599303819750539264m_add_69019058433071142657916666111658369158532843428713342445`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_eighty_add_and_dst_base_eq_of_src_base_eq_3064991081731777716716694054300618367237478244367204352m_add_1589254634972032890149396917044765079308322052634846701_of_factorization`
+  and
+  `dst_time_ge_one_hundred_eighty_add_and_scaled_base_eq_of_src_base_eq_3064991081731777716716694054300618367237478244367204352m_add_1589254634972032890149396917044765079308322052634846701_of_factorization`
+- that `time ≥ 180` helper-refactor seam was confirmed by targeted build
+  session `14054`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 98079714615416886934934209737619787751599303819750539264*m + 69019058433071142657916666111658369158532843428713342445`
+  through exact `time = 185`, exact `time = 186`, exact `time = 187`, and
+  residual `time ≥ 188`, ending on
+  `two_pow_dst_time_sub_one_hundred_eighty_eight_mul_dst_base_eq_27m_add_26_of_src_base_eq_784637716923335095479473677900958302012794430558004314112m_add_755577060740989351202456134274996883419727970166967117293`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_eighty_five_add_and_dst_base_eq_of_src_base_eq_98079714615416886934934209737619787751599303819750539264m_add_69019058433071142657916666111658369158532843428713342445_of_factorization`
+  and
+  `dst_time_ge_one_hundred_eighty_five_add_and_scaled_base_eq_of_src_base_eq_98079714615416886934934209737619787751599303819750539264m_add_69019058433071142657916666111658369158532843428713342445_of_factorization`
+- that `time ≥ 185` helper-refactor seam was confirmed by targeted build
+  session `8161`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 784637716923335095479473677900958302012794430558004314112*m + 755577060740989351202456134274996883419727970166967117293`
+  through exact `time = 188`, exact `time = 189`, exact `time = 190`,
+  exact `time = 191`, exact `time = 192`, and residual `time ≥ 193`, ending
+  on
+  `two_pow_dst_time_sub_one_hundred_ninety_three_mul_dst_base_eq_27m_add_16_of_src_base_eq_25108406941546723055343157692830665664409421777856138051584m_add_14879055965361021069832982336492246319650027720211044771309`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_eighty_eight_add_and_dst_base_eq_of_src_base_eq_784637716923335095479473677900958302012794430558004314112m_add_755577060740989351202456134274996883419727970166967117293_of_factorization`
+  and
+  `dst_time_ge_one_hundred_eighty_eight_add_and_scaled_base_eq_of_src_base_eq_784637716923335095479473677900958302012794430558004314112m_add_755577060740989351202456134274996883419727970166967117293_of_factorization`
+- that `time ≥ 188` helper-refactor seam was confirmed by targeted build
+  session `55611`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 25108406941546723055343157692830665664409421777856138051584*m + 14879055965361021069832982336492246319650027720211044771309`
+  through exact `time = 193`, exact `time = 194`, exact `time = 195`,
+  exact `time = 196`, exact `time = 197`, and residual `time ≥ 198`, ending
+  on
+  `two_pow_dst_time_sub_one_hundred_ninety_eight_mul_dst_base_eq_27m_add_14_of_src_base_eq_803469022129495137770981046170581301261101496891396417650688m_add_416613567030108589955323505421782896950200776165909253596653`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_ninety_three_add_and_dst_base_eq_of_src_base_eq_25108406941546723055343157692830665664409421777856138051584m_add_14879055965361021069832982336492246319650027720211044771309_of_factorization`
+  and
+  `dst_time_ge_one_hundred_ninety_three_add_and_scaled_base_eq_of_src_base_eq_25108406941546723055343157692830665664409421777856138051584m_add_14879055965361021069832982336492246319650027720211044771309_of_factorization`
+- that `time ≥ 193` helper-refactor seam was confirmed by targeted build
+  session `81576`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 803469022129495137770981046170581301261101496891396417650688*m + 416613567030108589955323505421782896950200776165909253596653`
+  through exact `time = 198`, exact `time = 199`, exact `time = 200`,
+  exact `time = 201`, exact `time = 202`, and residual `time ≥ 203`, ending
+  on
+  `two_pow_dst_time_sub_two_hundred_three_mul_dst_base_eq_27m_add_19_of_src_base_eq_25711008708143844408671393477458601640355247900524685364822016m_add_18092932053879001620916906521174571524694433707776630441911789`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_one_hundred_ninety_eight_add_and_dst_base_eq_of_src_base_eq_803469022129495137770981046170581301261101496891396417650688m_add_416613567030108589955323505421782896950200776165909253596653_of_factorization`
+  and
+  `dst_time_ge_one_hundred_ninety_eight_add_and_scaled_base_eq_of_src_base_eq_803469022129495137770981046170581301261101496891396417650688m_add_416613567030108589955323505421782896950200776165909253596653_of_factorization`
+- that `time ≥ 198` helper-refactor seam was confirmed by targeted build
+  session `43657`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 25711008708143844408671393477458601640355247900524685364822016*m + 18092932053879001620916906521174571524694433707776630441911789`
+  through exact `time = 203`, exact `time = 204`, exact `time = 205`, and
+  residual `time ≥ 206`, ending on
+  `two_pow_dst_time_sub_two_hundred_six_mul_dst_base_eq_27m_add_26_of_src_base_eq_205688069665150755269371147819668813122841983204197482918576128m_add_198069993010885912481616660863384783007181169011449427995665901`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_two_hundred_three_add_and_dst_base_eq_of_src_base_eq_25711008708143844408671393477458601640355247900524685364822016m_add_18092932053879001620916906521174571524694433707776630441911789_of_factorization`
+  and
+  `dst_time_ge_two_hundred_three_add_and_scaled_base_eq_of_src_base_eq_25711008708143844408671393477458601640355247900524685364822016m_add_18092932053879001620916906521174571524694433707776630441911789_of_factorization`
+- that `time ≥ 203` helper-refactor seam was confirmed by targeted build
+  session `45924`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 205688069665150755269371147819668813122841983204197482918576128*m + 198069993010885912481616660863384783007181169011449427995665901`
+  through exact `time = 206`, exact `time = 207`, exact `time = 208`,
+  exact `time = 209`, exact `time = 210`, and residual `time ≥ 211`, ending
+  on
+  `two_pow_dst_time_sub_two_hundred_eleven_mul_dst_base_eq_27m_add_16_of_src_base_eq_6582018229284824168619876730229402019930943462534319453394436096m_add_3900455246983599507330297321617423419218336866687004120530036205`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_two_hundred_six_add_and_dst_base_eq_of_src_base_eq_205688069665150755269371147819668813122841983204197482918576128m_add_198069993010885912481616660863384783007181169011449427995665901_of_factorization`
+  and
+  `dst_time_ge_two_hundred_six_add_and_scaled_base_eq_of_src_base_eq_205688069665150755269371147819668813122841983204197482918576128m_add_198069993010885912481616660863384783007181169011449427995665901_of_factorization`
+- that `time ≥ 206` helper-refactor seam was confirmed by targeted build
+  session `80271`
+- the latest recorded green source hash now also includes the next
+  helper-normalized higher-time seam on
+  `base = 6582018229284824168619876730229402019930943462534319453394436096*m + 3900455246983599507330297321617423419218336866687004120530036205`
+  through exact `time = 211`, exact `time = 212`, exact `time = 213`,
+  exact `time = 214`, exact `time = 215`, and residual `time ≥ 216`, ending
+  on
+  `two_pow_dst_time_sub_two_hundred_sixteen_mul_dst_base_eq_27m_add_14_of_src_base_eq_210624583337114373395836055367340864637790190801098222508621955072m_add_109212746915540786205248325005287855738113432267236115374841013741`
+- those proof terms now use the generic higher-time factorization helpers
+  `dst_time_eq_two_hundred_eleven_add_and_dst_base_eq_of_src_base_eq_6582018229284824168619876730229402019930943462534319453394436096m_add_3900455246983599507330297321617423419218336866687004120530036205_of_factorization`
+  and
+  `dst_time_ge_two_hundred_eleven_add_and_scaled_base_eq_of_src_base_eq_6582018229284824168619876730229402019930943462534319453394436096m_add_3900455246983599507330297321617423419218336866687004120530036205_of_factorization`
+- that `time ≥ 211` helper-refactor seam was confirmed by targeted build
+  session `25387`
 
 ## Resume State
 
@@ -156,25 +478,47 @@ source edits before describing the frontier.
 
 For the active observer-gap/eject thread, the governing resume boundary is the
 current checkpoint above: live source targeted-build verified through
-eject-32, generated residual-seeded telemetry green through eject-80. The
+exact eject-32 / residual eject-`≥ 33` on the zero-shell `time = 4` side, the
+initial helper-normalized `time = 5/6/7` shells, and the helper-normalized
+higher-time ladder through exact `time = 215` with residual `time ≥ 216`,
+together with the returned-shell transport theorems and
+`VerifiedHigherTimeReturnClock` packaging already present at that same green
+source hash, while generated residual-seeded telemetry remains separately
+green through eject-80. The
 longer historical resume block below is archival context and must not
 override that split.
 
+Current source is aligned with that checkpoint on the higher-time seam that
+refines the live `27*r + 16` residual into the next `27*r + 14` residual:
+
+- session `25387` confirmed the helper-normalized
+  `time ≥ 211` shell through exact `time = 211`, `212`, `213`, `214`, `215`,
+  plus residual `time ≥ 216`
+- the verified residual transport there is now
+  `2^(dst.time - 216) * dst.base = 27*r + 14`
+- the next seam should start from that verified residual rather than from any
+  older source-only summary
+
 - Last green checkpoint:
   - targeted `lake build UFRF.CollatzConcurrentScales` is green through exact
-    `time = 135`
+    `time = 174`
   - the verified exact shell family immediately beyond the old
-    `133 / ≥134` boundary is now:
-    `dst_time_eq_one_hundred_thirty_four_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389`,
-    `dst_base_eq_54m_add_53_of_src_base_eq_87112285931760246646623899502532662132736m_add_85499095451542464301316049511745020241389`,
-    `dst_time_eq_one_hundred_thirty_five_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021`,
+    `171 / ≥172` boundary is now:
+    `dst_time_eq_one_hundred_seventy_two_of_src_base_eq_23945242826029513411849172299223580994042798784118784m_add_20841229867099761673276131445620524198518732275066349`,
+    `dst_base_eq_54m_add_47_of_src_base_eq_23945242826029513411849172299223580994042798784118784m_add_20841229867099761673276131445620524198518732275066349`,
+    `dst_time_eq_one_hundred_seventy_three_of_src_base_eq_47890485652059026823698344598447161988085597568237568m_add_32813851280114518379200717595232314695540131667125741`,
+    `dst_base_eq_54m_add_37_of_src_base_eq_47890485652059026823698344598447161988085597568237568m_add_32813851280114518379200717595232314695540131667125741`,
+    `dst_time_eq_one_hundred_seventy_four_of_src_base_eq_95780971304118053647396689196894323976171195136475136m_add_8868608454085004967351545296008733701497332883006957`,
     and
-    `dst_base_eq_54m_add_13_of_src_base_eq_174224571863520493293247799005065324265472m_add_41942952485662340978004099760478689175021`
+    `dst_base_eq_54m_add_5_of_src_base_eq_95780971304118053647396689196894323976171195136475136m_add_8868608454085004967351545296008733701497332883006957`
   - the verified residual shell is
-    `base = 174224571863520493293247799005065324265472*r + 129055238417422587624627999263011351307757`
+    `base = 95780971304118053647396689196894323976171195136475136*r + 56759094106144031791049889894455895689582930451244525`
   - the verified residual transport law is
-    `dst.time ≥ 136` together with
-    `2^(dst.time - 136) * dst.base = 27*r + 20`
+    `dst.time ≥ 175` together with
+    `2^(dst.time - 175) * dst.base = 27*r + 16`
+  - this newly exposed residual now lands directly on the already-familiar
+    `27*r + 16` return residue from the older higher-time ladder, so the live
+    seam again reconnects to that return family at the transport law itself
   - the verified recurrence theorem is now also
     `returned_twenty_eight_shell_transport_of_src_base_eq_174224571863520493293247799005065324265472m_add_129055238417422587624627999263011351307757`,
     packaging that returned `27*r + 20` residual as an explicit re-entry into
@@ -303,6 +647,11 @@ override that split.
   - the generated declaration index has been regenerated to reflect the
     current Lean source, including any active WIP beyond the checkpoint
 - Active WIP beyond the checkpoint:
+  - there is no additional unverified higher-time source seam beyond session
+    `55611` yet; the next source-side target is to start from the verified
+    residual
+    `two_pow_dst_time_sub_one_hundred_ninety_three_mul_dst_base_eq_27m_add_16_of_src_base_eq_25108406941546723055343157692830665664409421777856138051584m_add_14879055965361021069832982336492246319650027720211044771309`
+    and helper-normalize the live `time ≥ 193` shell
   - local green WIP beyond commit `054e0b3` now includes the source-state
     theorem
     `regimeIIState_selfThresholdDefect_eq_14k_add_6_sub_div27_of_time3_eject1_of_base_eq_32k_add_13`
@@ -1123,51 +1472,35 @@ Exploratory interpretation:
 
 ## Best Next Step
 
-The immediate next step is to preserve the now-verified odd zero-shell
-`time = 4` refinement through eject-32 as the live Lean checkpoint, keep the
-all-green generated telemetry through eject-80 as evidence rather than source,
-and then scale the same residual-seeded time-4 eject workflow forward toward
-eject-130.
+The immediate next step is to preserve session `25387` as the last green
+higher-time checkpoint through exact `time = 215` / residual `time ≥ 216`,
+keep the all-green eject telemetry as evidence rather than source, and then
+derive the next seam directly from the newly verified `27*m + 14` residual.
 
-- the current green boundary already reaches the exact zero-shell transport
-  family `2^(dst.time - 4) * dst.base = 729*m + 497`, its first exact
-  destination shells `time = 4, 5, 6, 7`, and the direct bridge lemmas into
-  the `54*k + 11/19/23/25` families
-- the structural opportunity is now explicit in source: those bridge lemmas
-  hand the zero-shell outputs to the same higher-time shell interfaces that
-  the existing slice and exact-zone theorems already know how to consume
-- the next proof move should therefore use the new residual theorem
-  `thirty_three_le_dst_eject_of_src_base_eq_7421703487488r_add_22749383245`
-  together with the prepared wave runner
-  `scripts/collatz_eject_wave_pipeline.py`, which is already configured to
-  continue in sequential waves of at most 10 builds with the same 1-second
-  stagger; the `eject-33..80` run is already green, so the next scaling pass
-  should start at eject-81 and target eject-130
-- more concretely, the frontier should stay inside the same time-4 eject tree:
-  the current green boundary already reaches the exact eject-32 split as the
-  generic pair
-  `dst_slice_eq_4_32_of_src_base_eq_274877906944r_add_160188336717` /
-  `thirty_three_le_dst_eject_of_src_base_eq_274877906944r_add_22749383245`
-  and the
-  zero-shell wrappers
-  `dst_slice_eq_4_32_of_src_base_eq_7421703487488r_add_3733601126989` /
-  `thirty_three_le_dst_eject_of_src_base_eq_7421703487488r_add_22749383245`
-- operationally, this means the next batch command should be the same wave
-  runner with `--start-layer 81 --end-layer 130 --batch-size 10 --workers 10
-  --start-stagger-seconds 1` and the existing residual seed constants
-- the important retained lesson is still structural: the first naive exact
-  `(4,21)` proof shape failed because its candidate factor `4374*r + 2170`
-  was even, so all large-scale continuation must stay seeded from the actual
-  verified residual law at the current frontier rather than from the older
-  pre-eject-21 parity template
-- treat `base = 6912*m + 6637` carefully: the green fact there is only the
-  residual law `dst.time ≥ 7` with
-  `2^(dst.time - 7) * dst.base = 729*m + 700`; do not revive the discarded
-  uniform `time = 9` shortcut
-- only after the odd zero-shell `time = 4` residual is exhausted through
-  those existing slice interfaces should we split further elsewhere, because
-  the main risk now is not missing arithmetic but drifting away from the
-  source-state transport structure we have already recovered
+- the current green boundary already reaches the shared higher-time helpers on
+  `base = 6582018229284824168619876730229402019930943462534319453394436096*m + 3900455246983599507330297321617423419218336866687004120530036205`
+  together with exact destination shells `time = 211, 212, 213, 214, 215`
+  and the residual law
+  `2^(dst.time - 216) * dst.base = 27*m + 14`
+- the structural opportunity is again direct: this live residual has landed on
+  the already-familiar `27*m + 14` higher-time return residue, so the next
+  seam should be derived from that actual residual law rather than
+  extrapolated from older batch templates
+- more concretely, the next source-side work starts from
+  `two_hundred_sixteen_le_dst_time_of_src_base_eq_210624583337114373395836055367340864637790190801098222508621955072m_add_109212746915540786205248325005287855738113432267236115374841013741`
+  together with
+  `two_pow_dst_time_sub_two_hundred_sixteen_mul_dst_base_eq_27m_add_14_of_src_base_eq_210624583337114373395836055367340864637790190801098222508621955072m_add_109212746915540786205248325005287855738113432267236115374841013741`
+  and should promote that residual into the next shared factorization-helper
+  seam
+- the concrete next action is therefore to write that `time ≥ 216` helper
+  block in source, then run a targeted
+  `lake build UFRF.CollatzConcurrentScales`
+- the important retained lesson is still structural: large-scale continuation
+  must stay seeded from the actual verified residual law at the current
+  frontier rather than from a plausible-looking extrapolated shell pattern
+- keep the larger zero-shell eject telemetry and wave harness as support, not
+  as a substitute for the live-source targeted-build boundary we are advancing
+  in Lean
 
 This keeps the work on the source-state side and avoids sliding back into
 bundle-only analysis.
