@@ -39,7 +39,7 @@ are infinite).
 4. **Parameterized breathing**: `BreathingScale p` for any prime p ✅
 
 ## Status
-- Concrete chain theorems: ✅ PROVEN (zero sorry)
+- Concrete chain theorems: ✅ PROVEN (zero placeholders)
 - Parameterized definitions: ✅ compiles
 - Infinite self-similarity: stated as structure (not coinductive)
 -/

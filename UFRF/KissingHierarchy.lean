@@ -46,7 +46,7 @@ d=2: K(2)=6, cycle=7, boundary=42 (Allen's system)
 d=3: K(3)=12, cycle=13, boundary=156 (UFRF's system)
 
 ## Status
-- All theorems: ✅ PROVEN (zero sorry)
+- All theorems: ✅ PROVEN (zero placeholders)
 -/
 
 namespace UFRF.KissingHierarchy

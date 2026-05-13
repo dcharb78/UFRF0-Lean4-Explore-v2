@@ -7,9 +7,11 @@ import UFRF.AllenEmbedding
 import UFRF.AngularEmbedding
 import UFRF.AxiomAudit
 import UFRF.BreathingCycle
+import UFRF.C3Umklapp
 import UFRF.Calculus
 import UFRF.Constants
 import UFRF.DivisionAlgebras
+import UFRF.DoublingFlip
 import UFRF.FibonacciKissing
 import UFRF.FibonacciPrimeChain
 import UFRF.FineStructure
@@ -58,6 +60,8 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | Trinity | Axiom 1, conservation, uniqueness | `trinity_uniqueness` |
 | ThreeLOG | Tensor grades, 9 interior positions | `nine_interior_positions` |
 | BreathingCycle | ZMod 13 ring, PRISM operators | `bridge_seed_wraps` |
+| C3Umklapp | C3/PAM closure as Trinity chirality reversal | `c3_pam_equiv_chirality_reversal_under_doubling` |
+| DoublingFlip | Continuous flip-crossing under doubling | `flip_window_characterization` |
 | AngularEmbedding | S¹ mapping, Rod-Staff cross | `observer_is_orthogonal` |
 | Addressing | (ℤ, ZMod 13) coordinate system | `phase_count` |
 | Manifold | Torus T² + ZMod bridge | `torus_bin_spacing` |

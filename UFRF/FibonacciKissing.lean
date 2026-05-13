@@ -24,7 +24,7 @@ through the breathing cycle. This module proves:
    are products of kissing hierarchy constants.
 
 ## Status
-- All theorems: ✅ PROVEN (zero sorry)
+- All theorems: ✅ PROVEN (zero placeholders)
 -/
 
 namespace UFRF.FibonacciKissing
