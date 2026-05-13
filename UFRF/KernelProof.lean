@@ -491,7 +491,7 @@ example : (LOGGrade.log1.divisionAlgebra).property_lost = some .ordering ∧
     (LOGGrade.log3.divisionAlgebra).property_lost = some .associativity :=
   property_lost_correspondence
 
--- Zero placeholders. Zero admit. Zero DESIGN.
+-- Zero placeholders. Zero incomplete proofs. Zero DESIGN.
 
 -- ═══════════════════════════════════════════════════════════
 -- LAYER 26: Axiom Elimination (formerly axioms, now proven)
@@ -540,7 +540,7 @@ example : Nat.Prime 13 := by decide
 -- 137 is prime (fine structure constant is irreducible)
 example : Nat.Prime 137 := by decide
 
--- Zero placeholders. Zero admit. Zero axioms.
+-- Zero placeholders. Zero incomplete proofs. Zero axioms.
 
 -- ═══════════════════════════════════════════════════════════
 -- LAYER 28: Fourier / Character Theory (WHY Fourier works)

@@ -28,6 +28,7 @@ import UFRF.StarPolygon
 import UFRF.PositionalPhase
 import UFRF.KissingEigen
 import UFRF.Fourier
+import UFRF.NestedLearning
 
 /-!
 # UFRF Axiom Audit Certificate
@@ -176,3 +177,14 @@ A theorem is **axiom-free** if it depends only on Lean core axioms.
 
 -- ═══ LAYER 26: AngularEmbedding ↔ Foundation ═══
 #print axioms arc_quotient_is_trinity
+
+-- ═══ LAYER 27: Nested Learning theorem surface ═══
+#print axioms UFRF.NestedLearning.tau_tier_ceiling
+#print axioms UFRF.NestedLearning.tau_ceiling_M2
+#print axioms UFRF.NestedLearning.tau_ceiling_M3
+#print axioms UFRF.NestedLearning.tau_ceiling_M5
+#print axioms UFRF.NestedLearning.nested_octave_closure
+#print axioms UFRF.NestedLearning.prime_frequency_separation
+#print axioms UFRF.NestedLearning.prime_frequency_set_separates_mediator
+#print axioms UFRF.NestedLearning.epsilon_at_flip_position
+#print axioms UFRF.NestedLearning.mobius_closure_at_13

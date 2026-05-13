@@ -24,6 +24,7 @@ import UFRF.KernelProof
 import UFRF.KissingEigen
 import UFRF.KissingHierarchy
 import UFRF.Manifold
+import UFRF.NestedLearning
 import UFRF.Noether
 import UFRF.NumberBases
 import UFRF.PRISMAlgebra
@@ -91,4 +92,5 @@ Everything derives from the Trinity: `{-½, 0, +½}` with sum = 0.
 | **KissingHierarchy** | **All Allen numbers from Trinity** | **`allen_numbers_are_theorems`** |
 | **FibonacciKissing** | **F(7)=13, twin primes, NN params** | **`fibonacci_kissing_bridge`** |
 | **FibonacciPrimeChain** | **Scale tower: 7→13→233** | **`axiom_at_checkpoint`** |
+| **NestedLearning** | **Tau ceilings, nested closure, UFRF frequency separation** | **`tau_tier_ceiling`** |
 -/
